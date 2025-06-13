@@ -548,6 +548,10 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
       };
       setRoles([...roles, newRole]);
       setShowNewRoleModal(false);
+      resetModal();
+    };
+
+    const resetModal = () => {
       setFormData({
         title: "",
         department: "",
@@ -560,11 +564,23 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
       });
       setGeneratedDescription("");
       setActiveModalTab("details");
+      setPostingStatus({
+        website: "pending",
+        broadbean: "pending",
+        jobBoards: [],
+      });
+      setIsPosting(false);
     };
 
     const modalTabs = [
       { id: "details", label: "Role Details", icon: Building },
       { id: "description", label: "Job Description", icon: MessageSquare },
+      {
+        id: "post",
+        label: "Post Advert",
+        icon: Share2,
+        disabled: !generatedDescription,
+      },
     ];
 
     return (
