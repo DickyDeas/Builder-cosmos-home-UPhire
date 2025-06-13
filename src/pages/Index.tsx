@@ -25,6 +25,15 @@ import {
   Share2,
   ExternalLink,
   Clock,
+  Target,
+  Brain,
+  Send,
+  ThumbsUp,
+  Trophy,
+  Radar,
+  ArrowRight,
+  ChevronRight,
+  Activity,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
