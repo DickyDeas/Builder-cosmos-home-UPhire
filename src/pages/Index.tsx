@@ -346,6 +346,585 @@ const UPhirePlatform = () => {
     );
   };
 
+  const RecruitModal = () => {
+    const startRecruitment = () => {
+      setRecruitmentProcess({
+        stage: "searching",
+        searchResults: [],
+        interestedCandidates: [],
+        topCandidates: [],
+        progress: 0,
+      });
+
+      // Stage 1: AI-powered candidate search
+      setTimeout(() => {
+        const mockSearchResults = [
+          {
+            id: 101,
+            name: "Alex Thompson",
+            title: "Senior React Developer",
+            company: "TechCorp",
+            location: "London",
+            experience: "6 years",
+            skills: ["React", "TypeScript", "Node.js", "AWS", "GraphQL"],
+            source: "LinkedIn",
+            aiMatch: 96,
+            avatar: "👨‍💻",
+            email: "alex.thompson@email.com",
+          },
+          {
+            id: 102,
+            name: "Priya Patel",
+            title: "Frontend Engineering Lead",
+            company: "FinanceApp",
+            location: "Manchester",
+            experience: "7 years",
+            skills: ["React", "Vue.js", "TypeScript", "Docker", "Kubernetes"],
+            source: "Indeed",
+            aiMatch: 94,
+            avatar: "👩‍💻",
+            email: "priya.patel@email.com",
+          },
+          {
+            id: 103,
+            name: "James Wilson",
+            title: "Full Stack Developer",
+            company: "StartupXYZ",
+            location: "Birmingham",
+            experience: "5 years",
+            skills: ["React", "Python", "Django", "PostgreSQL", "Redis"],
+            source: "GitHub",
+            aiMatch: 91,
+            avatar: "👨‍💼",
+            email: "james.wilson@email.com",
+          },
+          {
+            id: 104,
+            name: "Sophie Chen",
+            title: "Senior Software Engineer",
+            company: "E-commerce Ltd",
+            location: "Remote",
+            experience: "8 years",
+            skills: ["React", "TypeScript", "Microservices", "AWS", "MongoDB"],
+            source: "AngelList",
+            aiMatch: 93,
+            avatar: "👩‍💻",
+            email: "sophie.chen@email.com",
+          },
+          {
+            id: 105,
+            name: "Marcus Johnson",
+            title: "Frontend Architect",
+            company: "Digital Agency",
+            location: "London",
+            experience: "9 years",
+            skills: ["React", "Next.js", "TypeScript", "Webpack", "Jest"],
+            source: "Stack Overflow",
+            aiMatch: 89,
+            avatar: "👨‍💻",
+            email: "marcus.johnson@email.com",
+          },
+          {
+            id: 106,
+            name: "Elena Rodriguez",
+            title: "React Developer",
+            company: "Consulting Firm",
+            location: "Edinburgh",
+            experience: "4 years",
+            skills: ["React", "JavaScript", "Redux", "Material-UI", "Firebase"],
+            source: "Dribbble",
+            aiMatch: 87,
+            avatar: "👩‍🎨",
+            email: "elena.rodriguez@email.com",
+          },
+          {
+            id: 107,
+            name: "David Kim",
+            title: "Senior UI Developer",
+            company: "Media Company",
+            location: "Glasgow",
+            experience: "6 years",
+            skills: [
+              "React",
+              "TypeScript",
+              "Styled Components",
+              "Storybook",
+              "Cypress",
+            ],
+            source: "Behance",
+            aiMatch: 85,
+            avatar: "👨‍💻",
+            email: "david.kim@email.com",
+          },
+          {
+            id: 108,
+            name: "Rachel Brown",
+            title: "Frontend Developer",
+            company: "Healthcare Tech",
+            location: "Bristol",
+            experience: "5 years",
+            skills: ["React", "Vue.js", "Sass", "Webpack", "PWA"],
+            source: "Glassdoor",
+            aiMatch: 88,
+            avatar: "👩‍💻",
+            email: "rachel.brown@email.com",
+          },
+        ];
+
+        setRecruitmentProcess((prev) => ({
+          ...prev,
+          searchResults: mockSearchResults,
+          progress: 25,
+        }));
+
+        // Stage 2: Automated outreach
+        setTimeout(() => {
+          setRecruitmentProcess((prev) => ({
+            ...prev,
+            stage: "outreach",
+            progress: 50,
+          }));
+
+          // Stage 3: Collect interested candidates
+          setTimeout(() => {
+            const interestedCandidates = mockSearchResults.filter(
+              (_, index) => [0, 1, 2, 3, 5, 7].includes(index), // 6 out of 8 show interest
+            );
+
+            setRecruitmentProcess((prev) => ({
+              ...prev,
+              interestedCandidates,
+              progress: 75,
+            }));
+
+            // Stage 4: Rank and select top 5
+            setTimeout(() => {
+              const rankedCandidates = [...interestedCandidates]
+                .sort((a, b) => b.aiMatch - a.aiMatch)
+                .slice(0, 5);
+
+              setRecruitmentProcess((prev) => ({
+                ...prev,
+                stage: "complete",
+                topCandidates: rankedCandidates,
+                progress: 100,
+              }));
+            }, 2000);
+          }, 3000);
+        }, 2000);
+      }, 2500);
+    };
+
+    const resetRecruitment = () => {
+      setRecruitmentProcess({
+        stage: "idle",
+        searchResults: [],
+        interestedCandidates: [],
+        topCandidates: [],
+        progress: 0,
+      });
+    };
+
+    const getStageIcon = (stage: string) => {
+      switch (stage) {
+        case "searching":
+          return <Radar className="w-5 h-5 text-blue-600 animate-spin" />;
+        case "outreach":
+          return <Send className="w-5 h-5 text-purple-600" />;
+        case "ranking":
+          return <Brain className="w-5 h-5 text-orange-600" />;
+        case "complete":
+          return <Trophy className="w-5 h-5 text-green-600" />;
+        default:
+          return <Target className="w-5 h-5 text-gray-400" />;
+      }
+    };
+
+    const getStageDescription = (stage: string) => {
+      switch (stage) {
+        case "searching":
+          return "AI scanning LinkedIn, job boards, and tech platforms...";
+        case "outreach":
+          return "Sending personalized outreach messages to candidates...";
+        case "ranking":
+          return "Analyzing responses and ranking candidates...";
+        case "complete":
+          return "Recruitment process completed successfully!";
+        default:
+          return "Ready to start automated candidate recruitment";
+      }
+    };
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl w-full max-w-6xl max-h-[90vh] overflow-hidden">
+          <div className="flex justify-between items-center p-6 border-b">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">
+                AI Recruitment for {selectedRole?.title}
+              </h2>
+              <p className="text-sm text-gray-600 mt-1">
+                Automated candidate sourcing and outreach
+              </p>
+            </div>
+            <button
+              onClick={() => {
+                setShowRecruitModal(false);
+                resetRecruitment();
+              }}
+              className="text-gray-400 hover:text-gray-600"
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          <div className="p-6 overflow-y-auto max-h-[75vh]">
+            {/* Process Overview */}
+            <div className="mb-8">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Recruitment Process
+                </h3>
+                <div className="text-sm text-gray-600">
+                  {recruitmentProcess.progress}% Complete
+                </div>
+              </div>
+
+              <div className="w-full bg-gray-200 rounded-full h-2 mb-6">
+                <div
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-500"
+                  style={{ width: `${recruitmentProcess.progress}%` }}
+                ></div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div
+                  className={cn(
+                    "p-4 rounded-lg border-2 transition-all",
+                    recruitmentProcess.stage === "searching"
+                      ? "border-blue-500 bg-blue-50"
+                      : recruitmentProcess.progress >= 25
+                        ? "border-green-500 bg-green-50"
+                        : "border-gray-200 bg-gray-50",
+                  )}
+                >
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Radar
+                      className={cn(
+                        "w-5 h-5",
+                        recruitmentProcess.stage === "searching"
+                          ? "text-blue-600 animate-spin"
+                          : recruitmentProcess.progress >= 25
+                            ? "text-green-600"
+                            : "text-gray-400",
+                      )}
+                    />
+                    <span className="font-medium text-sm">AI Search</span>
+                  </div>
+                  <p className="text-xs text-gray-600">
+                    Scan platforms for matching candidates
+                  </p>
+                </div>
+
+                <div
+                  className={cn(
+                    "p-4 rounded-lg border-2 transition-all",
+                    recruitmentProcess.stage === "outreach"
+                      ? "border-purple-500 bg-purple-50"
+                      : recruitmentProcess.progress >= 50
+                        ? "border-green-500 bg-green-50"
+                        : "border-gray-200 bg-gray-50",
+                  )}
+                >
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Send
+                      className={cn(
+                        "w-5 h-5",
+                        recruitmentProcess.stage === "outreach"
+                          ? "text-purple-600"
+                          : recruitmentProcess.progress >= 50
+                            ? "text-green-600"
+                            : "text-gray-400",
+                      )}
+                    />
+                    <span className="font-medium text-sm">Outreach</span>
+                  </div>
+                  <p className="text-xs text-gray-600">
+                    Send personalized messages
+                  </p>
+                </div>
+
+                <div
+                  className={cn(
+                    "p-4 rounded-lg border-2 transition-all",
+                    recruitmentProcess.stage === "ranking"
+                      ? "border-orange-500 bg-orange-50"
+                      : recruitmentProcess.progress >= 75
+                        ? "border-green-500 bg-green-50"
+                        : "border-gray-200 bg-gray-50",
+                  )}
+                >
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Brain
+                      className={cn(
+                        "w-5 h-5",
+                        recruitmentProcess.stage === "ranking"
+                          ? "text-orange-600"
+                          : recruitmentProcess.progress >= 75
+                            ? "text-green-600"
+                            : "text-gray-400",
+                      )}
+                    />
+                    <span className="font-medium text-sm">Ranking</span>
+                  </div>
+                  <p className="text-xs text-gray-600">
+                    Analyze and rank responses
+                  </p>
+                </div>
+
+                <div
+                  className={cn(
+                    "p-4 rounded-lg border-2 transition-all",
+                    recruitmentProcess.stage === "complete"
+                      ? "border-green-500 bg-green-50"
+                      : "border-gray-200 bg-gray-50",
+                  )}
+                >
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Trophy
+                      className={cn(
+                        "w-5 h-5",
+                        recruitmentProcess.stage === "complete"
+                          ? "text-green-600"
+                          : "text-gray-400",
+                      )}
+                    />
+                    <span className="font-medium text-sm">Complete</span>
+                  </div>
+                  <p className="text-xs text-gray-600">Top candidates ready</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Current Status */}
+            <div className="mb-8 p-4 bg-gray-50 rounded-lg">
+              <div className="flex items-center space-x-3">
+                {getStageIcon(recruitmentProcess.stage)}
+                <div>
+                  <p className="font-medium text-gray-900">
+                    {recruitmentProcess.stage === "idle"
+                      ? "Ready to Start"
+                      : recruitmentProcess.stage === "searching"
+                        ? "Searching Candidates"
+                        : recruitmentProcess.stage === "outreach"
+                          ? "Outreach in Progress"
+                          : recruitmentProcess.stage === "ranking"
+                            ? "Ranking Candidates"
+                            : "Process Complete"}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {getStageDescription(recruitmentProcess.stage)}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Results Section */}
+            {recruitmentProcess.searchResults.length > 0 && (
+              <div className="mb-8">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Search Results ({recruitmentProcess.searchResults.length}{" "}
+                  candidates found)
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {recruitmentProcess.searchResults.map((candidate) => (
+                    <div
+                      key={candidate.id}
+                      className="bg-gray-50 rounded-lg p-4"
+                    >
+                      <div className="flex items-start space-x-3">
+                        <div className="text-2xl">{candidate.avatar}</div>
+                        <div className="flex-1">
+                          <h4 className="font-medium text-gray-900">
+                            {candidate.name}
+                          </h4>
+                          <p className="text-sm text-gray-600">
+                            {candidate.title} at {candidate.company}
+                          </p>
+                          <div className="flex items-center space-x-4 mt-2 text-xs text-gray-500">
+                            <span>{candidate.location}</span>
+                            <span>{candidate.experience}</span>
+                            <span>{candidate.source}</span>
+                          </div>
+                          <div className="flex items-center justify-between mt-2">
+                            <div className="flex flex-wrap gap-1">
+                              {candidate.skills
+                                .slice(0, 3)
+                                .map((skill, idx) => (
+                                  <span
+                                    key={idx}
+                                    className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded"
+                                  >
+                                    {skill}
+                                  </span>
+                                ))}
+                              {candidate.skills.length > 3 && (
+                                <span className="text-xs text-gray-500">
+                                  +{candidate.skills.length - 3} more
+                                </span>
+                              )}
+                            </div>
+                            <span className="text-sm font-bold text-blue-600">
+                              {candidate.aiMatch}%
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Interested Candidates */}
+            {recruitmentProcess.interestedCandidates.length > 0 && (
+              <div className="mb-8">
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+                  <div className="flex items-center space-x-2">
+                    <ThumbsUp className="w-5 h-5 text-green-600" />
+                    <span className="font-medium text-green-800">
+                      {recruitmentProcess.interestedCandidates.length}{" "}
+                      candidates expressed interest!
+                    </span>
+                  </div>
+                  <p className="text-sm text-green-600 mt-1">
+                    Response rate:{" "}
+                    {Math.round(
+                      (recruitmentProcess.interestedCandidates.length /
+                        recruitmentProcess.searchResults.length) *
+                        100,
+                    )}
+                    %
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Top 5 Candidates */}
+            {recruitmentProcess.topCandidates.length > 0 && (
+              <div className="mb-8">
+                <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-6">
+                  <div className="flex items-center space-x-2 mb-4">
+                    <Trophy className="w-6 h-6 text-yellow-600" />
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      Top 5 Candidates for Interview
+                    </h3>
+                  </div>
+
+                  <div className="space-y-4">
+                    {recruitmentProcess.topCandidates.map(
+                      (candidate, index) => (
+                        <div
+                          key={candidate.id}
+                          className="bg-white rounded-lg p-4 border shadow-sm"
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-4">
+                              <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full font-bold">
+                                {index + 1}
+                              </div>
+                              <div className="text-2xl">{candidate.avatar}</div>
+                              <div>
+                                <h4 className="font-semibold text-gray-900">
+                                  {candidate.name}
+                                </h4>
+                                <p className="text-sm text-gray-600">
+                                  {candidate.title} at {candidate.company}
+                                </p>
+                                <div className="flex items-center space-x-4 mt-1 text-xs text-gray-500">
+                                  <span>{candidate.location}</span>
+                                  <span>{candidate.experience}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <div className="text-2xl font-bold text-green-600">
+                                {candidate.aiMatch}%
+                              </div>
+                              <p className="text-xs text-gray-500">AI Match</p>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center justify-between mt-4">
+                            <div className="flex flex-wrap gap-1">
+                              {candidate.skills
+                                .slice(0, 4)
+                                .map((skill, idx) => (
+                                  <span
+                                    key={idx}
+                                    className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded"
+                                  >
+                                    {skill}
+                                  </span>
+                                ))}
+                            </div>
+                            <button className="flex items-center space-x-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm">
+                              <Calendar size={14} />
+                              <span>Schedule Interview</span>
+                            </button>
+                          </div>
+                        </div>
+                      ),
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="flex justify-between items-center pt-4 border-t">
+              <button
+                onClick={() => {
+                  setShowRecruitModal(false);
+                  resetRecruitment();
+                }}
+                className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                Close
+              </button>
+
+              <div className="flex space-x-3">
+                {recruitmentProcess.stage === "idle" && (
+                  <button
+                    onClick={startRecruitment}
+                    className="flex items-center space-x-2 px-6 py-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all"
+                  >
+                    <Target size={16} />
+                    <span>Start AI Recruitment</span>
+                  </button>
+                )}
+
+                {recruitmentProcess.stage === "complete" && (
+                  <button
+                    onClick={() => {
+                      alert("Top 5 candidates added to role pipeline!");
+                      setShowRecruitModal(false);
+                      resetRecruitment();
+                    }}
+                    className="flex items-center space-x-2 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all"
+                  >
+                    <CheckCircle size={16} />
+                    <span>Add to Pipeline</span>
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const NewRoleModal = () => {
     const [activeModalTab, setActiveModalTab] = useState("details");
     const [formData, setFormData] = useState({
