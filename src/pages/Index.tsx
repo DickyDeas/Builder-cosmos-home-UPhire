@@ -21,6 +21,10 @@ import {
   Download,
   Menu,
   X,
+  Globe,
+  Share2,
+  ExternalLink,
+  Clock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -147,7 +151,7 @@ const UPhirePlatform = () => {
         status: "interviewed",
         source: "Indeed",
         applied: "2025-06-08",
-        avatar: "👨‍💻",
+        avatar: "��‍💻",
       },
       {
         id: 3,
