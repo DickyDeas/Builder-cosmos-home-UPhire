@@ -1151,8 +1151,12 @@ const UPhirePlatform = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <div className="text-white text-2xl font-bold">UPhire</div>
-              <div className="hidden sm:block ml-2 text-blue-200 text-sm">
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2Fe3ae173b79f74e84b0580a7f82f9aa6c%2Fa30864f8cb98481d9e88e08c10e577ec?format=webp&width=800"
+                alt="UPhire - AI-Powered Recruitment"
+                className="h-8 w-auto"
+              />
+              <div className="hidden sm:block ml-3 text-blue-200 text-sm">
                 AI-Powered Recruitment
               </div>
             </div>
