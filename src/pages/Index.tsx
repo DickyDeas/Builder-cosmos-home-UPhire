@@ -602,19 +602,24 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
           <div className="flex border-b">
             {modalTabs.map((tab) => {
               const Icon = tab.icon;
+              const isDisabled = tab.disabled;
               return (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveModalTab(tab.id)}
+                  onClick={() => !isDisabled && setActiveModalTab(tab.id)}
+                  disabled={isDisabled}
                   className={cn(
                     "flex items-center space-x-2 px-6 py-3 text-sm font-medium transition-colors",
-                    activeModalTab === tab.id
-                      ? "border-b-2 border-blue-500 text-blue-600 bg-blue-50"
-                      : "text-gray-500 hover:text-gray-700 hover:bg-gray-50",
+                    isDisabled
+                      ? "text-gray-300 cursor-not-allowed"
+                      : activeModalTab === tab.id
+                        ? "border-b-2 border-blue-500 text-blue-600 bg-blue-50"
+                        : "text-gray-500 hover:text-gray-700 hover:bg-gray-50",
                   )}
                 >
                   <Icon size={16} />
                   <span>{tab.label}</span>
+                  {isDisabled && <Clock size={12} className="text-gray-300" />}
                 </button>
               );
             })}
