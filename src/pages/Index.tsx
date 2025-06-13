@@ -2057,12 +2057,24 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
 
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <p className="text-sm text-gray-500">Created {role.created}</p>
-              <button
-                onClick={() => setSelectedRole(role)}
-                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-              >
-                Configure AI Sourcing
-              </button>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => {
+                    setSelectedRole(role);
+                    setShowRecruitModal(true);
+                  }}
+                  className="flex items-center space-x-1 px-3 py-2 bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-lg hover:shadow-lg transition-all text-sm font-medium"
+                >
+                  <Target size={14} />
+                  <span>Recruit</span>
+                </button>
+                <button
+                  onClick={() => setSelectedRole(role)}
+                  className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                >
+                  Configure AI Sourcing
+                </button>
+              </div>
             </div>
           </div>
         ))}
