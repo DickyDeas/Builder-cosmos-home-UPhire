@@ -82,6 +82,15 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      backgroundImage: {
+        "uphire-gradient":
+          "linear-gradient(135deg, #1e40af 0%, #7c3aed 50%, #ec4899 100%)",
+        "uphire-gradient-light":
+          "linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #f472b6 100%)",
+      },
+      backdropBlur: {
+        xs: "2px",
+      },
       keyframes: {
         "accordion-down": {
           from: {
