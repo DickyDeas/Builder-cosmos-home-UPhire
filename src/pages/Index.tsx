@@ -151,7 +151,7 @@ const UPhirePlatform = () => {
         status: "interviewed",
         source: "Indeed",
         applied: "2025-06-08",
-        avatar: "��‍💻",
+        avatar: "👨‍💻",
       },
       {
         id: 3,
@@ -343,6 +343,12 @@ const UPhirePlatform = () => {
     });
     const [generatedDescription, setGeneratedDescription] = useState("");
     const [isGenerating, setIsGenerating] = useState(false);
+    const [postingStatus, setPostingStatus] = useState({
+      website: "pending", // pending, posting, success, error
+      broadbean: "pending",
+      jobBoards: [],
+    });
+    const [isPosting, setIsPosting] = useState(false);
 
     const generateJobDescription = () => {
       if (!formData.title || !formData.department) {
