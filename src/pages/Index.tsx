@@ -326,13 +326,82 @@ const UPhirePlatform = () => {
   };
 
   const NewRoleModal = () => {
+    const [activeModalTab, setActiveModalTab] = useState("details");
     const [formData, setFormData] = useState({
       title: "",
       department: "",
       location: "",
       salary: "",
       description: "",
+      experience: "",
+      skills: "",
+      benefits: "",
     });
+    const [generatedDescription, setGeneratedDescription] = useState("");
+    const [isGenerating, setIsGenerating] = useState(false);
+
+    const generateJobDescription = () => {
+      if (!formData.title || !formData.department) {
+        alert("Please fill in at least the job title and department first.");
+        return;
+      }
+
+      setIsGenerating(true);
+
+      // Simulate AI generation with a delay
+      setTimeout(() => {
+        const description = `
+## Position Overview
+We are seeking a talented ${formData.title} to join our ${formData.department} team${formData.location ? ` in ${formData.location}` : ""}. This is an excellent opportunity for a professional looking to make a significant impact in a dynamic, fast-growing organization.
+
+## Key Responsibilities
+• Lead and execute ${formData.department.toLowerCase()} initiatives that drive business growth
+• Collaborate with cross-functional teams to deliver high-quality solutions
+• Mentor junior team members and contribute to team development
+• Stay current with industry trends and best practices
+• Participate in strategic planning and project management activities
+
+## Required Qualifications
+• ${formData.experience || "3-5 years"} of relevant experience in ${formData.department.toLowerCase()}
+• Strong analytical and problem-solving skills
+• Excellent communication and interpersonal abilities
+• Proven track record of delivering results in fast-paced environments
+• Bachelor's degree in relevant field or equivalent experience
+
+## Preferred Skills
+${
+  formData.skills
+    ? `• ${formData.skills
+        .split(",")
+        .map((skill) => skill.trim())
+        .join("\n• ")}`
+    : `• Proficiency in industry-standard tools and technologies
+• Experience with agile methodologies
+• Leadership and project management experience`
+}
+
+## What We Offer
+${
+  formData.benefits ||
+  `• Competitive salary range${formData.salary ? `: ${formData.salary}` : ""}
+• Comprehensive health and wellness benefits
+• Professional development opportunities
+• Flexible working arrangements
+• Dynamic and inclusive work environment
+• Career growth and advancement opportunities`
+}
+
+## About UPhire
+UPhire is revolutionizing the recruitment industry with AI-powered solutions that help companies build diverse, high-performing teams faster and more cost-effectively than traditional methods.
+
+Ready to join our mission? Apply now and let's shape the future of recruitment together!
+        `.trim();
+
+        setGeneratedDescription(description);
+        setFormData({ ...formData, description });
+        setIsGenerating(false);
+      }, 2000);
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
@@ -355,13 +424,23 @@ const UPhirePlatform = () => {
         location: "",
         salary: "",
         description: "",
+        experience: "",
+        skills: "",
+        benefits: "",
       });
+      setGeneratedDescription("");
+      setActiveModalTab("details");
     };
+
+    const modalTabs = [
+      { id: "details", label: "Role Details", icon: Building },
+      { id: "description", label: "Job Description", icon: MessageSquare },
+    ];
 
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-          <div className="flex justify-between items-center mb-6">
+        <div className="bg-white rounded-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+          <div className="flex justify-between items-center p-6 border-b">
             <h2 className="text-2xl font-bold text-gray-900">
               Create New Role
             </h2>
@@ -373,93 +452,266 @@ const UPhirePlatform = () => {
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Job Title
-              </label>
-              <input
-                type="text"
-                required
-                value={formData.title}
-                onChange={(e) =>
-                  setFormData({ ...formData, title: e.target.value })
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="e.g. Senior Software Engineer"
-              />
-            </div>
+          {/* Tab Navigation */}
+          <div className="flex border-b">
+            {modalTabs.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveModalTab(tab.id)}
+                  className={cn(
+                    "flex items-center space-x-2 px-6 py-3 text-sm font-medium transition-colors",
+                    activeModalTab === tab.id
+                      ? "border-b-2 border-blue-500 text-blue-600 bg-blue-50"
+                      : "text-gray-500 hover:text-gray-700 hover:bg-gray-50",
+                  )}
+                >
+                  <Icon size={16} />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Department
-              </label>
-              <select
-                required
-                value={formData.department}
-                onChange={(e) =>
-                  setFormData({ ...formData, department: e.target.value })
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="">Select Department</option>
-                <option value="Engineering">Engineering</option>
-                <option value="Product">Product</option>
-                <option value="Design">Design</option>
-                <option value="Sales">Sales</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Operations">Operations</option>
-              </select>
-            </div>
+          <div className="p-6 overflow-y-auto max-h-[60vh]">
+            {activeModalTab === "details" ? (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Job Title *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.title}
+                      onChange={(e) =>
+                        setFormData({ ...formData, title: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="e.g. Senior Software Engineer"
+                    />
+                  </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Location
-              </label>
-              <input
-                type="text"
-                required
-                value={formData.location}
-                onChange={(e) =>
-                  setFormData({ ...formData, location: e.target.value })
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="e.g. London, Remote, Hybrid"
-              />
-            </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Department *
+                    </label>
+                    <select
+                      required
+                      value={formData.department}
+                      onChange={(e) =>
+                        setFormData({ ...formData, department: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      <option value="">Select Department</option>
+                      <option value="Engineering">Engineering</option>
+                      <option value="Product">Product</option>
+                      <option value="Design">Design</option>
+                      <option value="Sales">Sales</option>
+                      <option value="Marketing">Marketing</option>
+                      <option value="Operations">Operations</option>
+                    </select>
+                  </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Salary Range
-              </label>
-              <input
-                type="text"
-                required
-                value={formData.salary}
-                onChange={(e) =>
-                  setFormData({ ...formData, salary: e.target.value })
-                }
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="e.g. £50,000 - £70,000"
-              />
-            </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Location *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.location}
+                      onChange={(e) =>
+                        setFormData({ ...formData, location: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="e.g. London, Remote, Hybrid"
+                    />
+                  </div>
 
-            <div className="flex justify-end space-x-3 pt-4">
-              <button
-                type="button"
-                onClick={() => setShowNewRoleModal(false)}
-                className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="px-6 py-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all"
-              >
-                Create Role
-              </button>
-            </div>
-          </form>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Salary Range *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.salary}
+                      onChange={(e) =>
+                        setFormData({ ...formData, salary: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="e.g. £50,000 - £70,000"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Experience Level
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.experience}
+                      onChange={(e) =>
+                        setFormData({ ...formData, experience: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="e.g. 3-5 years"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Key Skills
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.skills}
+                      onChange={(e) =>
+                        setFormData({ ...formData, skills: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="e.g. React, TypeScript, Node.js"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Benefits & Perks
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={formData.benefits}
+                    onChange={(e) =>
+                      setFormData({ ...formData, benefits: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="List key benefits and perks..."
+                  />
+                </div>
+
+                <div className="flex justify-between items-center pt-4">
+                  <button
+                    type="button"
+                    onClick={() => setActiveModalTab("description")}
+                    className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center space-x-1"
+                  >
+                    <Zap size={16} />
+                    <span>Generate Job Description</span>
+                  </button>
+                  <div className="flex space-x-3">
+                    <button
+                      type="button"
+                      onClick={() => setShowNewRoleModal(false)}
+                      className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-6 py-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all"
+                    >
+                      Create Role
+                    </button>
+                  </div>
+                </div>
+              </form>
+            ) : (
+              <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      AI-Generated Job Description
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Create a tailored job description based on your role
+                      details
+                    </p>
+                  </div>
+                  <button
+                    onClick={generateJobDescription}
+                    disabled={isGenerating}
+                    className={cn(
+                      "flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all",
+                      isGenerating
+                        ? "bg-gray-400 text-white cursor-not-allowed"
+                        : "bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white hover:shadow-lg",
+                    )}
+                  >
+                    <Zap size={16} />
+                    <span>
+                      {isGenerating ? "Generating..." : "Generate Description"}
+                    </span>
+                  </button>
+                </div>
+
+                {isGenerating && (
+                  <div className="flex items-center justify-center py-12">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                    <span className="ml-3 text-gray-600">
+                      Creating your job description...
+                    </span>
+                  </div>
+                )}
+
+                {generatedDescription && !isGenerating && (
+                  <div className="space-y-4">
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                      <div className="flex items-center space-x-2">
+                        <CheckCircle className="h-5 w-5 text-green-600" />
+                        <span className="text-green-800 font-medium">
+                          Job description generated successfully!
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+                      <div className="whitespace-pre-wrap text-sm text-gray-700">
+                        {generatedDescription}
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between items-center">
+                      <button
+                        onClick={() => setActiveModalTab("details")}
+                        className="text-gray-600 hover:text-gray-800 text-sm font-medium"
+                      >
+                        ← Back to Details
+                      </button>
+                      <div className="flex space-x-3">
+                        <button
+                          onClick={generateJobDescription}
+                          className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                        >
+                          Regenerate
+                        </button>
+                        <button
+                          onClick={handleSubmit}
+                          className="px-6 py-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all"
+                        >
+                          Create Role with Description
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {!generatedDescription && !isGenerating && (
+                  <div className="text-center py-12">
+                    <MessageSquare className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-600">
+                      Fill out the role details first, then generate a tailored
+                      job description with AI.
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     );
