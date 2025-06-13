@@ -341,6 +341,15 @@ const UPhirePlatform = () => {
       skills: "",
       benefits: "",
     });
+    const [generatedDescription, setGeneratedDescription] = useState("");
+    const [isGenerating, setIsGenerating] = useState(false);
+    const [postingStatus, setPostingStatus] = useState({
+      website: "pending", // pending, posting, success, error
+      broadbean: "pending",
+      jobBoards: [],
+    });
+    const [isPosting, setIsPosting] = useState(false);
+
     const generateJobDescription = () => {
       if (!formData.title || !formData.department) {
         alert("Please fill in at least the job title and department first.");
@@ -468,70 +477,6 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
         setIsPosting(false);
       }, 4000);
     };
-    const [isPosting, setIsPosting] = useState(false);
-
-    const generateJobDescription = () => {
-      if (!formData.title || !formData.department) {
-        alert("Please fill in at least the job title and department first.");
-        return;
-      }
-
-      setIsGenerating(true);
-
-      // Simulate AI generation with a delay
-      setTimeout(() => {
-        const description = `
-## Position Overview
-We are seeking a talented ${formData.title} to join our ${formData.department} team${formData.location ? ` in ${formData.location}` : ""}. This is an excellent opportunity for a professional looking to make a significant impact in a dynamic, fast-growing organization.
-
-## Key Responsibilities
-• Lead and execute ${formData.department.toLowerCase()} initiatives that drive business growth
-• Collaborate with cross-functional teams to deliver high-quality solutions
-• Mentor junior team members and contribute to team development
-• Stay current with industry trends and best practices
-• Participate in strategic planning and project management activities
-
-## Required Qualifications
-• ${formData.experience || "3-5 years"} of relevant experience in ${formData.department.toLowerCase()}
-• Strong analytical and problem-solving skills
-• Excellent communication and interpersonal abilities
-• Proven track record of delivering results in fast-paced environments
-• Bachelor's degree in relevant field or equivalent experience
-
-## Preferred Skills
-${
-  formData.skills
-    ? `• ${formData.skills
-        .split(",")
-        .map((skill) => skill.trim())
-        .join("\n• ")}`
-    : `• Proficiency in industry-standard tools and technologies
-• Experience with agile methodologies
-• Leadership and project management experience`
-}
-
-## What We Offer
-${
-  formData.benefits ||
-  `• Competitive salary range${formData.salary ? `: ${formData.salary}` : ""}
-• Comprehensive health and wellness benefits
-• Professional development opportunities
-• Flexible working arrangements
-• Dynamic and inclusive work environment
-• Career growth and advancement opportunities`
-}
-
-## About UPhire
-UPhire is revolutionizing the recruitment industry with AI-powered solutions that help companies build diverse, high-performing teams faster and more cost-effectively than traditional methods.
-
-Ready to join our mission? Apply now and let's shape the future of recruitment together!
-        `.trim();
-
-        setGeneratedDescription(description);
-        setFormData({ ...formData, description });
-        setIsGenerating(false);
-      }, 2000);
-    };
 
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
@@ -591,7 +536,10 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
               Create New Role
             </h2>
             <button
-              onClick={() => setShowNewRoleModal(false)}
+              onClick={() => {
+                setShowNewRoleModal(false);
+                resetModal();
+              }}
               className="text-gray-400 hover:text-gray-600"
             >
               <X size={24} />
@@ -626,7 +574,7 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
           </div>
 
           <div className="p-6 overflow-y-auto max-h-[60vh]">
-            {activeModalTab === "details" ? (
+            {activeModalTab === "details" && (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -757,7 +705,10 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
                   <div className="flex space-x-3">
                     <button
                       type="button"
-                      onClick={() => setShowNewRoleModal(false)}
+                      onClick={() => {
+                        setShowNewRoleModal(false);
+                        resetModal();
+                      }}
                       className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
                     >
                       Cancel
@@ -771,7 +722,9 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
                   </div>
                 </div>
               </form>
-            ) : (
+            )}
+
+            {activeModalTab === "description" && (
               <div className="space-y-6">
                 <div className="flex justify-between items-center">
                   <div>
@@ -841,10 +794,10 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
                           Regenerate
                         </button>
                         <button
-                          onClick={handleSubmit}
+                          onClick={() => setActiveModalTab("post")}
                           className="px-6 py-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all"
                         >
-                          Create Role with Description
+                          Continue to Post Advert
                         </button>
                       </div>
                     </div>
@@ -861,7 +814,9 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
                   </div>
                 )}
               </div>
-            ) : activeModalTab === "post" ? (
+            )}
+
+            {activeModalTab === "post" && (
               <div className="space-y-6">
                 <div className="flex justify-between items-center">
                   <div>
@@ -869,7 +824,8 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
                       Post Job Advert
                     </h3>
                     <p className="text-sm text-gray-600">
-                      Publish your role to company website and job boards via Broadbean
+                      Publish your role to company website and job boards via
+                      Broadbean
                     </p>
                   </div>
                   <button
@@ -879,11 +835,13 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
                       "flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all",
                       isPosting || !generatedDescription
                         ? "bg-gray-400 text-white cursor-not-allowed"
-                        : "bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white hover:shadow-lg"
+                        : "bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white hover:shadow-lg",
                     )}
                   >
                     <Share2 size={16} />
-                    <span>{isPosting ? "Publishing..." : "Publish Advert"}</span>
+                    <span>
+                      {isPosting ? "Publishing..." : "Publish Advert"}
+                    </span>
                   </button>
                 </div>
 
@@ -893,8 +851,12 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
                     <div className="flex items-center space-x-3 mb-4">
                       <Globe className="h-6 w-6 text-blue-600" />
                       <div>
-                        <h4 className="font-semibold text-gray-900">Company Website</h4>
-                        <p className="text-sm text-gray-600">careers.company.com</p>
+                        <h4 className="font-semibold text-gray-900">
+                          Company Website
+                        </h4>
+                        <p className="text-sm text-gray-600">
+                          careers.company.com
+                        </p>
                       </div>
                     </div>
 
@@ -902,20 +864,29 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
                       {postingStatus.website === "pending" && (
                         <>
                           <div className="w-3 h-3 rounded-full bg-gray-300"></div>
-                          <span className="text-sm text-gray-600">Ready to publish</span>
+                          <span className="text-sm text-gray-600">
+                            Ready to publish
+                          </span>
                         </>
                       )}
                       {postingStatus.website === "posting" && (
                         <>
                           <div className="w-3 h-3 rounded-full bg-yellow-400 animate-pulse"></div>
-                          <span className="text-sm text-yellow-600">Publishing to website...</span>
+                          <span className="text-sm text-yellow-600">
+                            Publishing to website...
+                          </span>
                         </>
                       )}
                       {postingStatus.website === "success" && (
                         <>
                           <CheckCircle className="w-4 h-4 text-green-600" />
-                          <span className="text-sm text-green-600">Published successfully</span>
-                          <a href="#" className="text-blue-600 hover:text-blue-800 text-sm flex items-center space-x-1">
+                          <span className="text-sm text-green-600">
+                            Published successfully
+                          </span>
+                          <a
+                            href="#"
+                            className="text-blue-600 hover:text-blue-800 text-sm flex items-center space-x-1"
+                          >
                             <ExternalLink size={12} />
                             <span>View</span>
                           </a>
@@ -931,8 +902,12 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
                         <span className="text-white text-xs font-bold">B</span>
                       </div>
                       <div>
-                        <h4 className="font-semibold text-gray-900">Broadbean API</h4>
-                        <p className="text-sm text-gray-600">Multi-board distribution</p>
+                        <h4 className="font-semibold text-gray-900">
+                          Broadbean API
+                        </h4>
+                        <p className="text-sm text-gray-600">
+                          Multi-board distribution
+                        </p>
                       </div>
                     </div>
 
@@ -940,19 +915,26 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
                       {postingStatus.broadbean === "pending" && (
                         <>
                           <div className="w-3 h-3 rounded-full bg-gray-300"></div>
-                          <span className="text-sm text-gray-600">Ready to distribute</span>
+                          <span className="text-sm text-gray-600">
+                            Ready to distribute
+                          </span>
                         </>
                       )}
                       {postingStatus.broadbean === "posting" && (
                         <>
                           <div className="w-3 h-3 rounded-full bg-orange-400 animate-pulse"></div>
-                          <span className="text-sm text-orange-600">Distributing via Broadbean...</span>
+                          <span className="text-sm text-orange-600">
+                            Distributing via Broadbean...
+                          </span>
                         </>
                       )}
                       {postingStatus.broadbean === "success" && (
                         <>
                           <CheckCircle className="w-4 h-4 text-green-600" />
-                          <span className="text-sm text-green-600">Distributed to {postingStatus.jobBoards.length} job boards</span>
+                          <span className="text-sm text-green-600">
+                            Distributed to {postingStatus.jobBoards.length} job
+                            boards
+                          </span>
                         </>
                       )}
                     </div>
@@ -968,11 +950,16 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {postingStatus.jobBoards.map((board, index) => (
-                        <div key={index} className="bg-white rounded-lg p-4 border border-green-200">
+                        <div
+                          key={index}
+                          className="bg-white rounded-lg p-4 border border-green-200"
+                        >
                           <div className="flex items-center justify-between">
                             <div className="flex items-center space-x-2">
                               <CheckCircle className="w-4 h-4 text-green-600" />
-                              <span className="font-medium text-gray-900">{board.name}</span>
+                              <span className="font-medium text-gray-900">
+                                {board.name}
+                              </span>
                             </div>
                             <a
                               href={board.url}
