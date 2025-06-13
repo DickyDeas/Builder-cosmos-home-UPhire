@@ -861,6 +861,162 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
                   </div>
                 )}
               </div>
+            ) : activeModalTab === "post" ? (
+              <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      Post Job Advert
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Publish your role to company website and job boards via Broadbean
+                    </p>
+                  </div>
+                  <button
+                    onClick={postAdvert}
+                    disabled={isPosting || !generatedDescription}
+                    className={cn(
+                      "flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all",
+                      isPosting || !generatedDescription
+                        ? "bg-gray-400 text-white cursor-not-allowed"
+                        : "bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white hover:shadow-lg"
+                    )}
+                  >
+                    <Share2 size={16} />
+                    <span>{isPosting ? "Publishing..." : "Publish Advert"}</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Company Website */}
+                  <div className="bg-gray-50 rounded-lg p-6">
+                    <div className="flex items-center space-x-3 mb-4">
+                      <Globe className="h-6 w-6 text-blue-600" />
+                      <div>
+                        <h4 className="font-semibold text-gray-900">Company Website</h4>
+                        <p className="text-sm text-gray-600">careers.company.com</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      {postingStatus.website === "pending" && (
+                        <>
+                          <div className="w-3 h-3 rounded-full bg-gray-300"></div>
+                          <span className="text-sm text-gray-600">Ready to publish</span>
+                        </>
+                      )}
+                      {postingStatus.website === "posting" && (
+                        <>
+                          <div className="w-3 h-3 rounded-full bg-yellow-400 animate-pulse"></div>
+                          <span className="text-sm text-yellow-600">Publishing to website...</span>
+                        </>
+                      )}
+                      {postingStatus.website === "success" && (
+                        <>
+                          <CheckCircle className="w-4 h-4 text-green-600" />
+                          <span className="text-sm text-green-600">Published successfully</span>
+                          <a href="#" className="text-blue-600 hover:text-blue-800 text-sm flex items-center space-x-1">
+                            <ExternalLink size={12} />
+                            <span>View</span>
+                          </a>
+                        </>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Broadbean Integration */}
+                  <div className="bg-gray-50 rounded-lg p-6">
+                    <div className="flex items-center space-x-3 mb-4">
+                      <div className="w-6 h-6 bg-gradient-to-r from-orange-400 to-red-500 rounded flex items-center justify-center">
+                        <span className="text-white text-xs font-bold">B</span>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-gray-900">Broadbean API</h4>
+                        <p className="text-sm text-gray-600">Multi-board distribution</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      {postingStatus.broadbean === "pending" && (
+                        <>
+                          <div className="w-3 h-3 rounded-full bg-gray-300"></div>
+                          <span className="text-sm text-gray-600">Ready to distribute</span>
+                        </>
+                      )}
+                      {postingStatus.broadbean === "posting" && (
+                        <>
+                          <div className="w-3 h-3 rounded-full bg-orange-400 animate-pulse"></div>
+                          <span className="text-sm text-orange-600">Distributing via Broadbean...</span>
+                        </>
+                      )}
+                      {postingStatus.broadbean === "success" && (
+                        <>
+                          <CheckCircle className="w-4 h-4 text-green-600" />
+                          <span className="text-sm text-green-600">Distributed to {postingStatus.jobBoards.length} job boards</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Job Board Results */}
+                {postingStatus.jobBoards.length > 0 && (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+                    <h4 className="font-semibold text-green-800 mb-4 flex items-center space-x-2">
+                      <CheckCircle className="w-5 h-5" />
+                      <span>Successfully Posted to Job Boards</span>
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {postingStatus.jobBoards.map((board, index) => (
+                        <div key={index} className="bg-white rounded-lg p-4 border border-green-200">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-2">
+                              <CheckCircle className="w-4 h-4 text-green-600" />
+                              <span className="font-medium text-gray-900">{board.name}</span>
+                            </div>
+                            <a
+                              href={board.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 hover:text-blue-800 text-sm flex items-center space-x-1"
+                            >
+                              <ExternalLink size={12} />
+                              <span>View</span>
+                            </a>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex justify-between items-center pt-4 border-t">
+                  <button
+                    onClick={() => setActiveModalTab("description")}
+                    className="text-gray-600 hover:text-gray-800 text-sm font-medium"
+                  >
+                    ← Back to Description
+                  </button>
+                  <div className="flex space-x-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowNewRoleModal(false);
+                        resetModal();
+                      }}
+                      className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
+                    >
+                      Close
+                    </button>
+                    <button
+                      onClick={handleSubmit}
+                      className="px-6 py-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all"
+                    >
+                      Create Role & Finish
+                    </button>
+                  </div>
+                </div>
+              </div>
             )}
           </div>
         </div>
