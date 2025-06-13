@@ -341,13 +341,133 @@ const UPhirePlatform = () => {
       skills: "",
       benefits: "",
     });
-    const [generatedDescription, setGeneratedDescription] = useState("");
-    const [isGenerating, setIsGenerating] = useState(false);
-    const [postingStatus, setPostingStatus] = useState({
-      website: "pending", // pending, posting, success, error
-      broadbean: "pending",
-      jobBoards: [],
-    });
+    const generateJobDescription = () => {
+      if (!formData.title || !formData.department) {
+        alert("Please fill in at least the job title and department first.");
+        return;
+      }
+
+      setIsGenerating(true);
+
+      // Simulate AI generation with a delay
+      setTimeout(() => {
+        const description = `
+## Position Overview
+We are seeking a talented ${formData.title} to join our ${formData.department} team${formData.location ? ` in ${formData.location}` : ""}. This is an excellent opportunity for a professional looking to make a significant impact in a dynamic, fast-growing organization.
+
+## Key Responsibilities
+• Lead and execute ${formData.department.toLowerCase()} initiatives that drive business growth
+• Collaborate with cross-functional teams to deliver high-quality solutions
+• Mentor junior team members and contribute to team development
+• Stay current with industry trends and best practices
+• Participate in strategic planning and project management activities
+
+## Required Qualifications
+• ${formData.experience || "3-5 years"} of relevant experience in ${formData.department.toLowerCase()}
+• Strong analytical and problem-solving skills
+• Excellent communication and interpersonal abilities
+• Proven track record of delivering results in fast-paced environments
+• Bachelor's degree in relevant field or equivalent experience
+
+## Preferred Skills
+${
+  formData.skills
+    ? `• ${formData.skills
+        .split(",")
+        .map((skill) => skill.trim())
+        .join("\n• ")}`
+    : `• Proficiency in industry-standard tools and technologies
+• Experience with agile methodologies
+• Leadership and project management experience`
+}
+
+## What We Offer
+${
+  formData.benefits ||
+  `• Competitive salary range${formData.salary ? `: ${formData.salary}` : ""}
+• Comprehensive health and wellness benefits
+• Professional development opportunities
+• Flexible working arrangements
+• Dynamic and inclusive work environment
+• Career growth and advancement opportunities`
+}
+
+## About UPhire
+UPhire is revolutionizing the recruitment industry with AI-powered solutions that help companies build diverse, high-performing teams faster and more cost-effectively than traditional methods.
+
+Ready to join our mission? Apply now and let's shape the future of recruitment together!
+        `.trim();
+
+        setGeneratedDescription(description);
+        setFormData({ ...formData, description });
+        setIsGenerating(false);
+      }, 2000);
+    };
+
+    const postAdvert = async () => {
+      if (!generatedDescription) {
+        alert("Please generate a job description first.");
+        return;
+      }
+
+      setIsPosting(true);
+      setPostingStatus({
+        website: "posting",
+        broadbean: "posting",
+        jobBoards: [],
+      });
+
+      // Simulate posting to company website
+      setTimeout(() => {
+        setPostingStatus((prev) => ({
+          ...prev,
+          website: "success",
+        }));
+      }, 1500);
+
+      // Simulate Broadbean API call
+      setTimeout(() => {
+        const mockJobBoards = [
+          {
+            name: "Indeed",
+            status: "success",
+            url: "https://indeed.com/job/12345",
+          },
+          {
+            name: "LinkedIn",
+            status: "success",
+            url: "https://linkedin.com/jobs/view/67890",
+          },
+          {
+            name: "Glassdoor",
+            status: "success",
+            url: "https://glassdoor.com/job/54321",
+          },
+          {
+            name: "Reed",
+            status: "success",
+            url: "https://reed.co.uk/jobs/98765",
+          },
+          {
+            name: "Totaljobs",
+            status: "success",
+            url: "https://totaljobs.com/job/13579",
+          },
+          {
+            name: "CV Library",
+            status: "success",
+            url: "https://cv-library.co.uk/job/24680",
+          },
+        ];
+
+        setPostingStatus((prev) => ({
+          ...prev,
+          broadbean: "success",
+          jobBoards: mockJobBoards,
+        }));
+        setIsPosting(false);
+      }, 4000);
+    };
     const [isPosting, setIsPosting] = useState(false);
 
     const generateJobDescription = () => {
