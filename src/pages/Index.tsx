@@ -86,6 +86,14 @@ const UPhirePlatform = () => {
   const [showDocumentModal, setShowDocumentModal] = useState(false);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showRecruitModal, setShowRecruitModal] = useState(false);
+  const [recruitmentProcess, setRecruitmentProcess] = useState({
+    stage: "idle", // idle, searching, outreach, ranking, complete
+    searchResults: [],
+    interestedCandidates: [],
+    topCandidates: [],
+    progress: 0,
+  });
 
   useEffect(() => {
     const mockRoles: Role[] = [
