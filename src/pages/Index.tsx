@@ -608,6 +608,395 @@ const UPhirePlatform = () => {
     });
   };
 
+  // Market Data API Integration (simulated for ITJobsWatch.com)
+  const fetchMarketData = async (jobTitle, location, department) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const marketInsights = {
+          salary: {
+            min: generateSalaryRange(jobTitle, department).min,
+            max: generateSalaryRange(jobTitle, department).max,
+            median: generateSalaryRange(jobTitle, department).median,
+            percentile90: generateSalaryRange(jobTitle, department)
+              .percentile90,
+          },
+          demand: {
+            level: getDemandLevel(jobTitle, department),
+            trend: getTrendDirection(jobTitle),
+            competition: getCompetitionLevel(jobTitle, location),
+            timeToFill: getTimeToFill(jobTitle, department),
+          },
+          skills: {
+            required: getRequiredSkills(jobTitle, department),
+            emerging: getEmergingSkills(jobTitle),
+            rare: getRareSkills(jobTitle),
+          },
+          location: {
+            hotspots: getLocationHotspots(jobTitle),
+            remoteAvailability: getRemoteAvailability(jobTitle),
+            relocationWillingness: getRelocationData(jobTitle),
+          },
+        };
+        resolve(marketInsights);
+      }, 1500);
+    });
+  };
+
+  // ML Prediction Engine
+  const predictRoleSuccess = async (roleData, marketData) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const factors = analyzeSuccessFactors(roleData, marketData);
+        const prediction = {
+          successRate: factors.overallScore,
+          confidence: factors.confidence,
+          factors: factors.breakdown,
+          recommendations: generateRecommendations(factors),
+          alternatives: generateAlternatives(roleData, factors),
+          risks: identifyRisks(factors),
+          timeline: predictTimeline(factors),
+        };
+        resolve(prediction);
+      }, 2000);
+    });
+  };
+
+  // Helper functions for ML predictions
+  const generateSalaryRange = (title, department) => {
+    const baseSalaries = {
+      "Senior Frontend Developer": { min: 55000, max: 85000, median: 70000 },
+      "Product Manager": { min: 65000, max: 95000, median: 80000 },
+      "UX Designer": { min: 40000, max: 70000, median: 55000 },
+      "Backend Developer": { min: 50000, max: 80000, median: 65000 },
+      "Data Scientist": { min: 60000, max: 100000, median: 80000 },
+    };
+
+    const base = baseSalaries[title] || {
+      min: 35000,
+      max: 65000,
+      median: 50000,
+    };
+    return {
+      ...base,
+      percentile90: Math.round(base.max * 1.15),
+    };
+  };
+
+  const getDemandLevel = (title, department) => {
+    const demandLevels = {
+      "Senior Frontend Developer": "High",
+      "Product Manager": "Very High",
+      "UX Designer": "Medium",
+      "Data Scientist": "Very High",
+      "Backend Developer": "High",
+    };
+    return demandLevels[title] || "Medium";
+  };
+
+  const getTrendDirection = (title) => {
+    const trends = {
+      "Senior Frontend Developer": "Growing",
+      "Product Manager": "Stable",
+      "UX Designer": "Growing",
+      "Data Scientist": "Rapidly Growing",
+      "Backend Developer": "Stable",
+    };
+    return trends[title] || "Stable";
+  };
+
+  const getCompetitionLevel = (title, location) => {
+    if (location?.includes("London")) return "Very High";
+    if (location?.includes("Manchester") || location?.includes("Birmingham"))
+      return "High";
+    return "Medium";
+  };
+
+  const getTimeToFill = (title, department) => {
+    const timeframes = {
+      "Senior Frontend Developer": 35,
+      "Product Manager": 45,
+      "UX Designer": 28,
+      "Data Scientist": 52,
+      "Backend Developer": 38,
+    };
+    return timeframes[title] || 30;
+  };
+
+  const getRequiredSkills = (title, department) => {
+    const skillSets = {
+      "Senior Frontend Developer": [
+        "React",
+        "TypeScript",
+        "JavaScript",
+        "CSS",
+        "Git",
+      ],
+      "Product Manager": [
+        "Strategy",
+        "Analytics",
+        "Agile",
+        "Stakeholder Management",
+      ],
+      "UX Designer": [
+        "Figma",
+        "User Research",
+        "Prototyping",
+        "Design Systems",
+      ],
+      "Data Scientist": ["Python", "Machine Learning", "SQL", "Statistics"],
+      "Backend Developer": ["Node.js", "Python", "Databases", "APIs", "Cloud"],
+    };
+    return skillSets[title] || ["Communication", "Problem Solving", "Teamwork"];
+  };
+
+  const getEmergingSkills = (title) => {
+    const emerging = {
+      "Senior Frontend Developer": ["Next.js", "Svelte", "WebAssembly"],
+      "Product Manager": ["AI/ML Understanding", "Web3", "Blockchain"],
+      "UX Designer": ["AR/VR Design", "Voice UI", "AI-Assisted Design"],
+      "Data Scientist": ["MLOps", "Computer Vision", "NLP"],
+      "Backend Developer": ["Kubernetes", "Serverless", "GraphQL"],
+    };
+    return emerging[title] || ["AI Tools", "Automation"];
+  };
+
+  const getRareSkills = (title) => {
+    return ["Leadership", "Mentoring", "Cross-functional Collaboration"];
+  };
+
+  const getLocationHotspots = (title) => {
+    return ["London", "Manchester", "Edinburgh", "Bristol", "Remote"];
+  };
+
+  const getRemoteAvailability = (title) => {
+    const remoteRates = {
+      "Senior Frontend Developer": 85,
+      "Product Manager": 70,
+      "UX Designer": 75,
+      "Data Scientist": 80,
+      "Backend Developer": 90,
+    };
+    return remoteRates[title] || 60;
+  };
+
+  const getRelocationData = (title) => {
+    return 45; // 45% willing to relocate
+  };
+
+  const analyzeSuccessFactors = (roleData, marketData) => {
+    let totalScore = 0;
+    let factors = {};
+
+    // Salary competitiveness (25% weight)
+    const salaryRange =
+      parseFloat(roleData.salary?.split("-")[1]?.replace(/[£,]/g, "")) || 50000;
+    const marketMedian = marketData.salary?.median || 50000;
+    const salaryScore = Math.min(100, (salaryRange / marketMedian) * 100);
+    factors.salary = {
+      score: salaryScore,
+      weight: 0.25,
+      impact:
+        salaryScore >= 90
+          ? "Positive"
+          : salaryScore >= 70
+            ? "Neutral"
+            : "Negative",
+    };
+    totalScore += salaryScore * 0.25;
+
+    // Location attractiveness (20% weight)
+    const locationScore = roleData.location?.includes("London")
+      ? 85
+      : roleData.location?.includes("Remote")
+        ? 90
+        : roleData.location?.includes("Manchester")
+          ? 75
+          : 70;
+    factors.location = {
+      score: locationScore,
+      weight: 0.2,
+      impact: locationScore >= 80 ? "Positive" : "Neutral",
+    };
+    totalScore += locationScore * 0.2;
+
+    // Market demand (20% weight)
+    const demandScore =
+      marketData.demand?.level === "Very High"
+        ? 95
+        : marketData.demand?.level === "High"
+          ? 85
+          : marketData.demand?.level === "Medium"
+            ? 70
+            : 55;
+    factors.demand = {
+      score: demandScore,
+      weight: 0.2,
+      impact: demandScore >= 80 ? "Positive" : "Neutral",
+    };
+    totalScore += demandScore * 0.2;
+
+    // Company profile completeness (15% weight)
+    const profileScore = businessProfile.description ? 85 : 60;
+    factors.profile = {
+      score: profileScore,
+      weight: 0.15,
+      impact: profileScore >= 80 ? "Positive" : "Neutral",
+    };
+    totalScore += profileScore * 0.15;
+
+    // Skills alignment (10% weight)
+    const skillsScore = roleData.skills ? 80 : 60;
+    factors.skills = {
+      score: skillsScore,
+      weight: 0.1,
+      impact: skillsScore >= 75 ? "Positive" : "Neutral",
+    };
+    totalScore += skillsScore * 0.1;
+
+    // Experience requirements (10% weight)
+    const experienceScore = roleData.experience ? 75 : 70;
+    factors.experience = {
+      score: experienceScore,
+      weight: 0.1,
+      impact: "Neutral",
+    };
+    totalScore += experienceScore * 0.1;
+
+    return {
+      overallScore: Math.round(totalScore),
+      confidence: totalScore >= 80 ? 95 : totalScore >= 60 ? 85 : 70,
+      breakdown: factors,
+    };
+  };
+
+  const generateRecommendations = (factors) => {
+    const recommendations = [];
+
+    if (factors.breakdown.salary.score < 70) {
+      recommendations.push({
+        type: "salary",
+        priority: "high",
+        title: "Increase Salary Range",
+        description:
+          "Current salary is below market rate. Consider increasing by 15-20%.",
+        impact: "+12% success rate",
+      });
+    }
+
+    if (factors.breakdown.location.score < 75) {
+      recommendations.push({
+        type: "location",
+        priority: "medium",
+        title: "Add Remote Option",
+        description:
+          "Consider hybrid/remote work to attract wider talent pool.",
+        impact: "+8% success rate",
+      });
+    }
+
+    if (factors.breakdown.profile.score < 80) {
+      recommendations.push({
+        type: "profile",
+        priority: "medium",
+        title: "Enhance Job Description",
+        description: "Add company culture and benefits information.",
+        impact: "+5% success rate",
+      });
+    }
+
+    return recommendations;
+  };
+
+  const generateAlternatives = (roleData, factors) => {
+    if (factors.overallScore >= 70) return [];
+
+    return [
+      {
+        title: `Junior ${roleData.title}`,
+        reason: "Lower experience requirements increase candidate pool",
+        expectedSuccess: factors.overallScore + 15,
+        changes: [
+          "Reduce experience requirement",
+          "Adjust salary range",
+          "Add training program",
+        ],
+      },
+      {
+        title: `${roleData.title} (Contract)`,
+        reason: "Contract roles often fill faster with higher rates",
+        expectedSuccess: factors.overallScore + 12,
+        changes: [
+          "Convert to contract position",
+          "Increase daily rate",
+          "Shorter commitment",
+        ],
+      },
+      {
+        title: `Remote ${roleData.title}`,
+        reason: "Remote positions attract 3x more candidates",
+        expectedSuccess: factors.overallScore + 20,
+        changes: [
+          "Make fully remote",
+          "Expand location reach",
+          "Add remote-first culture",
+        ],
+      },
+    ];
+  };
+
+  const identifyRisks = (factors) => {
+    const risks = [];
+
+    if (factors.breakdown.salary.score < 60) {
+      risks.push({
+        level: "high",
+        factor: "Salary",
+        description:
+          "Below-market salary will significantly reduce applications",
+        mitigation: "Increase salary or add equity/benefits",
+      });
+    }
+
+    if (factors.breakdown.demand.score > 90) {
+      risks.push({
+        level: "medium",
+        factor: "High Competition",
+        description: "Very competitive market with many similar roles",
+        mitigation: "Highlight unique benefits and fast hiring process",
+      });
+    }
+
+    return risks;
+  };
+
+  const predictTimeline = (factors) => {
+    const baseTime = 30; // days
+    let adjustedTime = baseTime;
+
+    if (factors.breakdown.salary.score < 70) adjustedTime += 10;
+    if (factors.breakdown.demand.score > 90) adjustedTime += 7;
+    if (factors.breakdown.location.score < 75) adjustedTime += 5;
+
+    return {
+      estimated: adjustedTime,
+      confidence: factors.confidence,
+      factors: [
+        {
+          name: "Market Competition",
+          impact: factors.breakdown.demand.score > 90 ? "+7 days" : "Neutral",
+        },
+        {
+          name: "Salary Competitiveness",
+          impact: factors.breakdown.salary.score < 70 ? "+10 days" : "Neutral",
+        },
+        {
+          name: "Location Appeal",
+          impact: factors.breakdown.location.score < 75 ? "+5 days" : "Neutral",
+        },
+      ],
+    };
+  };
+
   const generateMockCandidatesForRole = (role: Role, type: string) => {
     const candidatePool = [
       {
@@ -4272,7 +4661,7 @@ Ready to join our team? Apply now and let's shape the future together!
                   Cost per Hire (UPhire)
                 </span>
                 <span className="text-sm font-medium text-green-600">
-                  ��1,114
+                  £1,114
                 </span>
               </div>
               <div className="flex justify-between items-center">
