@@ -246,6 +246,73 @@ const UPhirePlatform = () => {
     { id: "analytics", label: "Analytics", icon: BarChart3 },
   ];
 
+  // Calendly API Integration
+  const calendlyConfig = {
+    apiKey: process.env.CALENDLY_API_KEY || "demo_api_key",
+    baseUrl: "https://api.calendly.com",
+    webhookUrl: "https://your-app.com/api/calendly-webhook",
+    eventTypes: {
+      technical: "technical-interview-45min",
+      cultural: "cultural-fit-interview-30min",
+      final: "final-interview-60min",
+      initial: "initial-screening-15min",
+    },
+  };
+
+  const createCalendlyEventType = async (interviewType, duration) => {
+    // Simulate Calendly API call
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          uri: `https://api.calendly.com/event_types/${calendlyConfig.eventTypes[interviewType]}`,
+          scheduling_url: `https://calendly.com/uphire-interviews/${calendlyConfig.eventTypes[interviewType]}`,
+          name: `${interviewType.charAt(0).toUpperCase() + interviewType.slice(1)} Interview`,
+          duration: duration,
+          active: true,
+        });
+      }, 500);
+    });
+  };
+
+  const scheduleCalendlyInterview = async (candidate, interviewDetails) => {
+    // Simulate Calendly API integration
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const interview = {
+          id: Date.now(),
+          candidate: candidate,
+          interviewer: interviewDetails.interviewer,
+          type: interviewDetails.type,
+          duration: interviewDetails.duration,
+          schedulingUrl: `https://calendly.com/uphire-interviews/${calendlyConfig.eventTypes[interviewDetails.type]}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_email=${encodeURIComponent(candidate.email)}`,
+          status: "scheduled",
+          createdAt: new Date().toISOString(),
+          meetingDetails: {
+            platform: interviewDetails.platform,
+            location: interviewDetails.location,
+            instructions: interviewDetails.instructions,
+          },
+        };
+
+        setScheduledInterviews((prev) => [...prev, interview]);
+        resolve(interview);
+      }, 1000);
+    });
+  };
+
+  const sendInterviewInvitation = async (interview) => {
+    // Simulate sending invitation email with Calendly link
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          emailSent: true,
+          calendlyLinkSent: true,
+          confirmationId: `CONF_${Date.now()}`,
+        });
+      }, 500);
+    });
+  };
+
   const generateMockCandidatesForRole = (role: Role, type: string) => {
     const candidatePool = [
       {
