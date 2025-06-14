@@ -248,7 +248,7 @@ const UPhirePlatform = () => {
 
   // Calendly API Integration
   const calendlyConfig = {
-    apiKey: process.env.CALENDLY_API_KEY || "demo_api_key",
+    apiKey: "demo_api_key", // In production, use import.meta.env.VITE_CALENDLY_API_KEY
     baseUrl: "https://api.calendly.com",
     webhookUrl: "https://your-app.com/api/calendly-webhook",
     eventTypes: {
@@ -2633,7 +2633,7 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center p-4 bg-green-50 rounded-lg">
-            <div className="text-3xl mb-2">���</div>
+            <div className="text-3xl mb-2">💰</div>
             <p className="text-lg font-bold text-green-700">Cash Flow Impact</p>
             <p className="text-sm text-gray-600">
               £39k additional working capital available for growth initiatives
