@@ -2771,6 +2771,7 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
       {showNewRoleModal && <NewRoleModal />}
       {showDocumentModal && <DocumentModal />}
       {showRecruitModal && <RecruitModal />}
+      {showCandidatesModal && <CandidatesDetailModal />}
     </div>
   );
 };
