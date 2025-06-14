@@ -163,7 +163,7 @@ const UPhirePlatform = () => {
         shortlisted: 4,
         interviewed: 1,
         created: "2025-06-08",
-        salary: "£45,000 - £65,000",
+        salary: "��45,000 - £65,000",
         priority: "medium",
         deiScore: 78,
       },
@@ -4185,6 +4185,8 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
       {showRecruitModal && <RecruitModal />}
       {showCandidatesModal && <CandidatesDetailModal />}
       {showInterviewModal && <InterviewSchedulingModal />}
+      {showEmployeeModal && <EmployeeDetailModal />}
+      {showDocumentUploadModal && <DocumentUploadModal />}
     </div>
   );
 };
