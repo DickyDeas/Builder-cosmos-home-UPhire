@@ -568,6 +568,428 @@ const UPhirePlatform = () => {
     );
   };
 
+  const InterviewSchedulingModal = () => {
+    const [interviewForm, setInterviewForm] = useState({
+      type: "technical",
+      duration: 45,
+      interviewer: "",
+      platform: "zoom",
+      location: "",
+      instructions: "",
+      sendCalendly: true,
+      autoReminder: true,
+    });
+    const [isScheduling, setIsScheduling] = useState(false);
+    const [schedulingComplete, setSchedulingComplete] = useState(false);
+    const [calendlyLink, setCalendlyLink] = useState("");
+
+    const interviewTypes = [
+      {
+        value: "initial",
+        label: "Initial Screening",
+        duration: 15,
+        description: "Quick fit assessment",
+      },
+      {
+        value: "technical",
+        label: "Technical Interview",
+        duration: 45,
+        description: "Skills and coding assessment",
+      },
+      {
+        value: "cultural",
+        label: "Cultural Fit",
+        duration: 30,
+        description: "Team fit and values alignment",
+      },
+      {
+        value: "final",
+        label: "Final Interview",
+        duration: 60,
+        description: "Leadership and decision making",
+      },
+    ];
+
+    const platforms = [
+      { value: "zoom", label: "Zoom", icon: "🎥" },
+      { value: "teams", label: "Microsoft Teams", icon: "📺" },
+      { value: "meet", label: "Google Meet", icon: "📹" },
+      { value: "phone", label: "Phone Call", icon: "📞" },
+      { value: "in-person", label: "In Person", icon: "🏢" },
+    ];
+
+    const handleScheduleInterview = async () => {
+      setIsScheduling(true);
+
+      try {
+        // Create Calendly event type
+        const eventType = await createCalendlyEventType(
+          interviewForm.type,
+          interviewForm.duration,
+        );
+
+        // Schedule the interview
+        const interview = await scheduleCalendlyInterview(selectedCandidate, {
+          ...interviewForm,
+          calendlyEventType: eventType.uri,
+        });
+
+        // Send invitation
+        await sendInterviewInvitation(interview);
+
+        setCalendlyLink(interview.schedulingUrl);
+        setSchedulingComplete(true);
+
+        // Update candidate status if it's their first interview
+        if (selectedCandidate.status === "shortlisted") {
+          // Update the candidate's status to interviewed
+          console.log("Candidate status updated to interviewed");
+        }
+      } catch (error) {
+        console.error("Failed to schedule interview:", error);
+      } finally {
+        setIsScheduling(false);
+      }
+    };
+
+    const resetModal = () => {
+      setInterviewForm({
+        type: "technical",
+        duration: 45,
+        interviewer: "",
+        platform: "zoom",
+        location: "",
+        instructions: "",
+        sendCalendly: true,
+        autoReminder: true,
+      });
+      setIsScheduling(false);
+      setSchedulingComplete(false);
+      setCalendlyLink("");
+    };
+
+    const handleClose = () => {
+      setShowInterviewModal(false);
+      resetModal();
+    };
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+          <div className="flex justify-between items-center p-6 border-b">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">
+                Schedule Interview
+              </h2>
+              <p className="text-sm text-gray-600 mt-1">
+                {selectedCandidate?.name} • {selectedCandidate?.role}
+              </p>
+            </div>
+            <button
+              onClick={handleClose}
+              className="text-gray-400 hover:text-gray-600"
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          <div className="p-6 overflow-y-auto max-h-[75vh]">
+            {!schedulingComplete ? (
+              <div className="space-y-6">
+                {/* Interview Type */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    Interview Type
+                  </label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {interviewTypes.map((type) => (
+                      <button
+                        key={type.value}
+                        onClick={() =>
+                          setInterviewForm({
+                            ...interviewForm,
+                            type: type.value,
+                            duration: type.duration,
+                          })
+                        }
+                        className={cn(
+                          "p-4 rounded-lg border-2 text-left transition-all",
+                          interviewForm.type === type.value
+                            ? "border-blue-500 bg-blue-50"
+                            : "border-gray-200 hover:border-gray-300",
+                        )}
+                      >
+                        <div className="font-medium text-gray-900">
+                          {type.label}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          {type.duration} minutes
+                        </div>
+                        <div className="text-xs text-gray-500 mt-1">
+                          {type.description}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Interviewer */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Interviewer
+                  </label>
+                  <select
+                    value={interviewForm.interviewer}
+                    onChange={(e) =>
+                      setInterviewForm({
+                        ...interviewForm,
+                        interviewer: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="">Select Interviewer</option>
+                    <option value="sarah.johnson@company.com">
+                      Sarah Johnson - Engineering Manager
+                    </option>
+                    <option value="mike.chen@company.com">
+                      Mike Chen - Senior Developer
+                    </option>
+                    <option value="emma.wilson@company.com">
+                      Emma Wilson - HR Director
+                    </option>
+                    <option value="james.brown@company.com">
+                      James Brown - CTO
+                    </option>
+                  </select>
+                </div>
+
+                {/* Platform */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    Meeting Platform
+                  </label>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {platforms.map((platform) => (
+                      <button
+                        key={platform.value}
+                        onClick={() =>
+                          setInterviewForm({
+                            ...interviewForm,
+                            platform: platform.value,
+                          })
+                        }
+                        className={cn(
+                          "p-3 rounded-lg border-2 text-center transition-all",
+                          interviewForm.platform === platform.value
+                            ? "border-blue-500 bg-blue-50"
+                            : "border-gray-200 hover:border-gray-300",
+                        )}
+                      >
+                        <div className="text-2xl mb-1">{platform.icon}</div>
+                        <div className="text-sm font-medium">
+                          {platform.label}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Location (for in-person) */}
+                {interviewForm.platform === "in-person" && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Meeting Location
+                    </label>
+                    <input
+                      type="text"
+                      value={interviewForm.location}
+                      onChange={(e) =>
+                        setInterviewForm({
+                          ...interviewForm,
+                          location: e.target.value,
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="e.g. London Office, Conference Room A"
+                    />
+                  </div>
+                )}
+
+                {/* Instructions */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Additional Instructions
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={interviewForm.instructions}
+                    onChange={(e) =>
+                      setInterviewForm({
+                        ...interviewForm,
+                        instructions: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Any specific instructions for the candidate..."
+                  />
+                </div>
+
+                {/* Options */}
+                <div className="space-y-3">
+                  <div className="flex items-center">
+                    <input
+                      id="sendCalendly"
+                      type="checkbox"
+                      checked={interviewForm.sendCalendly}
+                      onChange={(e) =>
+                        setInterviewForm({
+                          ...interviewForm,
+                          sendCalendly: e.target.checked,
+                        })
+                      }
+                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    />
+                    <label
+                      htmlFor="sendCalendly"
+                      className="ml-2 text-sm text-gray-700"
+                    >
+                      Send Calendly scheduling link to candidate
+                    </label>
+                  </div>
+                  <div className="flex items-center">
+                    <input
+                      id="autoReminder"
+                      type="checkbox"
+                      checked={interviewForm.autoReminder}
+                      onChange={(e) =>
+                        setInterviewForm({
+                          ...interviewForm,
+                          autoReminder: e.target.checked,
+                        })
+                      }
+                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    />
+                    <label
+                      htmlFor="autoReminder"
+                      className="ml-2 text-sm text-gray-700"
+                    >
+                      Send automatic reminders (24h and 1h before)
+                    </label>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center space-y-6">
+                <div className="flex justify-center">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                    <CheckCircle className="w-8 h-8 text-green-600" />
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    Interview Scheduled Successfully!
+                  </h3>
+                  <p className="text-gray-600">
+                    Calendly link has been sent to {selectedCandidate?.name}
+                  </p>
+                </div>
+
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <div className="flex items-start space-x-3">
+                    <CalendarDays className="w-5 h-5 text-green-600 mt-0.5" />
+                    <div className="text-left">
+                      <p className="font-medium text-green-800">
+                        {
+                          interviewTypes.find(
+                            (t) => t.value === interviewForm.type,
+                          )?.label
+                        }
+                      </p>
+                      <p className="text-sm text-green-600">
+                        {interviewForm.duration} minutes •{" "}
+                        {
+                          platforms.find(
+                            (p) => p.value === interviewForm.platform,
+                          )?.label
+                        }
+                      </p>
+                      <p className="text-sm text-green-600">
+                        Interviewer:{" "}
+                        {interviewForm.interviewer
+                          .split("@")[0]
+                          .replace(".", " ")}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="text-left">
+                      <p className="font-medium text-blue-800">
+                        Calendly Scheduling Link
+                      </p>
+                      <p className="text-sm text-blue-600">
+                        Candidate can pick their preferred time
+                      </p>
+                    </div>
+                    <a
+                      href={calendlyLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center space-x-1 text-blue-600 hover:text-blue-800"
+                    >
+                      <Link size={16} />
+                      <span>View Link</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="p-6 border-t bg-gray-50">
+            <div className="flex justify-between">
+              <button
+                onClick={handleClose}
+                className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                {schedulingComplete ? "Close" : "Cancel"}
+              </button>
+
+              {!schedulingComplete && (
+                <button
+                  onClick={handleScheduleInterview}
+                  disabled={isScheduling || !interviewForm.interviewer}
+                  className={cn(
+                    "flex items-center space-x-2 px-6 py-2 rounded-lg transition-all",
+                    isScheduling || !interviewForm.interviewer
+                      ? "bg-gray-400 text-white cursor-not-allowed"
+                      : "bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white hover:shadow-lg",
+                  )}
+                >
+                  {isScheduling ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      <span>Scheduling...</span>
+                    </>
+                  ) : (
+                    <>
+                      <CalendarDays size={16} />
+                      <span>Schedule Interview</span>
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const CandidatesDetailModal = () => {
     const getStatusBadgeColor = (status: string) => {
       switch (status) {
