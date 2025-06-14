@@ -38,6 +38,17 @@ import {
   Video,
   MapPin as LocationIcon,
   Link,
+  FileText,
+  AlertTriangle,
+  Heart,
+  Shield,
+  Calendar as CalendarIcon,
+  Briefcase,
+  GraduationCap,
+  Settings,
+  FileCheck,
+  UserX,
+  Timer,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -1284,7 +1295,7 @@ const UPhirePlatform = () => {
             skills: ["React", "TypeScript", "Microservices", "AWS", "MongoDB"],
             source: "AngelList",
             aiMatch: 93,
-            avatar: "👩‍💻",
+            avatar: "���‍💻",
             email: "sophie.chen@email.com",
           },
           {
