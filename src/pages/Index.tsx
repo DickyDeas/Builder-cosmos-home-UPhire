@@ -1687,7 +1687,7 @@ const UPhirePlatform = () => {
       { value: "zoom", label: "Zoom", icon: "🎥" },
       { value: "teams", label: "Microsoft Teams", icon: "📺" },
       { value: "meet", label: "Google Meet", icon: "📹" },
-      { value: "phone", label: "Phone Call", icon: "📞" },
+      { value: "phone", label: "Phone Call", icon: "��" },
       { value: "in-person", label: "In Person", icon: "🏢" },
     ];
 
@@ -4330,7 +4330,7 @@ Ready to join our team? Apply now and let's shape the future together!
         case "offer_letter":
           return "📋";
         case "contract":
-          return "📝";
+          return "����";
         case "nda":
           return "🔒";
         case "welcome_package":
@@ -4939,68 +4939,70 @@ Ready to join our team? Apply now and let's shape the future together!
                   </button>
 
                   {showUserDropdown && (
-                    <div
-                      className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-2xl border z-[99999]"
-                      style={{
-                        position: "fixed",
-                        top: "60px",
-                        right: "20px",
-                        zIndex: 99999,
-                      }}
-                    >
-                      <div className="p-3 border-b">
-                        <p className="font-medium text-gray-900">{user.name}</p>
-                        <p className="text-sm text-gray-600">{user.email}</p>
-                        <p className="text-xs text-gray-500">{user.role}</p>
+                    <>
+                      {/* Invisible overlay to detect clicks outside */}
+                      <div
+                        className="fixed inset-0 z-[999998]"
+                        onClick={() => setShowUserDropdown(false)}
+                      />
+                      {/* Dropdown menu */}
+                      <div
+                        className="fixed w-48 bg-white rounded-lg shadow-2xl border"
+                        style={{
+                          position: 'fixed',
+                          top: '60px',
+                          right: '20px',
+                          zIndex: 999999,
+                          isolation: 'isolate'
+                        }}
+                      >
+                        <div className="p-3 border-b">
+                          <p className="font-medium text-gray-900">{user.name}</p>
+                          <p className="text-sm text-gray-600">{user.email}</p>
+                          <p className="text-xs text-gray-500">{user.role}</p>
+                        </div>
+                        <div className="py-1">
+                          <button
+                            onClick={() => {
+                              setShowUserDropdown(false);
+                              setShowSettingsModal(true);
+                            }}
+                            className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          >
+                            <Settings size={16} />
+                            <span>Settings</span>
+                          </button>
+                          <button
+                            onClick={() => {
+                              setShowUserDropdown(false);
+                              // Navigate to business tab
+                              setActiveTab("business");
+                            }}
+                            className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          >
+                            <Factory size={16} />
+                            <span>My Business</span>
+                          </button>
+                          <button className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <HelpCircle size={16} />
+                            <span>Help & Support</span>
+                          </button>
+                          <div className="border-t my-1"></div>
+                          <button
+                            onClick={() => {
+                              setIsLoggedIn(false);
+                              setUser({name: "", email: "", initials: "", role: "", company: ""});
+                              setShowUserDropdown(false);
+                            }}
+                            className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-red-700 hover:bg-red-50"
+                          >
+                            <LogOut size={16} />
+                            <span>Sign Out</span>
+                          </button>
+                        </div>
                       </div>
-                      <div className="py-1">
-                        <button
-                          onClick={() => {
-                            setShowUserDropdown(false);
-                            setShowSettingsModal(true);
-                          }}
-                          className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        >
-                          <Settings size={16} />
-                          <span>Settings</span>
-                        </button>
-                        <button
-                          onClick={() => {
-                            setShowUserDropdown(false);
-                            // Navigate to business tab
-                            setActiveTab("business");
-                          }}
-                          className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        >
-                          <Factory size={16} />
-                          <span>My Business</span>
-                        </button>
-                        <button className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                          <HelpCircle size={16} />
-                          <span>Help & Support</span>
-                        </button>
-                        <div className="border-t my-1"></div>
-                        <button
-                          onClick={() => {
-                            setIsLoggedIn(false);
-                            setUser({
-                              name: "",
-                              email: "",
-                              initials: "",
-                              role: "",
-                              company: "",
-                            });
-                            setShowUserDropdown(false);
-                          }}
-                          className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-red-700 hover:bg-red-50"
-                        >
-                          <LogOut size={16} />
-                          <span>Sign Out</span>
-                        </button>
-                      </div>
-                    </div>
+                    </>
                   )}
-                </div>
               ) : (
                 <button
                   onClick={() => setShowLoginModal(true)}
