@@ -221,7 +221,7 @@ const UPhirePlatform = () => {
         status: "shortlisted",
         source: "LinkedIn",
         applied: "2025-06-10",
-        avatar: "👩��💻",
+        avatar: "👩‍💻",
       },
       {
         id: 2,
@@ -369,7 +369,7 @@ const UPhirePlatform = () => {
         id: 3,
         name: "Emma Rodriguez",
         email: "emma.r@company.com",
-        avatar: "👩‍🎨",
+        avatar: "👩‍���",
         position: "UX Designer",
         department: "Design",
         startDate: "2024-11-01",
@@ -911,6 +911,334 @@ const UPhirePlatform = () => {
               </button>
             </div>
           </form>
+        </div>
+      </div>
+    );
+  };
+
+  const LoginModal = () => {
+    const [loginForm, setLoginForm] = useState({
+      email: "",
+      password: "",
+    });
+
+    const handleLogin = () => {
+      // In real app, this would authenticate with backend
+      const userData = {
+        name: "John Smith",
+        email: loginForm.email,
+        initials: loginForm.email
+          .split("@")[0]
+          .split(".")
+          .map((part) => part[0].toUpperCase())
+          .join(""),
+        role: "HR Director",
+        company: "TechStartup Ltd",
+      };
+
+      setUser(userData);
+      setIsLoggedIn(true);
+      setShowLoginModal(false);
+    };
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl w-full max-w-md">
+          <div className="p-6">
+            <div className="text-center mb-6">
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2Fe3ae173b79f74e84b0580a7f82f9aa6c%2Fa30864f8cb98481d9e88e08c10e577ec?format=webp&width=800"
+                alt="UPhire"
+                className="h-12 w-auto mx-auto mb-4"
+              />
+              <h2 className="text-2xl font-bold text-gray-900">
+                Welcome to UPhire
+              </h2>
+              <p className="text-gray-600">Sign in to your account</p>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  value={loginForm.email}
+                  onChange={(e) =>
+                    setLoginForm({ ...loginForm, email: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter your email"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  value={loginForm.password}
+                  onChange={(e) =>
+                    setLoginForm({ ...loginForm, password: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter your password"
+                />
+              </div>
+
+              <button
+                onClick={handleLogin}
+                className="w-full py-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all"
+              >
+                Sign In
+              </button>
+
+              <p className="text-center text-sm text-gray-600">
+                Demo: Use any email and password
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const SettingsModal = () => {
+    const [settingsTab, setSettingsTab] = useState("profile");
+    const [profileForm, setProfileForm] = useState(user);
+
+    const settingsTabs = [
+      { id: "profile", label: "Profile", icon: User },
+      { id: "security", label: "Security", icon: Lock },
+      { id: "notifications", label: "Notifications", icon: Bell },
+      { id: "billing", label: "Billing", icon: CreditCard },
+    ];
+
+    const handleSaveProfile = () => {
+      setUser(profileForm);
+      alert("Profile updated successfully!");
+    };
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl w-full max-w-3xl max-h-[90vh] overflow-hidden">
+          <div className="flex justify-between items-center p-6 border-b">
+            <h2 className="text-2xl font-bold text-gray-900">Settings</h2>
+            <button
+              onClick={() => setShowSettingsModal(false)}
+              className="text-gray-400 hover:text-gray-600"
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          <div className="flex">
+            <div className="w-1/4 bg-gray-50 p-4">
+              <nav className="space-y-2">
+                {settingsTabs.map((tab) => {
+                  const Icon = tab.icon;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setSettingsTab(tab.id)}
+                      className={cn(
+                        "w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-sm transition-colors",
+                        settingsTab === tab.id
+                          ? "bg-blue-100 text-blue-700"
+                          : "text-gray-600 hover:bg-gray-100",
+                      )}
+                    >
+                      <Icon size={16} />
+                      <span>{tab.label}</span>
+                    </button>
+                  );
+                })}
+              </nav>
+            </div>
+
+            <div className="flex-1 p-6">
+              {settingsTab === "profile" && (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Profile Information
+                  </h3>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Full Name
+                      </label>
+                      <input
+                        type="text"
+                        value={profileForm.name}
+                        onChange={(e) =>
+                          setProfileForm({
+                            ...profileForm,
+                            name: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        value={profileForm.email}
+                        onChange={(e) =>
+                          setProfileForm({
+                            ...profileForm,
+                            email: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Role
+                      </label>
+                      <input
+                        type="text"
+                        value={profileForm.role}
+                        onChange={(e) =>
+                          setProfileForm({
+                            ...profileForm,
+                            role: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Company
+                      </label>
+                      <input
+                        type="text"
+                        value={profileForm.company}
+                        onChange={(e) =>
+                          setProfileForm({
+                            ...profileForm,
+                            company: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={handleSaveProfile}
+                    className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  >
+                    <Save size={16} />
+                    <span>Save Changes</span>
+                  </button>
+                </div>
+              )}
+
+              {settingsTab === "security" && (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Security Settings
+                  </h3>
+                  <div className="space-y-4">
+                    <button className="w-full text-left p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <p className="font-medium">Change Password</p>
+                          <p className="text-sm text-gray-600">
+                            Update your account password
+                          </p>
+                        </div>
+                        <ChevronRight size={16} />
+                      </div>
+                    </button>
+                    <button className="w-full text-left p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <p className="font-medium">
+                            Two-Factor Authentication
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            Add an extra layer of security
+                          </p>
+                        </div>
+                        <ChevronRight size={16} />
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {settingsTab === "notifications" && (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Notification Preferences
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <p className="font-medium">Email Notifications</p>
+                        <p className="text-sm text-gray-600">
+                          Receive updates via email
+                        </p>
+                      </div>
+                      <input
+                        type="checkbox"
+                        defaultChecked
+                        className="toggle"
+                      />
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <p className="font-medium">New Candidate Alerts</p>
+                        <p className="text-sm text-gray-600">
+                          Get notified when new candidates apply
+                        </p>
+                      </div>
+                      <input
+                        type="checkbox"
+                        defaultChecked
+                        className="toggle"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {settingsTab === "billing" && (
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Billing & Subscription
+                  </h3>
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <p className="font-medium text-green-800">
+                          Growth Plan
+                        </p>
+                        <p className="text-sm text-green-600">
+                          £650/month - Active
+                        </p>
+                      </div>
+                      <button className="text-green-700 hover:text-green-800 font-medium">
+                        Manage Plan
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     );
