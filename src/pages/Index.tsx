@@ -5057,6 +5057,8 @@ Ready to join our team? Apply now and let's shape the future together!
       {showInterviewModal && <InterviewSchedulingModal />}
       {showEmployeeModal && <EmployeeDetailModal />}
       {showDocumentUploadModal && <DocumentUploadModal />}
+      {showLoginModal && <LoginModal />}
+      {showSettingsModal && <SettingsModal />}
     </div>
   );
 };
