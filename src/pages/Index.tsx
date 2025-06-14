@@ -4865,6 +4865,8 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
         return <CandidatesTab />;
       case "employees":
         return <EmployeesTab />;
+      case "business":
+        return <MyBusinessTab />;
       case "savings":
         return <SavingsTab />;
       case "documents":
