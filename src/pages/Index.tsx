@@ -4336,7 +4336,7 @@ Ready to join our team? Apply now and let's shape the future together!
         case "welcome_package":
           return "👋";
         default:
-          return "����";
+          return "📄";
       }
     };
 
@@ -4939,7 +4939,15 @@ Ready to join our team? Apply now and let's shape the future together!
                   </button>
 
                   {showUserDropdown && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-2xl border z-[99999] transform translate-x-0" style={{position: 'fixed', top: '60px', right: '20px', zIndex: 99999}}
+                    <div
+                      className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-2xl border z-[99999]"
+                      style={{
+                        position: "fixed",
+                        top: "60px",
+                        right: "20px",
+                        zIndex: 99999,
+                      }}
+                    >
                       <div className="p-3 border-b">
                         <p className="font-medium text-gray-900">{user.name}</p>
                         <p className="text-sm text-gray-600">{user.email}</p>
