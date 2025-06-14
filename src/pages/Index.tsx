@@ -845,6 +845,403 @@ const UPhirePlatform = () => {
     );
   };
 
+  const DocumentUploadModal = () => {
+    const [uploadForm, setUploadForm] = useState({
+      type: "medical",
+      name: "",
+      category: "Medical",
+      file: null,
+      notes: "",
+    });
+
+    const documentTypes = [
+      { value: "medical", label: "Medical Record", category: "Medical" },
+      {
+        value: "disciplinary",
+        label: "Disciplinary Action",
+        category: "Disciplinary",
+      },
+      {
+        value: "performance",
+        label: "Performance Review",
+        category: "Performance",
+      },
+      {
+        value: "training",
+        label: "Training Certificate",
+        category: "Training",
+      },
+      { value: "legal", label: "Legal Document", category: "Legal" },
+      { value: "contract", label: "Contract Amendment", category: "Legal" },
+      {
+        value: "personal",
+        label: "Personal Information",
+        category: "Personal",
+      },
+    ];
+
+    const handleUpload = () => {
+      const newDocument = {
+        id: Date.now(),
+        type: uploadForm.type,
+        name: uploadForm.name,
+        uploadDate: new Date().toISOString().split("T")[0],
+        category: uploadForm.category,
+        notes: uploadForm.notes,
+      };
+
+      // Update employee's documents
+      setEmployees((prev) =>
+        prev.map((emp) =>
+          emp.id === selectedEmployee?.id
+            ? { ...emp, documents: [...emp.documents, newDocument] }
+            : emp,
+        ),
+      );
+
+      setShowDocumentUploadModal(false);
+      setUploadForm({
+        type: "medical",
+        name: "",
+        category: "Medical",
+        file: null,
+        notes: "",
+      });
+    };
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl w-full max-w-md">
+          <div className="flex justify-between items-center p-6 border-b">
+            <h2 className="text-xl font-bold text-gray-900">Upload Document</h2>
+            <button
+              onClick={() => setShowDocumentUploadModal(false)}
+              className="text-gray-400 hover:text-gray-600"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          <div className="p-6 space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Document Type
+              </label>
+              <select
+                value={uploadForm.type}
+                onChange={(e) => {
+                  const selectedType = documentTypes.find(
+                    (t) => t.value === e.target.value,
+                  );
+                  setUploadForm({
+                    ...uploadForm,
+                    type: e.target.value,
+                    category: selectedType?.category || "General",
+                  });
+                }}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                {documentTypes.map((type) => (
+                  <option key={type.value} value={type.value}>
+                    {type.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Document Name
+              </label>
+              <input
+                type="text"
+                value={uploadForm.name}
+                onChange={(e) =>
+                  setUploadForm({ ...uploadForm, name: e.target.value })
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter document name"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                File Upload
+              </label>
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                <input
+                  type="file"
+                  onChange={(e) =>
+                    setUploadForm({
+                      ...uploadForm,
+                      file: e.target.files?.[0] || null,
+                    })
+                  }
+                  className="hidden"
+                  id="file-upload"
+                  accept=".pdf,.doc,.docx,.jpg,.png"
+                />
+                <label htmlFor="file-upload" className="cursor-pointer">
+                  <div className="text-gray-400 mb-2">
+                    <FileText className="w-8 h-8 mx-auto" />
+                  </div>
+                  <p className="text-sm text-gray-600">
+                    Click to upload or drag and drop
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    PDF, DOC, DOCX, JPG, PNG up to 10MB
+                  </p>
+                </label>
+              </div>
+              {uploadForm.file && (
+                <p className="text-sm text-green-600 mt-2">
+                  Selected: {uploadForm.file.name}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Notes (Optional)
+              </label>
+              <textarea
+                rows={3}
+                value={uploadForm.notes}
+                onChange={(e) =>
+                  setUploadForm({ ...uploadForm, notes: e.target.value })
+                }
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Add any additional notes..."
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end space-x-3 p-6 border-t">
+            <button
+              onClick={() => setShowDocumentUploadModal(false)}
+              className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleUpload}
+              disabled={!uploadForm.name || !uploadForm.file}
+              className={cn(
+                "px-6 py-2 rounded-lg transition-all",
+                uploadForm.name && uploadForm.file
+                  ? "bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white hover:shadow-lg"
+                  : "bg-gray-400 text-white cursor-not-allowed",
+              )}
+            >
+              Upload Document
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const EmployeeDetailModal = () => {
+    if (!selectedEmployee) return null;
+
+    const tenure = calculateTenure(selectedEmployee.startDate);
+    const probationStatus = selectedEmployee.isProbationComplete
+      ? "Complete"
+      : calculateProbationRemaining(selectedEmployee.probationEndDate);
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+          <div className="flex justify-between items-center p-6 border-b">
+            <div className="flex items-center space-x-4">
+              <div className="text-3xl">{selectedEmployee.avatar}</div>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  {selectedEmployee.name}
+                </h2>
+                <p className="text-sm text-gray-600">
+                  {selectedEmployee.position} • {selectedEmployee.employeeId}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowEmployeeModal(false)}
+              className="text-gray-400 hover:text-gray-600"
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          <div className="p-6 overflow-y-auto max-h-[75vh]">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Employee Information */}
+              <div className="lg:col-span-2 space-y-6">
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Employee Information
+                  </h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm text-gray-600">Department</p>
+                      <p className="font-medium">
+                        {selectedEmployee.department}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Location</p>
+                      <p className="font-medium">{selectedEmployee.location}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Start Date</p>
+                      <p className="font-medium">
+                        {selectedEmployee.startDate}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Tenure</p>
+                      <p className="font-medium">{tenure}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Manager</p>
+                      <p className="font-medium">{selectedEmployee.manager}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Email</p>
+                      <p className="font-medium">{selectedEmployee.email}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Documents Section */}
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      Documents ({selectedEmployee.documents.length})
+                    </h3>
+                    <button
+                      onClick={() => setShowDocumentUploadModal(true)}
+                      className="flex items-center space-x-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
+                    >
+                      <Plus size={14} />
+                      <span>Add Document</span>
+                    </button>
+                  </div>
+
+                  <div className="space-y-3">
+                    {selectedEmployee.documents.map((doc) => (
+                      <div
+                        key={doc.id}
+                        className="bg-white rounded-lg p-4 border"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-3">
+                            <span className="text-2xl">
+                              {getDocumentIcon(doc.type)}
+                            </span>
+                            <div>
+                              <p className="font-medium text-gray-900">
+                                {doc.name}
+                              </p>
+                              <div className="flex items-center space-x-4 text-sm text-gray-500">
+                                <span>{doc.category}</span>
+                                <span>Uploaded: {doc.uploadDate}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex space-x-2">
+                            <button className="text-blue-600 hover:text-blue-800 text-sm">
+                              <Eye size={16} />
+                            </button>
+                            <button className="text-green-600 hover:text-green-800 text-sm">
+                              <Download size={16} />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Status and Actions */}
+              <div className="space-y-6">
+                <div className="bg-blue-50 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Status
+                  </h3>
+                  <div className="space-y-4">
+                    <div>
+                      <span
+                        className={cn(
+                          "px-3 py-1 rounded-full text-sm font-medium",
+                          getStatusColor(selectedEmployee.status),
+                        )}
+                      >
+                        {selectedEmployee.status.charAt(0).toUpperCase() +
+                          selectedEmployee.status.slice(1)}
+                      </span>
+                    </div>
+
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">
+                        Probation Status
+                      </p>
+                      <div className="flex items-center space-x-2">
+                        {selectedEmployee.isProbationComplete ? (
+                          <CheckCircle className="w-4 h-4 text-green-600" />
+                        ) : (
+                          <Timer className="w-4 h-4 text-yellow-600" />
+                        )}
+                        <span className="text-sm font-medium">
+                          {probationStatus}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-green-50 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Quick Actions
+                  </h3>
+                  <div className="space-y-2">
+                    <button className="w-full flex items-center space-x-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-green-100 rounded-lg">
+                      <Mail size={16} />
+                      <span>Send Email</span>
+                    </button>
+                    <button className="w-full flex items-center space-x-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-green-100 rounded-lg">
+                      <Calendar size={16} />
+                      <span>Schedule Meeting</span>
+                    </button>
+                    <button className="w-full flex items-center space-x-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-green-100 rounded-lg">
+                      <BarChart3 size={16} />
+                      <span>Performance Review</span>
+                    </button>
+                    <button className="w-full flex items-center space-x-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-green-100 rounded-lg">
+                      <Settings size={16} />
+                      <span>Edit Details</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 border-t bg-gray-50">
+            <div className="flex justify-end">
+              <button
+                onClick={() => setShowEmployeeModal(false)}
+                className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const InterviewSchedulingModal = () => {
     const [interviewForm, setInterviewForm] = useState({
       type: "technical",
