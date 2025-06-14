@@ -1744,7 +1744,13 @@ const UPhirePlatform = () => {
                                   </span>
                                 ))}
                             </div>
-                            <button className="flex items-center space-x-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm">
+                            <button
+                              onClick={() => {
+                                setSelectedCandidate(candidate);
+                                setShowInterviewModal(true);
+                              }}
+                              className="flex items-center space-x-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm"
+                            >
                               <Calendar size={14} />
                               <span>Schedule Interview</span>
                             </button>
@@ -2454,7 +2460,7 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
                     onClick={() => setActiveModalTab("description")}
                     className="text-gray-600 hover:text-gray-800 text-sm font-medium"
                   >
-                    ��� Back to Description
+                    ← Back to Description
                   </button>
                   <div className="flex space-x-3">
                     <button
