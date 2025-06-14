@@ -221,7 +221,7 @@ const UPhirePlatform = () => {
         status: "shortlisted",
         source: "LinkedIn",
         applied: "2025-06-10",
-        avatar: "👩‍💻",
+        avatar: "👩��💻",
       },
       {
         id: 2,
@@ -481,6 +481,37 @@ const UPhirePlatform = () => {
     setCandidates(mockCandidates);
     setDocuments(mockDocuments);
     setEmployees(mockEmployees);
+
+    // Initialize demo user (in real app, this would come from authentication)
+    setUser({
+      name: "John Smith",
+      email: "john.smith@techstartup.com",
+      initials: "JS",
+      role: "HR Director",
+      company: "TechStartup Ltd",
+    });
+
+    // Initialize demo business profile
+    setBusinessProfile({
+      companyName: "TechStartup Ltd",
+      industry: "Technology",
+      description:
+        "We're a cutting-edge technology company specializing in AI-powered solutions that help businesses scale efficiently. Our team is passionate about innovation and creating products that make a real difference in people's lives.",
+      location: "London, UK",
+      size: "50-100 employees",
+      foundedYear: "2019",
+      website: "www.techstartup.com",
+      culture:
+        "We foster a collaborative, innovative environment where creativity thrives. Our culture emphasizes work-life balance, continuous learning, and making a positive impact.",
+      benefits:
+        "Competitive salary, equity options, flexible working arrangements, comprehensive health insurance, £2000 learning budget, 25 days holiday plus bank holidays, mental health support, and regular team events.",
+      mission:
+        "To democratize AI technology and make it accessible to businesses of all sizes, helping them achieve their goals through intelligent automation.",
+      values: "Innovation, Integrity, Collaboration, Excellence, Impact",
+    });
+
+    // Set logged in state for demo
+    setIsLoggedIn(true);
   }, []);
 
   const tabs = [
