@@ -1649,6 +1649,345 @@ const UPhirePlatform = () => {
     );
   };
 
+  const PredictionModal = () => {
+    if (!currentPrediction) return null;
+
+    const getSuccessColor = (rate) => {
+      if (rate >= 80) return "text-green-600";
+      if (rate >= 60) return "text-yellow-600";
+      return "text-red-600";
+    };
+
+    const getSuccessIcon = (rate) => {
+      if (rate >= 80) return <CheckCircle className="w-5 h-5 text-green-600" />;
+      if (rate >= 60)
+        return <AlertTriangle className="w-5 h-5 text-yellow-600" />;
+      return <XCircle className="w-5 h-5 text-red-600" />;
+    };
+
+    const getRiskColor = (level) => {
+      switch (level) {
+        case "high":
+          return "bg-red-100 text-red-800 border-red-200";
+        case "medium":
+          return "bg-yellow-100 text-yellow-800 border-yellow-200";
+        case "low":
+          return "bg-green-100 text-green-800 border-green-200";
+        default:
+          return "bg-gray-100 text-gray-800 border-gray-200";
+      }
+    };
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl w-full max-w-5xl max-h-[90vh] overflow-hidden">
+          <div className="flex justify-between items-center p-6 border-b">
+            <div className="flex items-center space-x-3">
+              <Brain className="w-6 h-6 text-purple-600" />
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  AI Success Prediction
+                </h2>
+                <p className="text-sm text-gray-600">
+                  Machine learning analysis for role success
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowPredictionModal(false)}
+              className="text-gray-400 hover:text-gray-600"
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          <div className="p-6 overflow-y-auto max-h-[75vh]">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Main Prediction */}
+              <div className="lg:col-span-2 space-y-6">
+                {/* Success Rate */}
+                <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg p-6 border-2 border-purple-200">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      Success Prediction
+                    </h3>
+                    <div className="flex items-center space-x-2">
+                      {getSuccessIcon(currentPrediction.successRate)}
+                      <span
+                        className={`text-2xl font-bold ${getSuccessColor(currentPrediction.successRate)}`}
+                      >
+                        {currentPrediction.successRate}%
+                      </span>
+                    </div>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
+                    <div
+                      className={`h-3 rounded-full ${currentPrediction.successRate >= 80 ? "bg-green-500" : currentPrediction.successRate >= 60 ? "bg-yellow-500" : "bg-red-500"}`}
+                      style={{ width: `${currentPrediction.successRate}%` }}
+                    ></div>
+                  </div>
+                  <p className="text-sm text-gray-600">
+                    Confidence: {currentPrediction.confidence}% • Timeline:{" "}
+                    {currentPrediction.timeline.estimated} days
+                  </p>
+                </div>
+
+                {/* Success Factors Breakdown */}
+                <div className="bg-white rounded-lg border p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Success Factors Analysis
+                  </h3>
+                  <div className="space-y-4">
+                    {Object.entries(currentPrediction.factors).map(
+                      ([key, factor]) => (
+                        <div
+                          key={key}
+                          className="flex items-center justify-between"
+                        >
+                          <div className="flex items-center space-x-3">
+                            <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                            <span className="font-medium capitalize">
+                              {key}
+                            </span>
+                            <span
+                              className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                factor.impact === "Positive"
+                                  ? "bg-green-100 text-green-800"
+                                  : factor.impact === "Negative"
+                                    ? "bg-red-100 text-red-800"
+                                    : "bg-gray-100 text-gray-800"
+                              }`}
+                            >
+                              {factor.impact}
+                            </span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <div className="w-24 bg-gray-200 rounded-full h-2">
+                              <div
+                                className="bg-blue-500 h-2 rounded-full"
+                                style={{ width: `${factor.score}%` }}
+                              ></div>
+                            </div>
+                            <span className="text-sm font-medium w-8">
+                              {Math.round(factor.score)}
+                            </span>
+                          </div>
+                        </div>
+                      ),
+                    )}
+                  </div>
+                </div>
+
+                {/* Recommendations */}
+                {currentPrediction.recommendations.length > 0 && (
+                  <div className="bg-blue-50 rounded-lg border border-blue-200 p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center space-x-2">
+                      <Lightbulb className="w-5 h-5 text-blue-600" />
+                      <span>AI Recommendations</span>
+                    </h3>
+                    <div className="space-y-3">
+                      {currentPrediction.recommendations.map((rec, index) => (
+                        <div
+                          key={index}
+                          className="bg-white rounded-lg p-4 border border-blue-200"
+                        >
+                          <div className="flex justify-between items-start mb-2">
+                            <h4 className="font-medium text-gray-900">
+                              {rec.title}
+                            </h4>
+                            <span
+                              className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                rec.priority === "high"
+                                  ? "bg-red-100 text-red-800"
+                                  : rec.priority === "medium"
+                                    ? "bg-yellow-100 text-yellow-800"
+                                    : "bg-blue-100 text-blue-800"
+                              }`}
+                            >
+                              {rec.priority} priority
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-600 mb-2">
+                            {rec.description}
+                          </p>
+                          <div className="flex items-center space-x-2">
+                            <TrendingUp className="w-4 h-4 text-green-600" />
+                            <span className="text-sm font-medium text-green-600">
+                              {rec.impact}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Alternative Suggestions */}
+                {currentPrediction.alternatives.length > 0 && (
+                  <div className="bg-yellow-50 rounded-lg border border-yellow-200 p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center space-x-2">
+                      <AlertTriangle className="w-5 h-5 text-yellow-600" />
+                      <span>Alternative Role Suggestions</span>
+                    </h3>
+                    <div className="space-y-3">
+                      {currentPrediction.alternatives.map((alt, index) => (
+                        <div
+                          key={index}
+                          className="bg-white rounded-lg p-4 border border-yellow-200"
+                        >
+                          <div className="flex justify-between items-start mb-2">
+                            <h4 className="font-medium text-gray-900">
+                              {alt.title}
+                            </h4>
+                            <span className="text-lg font-bold text-green-600">
+                              {alt.expectedSuccess}%
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-600 mb-3">
+                            {alt.reason}
+                          </p>
+                          <div className="flex flex-wrap gap-2">
+                            {alt.changes.map((change, i) => (
+                              <span
+                                key={i}
+                                className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+                              >
+                                {change}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Sidebar */}
+              <div className="space-y-6">
+                {/* Market Data */}
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center space-x-2">
+                    <Database className="w-5 h-5 text-gray-600" />
+                    <span>Market Insights</span>
+                  </h3>
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-sm text-gray-600">
+                        Market Salary Range
+                      </p>
+                      <p className="font-medium">
+                        £{marketData.salary?.min.toLocaleString()} - £
+                        {marketData.salary?.max.toLocaleString()}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        Median: £{marketData.salary?.median.toLocaleString()}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Demand Level</p>
+                      <p className="font-medium">{marketData.demand?.level}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">
+                        Average Time to Fill
+                      </p>
+                      <p className="font-medium">
+                        {marketData.demand?.timeToFill} days
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">
+                        Remote Availability
+                      </p>
+                      <p className="font-medium">
+                        {marketData.location?.remoteAvailability}%
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Risks */}
+                {currentPrediction.risks.length > 0 && (
+                  <div className="bg-red-50 rounded-lg border border-red-200 p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center space-x-2">
+                      <AlertCircle className="w-5 h-5 text-red-600" />
+                      <span>Risk Assessment</span>
+                    </h3>
+                    <div className="space-y-3">
+                      {currentPrediction.risks.map((risk, index) => (
+                        <div
+                          key={index}
+                          className={`rounded-lg p-3 border ${getRiskColor(risk.level)}`}
+                        >
+                          <div className="flex justify-between items-center mb-1">
+                            <p className="font-medium">{risk.factor}</p>
+                            <span className="text-xs uppercase tracking-wide">
+                              {risk.level}
+                            </span>
+                          </div>
+                          <p className="text-sm mb-2">{risk.description}</p>
+                          <p className="text-xs font-medium">
+                            Mitigation: {risk.mitigation}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Timeline Prediction */}
+                <div className="bg-blue-50 rounded-lg border border-blue-200 p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center space-x-2">
+                    <Clock className="w-5 h-5 text-blue-600" />
+                    <span>Timeline Forecast</span>
+                  </h3>
+                  <div className="text-center mb-4">
+                    <p className="text-3xl font-bold text-blue-600">
+                      {currentPrediction.timeline.estimated}
+                    </p>
+                    <p className="text-sm text-gray-600">days to fill</p>
+                  </div>
+                  <div className="space-y-2">
+                    {currentPrediction.timeline.factors.map((factor, index) => (
+                      <div key={index} className="flex justify-between text-sm">
+                        <span className="text-gray-600">{factor.name}</span>
+                        <span
+                          className={
+                            factor.impact === "Neutral"
+                              ? "text-gray-500"
+                              : "text-red-600"
+                          }
+                        >
+                          {factor.impact}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 border-t bg-gray-50">
+            <div className="flex justify-between items-center">
+              <p className="text-sm text-gray-600">
+                Powered by AI analysis of market data from ITJobsWatch, Indeed,
+                LinkedIn, and internal metrics
+              </p>
+              <button
+                onClick={() => setShowPredictionModal(false)}
+                className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                Close Analysis
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const DocumentUploadModal = () => {
     const [uploadForm, setUploadForm] = useState({
       type: "medical",
