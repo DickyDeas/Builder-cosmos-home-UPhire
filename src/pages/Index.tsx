@@ -317,7 +317,7 @@ const UPhirePlatform = () => {
     const candidatePool = [
       {
         name: "Sarah Johnson",
-        avatar: "👩‍💻",
+        avatar: "���‍💻",
         email: "sarah.j@email.com",
         location: "London",
         experience: "5 years",
@@ -353,7 +353,7 @@ const UPhirePlatform = () => {
       },
       {
         name: "James Wilson",
-        avatar: "👨‍💼",
+        avatar: "👨���💼",
         email: "james.w@email.com",
         location: "Edinburgh",
         experience: "6 years",
@@ -3293,6 +3293,7 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
       {showDocumentModal && <DocumentModal />}
       {showRecruitModal && <RecruitModal />}
       {showCandidatesModal && <CandidatesDetailModal />}
+      {showInterviewModal && <InterviewSchedulingModal />}
     </div>
   );
 };
