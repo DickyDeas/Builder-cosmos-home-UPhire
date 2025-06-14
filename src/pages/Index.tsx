@@ -6127,7 +6127,7 @@ Ready to join our team? Apply now and let's shape the future together!
                       className="fixed inset-0"
                       style={{
                         zIndex: 2147483647, // Maximum 32-bit integer value
-                        pointerEvents: 'none'
+                        pointerEvents: "none",
                       }}
                     >
                       {/* Invisible overlay to detect clicks outside */}
@@ -6135,7 +6135,7 @@ Ready to join our team? Apply now and let's shape the future together!
                         className="fixed inset-0"
                         style={{
                           zIndex: 2147483647,
-                          pointerEvents: 'auto'
+                          pointerEvents: "auto",
                         }}
                         onClick={() => setShowUserDropdown(false)}
                       />
@@ -6143,16 +6143,34 @@ Ready to join our team? Apply now and let's shape the future together!
                       <div
                         className="absolute w-48 bg-white rounded-lg shadow-2xl border"
                         style={{
-                          position: 'absolute',
-                          top: '60px',
-                          right: '20px',
+                          position: "absolute",
+                          top: "60px",
+                          right: "20px",
                           zIndex: 2147483647,
-                          pointerEvents: 'auto',
-                          isolation: 'isolate',
-                          transform: 'translateZ(0)', // Force hardware acceleration
-                          willChange: 'transform' // Optimize for animations
+                          pointerEvents: "auto",
+                          isolation: "isolate",
+                          transform: "translateZ(0)", // Force hardware acceleration
+                          willChange: "transform", // Optimize for animations
                         }}
                       >
+                        <div className="p-3 border-b">
+                          <p className="font-medium text-gray-900">
+                            {user.name}
+                          </p>
+                          <p className="text-sm text-gray-600">{user.email}</p>
+                          <p className="text-xs text-gray-500">{user.role}</p>
+                        </div>
+                        <div className="py-1">
+                          <button
+                            onClick={() => {
+                              setShowUserDropdown(false);
+                              setShowSettingsModal(true);
+                            }}
+                            className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                          >
+                            <Settings size={16} />
+                            <span>Settings</span>
+                          </button>
                           <button
                             onClick={() => {
                               setShowUserDropdown(false);
