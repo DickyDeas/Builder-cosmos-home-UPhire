@@ -104,6 +104,9 @@ const UPhirePlatform = () => {
     type: "", // "candidates", "shortlisted", "interviewed"
     candidates: [],
   });
+  const [showInterviewModal, setShowInterviewModal] = useState(false);
+  const [selectedCandidate, setSelectedCandidate] = useState(null);
+  const [scheduledInterviews, setScheduledInterviews] = useState([]);
 
   useEffect(() => {
     const mockRoles: Role[] = [
