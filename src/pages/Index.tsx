@@ -34,6 +34,10 @@ import {
   ArrowRight,
   ChevronRight,
   Activity,
+  CalendarDays,
+  Video,
+  MapPin as LocationIcon,
+  Link,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
