@@ -352,6 +352,219 @@ const UPhirePlatform = () => {
     );
   };
 
+  const CandidatesDetailModal = () => {
+    const getStatusBadgeColor = (status: string) => {
+      switch (status) {
+        case "applied":
+          return "bg-blue-100 text-blue-800";
+        case "shortlisted":
+          return "bg-yellow-100 text-yellow-800";
+        case "interviewed":
+          return "bg-green-100 text-green-800";
+        case "hired":
+          return "bg-purple-100 text-purple-800";
+        case "rejected":
+          return "bg-red-100 text-red-800";
+        default:
+          return "bg-gray-100 text-gray-800";
+      }
+    };
+
+    const getTypeTitle = (type: string) => {
+      switch (type) {
+        case "candidates":
+          return "All Candidates";
+        case "shortlisted":
+          return "Shortlisted Candidates";
+        case "interviewed":
+          return "Interviewed Candidates";
+        default:
+          return "Candidates";
+      }
+    };
+
+    const getTypeDescription = (type: string, count: number) => {
+      switch (type) {
+        case "candidates":
+          return `${count} total candidates have applied for this role`;
+        case "shortlisted":
+          return `${count} candidates have been shortlisted for review`;
+        case "interviewed":
+          return `${count} candidates have completed interviews`;
+        default:
+          return `${count} candidates`;
+      }
+    };
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl w-full max-w-5xl max-h-[90vh] overflow-hidden">
+          <div className="flex justify-between items-center p-6 border-b">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">
+                {getTypeTitle(candidatesView.type)} -{" "}
+                {candidatesView.role?.title}
+              </h2>
+              <p className="text-sm text-gray-600 mt-1">
+                {getTypeDescription(
+                  candidatesView.type,
+                  candidatesView.candidates.length,
+                )}{" "}
+                • Ranked by AI match score
+              </p>
+            </div>
+            <button
+              onClick={() => setShowCandidatesModal(false)}
+              className="text-gray-400 hover:text-gray-600"
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          <div className="p-6 overflow-y-auto max-h-[75vh]">
+            {candidatesView.candidates.length === 0 ? (
+              <div className="text-center py-12">
+                <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <p className="text-gray-600">
+                  No candidates found for this category.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {candidatesView.candidates.map((candidate, index) => (
+                  <div
+                    key={candidate.id}
+                    className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-start space-x-4">
+                        <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full font-bold">
+                          {index + 1}
+                        </div>
+                        <div className="text-3xl">{candidate.avatar}</div>
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-3 mb-2">
+                            <h3 className="text-lg font-semibold text-gray-900">
+                              {candidate.name}
+                            </h3>
+                            <span
+                              className={cn(
+                                "px-2 py-1 rounded-full text-xs font-medium",
+                                getStatusBadgeColor(candidate.status),
+                              )}
+                            >
+                              {candidate.status}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-600 mb-2">
+                            {candidate.role}
+                          </p>
+                          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+                            <span className="flex items-center space-x-1">
+                              <Mail size={14} />
+                              <span>{candidate.email}</span>
+                            </span>
+                            <span className="flex items-center space-x-1">
+                              <MapPin size={14} />
+                              <span>{candidate.location}</span>
+                            </span>
+                            <span>{candidate.experience}</span>
+                            <span>Applied: {candidate.applied}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-blue-600">
+                          {candidate.aiMatch}%
+                        </div>
+                        <p className="text-xs text-gray-500">AI Match</p>
+                      </div>
+                    </div>
+
+                    <div className="mb-4">
+                      <p className="text-sm text-gray-600 mb-2">
+                        Skills & Technologies:
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {candidate.skills.map((skill, skillIndex) => (
+                          <span
+                            key={skillIndex}
+                            className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {candidate.notes && (
+                      <div className="mb-4 p-3 bg-gray-50 rounded-lg">
+                        <p className="text-sm text-gray-700">
+                          <span className="font-medium">Notes:</span>{" "}
+                          {candidate.notes}
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-4 border-t">
+                      <div className="text-sm text-gray-500">
+                        <span>Source: {candidate.source}</span>
+                        {candidate.lastContact && (
+                          <span className="ml-4">
+                            Last contact: {candidate.lastContact}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        <button className="flex items-center space-x-1 px-3 py-2 text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors text-sm">
+                          <Eye size={14} />
+                          <span>View Full Profile</span>
+                        </button>
+                        <button className="flex items-center space-x-1 px-3 py-2 text-green-600 bg-green-50 rounded-lg hover:bg-green-100 transition-colors text-sm">
+                          <Mail size={14} />
+                          <span>Send Message</span>
+                        </button>
+                        {candidatesView.type === "candidates" &&
+                          candidate.status === "applied" && (
+                            <button className="flex items-center space-x-1 px-3 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors text-sm">
+                              <Star size={14} />
+                              <span>Shortlist</span>
+                            </button>
+                          )}
+                        {candidatesView.type === "shortlisted" &&
+                          candidate.status === "shortlisted" && (
+                            <button className="flex items-center space-x-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm">
+                              <Calendar size={14} />
+                              <span>Schedule Interview</span>
+                            </button>
+                          )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="p-6 border-t bg-gray-50">
+            <div className="flex justify-between items-center">
+              <div className="text-sm text-gray-600">
+                Showing {candidatesView.candidates.length} candidates • Sorted
+                by AI match score (highest first)
+              </div>
+              <button
+                onClick={() => setShowCandidatesModal(false)}
+                className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const RecruitModal = () => {
     const startRecruitment = () => {
       setRecruitmentProcess({
@@ -983,7 +1196,7 @@ We are seeking a talented ${formData.title} to join our ${formData.department} t
 ## Preferred Skills
 ${
   formData.skills
-    ? `• ${formData.skills
+    ? `��� ${formData.skills
         .split(",")
         .map((skill) => skill.trim())
         .join("\n• ")}`
