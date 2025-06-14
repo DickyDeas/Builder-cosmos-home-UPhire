@@ -1649,6 +1649,328 @@ const UPhirePlatform = () => {
     );
   };
 
+  const MarketResearchForm = () => {
+    const [searchForm, setSearchForm] = useState({
+      role: "",
+      location: "",
+    });
+    const [isSearching, setIsSearching] = useState(false);
+    const [searchResults, setSearchResults] = useState(null);
+    const [showResults, setShowResults] = useState(false);
+
+    const popularRoles = [
+      "Senior Frontend Developer",
+      "Product Manager",
+      "UX Designer",
+      "Data Scientist",
+      "Backend Developer",
+      "DevOps Engineer",
+      "Software Engineer",
+      "Marketing Manager",
+    ];
+
+    const popularLocations = [
+      "London",
+      "Manchester",
+      "Birmingham",
+      "Edinburgh",
+      "Bristol",
+      "Remote",
+      "Leeds",
+      "Glasgow",
+    ];
+
+    const handleSearch = async () => {
+      if (!searchForm.role.trim()) {
+        alert("Please enter a role to research");
+        return;
+      }
+
+      setIsSearching(true);
+      setShowResults(false);
+
+      try {
+        // Fetch market data for the specific role and location
+        const marketData = await fetchMarketData(
+          searchForm.role,
+          searchForm.location,
+          "",
+        );
+
+        // Generate additional insights for the search
+        const insights = {
+          ...marketData,
+          searchQuery: {
+            role: searchForm.role,
+            location: searchForm.location || "UK Average",
+          },
+          competitionLevel: getCompetitionLevel(
+            searchForm.role,
+            searchForm.location,
+          ),
+          hiringTrend: getTrendDirection(searchForm.role),
+          recommendations: generateMarketRecommendations(
+            searchForm.role,
+            searchForm.location,
+            marketData,
+          ),
+        };
+
+        setSearchResults(insights);
+        setShowResults(true);
+      } catch (error) {
+        console.error("Failed to fetch market data:", error);
+        alert("Failed to fetch market data. Please try again.");
+      } finally {
+        setIsSearching(false);
+      }
+    };
+
+    const generateMarketRecommendations = (role, location, data) => {
+      const recommendations = [];
+
+      if (data.salary.median > 70000) {
+        recommendations.push("High-value role - expect competitive market");
+      }
+
+      if (location === "Remote" || !location) {
+        recommendations.push("Remote work increases candidate pool by 300%");
+      }
+
+      if (data.demand.level === "Very High") {
+        recommendations.push(
+          "High demand - consider fast-track hiring process",
+        );
+      }
+
+      if (data.demand.timeToFill > 40) {
+        recommendations.push("Above-average time to fill - plan accordingly");
+      }
+
+      return recommendations;
+    };
+
+    const handleQuickSearch = (role, location = "") => {
+      setSearchForm({ role, location });
+    };
+
+    return (
+      <div className="space-y-4">
+        {/* Search Form */}
+        <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex-1">
+            <input
+              type="text"
+              placeholder="Enter role (e.g. Senior Frontend Developer)"
+              value={searchForm.role}
+              onChange={(e) =>
+                setSearchForm({ ...searchForm, role: e.target.value })
+              }
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-sm"
+              onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+            />
+          </div>
+          <div className="flex-1">
+            <input
+              type="text"
+              placeholder="Location (optional - defaults to UK)"
+              value={searchForm.location}
+              onChange={(e) =>
+                setSearchForm({ ...searchForm, location: e.target.value })
+              }
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-sm"
+              onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+            />
+          </div>
+          <button
+            onClick={handleSearch}
+            disabled={isSearching || !searchForm.role.trim()}
+            className={cn(
+              "px-4 py-2 rounded-md text-sm font-medium transition-all",
+              isSearching || !searchForm.role.trim()
+                ? "bg-gray-400 text-white cursor-not-allowed"
+                : "bg-purple-600 text-white hover:bg-purple-700",
+            )}
+          >
+            {isSearching ? (
+              <div className="flex items-center space-x-2">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                <span>Searching...</span>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <Search size={16} />
+                <span>Research</span>
+              </div>
+            )}
+          </button>
+        </div>
+
+        {/* Quick Search Options */}
+        <div className="flex flex-wrap gap-2">
+          <span className="text-xs text-gray-600 py-1">Popular roles:</span>
+          {popularRoles.slice(0, 4).map((role) => (
+            <button
+              key={role}
+              onClick={() => handleQuickSearch(role)}
+              className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full hover:bg-purple-200 transition-colors"
+            >
+              {role}
+            </button>
+          ))}
+        </div>
+
+        {/* Search Results */}
+        {showResults && searchResults && (
+          <div className="mt-4 p-4 bg-white rounded-lg border border-purple-200 shadow-sm">
+            <div className="flex items-center justify-between mb-3">
+              <h5 className="font-semibold text-gray-900 flex items-center space-x-2">
+                <Database className="w-4 h-4 text-purple-600" />
+                <span>{searchResults.searchQuery.role}</span>
+                {searchResults.searchQuery.location && (
+                  <>
+                    <span className="text-gray-400">•</span>
+                    <span className="text-gray-600">
+                      {searchResults.searchQuery.location}
+                    </span>
+                  </>
+                )}
+              </h5>
+              <button
+                onClick={() => setShowResults(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+              <div className="text-center p-3 bg-blue-50 rounded-lg">
+                <p className="text-lg font-bold text-blue-900">
+                  £{searchResults.salary.median.toLocaleString()}
+                </p>
+                <p className="text-xs text-blue-600">Median Salary</p>
+                <p className="text-xs text-gray-500">
+                  £{searchResults.salary.min.toLocaleString()} - £
+                  {searchResults.salary.max.toLocaleString()}
+                </p>
+              </div>
+
+              <div className="text-center p-3 bg-green-50 rounded-lg">
+                <p className="text-lg font-bold text-green-900">
+                  {searchResults.demand.level}
+                </p>
+                <p className="text-xs text-green-600">Market Demand</p>
+                <p className="text-xs text-gray-500">
+                  {searchResults.hiringTrend}
+                </p>
+              </div>
+
+              <div className="text-center p-3 bg-yellow-50 rounded-lg">
+                <p className="text-lg font-bold text-yellow-900">
+                  {searchResults.demand.timeToFill}
+                </p>
+                <p className="text-xs text-yellow-600">Days to Fill</p>
+                <p className="text-xs text-gray-500">UK Average</p>
+              </div>
+
+              <div className="text-center p-3 bg-purple-50 rounded-lg">
+                <p className="text-lg font-bold text-purple-900">
+                  {searchResults.location.remoteAvailability}%
+                </p>
+                <p className="text-xs text-purple-600">Remote Available</p>
+                <p className="text-xs text-gray-500">Of similar roles</p>
+              </div>
+            </div>
+
+            {/* Skills Required */}
+            <div className="mb-4">
+              <p className="text-sm font-medium text-gray-700 mb-2">
+                Top Required Skills:
+              </p>
+              <div className="flex flex-wrap gap-1">
+                {searchResults.skills.required.map((skill, index) => (
+                  <span
+                    key={index}
+                    className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Emerging Skills */}
+            {searchResults.skills.emerging.length > 0 && (
+              <div className="mb-4">
+                <p className="text-sm font-medium text-gray-700 mb-2">
+                  Emerging Skills:
+                </p>
+                <div className="flex flex-wrap gap-1">
+                  {searchResults.skills.emerging.map((skill, index) => (
+                    <span
+                      key={index}
+                      className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full"
+                    >
+                      {skill} ✨
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Market Recommendations */}
+            {searchResults.recommendations.length > 0 && (
+              <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                <p className="text-sm font-medium text-blue-800 mb-2">
+                  Market Insights:
+                </p>
+                <ul className="space-y-1">
+                  {searchResults.recommendations.map((rec, index) => (
+                    <li
+                      key={index}
+                      className="text-sm text-blue-700 flex items-start space-x-2"
+                    >
+                      <Info className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                      <span>{rec}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Quick Actions */}
+            <div className="mt-4 pt-3 border-t border-gray-200">
+              <p className="text-xs text-gray-500 mb-2">Quick actions:</p>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => {
+                    // Pre-fill role creation form
+                    setActiveTab("roles");
+                    setShowNewRoleModal(true);
+                    // Note: In a real implementation, you'd pass this data to the form
+                  }}
+                  className="px-3 py-1 bg-green-600 text-white text-xs rounded-full hover:bg-green-700 transition-colors"
+                >
+                  Create Role
+                </button>
+                <button
+                  onClick={() => {
+                    // Export or save data functionality
+                    alert("Market data saved to your insights!");
+                  }}
+                  className="px-3 py-1 bg-blue-600 text-white text-xs rounded-full hover:bg-blue-700 transition-colors"
+                >
+                  Save Insights
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const PredictionModal = () => {
     if (!currentPrediction) return null;
 
