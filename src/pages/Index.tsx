@@ -2913,7 +2913,7 @@ const UPhirePlatform = () => {
       setTimeout(() => {
         const description = `
 ## Position Overview
-We are seeking a talented ${formData.title} to join our ${formData.department} team${formData.location ? ` in ${formData.location}` : ""}. This is an excellent opportunity for a professional looking to make a significant impact in a dynamic, fast-growing organization.
+We are seeking a talented ${formData.title} to join our ${formData.department} team${formData.location ? ` in ${formData.location}` : ""}. ${businessProfile.description || "This is an excellent opportunity for a professional looking to make a significant impact in a dynamic, fast-growing organization."}
 
 ## Key Responsibilities
 • Lead and execute ${formData.department.toLowerCase()} initiatives that drive business growth
@@ -2943,6 +2943,7 @@ ${
 
 ## What We Offer
 ${
+  businessProfile.benefits ||
   formData.benefits ||
   `• Competitive salary range${formData.salary ? `: ${formData.salary}` : ""}
 • Comprehensive health and wellness benefits
@@ -2952,10 +2953,16 @@ ${
 • Career growth and advancement opportunities`
 }
 
-## About UPhire
-UPhire is revolutionizing the recruitment industry with AI-powered solutions that help companies build diverse, high-performing teams faster and more cost-effectively than traditional methods.
+## About ${businessProfile.companyName || "Our Company"}
+${businessProfile.mission || "We are a forward-thinking organization committed to excellence and innovation."}
 
-Ready to join our mission? Apply now and let's shape the future of recruitment together!
+${businessProfile.culture ? `### Our Culture\n${businessProfile.culture}` : ""}
+
+${businessProfile.values ? `### Our Values\n${businessProfile.values}` : ""}
+
+${businessProfile.location ? `### Location\nBased in ${businessProfile.location}` : ""}
+
+Ready to join our team? Apply now and let's shape the future together!
         `.trim();
 
         setGeneratedDescription(description);
