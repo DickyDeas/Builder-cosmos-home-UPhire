@@ -5931,6 +5931,7 @@ Ready to join our team? Apply now and let's shape the future together!
       {showDocumentUploadModal && <DocumentUploadModal />}
       {showLoginModal && <LoginModal />}
       {showSettingsModal && <SettingsModal />}
+      {showPredictionModal && <PredictionModal />}
     </div>
   );
 };
