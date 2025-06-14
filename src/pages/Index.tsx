@@ -5347,6 +5347,15 @@ Ready to join our team? Apply now and let's shape the future together!
           </span>
         </div>
 
+        {/* Market Research Section */}
+        <div className="mb-6 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-200">
+          <h4 className="text-md font-semibold text-gray-900 mb-3 flex items-center space-x-2">
+            <Search className="w-4 h-4 text-purple-600" />
+            <span>Research Market Data</span>
+          </h4>
+          <MarketResearchForm />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-4 border border-green-200">
             <div className="flex items-center space-x-2 mb-2">
