@@ -134,6 +134,34 @@ const UPhirePlatform = () => {
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [showDocumentUploadModal, setShowDocumentUploadModal] = useState(false);
 
+  // Authentication and User Profile
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    initials: "",
+    role: "",
+    company: "",
+  });
+
+  // Business Profile
+  const [businessProfile, setBusinessProfile] = useState({
+    companyName: "",
+    industry: "",
+    description: "",
+    location: "",
+    size: "",
+    foundedYear: "",
+    website: "",
+    culture: "",
+    benefits: "",
+    mission: "",
+    values: "",
+  });
+
   useEffect(() => {
     const mockRoles: Role[] = [
       {
