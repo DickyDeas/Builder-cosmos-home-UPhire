@@ -239,6 +239,148 @@ const UPhirePlatform = () => {
     { id: "analytics", label: "Analytics", icon: BarChart3 },
   ];
 
+  const generateMockCandidatesForRole = (role: Role, type: string) => {
+    const candidatePool = [
+      {
+        name: "Sarah Johnson",
+        avatar: "👩‍💻",
+        email: "sarah.j@email.com",
+        location: "London",
+        experience: "5 years",
+        skills: ["React", "TypeScript", "Node.js", "AWS", "GraphQL"],
+        source: "LinkedIn",
+        applied: "2025-06-10",
+        notes: "Excellent portfolio showcasing modern React applications",
+        lastContact: "2025-06-12",
+      },
+      {
+        name: "Michael Chen",
+        avatar: "👨‍💻",
+        email: "m.chen@email.com",
+        location: "Manchester",
+        experience: "7 years",
+        skills: ["Vue.js", "JavaScript", "Python", "Docker", "Kubernetes"],
+        source: "Indeed",
+        applied: "2025-06-08",
+        notes: "Strong background in full-stack development and DevOps",
+        lastContact: "2025-06-11",
+      },
+      {
+        name: "Emma Rodriguez",
+        avatar: "👩‍🎨",
+        email: "emma.r@email.com",
+        location: "Birmingham",
+        experience: "4 years",
+        skills: ["Figma", "Sketch", "User Research", "Prototyping", "CSS"],
+        source: "Dribbble",
+        applied: "2025-06-12",
+        notes: "Award-winning UX designer with enterprise experience",
+        lastContact: "2025-06-13",
+      },
+      {
+        name: "James Wilson",
+        avatar: "👨‍💼",
+        email: "james.w@email.com",
+        location: "Edinburgh",
+        experience: "6 years",
+        skills: ["Product Management", "Agile", "Analytics", "Strategy"],
+        source: "LinkedIn",
+        applied: "2025-06-09",
+        notes: "Led product teams at high-growth startups",
+        lastContact: "2025-06-14",
+      },
+      {
+        name: "Priya Patel",
+        avatar: "👩‍💻",
+        email: "priya.p@email.com",
+        location: "London",
+        experience: "8 years",
+        skills: ["React", "Angular", "TypeScript", "Testing", "CI/CD"],
+        source: "GitHub",
+        applied: "2025-06-07",
+        notes: "Open source contributor with 50+ repositories",
+        lastContact: "2025-06-10",
+      },
+      {
+        name: "Alex Thompson",
+        avatar: "👨‍💻",
+        email: "alex.t@email.com",
+        location: "Bristol",
+        experience: "5 years",
+        skills: ["React", "Next.js", "Tailwind", "Vercel", "Stripe"],
+        source: "AngelList",
+        applied: "2025-06-11",
+        notes: "Former startup founder with strong technical skills",
+        lastContact: "2025-06-13",
+      },
+      {
+        name: "Sophie Williams",
+        avatar: "👩‍💼",
+        email: "sophie.w@email.com",
+        location: "Glasgow",
+        experience: "9 years",
+        skills: ["Sales", "CRM", "Salesforce", "Lead Generation", "Analytics"],
+        source: "Indeed",
+        applied: "2025-06-06",
+        notes: "Consistently exceeded sales targets by 150%",
+        lastContact: "2025-06-12",
+      },
+      {
+        name: "David Kim",
+        avatar: "👨‍💻",
+        email: "david.k@email.com",
+        location: "Leeds",
+        experience: "4 years",
+        skills: ["React", "Redux", "Jest", "Cypress", "Webpack"],
+        source: "Stack Overflow",
+        applied: "2025-06-13",
+        notes: "Active community contributor with high reputation",
+        lastContact: "2025-06-14",
+      },
+    ];
+
+    let count = 0;
+    let statusType = "applied";
+
+    switch (type) {
+      case "candidates":
+        count = role.candidates;
+        statusType = "applied";
+        break;
+      case "shortlisted":
+        count = role.shortlisted;
+        statusType = "shortlisted";
+        break;
+      case "interviewed":
+        count = role.interviewed;
+        statusType = "interviewed";
+        break;
+    }
+
+    const selectedCandidates = candidatePool
+      .slice(0, count)
+      .map((candidate, index) => ({
+        id: Date.now() + index,
+        ...candidate,
+        role: role.title,
+        status: statusType,
+        aiMatch: Math.floor(Math.random() * 15) + 85, // 85-100% match
+      }));
+
+    // Sort by AI match score (highest first)
+    return selectedCandidates.sort((a, b) => b.aiMatch - a.aiMatch);
+  };
+
+  const handleViewCandidates = (role: Role, type: string) => {
+    const candidates = generateMockCandidatesForRole(role, type);
+    setCandidatesView({
+      role,
+      type,
+      candidates,
+    });
+    setShowCandidatesModal(true);
+  };
+
   const DocumentModal = () => {
     const [formData, setFormData] = useState({
       name: "",
@@ -1196,7 +1338,7 @@ We are seeking a talented ${formData.title} to join our ${formData.department} t
 ## Preferred Skills
 ${
   formData.skills
-    ? `��� ${formData.skills
+    ? `• ${formData.skills
         .split(",")
         .map((skill) => skill.trim())
         .join("\n• ")}`
