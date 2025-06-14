@@ -317,7 +317,7 @@ const UPhirePlatform = () => {
     const candidatePool = [
       {
         name: "Sarah Johnson",
-        avatar: "���‍💻",
+        avatar: "👩‍💻",
         email: "sarah.j@email.com",
         location: "London",
         experience: "5 years",
@@ -353,7 +353,7 @@ const UPhirePlatform = () => {
       },
       {
         name: "James Wilson",
-        avatar: "👨���💼",
+        avatar: "👨‍💼",
         email: "james.w@email.com",
         location: "Edinburgh",
         experience: "6 years",
@@ -2633,7 +2633,7 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center p-4 bg-green-50 rounded-lg">
-            <div className="text-3xl mb-2">💰</div>
+            <div className="text-3xl mb-2">���</div>
             <p className="text-lg font-bold text-green-700">Cash Flow Impact</p>
             <p className="text-sm text-gray-600">
               £39k additional working capital available for growth initiatives
@@ -2848,28 +2848,40 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
 
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            Top Performing Roles
+            Upcoming Interviews
           </h3>
-          <div className="space-y-4">
-            {roles.slice(0, 3).map((role) => (
-              <div key={role.id} className="flex justify-between items-center">
-                <div>
-                  <p className="text-sm font-medium text-gray-900">
-                    {role.title}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {role.candidates} candidates
-                  </p>
+          {scheduledInterviews.length === 0 ? (
+            <div className="text-center py-8">
+              <CalendarDays className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+              <p className="text-sm text-gray-500">No interviews scheduled</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {scheduledInterviews.slice(0, 3).map((interview) => (
+                <div
+                  key={interview.id}
+                  className="flex items-center justify-between p-3 bg-blue-50 rounded-lg"
+                >
+                  <div className="flex items-center space-x-3">
+                    <CalendarDays className="w-4 h-4 text-blue-600" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">
+                        {interview.candidate.name}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {interview.type.charAt(0).toUpperCase() +
+                          interview.type.slice(1)}{" "}
+                        Interview
+                      </p>
+                    </div>
+                  </div>
+                  <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                    {interview.status}
+                  </span>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm font-bold text-blue-600">
-                    {role.deiScore}
-                  </p>
-                  <p className="text-xs text-gray-500">DEI Score</p>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
