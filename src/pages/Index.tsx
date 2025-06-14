@@ -4949,15 +4949,17 @@ Ready to join our team? Apply now and let's shape the future together!
                       <div
                         className="fixed w-48 bg-white rounded-lg shadow-2xl border"
                         style={{
-                          position: 'fixed',
-                          top: '60px',
-                          right: '20px',
+                          position: "fixed",
+                          top: "60px",
+                          right: "20px",
                           zIndex: 999999,
-                          isolation: 'isolate'
+                          isolation: "isolate",
                         }}
                       >
                         <div className="p-3 border-b">
-                          <p className="font-medium text-gray-900">{user.name}</p>
+                          <p className="font-medium text-gray-900">
+                            {user.name}
+                          </p>
                           <p className="text-sm text-gray-600">{user.email}</p>
                           <p className="text-xs text-gray-500">{user.role}</p>
                         </div>
@@ -4991,7 +4993,13 @@ Ready to join our team? Apply now and let's shape the future together!
                           <button
                             onClick={() => {
                               setIsLoggedIn(false);
-                              setUser({name: "", email: "", initials: "", role: "", company: ""});
+                              setUser({
+                                name: "",
+                                email: "",
+                                initials: "",
+                                role: "",
+                                company: "",
+                              });
                               setShowUserDropdown(false);
                             }}
                             className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-red-700 hover:bg-red-50"
@@ -5002,8 +5010,9 @@ Ready to join our team? Apply now and let's shape the future together!
                         </div>
                       </div>
                     </>
-                  )
-                ) : (
+                  )}
+                </div>
+              ) : (
                 <button
                   onClick={() => setShowLoginModal(true)}
                   className="flex items-center space-x-2 bg-white bg-opacity-20 backdrop-blur-sm text-white px-4 py-2 rounded-lg hover:bg-opacity-30 border border-white border-opacity-30 transition-all"
