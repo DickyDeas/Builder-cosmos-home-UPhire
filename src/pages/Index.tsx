@@ -6188,7 +6188,7 @@ Ready to join our team? Apply now and let's shape the future together!
                           </button>
                         </div>
                       </div>
-                    </>
+                    </div>
                   )}
                 </div>
               ) : (
