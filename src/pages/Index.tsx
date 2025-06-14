@@ -4330,7 +4330,7 @@ Ready to join our team? Apply now and let's shape the future together!
         case "offer_letter":
           return "📋";
         case "contract":
-          return "����";
+          return "📝";
         case "nda":
           return "🔒";
         case "welcome_package":
@@ -5002,8 +5002,8 @@ Ready to join our team? Apply now and let's shape the future together!
                         </div>
                       </div>
                     </>
-                  )}
-              ) : (
+                  )
+                ) : (
                 <button
                   onClick={() => setShowLoginModal(true)}
                   className="flex items-center space-x-2 bg-white bg-opacity-20 backdrop-blur-sm text-white px-4 py-2 rounded-lg hover:bg-opacity-30 border border-white border-opacity-30 transition-all"
