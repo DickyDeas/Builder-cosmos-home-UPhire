@@ -60,6 +60,15 @@ import {
   CreditCard,
   HelpCircle,
   Factory,
+  Cpu,
+  TrendingDown,
+  Database,
+  Lightbulb,
+  BarChart2,
+  PieChart,
+  LineChart,
+  AlertCircle,
+  Info,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
