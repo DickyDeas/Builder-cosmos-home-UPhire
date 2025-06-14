@@ -118,6 +118,10 @@ const UPhirePlatform = () => {
   const [showInterviewModal, setShowInterviewModal] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [scheduledInterviews, setScheduledInterviews] = useState([]);
+  const [employees, setEmployees] = useState([]);
+  const [showEmployeeModal, setShowEmployeeModal] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [showDocumentUploadModal, setShowDocumentUploadModal] = useState(false);
 
   useEffect(() => {
     const mockRoles: Role[] = [
@@ -1295,7 +1299,7 @@ const UPhirePlatform = () => {
             skills: ["React", "TypeScript", "Microservices", "AWS", "MongoDB"],
             source: "AngelList",
             aiMatch: 93,
-            avatar: "���‍💻",
+            avatar: "👩‍💻",
             email: "sophie.chen@email.com",
           },
           {
