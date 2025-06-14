@@ -49,6 +49,17 @@ import {
   FileCheck,
   UserX,
   Timer,
+  LogIn,
+  LogOut,
+  User,
+  ChevronDown,
+  Edit,
+  Save,
+  Lock,
+  Bell,
+  CreditCard,
+  HelpCircle,
+  Factory,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -163,7 +174,7 @@ const UPhirePlatform = () => {
         shortlisted: 4,
         interviewed: 1,
         created: "2025-06-08",
-        salary: "��45,000 - £65,000",
+        salary: "£45,000 - £65,000",
         priority: "medium",
         deiScore: 78,
       },
