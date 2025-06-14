@@ -3163,6 +3163,209 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
     );
   };
 
+  const EmployeesTab = () => (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-white">Employee Directory</h2>
+          <p className="text-blue-100">
+            Manage your team members and their employment records
+          </p>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          <input
+            type="text"
+            placeholder="Search employees..."
+            className="px-4 py-2 bg-white bg-opacity-90 backdrop-blur-sm border border-white border-opacity-30 rounded-lg focus:ring-2 focus:ring-white focus:border-white"
+          />
+          <button className="flex items-center space-x-2 px-4 py-2 bg-white bg-opacity-20 backdrop-blur-sm text-white border border-white border-opacity-30 rounded-lg hover:bg-opacity-30 transition-all">
+            <Filter size={16} />
+            <span>Filter</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white border-opacity-20">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">
+                Total Employees
+              </p>
+              <p className="text-3xl font-bold text-gray-900">
+                {employees.length}
+              </p>
+            </div>
+            <UserCheck className="h-8 w-8 text-blue-600" />
+          </div>
+        </div>
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white border-opacity-20">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">On Probation</p>
+              <p className="text-3xl font-bold text-gray-900">
+                {employees.filter((emp) => !emp.isProbationComplete).length}
+              </p>
+            </div>
+            <Timer className="h-8 w-8 text-yellow-600" />
+          </div>
+        </div>
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white border-opacity-20">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">
+                Active Employees
+              </p>
+              <p className="text-3xl font-bold text-gray-900">
+                {employees.filter((emp) => emp.status === "active").length}
+              </p>
+            </div>
+            <CheckCircle className="h-8 w-8 text-green-600" />
+          </div>
+        </div>
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white border-opacity-20">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Departments</p>
+              <p className="text-3xl font-bold text-gray-900">
+                {new Set(employees.map((emp) => emp.department)).size}
+              </p>
+            </div>
+            <Building className="h-8 w-8 text-purple-600" />
+          </div>
+        </div>
+      </div>
+
+      {/* Employee List */}
+      <div className="grid grid-cols-1 gap-4">
+        {employees.map((employee) => (
+          <div
+            key={employee.id}
+            className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6 hover:shadow-xl transition-shadow cursor-pointer"
+            onClick={() => {
+              setSelectedEmployee(employee);
+              setShowEmployeeModal(true);
+            }}
+          >
+            <div className="flex flex-col lg:flex-row items-start justify-between gap-4">
+              <div className="flex items-start space-x-4 flex-1">
+                <div className="text-3xl">{employee.avatar}</div>
+                <div className="flex-1">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      {employee.name}
+                    </h3>
+                    <span
+                      className={cn(
+                        "px-2 py-1 rounded-full text-xs font-medium",
+                        getStatusColor(employee.status),
+                      )}
+                    >
+                      {employee.status.charAt(0).toUpperCase() +
+                        employee.status.slice(1)}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-2">
+                    {employee.position}
+                  </p>
+                  <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+                    <span className="flex items-center space-x-1">
+                      <Building size={14} />
+                      <span>{employee.department}</span>
+                    </span>
+                    <span className="flex items-center space-x-1">
+                      <MapPin size={14} />
+                      <span>{employee.location}</span>
+                    </span>
+                    <span className="flex items-center space-x-1">
+                      <Calendar size={14} />
+                      <span>Started {employee.startDate}</span>
+                    </span>
+                    <span className="flex items-center space-x-1">
+                      <Briefcase size={14} />
+                      <span>{calculateTenure(employee.startDate)} tenure</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col lg:flex-row items-start lg:items-center gap-4">
+                {/* Probation Status */}
+                <div className="text-center min-w-[120px]">
+                  <div className="flex items-center justify-center space-x-1 mb-1">
+                    {employee.isProbationComplete ? (
+                      <CheckCircle className="w-4 h-4 text-green-600" />
+                    ) : (
+                      <Timer className="w-4 h-4 text-yellow-600" />
+                    )}
+                    <p className="text-sm font-medium text-gray-900">
+                      Probation
+                    </p>
+                  </div>
+                  <p
+                    className={cn(
+                      "text-xs",
+                      employee.isProbationComplete
+                        ? "text-green-600"
+                        : "text-yellow-600",
+                    )}
+                  >
+                    {employee.isProbationComplete
+                      ? "Complete"
+                      : calculateProbationRemaining(employee.probationEndDate)}
+                  </p>
+                </div>
+
+                {/* Documents Count */}
+                <div className="text-center min-w-[100px]">
+                  <p className="text-2xl font-bold text-blue-600">
+                    {employee.documents.length}
+                  </p>
+                  <p className="text-xs text-gray-500">Documents</p>
+                </div>
+
+                {/* Quick Actions */}
+                <div className="flex space-x-2">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // Handle email action
+                    }}
+                    className="flex items-center space-x-1 px-3 py-2 text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors text-sm"
+                  >
+                    <Mail size={14} />
+                    <span>Email</span>
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedEmployee(employee);
+                      setShowDocumentUploadModal(true);
+                    }}
+                    className="flex items-center space-x-1 px-3 py-2 text-green-600 bg-green-50 rounded-lg hover:bg-green-100 transition-colors text-sm"
+                  >
+                    <FileText size={14} />
+                    <span>Add Doc</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {employees.length === 0 && (
+        <div className="text-center py-12">
+          <UserCheck className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+          <p className="text-gray-600">
+            No employees found. Hire some candidates to get started!
+          </p>
+        </div>
+      )}
+    </div>
+  );
+
   const SavingsTab = () => (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
