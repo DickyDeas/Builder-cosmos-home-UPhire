@@ -171,6 +171,13 @@ const UPhirePlatform = () => {
     values: "",
   });
 
+  // ML Predictions and Market Data
+  const [rolePredicton, setRolePrediction] = useState(null);
+  const [marketData, setMarketData] = useState({});
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [showPredictionModal, setShowPredictionModal] = useState(false);
+  const [currentPrediction, setCurrentPrediction] = useState(null);
+
   useEffect(() => {
     const mockRoles: Role[] = [
       {
@@ -4265,7 +4272,7 @@ Ready to join our team? Apply now and let's shape the future together!
                   Cost per Hire (UPhire)
                 </span>
                 <span className="text-sm font-medium text-green-600">
-                  £1,114
+                  ��1,114
                 </span>
               </div>
               <div className="flex justify-between items-center">
