@@ -2390,25 +2390,49 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
-              <div className="text-center">
-                <p className="text-2xl font-bold text-blue-600">
+              <button
+                onClick={() => handleViewCandidates(role, "candidates")}
+                className="text-center p-3 rounded-lg hover:bg-blue-50 transition-colors group cursor-pointer"
+              >
+                <p className="text-2xl font-bold text-blue-600 group-hover:text-blue-700">
                   {role.candidates}
                 </p>
-                <p className="text-xs text-gray-500">Candidates</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-yellow-600">
+                <p className="text-xs text-gray-500 group-hover:text-blue-600">
+                  Candidates
+                </p>
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                  <ChevronRight className="w-4 h-4 text-blue-600 mx-auto mt-1" />
+                </div>
+              </button>
+              <button
+                onClick={() => handleViewCandidates(role, "shortlisted")}
+                className="text-center p-3 rounded-lg hover:bg-yellow-50 transition-colors group cursor-pointer"
+              >
+                <p className="text-2xl font-bold text-yellow-600 group-hover:text-yellow-700">
                   {role.shortlisted}
                 </p>
-                <p className="text-xs text-gray-500">Shortlisted</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-green-600">
+                <p className="text-xs text-gray-500 group-hover:text-yellow-600">
+                  Shortlisted
+                </p>
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                  <ChevronRight className="w-4 h-4 text-yellow-600 mx-auto mt-1" />
+                </div>
+              </button>
+              <button
+                onClick={() => handleViewCandidates(role, "interviewed")}
+                className="text-center p-3 rounded-lg hover:bg-green-50 transition-colors group cursor-pointer"
+              >
+                <p className="text-2xl font-bold text-green-600 group-hover:text-green-700">
                   {role.interviewed}
                 </p>
-                <p className="text-xs text-gray-500">Interviewed</p>
-              </div>
-              <div className="text-center">
+                <p className="text-xs text-gray-500 group-hover:text-green-600">
+                  Interviewed
+                </p>
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                  <ChevronRight className="w-4 h-4 text-green-600 mx-auto mt-1" />
+                </div>
+              </button>
+              <div className="text-center p-3">
                 <p className="text-2xl font-bold text-purple-600">
                   {role.deiScore}
                 </p>
