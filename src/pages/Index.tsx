@@ -663,6 +663,75 @@ const UPhirePlatform = () => {
     setShowCandidatesModal(true);
   };
 
+  const calculateTenure = (startDate: string) => {
+    const start = new Date(startDate);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - start.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 30) {
+      return `${diffDays} days`;
+    } else if (diffDays < 365) {
+      const months = Math.floor(diffDays / 30);
+      return `${months} month${months > 1 ? "s" : ""}`;
+    } else {
+      const years = Math.floor(diffDays / 365);
+      const remainingMonths = Math.floor((diffDays % 365) / 30);
+      return `${years} year${years > 1 ? "s" : ""}${remainingMonths > 0 ? `, ${remainingMonths} month${remainingMonths > 1 ? "s" : ""}` : ""}`;
+    }
+  };
+
+  const calculateProbationRemaining = (probationEndDate: string) => {
+    const end = new Date(probationEndDate);
+    const now = new Date();
+    const diffTime = end.getTime() - now.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays <= 0) {
+      return "Complete";
+    } else if (diffDays < 30) {
+      return `${diffDays} days remaining`;
+    } else {
+      const months = Math.floor(diffDays / 30);
+      const remainingDays = diffDays % 30;
+      return `${months} month${months > 1 ? "s" : ""}${remainingDays > 0 ? `, ${remainingDays} day${remainingDays > 1 ? "s" : ""}` : ""} remaining`;
+    }
+  };
+
+  const getDocumentIcon = (type: string) => {
+    switch (type) {
+      case "contract":
+        return "📝";
+      case "medical":
+        return "🏥";
+      case "disciplinary":
+        return "⚠️";
+      case "performance":
+        return "📊";
+      case "training":
+        return "🎓";
+      case "legal":
+        return "⚖️";
+      default:
+        return "📄";
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "active":
+        return "bg-green-100 text-green-800";
+      case "probation":
+        return "bg-yellow-100 text-yellow-800";
+      case "suspended":
+        return "bg-red-100 text-red-800";
+      case "notice":
+        return "bg-orange-100 text-orange-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
   const DocumentModal = () => {
     const [formData, setFormData] = useState({
       name: "",
