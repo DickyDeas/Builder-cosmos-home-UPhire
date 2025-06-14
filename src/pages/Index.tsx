@@ -94,6 +94,12 @@ const UPhirePlatform = () => {
     topCandidates: [],
     progress: 0,
   });
+  const [showCandidatesModal, setShowCandidatesModal] = useState(false);
+  const [candidatesView, setCandidatesView] = useState({
+    role: null,
+    type: "", // "candidates", "shortlisted", "interviewed"
+    candidates: [],
+  });
 
   useEffect(() => {
     const mockRoles: Role[] = [
@@ -1669,7 +1675,7 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
                   </p>
                 </div>
                 <span className="text-lg font-bold text-purple-600">
-                  £7,800
+                  ��7,800
                 </span>
               </div>
             </div>
