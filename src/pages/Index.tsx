@@ -3996,14 +3996,55 @@ Ready to join our team? Apply now and let's shape the future together!
                 </div>
 
                 <div className="flex justify-between items-center pt-4">
-                  <button
-                    type="button"
-                    onClick={() => setActiveModalTab("description")}
-                    className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center space-x-1"
-                  >
-                    <Zap size={16} />
-                    <span>Generate Job Description</span>
-                  </button>
+                  <div className="flex space-x-3">
+                    <button
+                      type="button"
+                      onClick={() => setActiveModalTab("description")}
+                      className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center space-x-1"
+                    >
+                      <Zap size={16} />
+                      <span>Generate Job Description</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        if (!formData.title || !formData.department) {
+                          alert(
+                            "Please fill in job title and department first.",
+                          );
+                          return;
+                        }
+                        setIsAnalyzing(true);
+                        const market = await fetchMarketData(
+                          formData.title,
+                          formData.location,
+                          formData.department,
+                        );
+                        setMarketData(market);
+                        const prediction = await predictRoleSuccess(
+                          formData,
+                          market,
+                        );
+                        setCurrentPrediction(prediction);
+                        setIsAnalyzing(false);
+                        setShowPredictionModal(true);
+                      }}
+                      disabled={isAnalyzing}
+                      className={cn(
+                        "text-purple-600 hover:text-purple-800 text-sm font-medium flex items-center space-x-1",
+                        isAnalyzing && "opacity-50 cursor-not-allowed",
+                      )}
+                    >
+                      {isAnalyzing ? (
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-purple-600"></div>
+                      ) : (
+                        <Brain size={16} />
+                      )}
+                      <span>
+                        {isAnalyzing ? "Analyzing..." : "AI Success Prediction"}
+                      </span>
+                    </button>
+                  </div>
                   <div className="flex space-x-3">
                     <button
                       type="button"
