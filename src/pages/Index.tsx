@@ -369,7 +369,7 @@ const UPhirePlatform = () => {
         id: 3,
         name: "Emma Rodriguez",
         email: "emma.r@company.com",
-        avatar: "👩‍���",
+        avatar: "👩‍🎨",
         position: "UX Designer",
         department: "Design",
         startDate: "2024-11-01",
@@ -632,7 +632,7 @@ const UPhirePlatform = () => {
       },
       {
         name: "James Wilson",
-        avatar: "👨‍💼",
+        avatar: "����‍💼",
         email: "james.w@email.com",
         location: "Edinburgh",
         experience: "6 years",
@@ -3553,6 +3553,388 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
                       Create Role & Finish
                     </button>
                   </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const MyBusinessTab = () => {
+    const [isEditing, setIsEditing] = useState(false);
+    const [editForm, setEditForm] = useState(businessProfile);
+
+    const handleSave = () => {
+      setBusinessProfile(editForm);
+      setIsEditing(false);
+      alert(
+        "Business profile updated! This information will enhance AI job descriptions.",
+      );
+    };
+
+    const handleCancel = () => {
+      setEditForm(businessProfile);
+      setIsEditing(false);
+    };
+
+    return (
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h2 className="text-2xl font-bold text-white">My Business</h2>
+            <p className="text-blue-100">
+              Manage your company information to enhance AI-powered job
+              descriptions
+            </p>
+          </div>
+          <button
+            onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
+            className="flex items-center space-x-2 px-4 py-2 bg-white bg-opacity-20 backdrop-blur-sm text-white border border-white border-opacity-30 rounded-lg hover:bg-opacity-30 transition-all"
+          >
+            {isEditing ? <Save size={16} /> : <Edit size={16} />}
+            <span>{isEditing ? "Save Changes" : "Edit Profile"}</span>
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Company Overview */}
+          <div className="lg:col-span-2 space-y-6">
+            <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Company Overview
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Company Name
+                  </label>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={editForm.companyName}
+                      onChange={(e) =>
+                        setEditForm({
+                          ...editForm,
+                          companyName: e.target.value,
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  ) : (
+                    <p className="text-gray-900 font-medium">
+                      {businessProfile.companyName}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Industry
+                  </label>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={editForm.industry}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, industry: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  ) : (
+                    <p className="text-gray-900 font-medium">
+                      {businessProfile.industry}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Location
+                  </label>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={editForm.location}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, location: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  ) : (
+                    <p className="text-gray-900 font-medium">
+                      {businessProfile.location}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Company Size
+                  </label>
+                  {isEditing ? (
+                    <select
+                      value={editForm.size}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, size: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      <option value="">Select size</option>
+                      <option value="1-10 employees">1-10 employees</option>
+                      <option value="11-50 employees">11-50 employees</option>
+                      <option value="51-100 employees">51-100 employees</option>
+                      <option value="101-500 employees">
+                        101-500 employees
+                      </option>
+                      <option value="500+ employees">500+ employees</option>
+                    </select>
+                  ) : (
+                    <p className="text-gray-900 font-medium">
+                      {businessProfile.size}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Founded
+                  </label>
+                  {isEditing ? (
+                    <input
+                      type="number"
+                      value={editForm.foundedYear}
+                      onChange={(e) =>
+                        setEditForm({
+                          ...editForm,
+                          foundedYear: e.target.value,
+                        })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="YYYY"
+                    />
+                  ) : (
+                    <p className="text-gray-900 font-medium">
+                      {businessProfile.foundedYear}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Website
+                  </label>
+                  {isEditing ? (
+                    <input
+                      type="url"
+                      value={editForm.website}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, website: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="https://..."
+                    />
+                  ) : (
+                    <a
+                      href={businessProfile.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 font-medium"
+                    >
+                      {businessProfile.website}
+                    </a>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Company Description
+                </label>
+                {isEditing ? (
+                  <textarea
+                    rows={4}
+                    value={editForm.description}
+                    onChange={(e) =>
+                      setEditForm({ ...editForm, description: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Tell us about your company..."
+                  />
+                ) : (
+                  <p className="text-gray-700">{businessProfile.description}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Culture & Values */}
+            <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Culture & Values
+              </h3>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Mission Statement
+                  </label>
+                  {isEditing ? (
+                    <textarea
+                      rows={3}
+                      value={editForm.mission}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, mission: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="What is your company's mission?"
+                    />
+                  ) : (
+                    <p className="text-gray-700">{businessProfile.mission}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Company Values
+                  </label>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={editForm.values}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, values: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="Innovation, Integrity, Collaboration..."
+                    />
+                  ) : (
+                    <p className="text-gray-700">{businessProfile.values}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Company Culture
+                  </label>
+                  {isEditing ? (
+                    <textarea
+                      rows={3}
+                      value={editForm.culture}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, culture: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="Describe your workplace culture..."
+                    />
+                  ) : (
+                    <p className="text-gray-700">{businessProfile.culture}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Benefits & Perks
+                  </label>
+                  {isEditing ? (
+                    <textarea
+                      rows={4}
+                      value={editForm.benefits}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, benefits: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="List your employee benefits and perks..."
+                    />
+                  ) : (
+                    <p className="text-gray-700">{businessProfile.benefits}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* AI Enhancement Panel */}
+          <div className="space-y-6">
+            <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg p-6 border-2 border-blue-200">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                🤖 AI Enhancement
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span className="text-sm text-gray-700">
+                    Company description
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span className="text-sm text-gray-700">
+                    Culture & values
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span className="text-sm text-gray-700">
+                    Benefits package
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                  <span className="text-sm text-gray-700">
+                    Location details
+                  </span>
+                </div>
+              </div>
+              <p className="text-sm text-gray-600 mt-4">
+                This information helps our AI create more personalized and
+                compelling job descriptions that reflect your unique company
+                culture.
+              </p>
+            </div>
+
+            <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Profile Completeness
+              </h3>
+              <div className="space-y-3">
+                <div className="flex justify-between text-sm">
+                  <span>Profile Complete</span>
+                  <span className="font-medium">85%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div
+                    className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full"
+                    style={{ width: "85%" }}
+                  ></div>
+                </div>
+                <p className="text-xs text-gray-600">
+                  A complete profile generates better job descriptions
+                </p>
+              </div>
+            </div>
+
+            {isEditing && (
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <p className="text-sm text-yellow-800">
+                  <strong>Tip:</strong> The more detailed your business
+                  information, the better our AI can tailor job descriptions to
+                  attract the right candidates.
+                </p>
+                <div className="mt-3 flex space-x-2">
+                  <button
+                    onClick={handleSave}
+                    className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700"
+                  >
+                    Save Changes
+                  </button>
+                  <button
+                    onClick={handleCancel}
+                    className="px-3 py-1 bg-gray-600 text-white rounded text-sm hover:bg-gray-700"
+                  >
+                    Cancel
+                  </button>
                 </div>
               </div>
             )}
