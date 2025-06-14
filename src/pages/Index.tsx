@@ -256,6 +256,7 @@ const UPhirePlatform = () => {
     { id: "dashboard", label: "Dashboard", icon: BarChart3 },
     { id: "roles", label: "Roles", icon: Building },
     { id: "candidates", label: "Candidates", icon: Users },
+    { id: "employees", label: "Employees", icon: UserCheck },
     { id: "savings", label: "Savings", icon: TrendingUp },
     { id: "documents", label: "Documents", icon: MessageSquare },
     { id: "analytics", label: "Analytics", icon: BarChart3 },
