@@ -632,7 +632,7 @@ const UPhirePlatform = () => {
       },
       {
         name: "James Wilson",
-        avatar: "����‍💼",
+        avatar: "👨‍💼",
         email: "james.w@email.com",
         location: "Edinburgh",
         experience: "6 years",
@@ -4915,13 +4915,93 @@ Ready to join our mission? Apply now and let's shape the future of recruitment t
               })}
             </nav>
 
-            {/* Mobile menu button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden text-white p-2"
-            >
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            {/* User Profile / Login */}
+            <div className="flex items-center space-x-4">
+              {isLoggedIn ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setShowUserDropdown(!showUserDropdown)}
+                    className="flex items-center space-x-2 text-white hover:bg-white hover:bg-opacity-10 px-3 py-2 rounded-lg transition-all"
+                  >
+                    <div className="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-sm font-bold">
+                      {user.initials}
+                    </div>
+                    <ChevronDown size={16} />
+                  </button>
+
+                  {showUserDropdown && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border z-50">
+                      <div className="p-3 border-b">
+                        <p className="font-medium text-gray-900">{user.name}</p>
+                        <p className="text-sm text-gray-600">{user.email}</p>
+                        <p className="text-xs text-gray-500">{user.role}</p>
+                      </div>
+                      <div className="py-1">
+                        <button
+                          onClick={() => {
+                            setShowUserDropdown(false);
+                            setShowSettingsModal(true);
+                          }}
+                          className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          <Settings size={16} />
+                          <span>Settings</span>
+                        </button>
+                        <button
+                          onClick={() => {
+                            setShowUserDropdown(false);
+                            // Navigate to business tab
+                            setActiveTab("business");
+                          }}
+                          className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          <Factory size={16} />
+                          <span>My Business</span>
+                        </button>
+                        <button className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          <HelpCircle size={16} />
+                          <span>Help & Support</span>
+                        </button>
+                        <div className="border-t my-1"></div>
+                        <button
+                          onClick={() => {
+                            setIsLoggedIn(false);
+                            setUser({
+                              name: "",
+                              email: "",
+                              initials: "",
+                              role: "",
+                              company: "",
+                            });
+                            setShowUserDropdown(false);
+                          }}
+                          className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-red-700 hover:bg-red-50"
+                        >
+                          <LogOut size={16} />
+                          <span>Sign Out</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button
+                  onClick={() => setShowLoginModal(true)}
+                  className="flex items-center space-x-2 bg-white bg-opacity-20 backdrop-blur-sm text-white px-4 py-2 rounded-lg hover:bg-opacity-30 border border-white border-opacity-30 transition-all"
+                >
+                  <LogIn size={16} />
+                  <span>Sign In</span>
+                </button>
+              )}
+
+              {/* Mobile menu button */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="lg:hidden text-white p-2"
+              >
+                {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </div>
 
