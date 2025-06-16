@@ -132,7 +132,7 @@ const NewRoleModal = ({
   showPredictionModal,
   setShowPredictionModal,
   fetchMarketData,
-  predictRoleSuccess,
+  predictRoleSuccess
 }) => {
   const [activeModalTab, setActiveModalTab] = useState("details");
   const [isGenerating, setIsGenerating] = useState(false);
@@ -326,7 +326,9 @@ Ready to make an impact? Apply now and join our team!`;
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
         <div className="flex justify-between items-center p-6 border-b">
-          <h2 className="text-2xl font-bold text-gray-900">Create New Role</h2>
+          <h2 className="text-2xl font-bold text-gray-900">
+            Create New Role
+          </h2>
           <button
             onClick={() => {
               setShowNewRoleModal(false);
@@ -378,10 +380,7 @@ Ready to make an impact? Apply now and join our team!`;
                     required
                     value={roleFormData.title}
                     onChange={(e) =>
-                      setRoleFormData({
-                        ...roleFormData,
-                        title: e.target.value,
-                      })
+                      setRoleFormData({ ...roleFormData, title: e.target.value })
                     }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="e.g. Senior Software Engineer"
@@ -396,10 +395,7 @@ Ready to make an impact? Apply now and join our team!`;
                     required
                     value={roleFormData.department}
                     onChange={(e) =>
-                      setRoleFormData({
-                        ...roleFormData,
-                        department: e.target.value,
-                      })
+                      setRoleFormData({ ...roleFormData, department: e.target.value })
                     }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
@@ -422,10 +418,7 @@ Ready to make an impact? Apply now and join our team!`;
                     required
                     value={roleFormData.location}
                     onChange={(e) =>
-                      setRoleFormData({
-                        ...roleFormData,
-                        location: e.target.value,
-                      })
+                      setRoleFormData({ ...roleFormData, location: e.target.value })
                     }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="e.g. London, Remote, Hybrid"
@@ -441,10 +434,7 @@ Ready to make an impact? Apply now and join our team!`;
                     required
                     value={roleFormData.salary}
                     onChange={(e) =>
-                      setRoleFormData({
-                        ...roleFormData,
-                        salary: e.target.value,
-                      })
+                      setRoleFormData({ ...roleFormData, salary: e.target.value })
                     }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="e.g. £50,000 - £70,000"
@@ -459,10 +449,7 @@ Ready to make an impact? Apply now and join our team!`;
                     type="text"
                     value={roleFormData.experience}
                     onChange={(e) =>
-                      setRoleFormData({
-                        ...roleFormData,
-                        experience: e.target.value,
-                      })
+                      setRoleFormData({ ...roleFormData, experience: e.target.value })
                     }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="e.g. 3-5 years"
@@ -477,10 +464,7 @@ Ready to make an impact? Apply now and join our team!`;
                     type="text"
                     value={roleFormData.skills}
                     onChange={(e) =>
-                      setRoleFormData({
-                        ...roleFormData,
-                        skills: e.target.value,
-                      })
+                      setRoleFormData({ ...roleFormData, skills: e.target.value })
                     }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="e.g. React, TypeScript, Node.js"
@@ -496,10 +480,7 @@ Ready to make an impact? Apply now and join our team!`;
                   rows={3}
                   value={roleFormData.benefits}
                   onChange={(e) =>
-                    setRoleFormData({
-                      ...roleFormData,
-                      benefits: e.target.value,
-                    })
+                    setRoleFormData({ ...roleFormData, benefits: e.target.value })
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="List key benefits and perks..."
@@ -520,7 +501,9 @@ Ready to make an impact? Apply now and join our team!`;
                     type="button"
                     onClick={async () => {
                       if (!roleFormData.title || !roleFormData.department) {
-                        alert("Please fill in job title and department first.");
+                        alert(
+                          "Please fill in job title and department first.",
+                        );
                         return;
                       }
                       setIsAnalyzing(true);
@@ -584,7 +567,8 @@ Ready to make an impact? Apply now and join our team!`;
                     AI-Generated Job Description
                   </h3>
                   <p className="text-sm text-gray-600">
-                    Create a tailored job description based on your role details
+                    Create a tailored job description based on your role
+                    details
                   </p>
                 </div>
                 <button
@@ -685,7 +669,9 @@ Ready to make an impact? Apply now and join our team!`;
                   )}
                 >
                   <Share2 size={16} />
-                  <span>{isPosting ? "Publishing..." : "Publish Advert"}</span>
+                  <span>
+                    {isPosting ? "Publishing..." : "Publish Advert"}
+                  </span>
                 </button>
               </div>
 
@@ -928,7 +914,7 @@ const UPhirePlatform = () => {
     status: "all", // all, active, archived, outreach
     source: "all", // all, direct, outreach, referral, etc.
     dateRange: "all", // all, last30days, last90days, lastyear
-    skills: [],
+    skills: []
   });
   const [isSearching, setIsSearching] = useState(false);
 
@@ -1296,33 +1282,14 @@ const UPhirePlatform = () => {
         applied: "2024-08-15",
         avatar: "👩‍💻",
         applicationHistory: [
-          {
-            role: "Senior Frontend Developer",
-            date: "2024-08-15",
-            status: "rejected",
-            reason: "Position filled",
-          },
-          {
-            role: "Frontend Lead",
-            date: "2024-03-20",
-            status: "withdrew",
-            reason: "Accepted other offer",
-          },
+          { role: "Senior Frontend Developer", date: "2024-08-15", status: "rejected", reason: "Position filled" },
+          { role: "Frontend Lead", date: "2024-03-20", status: "withdrew", reason: "Accepted other offer" }
         ],
         outreachHistory: [
-          {
-            date: "2024-08-10",
-            type: "LinkedIn message",
-            response: "interested",
-          },
-          {
-            date: "2024-03-15",
-            type: "Email outreach",
-            response: "interested",
-          },
+          { date: "2024-08-10", type: "LinkedIn message", response: "interested" },
+          { date: "2024-03-15", type: "Email outreach", response: "interested" }
         ],
-        notes:
-          "Strong candidate, good cultural fit. Keep for future opportunities.",
+        notes: "Strong candidate, good cultural fit. Keep for future opportunities."
       },
       {
         id: 202,
@@ -1331,13 +1298,7 @@ const UPhirePlatform = () => {
         email: "robert.taylor@email.com",
         location: "Manchester",
         experience: "8 years",
-        skills: [
-          "Product Strategy",
-          "Agile",
-          "Analytics",
-          "Leadership",
-          "Stakeholder Management",
-        ],
+        skills: ["Product Strategy", "Agile", "Analytics", "Leadership", "Stakeholder Management"],
         aiMatch: 89,
         status: "outreach_contacted",
         source: "AI Outreach",
@@ -1346,14 +1307,9 @@ const UPhirePlatform = () => {
         applicationHistory: [],
         outreachHistory: [
           { date: "2024-11-15", type: "AI Email", response: "no_response" },
-          {
-            date: "2024-11-18",
-            type: "LinkedIn follow-up",
-            response: "interested",
-          },
+          { date: "2024-11-18", type: "LinkedIn follow-up", response: "interested" }
         ],
-        notes:
-          "Contacted through AI recruitment system. Expressed interest in remote opportunities.",
+        notes: "Contacted through AI recruitment system. Expressed interest in remote opportunities."
       },
       {
         id: 203,
@@ -1362,29 +1318,17 @@ const UPhirePlatform = () => {
         email: "lisa.wong@email.com",
         location: "Birmingham",
         experience: "4 years",
-        skills: [
-          "Figma",
-          "Adobe XD",
-          "User Research",
-          "Prototyping",
-          "Design Systems",
-        ],
+        skills: ["Figma", "Adobe XD", "User Research", "Prototyping", "Design Systems"],
         aiMatch: 86,
         status: "hired_elsewhere",
         source: "Direct Application",
         applied: "2024-09-22",
         avatar: "👩‍🎨",
         applicationHistory: [
-          {
-            role: "UX Designer",
-            date: "2024-09-22",
-            status: "hired_elsewhere",
-            reason: "Accepted offer at competitor",
-          },
+          { role: "UX Designer", date: "2024-09-22", status: "hired_elsewhere", reason: "Accepted offer at competitor" }
         ],
         outreachHistory: [],
-        notes:
-          "Excellent portfolio. Hired by competitor but maintain relationship.",
+        notes: "Excellent portfolio. Hired by competitor but maintain relationship."
       },
       {
         id: 204,
@@ -1400,21 +1344,12 @@ const UPhirePlatform = () => {
         applied: "2024-07-10",
         avatar: "👨‍💻",
         applicationHistory: [
-          {
-            role: "Senior Backend Developer",
-            date: "2024-07-10",
-            status: "rejected",
-            reason: "Salary expectations too high",
-          },
+          { role: "Senior Backend Developer", date: "2024-07-10", status: "rejected", reason: "Salary expectations too high" }
         ],
         outreachHistory: [
-          {
-            date: "2024-07-05",
-            type: "Stack Overflow message",
-            response: "interested",
-          },
+          { date: "2024-07-05", type: "Stack Overflow message", response: "interested" }
         ],
-        notes: "High salary expectations (£95k+). Consider for senior roles.",
+        notes: "High salary expectations (£95k+). Consider for senior roles."
       },
       {
         id: 205,
@@ -1423,13 +1358,7 @@ const UPhirePlatform = () => {
         email: "amanda.foster@email.com",
         location: "Remote",
         experience: "7 years",
-        skills: [
-          "Python",
-          "Machine Learning",
-          "TensorFlow",
-          "SQL",
-          "Statistics",
-        ],
+        skills: ["Python", "Machine Learning", "TensorFlow", "SQL", "Statistics"],
         aiMatch: 95,
         status: "outreach_interested",
         source: "AI Outreach",
@@ -1438,14 +1367,9 @@ const UPhirePlatform = () => {
         applicationHistory: [],
         outreachHistory: [
           { date: "2024-11-20", type: "AI Email", response: "very_interested" },
-          {
-            date: "2024-11-22",
-            type: "Phone call",
-            response: "scheduled_interview",
-          },
+          { date: "2024-11-22", type: "Phone call", response: "scheduled_interview" }
         ],
-        notes:
-          "AI-sourced candidate. Very strong profile. Interview scheduled.",
+        notes: "AI-sourced candidate. Very strong profile. Interview scheduled."
       },
       {
         id: 206,
@@ -1461,15 +1385,10 @@ const UPhirePlatform = () => {
         applied: "2024-05-30",
         avatar: "👨‍💻",
         applicationHistory: [
-          {
-            role: "DevOps Engineer",
-            date: "2024-05-30",
-            status: "rejected",
-            reason: "Cultural fit concerns",
-          },
+          { role: "DevOps Engineer", date: "2024-05-30", status: "rejected", reason: "Cultural fit concerns" }
         ],
         outreachHistory: [],
-        notes: "Not a good cultural fit. Professional concerns noted.",
+        notes: "Not a good cultural fit. Professional concerns noted."
       },
       {
         id: 207,
@@ -1478,41 +1397,20 @@ const UPhirePlatform = () => {
         email: "rachel.green@email.com",
         location: "London",
         experience: "5 years",
-        skills: [
-          "Digital Marketing",
-          "SEO",
-          "Content Strategy",
-          "Analytics",
-          "Brand Management",
-        ],
+        skills: ["Digital Marketing", "SEO", "Content Strategy", "Analytics", "Brand Management"],
         aiMatch: 83,
         status: "archived",
         source: "LinkedIn",
         applied: "2024-06-15",
         avatar: "👩‍💼",
         applicationHistory: [
-          {
-            role: "Marketing Manager",
-            date: "2024-06-15",
-            status: "rejected",
-            reason: "Overqualified",
-          },
-          {
-            role: "Senior Marketing Manager",
-            date: "2024-04-10",
-            status: "withdrawn",
-            reason: "Personal reasons",
-          },
+          { role: "Marketing Manager", date: "2024-06-15", status: "rejected", reason: "Overqualified" },
+          { role: "Senior Marketing Manager", date: "2024-04-10", status: "withdrawn", reason: "Personal reasons" }
         ],
         outreachHistory: [
-          {
-            date: "2024-04-05",
-            type: "LinkedIn message",
-            response: "interested",
-          },
+          { date: "2024-04-05", type: "LinkedIn message", response: "interested" }
         ],
-        notes:
-          "Strong candidate but overqualified for current roles. Consider for senior positions.",
+        notes: "Strong candidate but overqualified for current roles. Consider for senior positions."
       },
       {
         id: 208,
@@ -1529,19 +1427,11 @@ const UPhirePlatform = () => {
         avatar: "👨‍💻",
         applicationHistory: [],
         outreachHistory: [
-          {
-            date: "2024-10-25",
-            type: "GitHub message",
-            response: "no_response",
-          },
-          {
-            date: "2024-11-01",
-            type: "Email follow-up",
-            response: "no_response",
-          },
+          { date: "2024-10-25", type: "GitHub message", response: "no_response" },
+          { date: "2024-11-01", type: "Email follow-up", response: "no_response" }
         ],
-        notes: "Strong GitHub profile but not responsive to outreach.",
-      },
+        notes: "Strong GitHub profile but not responsive to outreach."
+      }
     ];
 
     setRoles(mockRoles);
@@ -2247,62 +2137,36 @@ const UPhirePlatform = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "active":
-        return "bg-green-100 text-green-800";
-      case "probation":
-        return "bg-yellow-100 text-yellow-800";
-      case "suspended":
-        return "bg-red-100 text-red-800";
-      case "notice":
-        return "bg-orange-100 text-orange-800";
-      default:
-        return "bg-gray-100 text-gray-800";
+      case "active": return "bg-green-100 text-green-800";
+      case "probation": return "bg-yellow-100 text-yellow-800";
+      case "suspended": return "bg-red-100 text-red-800";
+      case "notice": return "bg-orange-100 text-orange-800";
+      default: return "bg-gray-100 text-gray-800";
     }
   };
 
   // Enhanced Candidate Search Functions
   const getCandidateStatusColor = (status: string) => {
     switch (status) {
-      case "applied":
-        return "bg-blue-100 text-blue-800";
-      case "shortlisted":
-        return "bg-yellow-100 text-yellow-800";
-      case "interviewed":
-        return "bg-green-100 text-green-800";
-      case "hired":
-        return "bg-purple-100 text-purple-800";
-      case "rejected":
-        return "bg-red-100 text-red-800";
-      case "archived":
-        return "bg-gray-100 text-gray-800";
-      case "outreach_contacted":
-        return "bg-cyan-100 text-cyan-800";
-      case "outreach_interested":
-        return "bg-emerald-100 text-emerald-800";
-      case "outreach_no_response":
-        return "bg-orange-100 text-orange-800";
-      case "hired_elsewhere":
-        return "bg-indigo-100 text-indigo-800";
-      case "blacklisted":
-        return "bg-red-200 text-red-900";
-      default:
-        return "bg-gray-100 text-gray-800";
+      case "applied": return "bg-blue-100 text-blue-800";
+      case "shortlisted": return "bg-yellow-100 text-yellow-800";
+      case "interviewed": return "bg-green-100 text-green-800";
+      case "hired": return "bg-purple-100 text-purple-800";
+      case "rejected": return "bg-red-100 text-red-800";
+      case "archived": return "bg-gray-100 text-gray-800";
+      case "outreach_contacted": return "bg-cyan-100 text-cyan-800";
+      case "outreach_interested": return "bg-emerald-100 text-emerald-800";
+      case "outreach_no_response": return "bg-orange-100 text-orange-800";
+      case "hired_elsewhere": return "bg-indigo-100 text-indigo-800";
+      case "blacklisted": return "bg-red-200 text-red-900";
+      default: return "bg-gray-100 text-gray-800";
     }
   };
 
   const searchCandidates = (query, filters) => {
-    if (
-      !query &&
-      filters.status === "all" &&
-      filters.source === "all" &&
-      filters.dateRange === "all" &&
-      filters.skills.length === 0
-    ) {
-      return allCandidates.filter(
-        (candidate) =>
-          candidate.status === "applied" ||
-          candidate.status === "shortlisted" ||
-          candidate.status === "interviewed",
+    if (!query && filters.status === "all" && filters.source === "all" && filters.dateRange === "all" && filters.skills.length === 0) {
+      return allCandidates.filter(candidate =>
+        candidate.status === "applied" || candidate.status === "shortlisted" || candidate.status === "interviewed"
       );
     }
 
@@ -2311,73 +2175,55 @@ const UPhirePlatform = () => {
     // Text search across multiple fields
     if (query) {
       const searchLower = query.toLowerCase();
-      filtered = filtered.filter(
-        (candidate) =>
-          candidate.name.toLowerCase().includes(searchLower) ||
-          candidate.email.toLowerCase().includes(searchLower) ||
-          candidate.role.toLowerCase().includes(searchLower) ||
-          candidate.location.toLowerCase().includes(searchLower) ||
-          candidate.skills.some((skill) =>
-            skill.toLowerCase().includes(searchLower),
-          ) ||
-          candidate.source.toLowerCase().includes(searchLower) ||
-          (candidate.notes &&
-            candidate.notes.toLowerCase().includes(searchLower)),
+      filtered = filtered.filter(candidate =>
+        candidate.name.toLowerCase().includes(searchLower) ||
+        candidate.email.toLowerCase().includes(searchLower) ||
+        candidate.role.toLowerCase().includes(searchLower) ||
+        candidate.location.toLowerCase().includes(searchLower) ||
+        candidate.skills.some(skill => skill.toLowerCase().includes(searchLower)) ||
+        candidate.source.toLowerCase().includes(searchLower) ||
+        (candidate.notes && candidate.notes.toLowerCase().includes(searchLower))
       );
     }
 
     // Status filter
     if (filters.status !== "all") {
       if (filters.status === "active") {
-        filtered = filtered.filter((candidate) =>
-          ["applied", "shortlisted", "interviewed"].includes(candidate.status),
+        filtered = filtered.filter(candidate =>
+          ["applied", "shortlisted", "interviewed"].includes(candidate.status)
         );
       } else if (filters.status === "outreach") {
-        filtered = filtered.filter((candidate) =>
-          candidate.status.startsWith("outreach_"),
+        filtered = filtered.filter(candidate =>
+          candidate.status.startsWith("outreach_")
         );
       } else if (filters.status === "archived") {
-        filtered = filtered.filter((candidate) =>
-          ["archived", "hired_elsewhere", "rejected", "blacklisted"].includes(
-            candidate.status,
-          ),
+        filtered = filtered.filter(candidate =>
+          ["archived", "hired_elsewhere", "rejected", "blacklisted"].includes(candidate.status)
         );
       } else {
-        filtered = filtered.filter(
-          (candidate) => candidate.status === filters.status,
-        );
+        filtered = filtered.filter(candidate => candidate.status === filters.status);
       }
     }
 
     // Source filter
     if (filters.source !== "all") {
       if (filters.source === "outreach") {
-        filtered = filtered.filter(
-          (candidate) =>
-            candidate.source === "AI Outreach" ||
-            candidate.outreachHistory.length > 0,
+        filtered = filtered.filter(candidate =>
+          candidate.source === "AI Outreach" || candidate.outreachHistory.length > 0
         );
       } else {
-        filtered = filtered.filter(
-          (candidate) => candidate.source === filters.source,
-        );
+        filtered = filtered.filter(candidate => candidate.source === filters.source);
       }
     }
 
     // Date range filter
     if (filters.dateRange !== "all") {
       const now = new Date();
-      const cutoffDays =
-        filters.dateRange === "last30days"
-          ? 30
-          : filters.dateRange === "last90days"
-            ? 90
-            : 365;
-      const cutoffDate = new Date(
-        now.getTime() - cutoffDays * 24 * 60 * 60 * 1000,
-      );
+      const cutoffDays = filters.dateRange === "last30days" ? 30 :
+                        filters.dateRange === "last90days" ? 90 : 365;
+      const cutoffDate = new Date(now.getTime() - cutoffDays * 24 * 60 * 60 * 1000);
 
-      filtered = filtered.filter((candidate) => {
+      filtered = filtered.filter(candidate => {
         const appliedDate = new Date(candidate.applied);
         return appliedDate >= cutoffDate;
       });
@@ -2385,12 +2231,12 @@ const UPhirePlatform = () => {
 
     // Skills filter
     if (filters.skills.length > 0) {
-      filtered = filtered.filter((candidate) =>
-        filters.skills.some((filterSkill) =>
-          candidate.skills.some((candidateSkill) =>
-            candidateSkill.toLowerCase().includes(filterSkill.toLowerCase()),
-          ),
-        ),
+      filtered = filtered.filter(candidate =>
+        filters.skills.some(filterSkill =>
+          candidate.skills.some(candidateSkill =>
+            candidateSkill.toLowerCase().includes(filterSkill.toLowerCase())
+          )
+        )
       );
     }
 
@@ -2407,15 +2253,9 @@ const UPhirePlatform = () => {
     const totalCount = allCandidates.length;
     const filteredCount = results.length;
 
-    if (
-      !query &&
-      filters.status === "all" &&
-      filters.source === "all" &&
-      filters.dateRange === "all" &&
-      filters.skills.length === 0
-    ) {
-      const activeCount = allCandidates.filter((c) =>
-        ["applied", "shortlisted", "interviewed"].includes(c.status),
+    if (!query && filters.status === "all" && filters.source === "all" && filters.dateRange === "all" && filters.skills.length === 0) {
+      const activeCount = allCandidates.filter(c =>
+        ["applied", "shortlisted", "interviewed"].includes(c.status)
       ).length;
       return `Showing ${activeCount} active candidates of ${totalCount} total in database`;
     }
@@ -5161,7 +5001,7 @@ const UPhirePlatform = () => {
     );
   };
 
-  const NewRoleModal = () => {
+  // Old NewRoleModal removed - using external component now
     const [activeModalTab, setActiveModalTab] = useState("details");
     const [isGenerating, setIsGenerating] = useState(false);
     const [isPosting, setIsPosting] = useState(false);
@@ -5170,6 +5010,8 @@ const UPhirePlatform = () => {
       broadbean: "pending",
       jobBoards: [],
     });
+
+
 
     const postAdvert = () => {
       setIsPosting(true);
@@ -5406,10 +5248,7 @@ Ready to make an impact? Apply now and join our team!`;
                       required
                       value={roleFormData.title}
                       onChange={(e) =>
-                        setRoleFormData({
-                          ...roleFormData,
-                          title: e.target.value,
-                        })
+                        setRoleFormData({ ...roleFormData, title: e.target.value })
                       }
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="e.g. Senior Software Engineer"
@@ -5424,10 +5263,7 @@ Ready to make an impact? Apply now and join our team!`;
                       required
                       value={roleFormData.department}
                       onChange={(e) =>
-                        setRoleFormData({
-                          ...roleFormData,
-                          department: e.target.value,
-                        })
+                        setRoleFormData({ ...roleFormData, department: e.target.value })
                       }
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     >
@@ -5450,10 +5286,7 @@ Ready to make an impact? Apply now and join our team!`;
                       required
                       value={roleFormData.location}
                       onChange={(e) =>
-                        setRoleFormData({
-                          ...roleFormData,
-                          location: e.target.value,
-                        })
+                        setRoleFormData({ ...roleFormData, location: e.target.value })
                       }
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="e.g. London, Remote, Hybrid"
@@ -5469,10 +5302,7 @@ Ready to make an impact? Apply now and join our team!`;
                       required
                       value={roleFormData.salary}
                       onChange={(e) =>
-                        setRoleFormData({
-                          ...roleFormData,
-                          salary: e.target.value,
-                        })
+                        setRoleFormData({ ...roleFormData, salary: e.target.value })
                       }
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="e.g. £50,000 - £70,000"
@@ -5487,10 +5317,7 @@ Ready to make an impact? Apply now and join our team!`;
                       type="text"
                       value={roleFormData.experience}
                       onChange={(e) =>
-                        setRoleFormData({
-                          ...roleFormData,
-                          experience: e.target.value,
-                        })
+                        setRoleFormData({ ...roleFormData, experience: e.target.value })
                       }
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="e.g. 3-5 years"
@@ -5505,10 +5332,7 @@ Ready to make an impact? Apply now and join our team!`;
                       type="text"
                       value={roleFormData.skills}
                       onChange={(e) =>
-                        setRoleFormData({
-                          ...roleFormData,
-                          skills: e.target.value,
-                        })
+                        setRoleFormData({ ...roleFormData, skills: e.target.value })
                       }
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="e.g. React, TypeScript, Node.js"
@@ -5524,10 +5348,7 @@ Ready to make an impact? Apply now and join our team!`;
                     rows={3}
                     value={roleFormData.benefits}
                     onChange={(e) =>
-                      setRoleFormData({
-                        ...roleFormData,
-                        benefits: e.target.value,
-                      })
+                      setRoleFormData({ ...roleFormData, benefits: e.target.value })
                     }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="List key benefits and perks..."
@@ -7072,11 +6893,7 @@ Ready to make an impact? Apply now and join our team!`;
     const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
     const searchResults = searchCandidates(currentSearchQuery, currentFilters);
-    const resultsText = getSearchResultsCount(
-      searchResults,
-      currentSearchQuery,
-      currentFilters,
-    );
+    const resultsText = getSearchResultsCount(searchResults, currentSearchQuery, currentFilters);
 
     const handleSearch = () => {
       setSearchQuery(currentSearchQuery);
@@ -7089,14 +6906,14 @@ Ready to make an impact? Apply now and join our team!`;
         status: "all",
         source: "all",
         dateRange: "all",
-        skills: [],
+        skills: []
       });
       setSearchQuery("");
       setSearchFilters({
         status: "all",
         source: "all",
         dateRange: "all",
-        skills: [],
+        skills: []
       });
     };
 
@@ -7104,12 +6921,8 @@ Ready to make an impact? Apply now and join our team!`;
       <div className="space-y-6">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <div>
-            <h2 className="text-2xl font-bold text-white">
-              Candidate Database
-            </h2>
-            <p className="text-blue-100">
-              Search through all applications, outreach, and historical data
-            </p>
+            <h2 className="text-2xl font-bold text-white">Candidate Database</h2>
+            <p className="text-blue-100">Search through all applications, outreach, and historical data</p>
           </div>
         </div>
 
@@ -7124,7 +6937,7 @@ Ready to make an impact? Apply now and join our team!`;
                   placeholder="Search by name, email, skills, location, or notes..."
                   value={currentSearchQuery}
                   onChange={(e) => setCurrentSearchQuery(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
@@ -7135,7 +6948,7 @@ Ready to make an impact? Apply now and join our team!`;
                     "flex items-center space-x-2 px-4 py-3 border rounded-lg transition-all",
                     showAdvancedFilters
                       ? "bg-blue-100 border-blue-300 text-blue-700"
-                      : "bg-gray-100 border-gray-300 text-gray-700 hover:bg-gray-200",
+                      : "bg-gray-100 border-gray-300 text-gray-700 hover:bg-gray-200"
                   )}
                 >
                   <Filter size={16} />
@@ -7155,23 +6968,14 @@ Ready to make an impact? Apply now and join our team!`;
             {showAdvancedFilters && (
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg border">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Status
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
                   <select
                     value={currentFilters.status}
-                    onChange={(e) =>
-                      setCurrentFilters({
-                        ...currentFilters,
-                        status: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setCurrentFilters({...currentFilters, status: e.target.value})}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     <option value="all">All Statuses</option>
-                    <option value="active">
-                      Active (Applied/Shortlisted/Interviewed)
-                    </option>
+                    <option value="active">Active (Applied/Shortlisted/Interviewed)</option>
                     <option value="outreach">Outreach Contacts</option>
                     <option value="archived">Archived</option>
                     <option value="hired_elsewhere">Hired Elsewhere</option>
@@ -7180,26 +6984,17 @@ Ready to make an impact? Apply now and join our team!`;
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Source
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Source</label>
                   <select
                     value={currentFilters.source}
-                    onChange={(e) =>
-                      setCurrentFilters({
-                        ...currentFilters,
-                        source: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setCurrentFilters({...currentFilters, source: e.target.value})}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     <option value="all">All Sources</option>
                     <option value="LinkedIn">LinkedIn</option>
                     <option value="Indeed">Indeed</option>
                     <option value="outreach">AI Outreach</option>
-                    <option value="Direct Application">
-                      Direct Application
-                    </option>
+                    <option value="Direct Application">Direct Application</option>
                     <option value="Referral">Referral</option>
                     <option value="GitHub">GitHub</option>
                     <option value="Stack Overflow">Stack Overflow</option>
@@ -7207,17 +7002,10 @@ Ready to make an impact? Apply now and join our team!`;
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Date Range
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Date Range</label>
                   <select
                     value={currentFilters.dateRange}
-                    onChange={(e) =>
-                      setCurrentFilters({
-                        ...currentFilters,
-                        dateRange: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setCurrentFilters({...currentFilters, dateRange: e.target.value})}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     <option value="all">All Time</option>
@@ -7243,9 +7031,7 @@ Ready to make an impact? Apply now and join our team!`;
               <span>{resultsText}</span>
               <div className="flex items-center space-x-4">
                 <span>Sort by: AI Match Score</span>
-                <button className="text-blue-600 hover:text-blue-800">
-                  Export Results
-                </button>
+                <button className="text-blue-600 hover:text-blue-800">Export Results</button>
               </div>
             </div>
           </div>
@@ -7266,18 +7052,14 @@ Ready to make an impact? Apply now and join our team!`;
                       <h3 className="text-lg font-semibold text-gray-900">
                         {candidate.name}
                       </h3>
-                      <span
-                        className={cn(
-                          "px-2 py-1 rounded-full text-xs font-medium",
-                          getCandidateStatusColor(candidate.status),
-                        )}
-                      >
-                        {candidate.status.replace(/_/g, " ")}
+                      <span className={cn(
+                        "px-2 py-1 rounded-full text-xs font-medium",
+                        getCandidateStatusColor(candidate.status)
+                      )}>
+                        {candidate.status.replace(/_/g, ' ')}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600 mb-2">
-                      {candidate.role}
-                    </p>
+                    <p className="text-sm text-gray-600 mb-2">{candidate.role}</p>
                     <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
                       <span className="flex items-center space-x-1">
                         <Mail size={14} />
@@ -7316,71 +7098,49 @@ Ready to make an impact? Apply now and join our team!`;
               </div>
 
               {/* Application History */}
-              {candidate.applicationHistory &&
-                candidate.applicationHistory.length > 0 && (
-                  <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                    <p className="text-sm font-medium text-blue-800 mb-2">
-                      Application History:
-                    </p>
-                    <div className="space-y-1">
-                      {candidate.applicationHistory.map((app, index) => (
-                        <div key={index} className="text-sm text-blue-700">
-                          <span className="font-medium">{app.role}</span> •{" "}
-                          {app.date} •
-                          <span
-                            className={cn(
-                              "ml-1 px-1 rounded",
-                              app.status === "rejected"
-                                ? "bg-red-100 text-red-700"
-                                : app.status === "hired_elsewhere"
-                                  ? "bg-purple-100 text-purple-700"
-                                  : "bg-gray-100 text-gray-700",
-                            )}
-                          >
-                            {app.status}
-                          </span>
-                          {app.reason && (
-                            <span className="text-blue-600">
-                              {" "}
-                              - {app.reason}
-                            </span>
-                          )}
-                        </div>
-                      ))}
-                    </div>
+              {candidate.applicationHistory && candidate.applicationHistory.length > 0 && (
+                <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                  <p className="text-sm font-medium text-blue-800 mb-2">Application History:</p>
+                  <div className="space-y-1">
+                    {candidate.applicationHistory.map((app, index) => (
+                      <div key={index} className="text-sm text-blue-700">
+                        <span className="font-medium">{app.role}</span> • {app.date} •
+                        <span className={cn(
+                          "ml-1 px-1 rounded",
+                          app.status === "rejected" ? "bg-red-100 text-red-700" :
+                          app.status === "hired_elsewhere" ? "bg-purple-100 text-purple-700" :
+                          "bg-gray-100 text-gray-700"
+                        )}>
+                          {app.status}
+                        </span>
+                        {app.reason && <span className="text-blue-600"> - {app.reason}</span>}
+                      </div>
+                    ))}
                   </div>
-                )}
+                </div>
+              )}
 
               {/* Outreach History */}
-              {candidate.outreachHistory &&
-                candidate.outreachHistory.length > 0 && (
-                  <div className="mb-4 p-3 bg-green-50 rounded-lg border border-green-200">
-                    <p className="text-sm font-medium text-green-800 mb-2">
-                      Outreach History:
-                    </p>
-                    <div className="space-y-1">
-                      {candidate.outreachHistory.map((outreach, index) => (
-                        <div key={index} className="text-sm text-green-700">
-                          <span className="font-medium">{outreach.type}</span> •{" "}
-                          {outreach.date} ��
-                          <span
-                            className={cn(
-                              "ml-1 px-1 rounded",
-                              outreach.response === "interested" ||
-                                outreach.response === "very_interested"
-                                ? "bg-green-100 text-green-700"
-                                : outreach.response === "no_response"
-                                  ? "bg-gray-100 text-gray-700"
-                                  : "bg-blue-100 text-blue-700",
-                            )}
-                          >
-                            {outreach.response.replace(/_/g, " ")}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
+              {candidate.outreachHistory && candidate.outreachHistory.length > 0 && (
+                <div className="mb-4 p-3 bg-green-50 rounded-lg border border-green-200">
+                  <p className="text-sm font-medium text-green-800 mb-2">Outreach History:</p>
+                  <div className="space-y-1">
+                    {candidate.outreachHistory.map((outreach, index) => (
+                      <div key={index} className="text-sm text-green-700">
+                        <span className="font-medium">{outreach.type}</span> • {outreach.date} •
+                        <span className={cn(
+                          "ml-1 px-1 rounded",
+                          outreach.response === "interested" || outreach.response === "very_interested" ? "bg-green-100 text-green-700" :
+                          outreach.response === "no_response" ? "bg-gray-100 text-gray-700" :
+                          "bg-blue-100 text-blue-700"
+                        )}>
+                          {outreach.response.replace(/_/g, ' ')}
+                        </span>
+                      </div>
+                    ))}
                   </div>
-                )}
+                </div>
+              )}
 
               {/* Notes */}
               {candidate.notes && (
@@ -7395,9 +7155,7 @@ Ready to make an impact? Apply now and join our team!`;
                 <div className="text-sm text-gray-500">
                   <span>Source: {candidate.source}</span>
                   {candidate.outreachHistory?.length > 0 && (
-                    <span className="ml-4">
-                      • {candidate.outreachHistory.length} outreach contact(s)
-                    </span>
+                    <span className="ml-4">• {candidate.outreachHistory.length} outreach contact(s)</span>
                   )}
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -7410,9 +7168,7 @@ Ready to make an impact? Apply now and join our team!`;
                   >
                     View Full Profile
                   </button>
-                  {!["blacklisted", "hired_elsewhere"].includes(
-                    candidate.status,
-                  ) && (
+                  {!["blacklisted", "hired_elsewhere"].includes(candidate.status) && (
                     <button
                       onClick={() => {
                         setSelectedCandidate(candidate);
@@ -7437,9 +7193,7 @@ Ready to make an impact? Apply now and join our team!`;
         {searchResults.length === 0 && (
           <div className="text-center py-12">
             <Search className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-600">
-              No candidates found matching your search criteria.
-            </p>
+            <p className="text-gray-600">No candidates found matching your search criteria.</p>
             <button
               onClick={clearFilters}
               className="mt-2 text-blue-600 hover:text-blue-800 text-sm font-medium"
