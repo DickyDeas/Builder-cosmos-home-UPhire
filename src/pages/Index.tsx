@@ -1488,6 +1488,169 @@ const UPhirePlatform = () => {
     }
   };
 
+  // Enhanced Candidate Search Functions
+  const getCandidateStatusColor = (status: string) => {
+    switch (status) {
+      case "applied":
+        return "bg-blue-100 text-blue-800";
+      case "shortlisted":
+        return "bg-yellow-100 text-yellow-800";
+      case "interviewed":
+        return "bg-green-100 text-green-800";
+      case "hired":
+        return "bg-purple-100 text-purple-800";
+      case "rejected":
+        return "bg-red-100 text-red-800";
+      case "archived":
+        return "bg-gray-100 text-gray-800";
+      case "outreach_contacted":
+        return "bg-cyan-100 text-cyan-800";
+      case "outreach_interested":
+        return "bg-emerald-100 text-emerald-800";
+      case "outreach_no_response":
+        return "bg-orange-100 text-orange-800";
+      case "hired_elsewhere":
+        return "bg-indigo-100 text-indigo-800";
+      case "blacklisted":
+        return "bg-red-200 text-red-900";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const searchCandidates = (query, filters) => {
+    if (
+      !query &&
+      filters.status === "all" &&
+      filters.source === "all" &&
+      filters.dateRange === "all" &&
+      filters.skills.length === 0
+    ) {
+      return allCandidates.filter(
+        (candidate) =>
+          candidate.status === "applied" ||
+          candidate.status === "shortlisted" ||
+          candidate.status === "interviewed",
+      );
+    }
+
+    let filtered = [...allCandidates];
+
+    // Text search across multiple fields
+    if (query) {
+      const searchLower = query.toLowerCase();
+      filtered = filtered.filter(
+        (candidate) =>
+          candidate.name.toLowerCase().includes(searchLower) ||
+          candidate.email.toLowerCase().includes(searchLower) ||
+          candidate.role.toLowerCase().includes(searchLower) ||
+          candidate.location.toLowerCase().includes(searchLower) ||
+          candidate.skills.some((skill) =>
+            skill.toLowerCase().includes(searchLower),
+          ) ||
+          candidate.source.toLowerCase().includes(searchLower) ||
+          (candidate.notes &&
+            candidate.notes.toLowerCase().includes(searchLower)),
+      );
+    }
+
+    // Status filter
+    if (filters.status !== "all") {
+      if (filters.status === "active") {
+        filtered = filtered.filter((candidate) =>
+          ["applied", "shortlisted", "interviewed"].includes(candidate.status),
+        );
+      } else if (filters.status === "outreach") {
+        filtered = filtered.filter((candidate) =>
+          candidate.status.startsWith("outreach_"),
+        );
+      } else if (filters.status === "archived") {
+        filtered = filtered.filter((candidate) =>
+          ["archived", "hired_elsewhere", "rejected", "blacklisted"].includes(
+            candidate.status,
+          ),
+        );
+      } else {
+        filtered = filtered.filter(
+          (candidate) => candidate.status === filters.status,
+        );
+      }
+    }
+
+    // Source filter
+    if (filters.source !== "all") {
+      if (filters.source === "outreach") {
+        filtered = filtered.filter(
+          (candidate) =>
+            candidate.source === "AI Outreach" ||
+            candidate.outreachHistory.length > 0,
+        );
+      } else {
+        filtered = filtered.filter(
+          (candidate) => candidate.source === filters.source,
+        );
+      }
+    }
+
+    // Date range filter
+    if (filters.dateRange !== "all") {
+      const now = new Date();
+      const cutoffDays =
+        filters.dateRange === "last30days"
+          ? 30
+          : filters.dateRange === "last90days"
+            ? 90
+            : 365;
+      const cutoffDate = new Date(
+        now.getTime() - cutoffDays * 24 * 60 * 60 * 1000,
+      );
+
+      filtered = filtered.filter((candidate) => {
+        const appliedDate = new Date(candidate.applied);
+        return appliedDate >= cutoffDate;
+      });
+    }
+
+    // Skills filter
+    if (filters.skills.length > 0) {
+      filtered = filtered.filter((candidate) =>
+        filters.skills.some((filterSkill) =>
+          candidate.skills.some((candidateSkill) =>
+            candidateSkill.toLowerCase().includes(filterSkill.toLowerCase()),
+          ),
+        ),
+      );
+    }
+
+    // Sort by AI match score (descending) and then by application date (most recent first)
+    return filtered.sort((a, b) => {
+      if (b.aiMatch !== a.aiMatch) {
+        return b.aiMatch - a.aiMatch;
+      }
+      return new Date(b.applied).getTime() - new Date(a.applied).getTime();
+    });
+  };
+
+  const getSearchResultsCount = (results, query, filters) => {
+    const totalCount = allCandidates.length;
+    const filteredCount = results.length;
+
+    if (
+      !query &&
+      filters.status === "all" &&
+      filters.source === "all" &&
+      filters.dateRange === "all" &&
+      filters.skills.length === 0
+    ) {
+      const activeCount = allCandidates.filter((c) =>
+        ["applied", "shortlisted", "interviewed"].includes(c.status),
+      ).length;
+      return `Showing ${activeCount} active candidates of ${totalCount} total in database`;
+    }
+
+    return `Found ${filteredCount} candidates of ${totalCount} total in database`;
+  };
+
   const DocumentModal = () => {
     const [formData, setFormData] = useState({
       name: "",
