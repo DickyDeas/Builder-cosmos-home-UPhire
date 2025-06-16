@@ -700,7 +700,7 @@ const UPhirePlatform = () => {
         status: "blacklisted",
         source: "Referral",
         applied: "2024-05-30",
-        avatar: "��‍💻",
+        avatar: "👨‍💻",
         applicationHistory: [
           {
             role: "DevOps Engineer",
@@ -5187,7 +5187,7 @@ Ready to make an impact? Apply now and join our team!`;
                       type="button"
                       onClick={() => {
                         setShowNewRoleModal(false);
-                        resetModal();
+                        resetModal(); // Reset when explicitly closing after posting
                       }}
                       className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
                     >
