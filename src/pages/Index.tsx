@@ -112,6 +112,474 @@ interface Document {
   template: string;
 }
 
+// RecruitModal component for AI recruitment automation
+const RecruitModal = ({
+  showRecruitModal,
+  setShowRecruitModal,
+  recruitingRoleId,
+  roles,
+}) => {
+  const [currentStage, setCurrentStage] = useState(1);
+  const [isRunning, setIsRunning] = useState(false);
+  const [stageProgress, setStageProgress] = useState(0);
+  const [foundCandidates, setFoundCandidates] = useState([]);
+  const [outreachResults, setOutreachResults] = useState([]);
+  const [interestedCandidates, setInterestedCandidates] = useState([]);
+  const [rankedCandidates, setRankedCandidates] = useState([]);
+
+  const role = roles.find((r) => r.id === recruitingRoleId);
+
+  if (!showRecruitModal) return null;
+
+  const stages = [
+    {
+      id: 1,
+      name: "AI Search",
+      description:
+        "Searching across LinkedIn, Indeed, GitHub, AngelList, and Stack Overflow",
+      platforms: [
+        "LinkedIn",
+        "Indeed",
+        "GitHub",
+        "AngelList",
+        "Stack Overflow",
+      ],
+    },
+    {
+      id: 2,
+      name: "Outreach",
+      description: "Sending personalized messages to qualified candidates",
+      action: "Automated messaging",
+    },
+    {
+      id: 3,
+      name: "Interest Collection",
+      description: "Collecting responses and gauging candidate interest",
+      action: "Response tracking",
+    },
+    {
+      id: 4,
+      name: "Ranking",
+      description: "AI ranking candidates and selecting top 5 for interviews",
+      action: "Smart selection",
+    },
+  ];
+
+  const startRecruitment = async () => {
+    setIsRunning(true);
+    setCurrentStage(1);
+
+    // Stage 1: AI Search
+    setStageProgress(0);
+    for (let i = 0; i <= 100; i += 10) {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      setStageProgress(i);
+    }
+
+    // Mock found candidates
+    const mockCandidates = [
+      {
+        id: 1,
+        name: "Sarah Chen",
+        platform: "LinkedIn",
+        match: 95,
+        skills: ["React", "TypeScript", "Node.js"],
+      },
+      {
+        id: 2,
+        name: "Marcus Johnson",
+        platform: "GitHub",
+        match: 92,
+        skills: ["Python", "Django", "PostgreSQL"],
+      },
+      {
+        id: 3,
+        name: "Emma Rodriguez",
+        platform: "Indeed",
+        match: 89,
+        skills: ["Java", "Spring", "AWS"],
+      },
+      {
+        id: 4,
+        name: "Alex Kim",
+        platform: "Stack Overflow",
+        match: 87,
+        skills: ["Vue.js", "Node.js", "MongoDB"],
+      },
+      {
+        id: 5,
+        name: "David Zhang",
+        platform: "AngelList",
+        match: 85,
+        skills: ["Flutter", "Dart", "Firebase"],
+      },
+      {
+        id: 6,
+        name: "Priya Patel",
+        platform: "LinkedIn",
+        match: 83,
+        skills: ["React Native", "iOS", "Android"],
+      },
+      {
+        id: 7,
+        name: "James Wilson",
+        platform: "GitHub",
+        match: 81,
+        skills: ["Go", "Kubernetes", "Docker"],
+      },
+      {
+        id: 8,
+        name: "Lisa Brown",
+        platform: "Indeed",
+        match: 79,
+        skills: ["C#", ".NET", "Azure"],
+      },
+    ];
+    setFoundCandidates(mockCandidates);
+
+    // Stage 2: Outreach
+    setCurrentStage(2);
+    setStageProgress(0);
+    for (let i = 0; i <= 100; i += 12.5) {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      setStageProgress(i);
+    }
+
+    const mockOutreach = mockCandidates.map((candidate) => ({
+      ...candidate,
+      messageSent: true,
+      sentAt: new Date().toISOString(),
+      status: Math.random() > 0.3 ? "delivered" : "pending",
+    }));
+    setOutreachResults(mockOutreach);
+
+    // Stage 3: Interest Collection
+    setCurrentStage(3);
+    setStageProgress(0);
+    for (let i = 0; i <= 100; i += 16.7) {
+      await new Promise((resolve) => setTimeout(resolve, 250));
+      setStageProgress(i);
+    }
+
+    const mockInterested = mockCandidates
+      .filter(() => Math.random() > 0.4)
+      .map((candidate) => ({
+        ...candidate,
+        interested: true,
+        response: "I would love to learn more about this opportunity!",
+        responseTime: Math.floor(Math.random() * 48) + 1 + " hours",
+      }));
+    setInterestedCandidates(mockInterested);
+
+    // Stage 4: Ranking
+    setCurrentStage(4);
+    setStageProgress(0);
+    for (let i = 0; i <= 100; i += 20) {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      setStageProgress(i);
+    }
+
+    const topCandidates = mockInterested
+      .sort((a, b) => b.match - a.match)
+      .slice(0, 5)
+      .map((candidate, index) => ({
+        ...candidate,
+        rank: index + 1,
+        aiScore: candidate.match + Math.floor(Math.random() * 5),
+        recommendation:
+          index === 0 ? "Strong Hire" : index < 3 ? "Hire" : "Consider",
+      }));
+    setRankedCandidates(topCandidates);
+
+    setIsRunning(false);
+  };
+
+  const resetAndClose = () => {
+    setCurrentStage(1);
+    setIsRunning(false);
+    setStageProgress(0);
+    setFoundCandidates([]);
+    setOutreachResults([]);
+    setInterestedCandidates([]);
+    setRankedCandidates([]);
+    setShowRecruitModal(false);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-gray-200">
+          <div className="flex justify-between items-center">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">
+                AI Recruitment Automation
+              </h2>
+              {role && (
+                <p className="text-gray-600 mt-1">
+                  Recruiting for:{" "}
+                  <span className="font-semibold">{role.title}</span> •{" "}
+                  {role.department} • {role.location}
+                </p>
+              )}
+            </div>
+            <button
+              onClick={resetAndClose}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <X size={24} />
+            </button>
+          </div>
+        </div>
+
+        <div className="p-6">
+          {/* Progress Stages */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-4">
+              {stages.map((stage, index) => (
+                <div key={stage.id} className="flex items-center">
+                  <div
+                    className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold ${
+                      currentStage > stage.id
+                        ? "bg-green-500 text-white"
+                        : currentStage === stage.id
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-200 text-gray-600"
+                    }`}
+                  >
+                    {currentStage > stage.id ? <Check size={16} /> : stage.id}
+                  </div>
+                  {index < stages.length - 1 && (
+                    <div
+                      className={`w-24 h-1 mx-2 ${
+                        currentStage > stage.id ? "bg-green-500" : "bg-gray-200"
+                      }`}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                {stages[currentStage - 1]?.name}
+              </h3>
+              <p className="text-gray-600 mb-4">
+                {stages[currentStage - 1]?.description}
+              </p>
+
+              {isRunning && (
+                <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+                  <div
+                    className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${stageProgress}%` }}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Current Stage Content */}
+          <div className="space-y-6">
+            {currentStage === 1 && foundCandidates.length > 0 && (
+              <div>
+                <h4 className="text-lg font-semibold text-gray-900 mb-4">
+                  Found {foundCandidates.length} Candidates
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {foundCandidates.map((candidate) => (
+                    <div
+                      key={candidate.id}
+                      className="border border-gray-200 rounded-lg p-4"
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <h5 className="font-semibold text-gray-900">
+                          {candidate.name}
+                        </h5>
+                        <span className="text-sm font-medium text-blue-600">
+                          {candidate.match}% match
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-600 mb-2">
+                        Source: {candidate.platform}
+                      </p>
+                      <div className="flex flex-wrap gap-1">
+                        {candidate.skills.map((skill) => (
+                          <span
+                            key={skill}
+                            className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {currentStage === 2 && outreachResults.length > 0 && (
+              <div>
+                <h4 className="text-lg font-semibold text-gray-900 mb-4">
+                  Outreach Results (
+                  {
+                    outreachResults.filter((r) => r.status === "delivered")
+                      .length
+                  }
+                  /{outreachResults.length} delivered)
+                </h4>
+                <div className="space-y-3">
+                  {outreachResults.map((candidate) => (
+                    <div
+                      key={candidate.id}
+                      className="flex justify-between items-center p-3 border border-gray-200 rounded-lg"
+                    >
+                      <div>
+                        <span className="font-medium text-gray-900">
+                          {candidate.name}
+                        </span>
+                        <span className="text-sm text-gray-600 ml-2">
+                          via {candidate.platform}
+                        </span>
+                      </div>
+                      <span
+                        className={`px-2 py-1 text-xs font-medium rounded ${
+                          candidate.status === "delivered"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-yellow-100 text-yellow-800"
+                        }`}
+                      >
+                        {candidate.status}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {currentStage === 3 && interestedCandidates.length > 0 && (
+              <div>
+                <h4 className="text-lg font-semibold text-gray-900 mb-4">
+                  {interestedCandidates.length} Interested Candidates
+                </h4>
+                <div className="space-y-4">
+                  {interestedCandidates.map((candidate) => (
+                    <div
+                      key={candidate.id}
+                      className="border border-gray-200 rounded-lg p-4"
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <span className="font-medium text-gray-900">
+                            {candidate.name}
+                          </span>
+                          <span className="text-sm text-gray-600 ml-2">
+                            {candidate.match}% match
+                          </span>
+                        </div>
+                        <span className="text-sm text-gray-500">
+                          Responded in {candidate.responseTime}
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-700 italic">
+                        "{candidate.response}"
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {currentStage === 4 && rankedCandidates.length > 0 && (
+              <div>
+                <h4 className="text-lg font-semibold text-gray-900 mb-4">
+                  Top 5 Candidates Selected for Interviews
+                </h4>
+                <div className="space-y-4">
+                  {rankedCandidates.map((candidate) => (
+                    <div
+                      key={candidate.id}
+                      className="border border-gray-200 rounded-lg p-4"
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <span className="font-medium text-gray-900">
+                            #{candidate.rank} {candidate.name}
+                          </span>
+                          <span className="text-sm text-gray-600 ml-2">
+                            AI Score: {candidate.aiScore}/100
+                          </span>
+                        </div>
+                        <span
+                          className={`px-2 py-1 text-xs font-medium rounded ${
+                            candidate.recommendation === "Strong Hire"
+                              ? "bg-green-100 text-green-800"
+                              : candidate.recommendation === "Hire"
+                                ? "bg-blue-100 text-blue-800"
+                                : "bg-yellow-100 text-yellow-800"
+                          }`}
+                        >
+                          {candidate.recommendation}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <div className="flex flex-wrap gap-1">
+                          {candidate.skills.slice(0, 3).map((skill) => (
+                            <span
+                              key={skill}
+                              className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded"
+                            >
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                        <button className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors">
+                          Schedule Interview
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
+            <button
+              onClick={resetAndClose}
+              className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+            >
+              Close
+            </button>
+
+            {!isRunning && currentStage === 1 && (
+              <button
+                onClick={startRecruitment}
+                className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2"
+              >
+                <Search size={16} />
+                <span>Start AI Recruitment</span>
+              </button>
+            )}
+
+            {!isRunning &&
+              currentStage === 4 &&
+              rankedCandidates.length > 0 && (
+                <button
+                  onClick={resetAndClose}
+                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                >
+                  Complete & Schedule Interviews
+                </button>
+              )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // NewRoleModal component moved outside to prevent re-renders
 const NewRoleModal = ({
   showNewRoleModal,
