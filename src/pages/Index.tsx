@@ -234,7 +234,7 @@ We are seeking a talented ${roleFormData.title} to join our ${roleFormData.depar
 • ${roleFormData.experience || "3-5 years"} of relevant experience in ${roleFormData.department.toLowerCase()}
 • Strong analytical and problem-solving skills
 • Excellent communication and collaboration abilities
-• Proven track record of delivering results in a fast-paced environment
+��� Proven track record of delivering results in a fast-paced environment
 • Bachelor's degree in relevant field or equivalent experience
 
 ## Technical Skills
@@ -1417,6 +1417,13 @@ const UPhirePlatform = () => {
             <div className="mt-4 flex space-x-2">
               <button className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors">
                 View Details
+              </button>
+              <button
+                onClick={() => startRecruitment(role.id)}
+                className="flex-1 px-3 py-2 bg-purple-600 text-white rounded-lg text-sm hover:bg-purple-700 transition-colors flex items-center justify-center space-x-1"
+              >
+                <Search size={14} />
+                <span>Recruit</span>
               </button>
               <button className="px-3 py-2 bg-gray-600 text-white rounded-lg text-sm hover:bg-gray-700 transition-colors">
                 <Eye size={16} />
