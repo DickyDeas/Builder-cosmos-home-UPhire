@@ -2360,6 +2360,14 @@ const UPhirePlatform = () => {
       "To empower businesses through innovative technology solutions that simplify complex challenges, enhance productivity, and drive sustainable growth. We are committed to creating software that not only meets today's needs but anticipates tomorrow's opportunities, while maintaining the highest standards of quality, security, and user experience.",
     values:
       "Innovation: We constantly push boundaries and embrace new technologies to solve complex problems.\n\nIntegrity: We build trust through transparency, honesty, and ethical business practices.\n\nCollaboration: We believe the best solutions come from diverse teams working together.\n\nExcellence: We strive for the highest quality in everything we deliver.\n\nCustomer-Centric: Our clients' success is our success - we put their needs at the heart of everything we do.\n\nGrowth Mindset: We embrace challenges as opportunities to learn and improve continuously.",
+    sectors:
+      "Financial Services, Healthcare, E-commerce, Education Technology, Government",
+    technologies:
+      "React, Node.js, Python, AWS, Docker, Kubernetes, TypeScript, GraphQL, MongoDB, PostgreSQL",
+    clientBase:
+      "We serve a diverse range of clients from innovative startups to Fortune 500 companies, helping them navigate digital transformation and achieve their technology goals.",
+    achievements:
+      "• Winner of 'Best Tech Startup 2023' - London Tech Awards\n• Certified AWS Partner with 50+ successful cloud migrations\n• 98% client satisfaction rate with 85% repeat business\n• Featured in TechCrunch Top 100 UK Startups to Watch",
   });
 
   // ML Predictions and Market Data
