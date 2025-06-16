@@ -3283,7 +3283,7 @@ const UPhirePlatform = () => {
         probationPeriod: true,
         probationMonths: 6,
         employmentType: "Full-time",
-        avatar: "👨‍��",
+        avatar: "👨‍💻",
         email: "michael.chen@company.com",
         phone: "+44 7567 890123",
         pendingReview: false,
@@ -4400,8 +4400,8 @@ const UPhirePlatform = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const EmployeesTab = () => (
     <div className="space-y-6">
