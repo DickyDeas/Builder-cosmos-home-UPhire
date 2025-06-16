@@ -4801,9 +4801,12 @@ Ready to make an impact? Apply now and join our team!`;
                     </label>
                     <input
                       type="text"
-                      value={formData.experience}
+                      value={roleFormData.experience}
                       onChange={(e) =>
-                        setFormData({ ...formData, experience: e.target.value })
+                        setRoleFormData({
+                          ...roleFormData,
+                          experience: e.target.value,
+                        })
                       }
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="e.g. 3-5 years"
