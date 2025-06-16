@@ -189,6 +189,19 @@ const UPhirePlatform = () => {
   });
   const [isSearching, setIsSearching] = useState(false);
 
+  // Role Creation Form Data - moved outside NewRoleModal to persist during navigation
+  const [roleFormData, setRoleFormData] = useState({
+    title: "",
+    department: "",
+    location: "",
+    salary: "",
+    description: "",
+    experience: "",
+    skills: "",
+    benefits: "",
+  });
+  const [generatedDescription, setGeneratedDescription] = useState("");
+
   useEffect(() => {
     const mockRoles: Role[] = [
       {
