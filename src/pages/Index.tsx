@@ -113,6 +113,729 @@ interface Document {
   template: string;
 }
 
+// EmployeeModal component for detailed employee information
+const EmployeeModal = ({
+  showEmployeeModal,
+  setShowEmployeeModal,
+  selectedEmployee,
+  setSelectedEmployee,
+}) => {
+  const [activeTab, setActiveTab] = useState("overview");
+  const [isEditing, setIsEditing] = useState(false);
+  const [editForm, setEditForm] = useState({});
+
+  if (!showEmployeeModal || !selectedEmployee) return null;
+
+  const startDate = new Date(selectedEmployee.startDate);
+  const today = new Date();
+  const tenure = Math.floor(
+    (today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 30),
+  );
+
+  const probationEndDate = new Date(startDate);
+  probationEndDate.setMonth(
+    probationEndDate.getMonth() + (selectedEmployee.probationMonths || 6),
+  );
+  const probationDaysLeft = Math.ceil(
+    (probationEndDate - today) / (1000 * 60 * 60 * 24),
+  );
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "Not set";
+    return new Date(dateString).toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  const getDocumentStatusBadge = (status) => {
+    const statusColors = {
+      Signed: "bg-green-100 text-green-800",
+      Complete: "bg-green-100 text-green-800",
+      Pending: "bg-yellow-100 text-yellow-800",
+      "In Progress": "bg-blue-100 text-blue-800",
+      Valid: "bg-green-100 text-green-800",
+      Active: "bg-blue-100 text-blue-800",
+    };
+    return statusColors[status] || "bg-gray-100 text-gray-800";
+  };
+
+  const handleSave = () => {
+    // In a real app, this would update the employee data
+    setIsEditing(false);
+    alert("Employee information updated successfully!");
+  };
+
+  const closeModal = () => {
+    setShowEmployeeModal(false);
+    setSelectedEmployee(null);
+    setIsEditing(false);
+    setActiveTab("overview");
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        {/* Header */}
+        <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
+          <div className="flex justify-between items-start">
+            <div className="flex items-center space-x-4">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                <span className="text-2xl font-bold text-blue-600">
+                  {selectedEmployee.avatar || selectedEmployee.name.charAt(0)}
+                </span>
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  {selectedEmployee.name}
+                </h2>
+                <p className="text-gray-600">{selectedEmployee.position}</p>
+                <p className="text-sm text-gray-500">
+                  {selectedEmployee.department} • Employee ID: #
+                  {selectedEmployee.employeeId}
+                </p>
+                <div className="flex items-center space-x-2 mt-2">
+                  <span
+                    className={`px-2 py-1 text-xs font-medium rounded-full ${
+                      selectedEmployee.probationPeriod
+                        ? "bg-yellow-100 text-yellow-800"
+                        : "bg-green-100 text-green-800"
+                    }`}
+                  >
+                    {selectedEmployee.probationPeriod
+                      ? "On Probation"
+                      : "Confirmed Employee"}
+                  </span>
+                  <span className="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                    {selectedEmployee.employmentType}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <button
+              onClick={closeModal}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <X size={24} />
+            </button>
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <div className="border-b border-gray-200">
+          <nav className="flex space-x-8 px-6">
+            {[
+              { id: "overview", label: "Overview", icon: User },
+              { id: "probation", label: "Probation & Reviews", icon: Timer },
+              { id: "documents", label: "Documents", icon: FileText },
+              { id: "performance", label: "Performance", icon: Award },
+              { id: "personal", label: "Personal Info", icon: UserCheck },
+            ].map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`py-4 px-2 border-b-2 font-medium text-sm transition-colors flex items-center space-x-2 ${
+                    activeTab === tab.id
+                      ? "border-blue-500 text-blue-600"
+                      : "border-transparent text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  <Icon size={16} />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+        </div>
+
+        {/* Tab Content */}
+        <div className="p-6">
+          {activeTab === "overview" && (
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Employment Details
+                  </h3>
+                  <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-600">Start Date:</span>
+                      <span className="text-sm font-medium text-gray-900">
+                        {formatDate(selectedEmployee.startDate)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-600">Tenure:</span>
+                      <span className="text-sm font-medium text-gray-900">
+                        {tenure} months
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-600">Salary:</span>
+                      <span className="text-sm font-medium text-gray-900">
+                        {selectedEmployee.salary}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-600">Manager:</span>
+                      <span className="text-sm font-medium text-gray-900">
+                        {selectedEmployee.manager}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-600">
+                        Employment Type:
+                      </span>
+                      <span className="text-sm font-medium text-gray-900">
+                        {selectedEmployee.employmentType}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Quick Actions
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button className="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-2">
+                      <Mail size={16} />
+                      <span className="text-sm">Send Email</span>
+                    </button>
+                    <button className="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-2">
+                      <Calendar size={16} />
+                      <span className="text-sm">Schedule Meeting</span>
+                    </button>
+                    <button className="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-2">
+                      <FileText size={16} />
+                      <span className="text-sm">Add Document</span>
+                    </button>
+                    <button className="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-2">
+                      <Award size={16} />
+                      <span className="text-sm">Performance Review</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Recent Activity
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
+                    <CheckCircle className="w-5 h-5 text-green-600" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">
+                        Contract signed
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {formatDate(selectedEmployee.startDate)}
+                      </p>
+                    </div>
+                  </div>
+                  {selectedEmployee.documents.map((doc, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg"
+                    >
+                      <FileText className="w-5 h-5 text-blue-600" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">
+                          {doc.type} - {doc.status}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {doc.date ? formatDate(doc.date) : "Pending"}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "probation" && (
+            <div className="space-y-6">
+              <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg p-6">
+                <div className="flex items-center space-x-3 mb-4">
+                  <Timer className="w-6 h-6 text-yellow-600" />
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Probation Status
+                  </h3>
+                </div>
+
+                {selectedEmployee.probationPeriod ? (
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="bg-white rounded-lg p-4">
+                        <p className="text-sm text-gray-600">
+                          Probation Period
+                        </p>
+                        <p className="text-xl font-bold text-yellow-600">
+                          {selectedEmployee.probationMonths} months
+                        </p>
+                      </div>
+                      <div className="bg-white rounded-lg p-4">
+                        <p className="text-sm text-gray-600">End Date</p>
+                        <p className="text-xl font-bold text-gray-900">
+                          {formatDate(probationEndDate)}
+                        </p>
+                      </div>
+                      <div className="bg-white rounded-lg p-4">
+                        <p className="text-sm text-gray-600">Days Remaining</p>
+                        <p
+                          className={`text-xl font-bold ${
+                            probationDaysLeft <= 7
+                              ? "text-red-600"
+                              : probationDaysLeft <= 30
+                                ? "text-yellow-600"
+                                : "text-green-600"
+                          }`}
+                        >
+                          {probationDaysLeft > 0
+                            ? probationDaysLeft
+                            : "Overdue"}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="bg-white rounded-lg p-4">
+                      <h4 className="font-medium text-gray-900 mb-3">
+                        Probation Checklist
+                      </h4>
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <CheckCircle className="w-4 h-4 text-green-600" />
+                          <span className="text-sm text-gray-700">
+                            Contract signed
+                          </span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <CheckCircle className="w-4 h-4 text-green-600" />
+                          <span className="text-sm text-gray-700">
+                            Induction completed
+                          </span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          {selectedEmployee.documents.some(
+                            (doc) =>
+                              doc.type === "Medical Certificate" &&
+                              doc.status === "Complete",
+                          ) ? (
+                            <CheckCircle className="w-4 h-4 text-green-600" />
+                          ) : (
+                            <Clock className="w-4 h-4 text-yellow-600" />
+                          )}
+                          <span className="text-sm text-gray-700">
+                            Medical certificate submitted
+                          </span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          {probationDaysLeft <= 30 ? (
+                            <AlertTriangle className="w-4 h-4 text-yellow-600" />
+                          ) : (
+                            <Clock className="w-4 h-4 text-gray-400" />
+                          )}
+                          <span className="text-sm text-gray-700">
+                            Probation review scheduled
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button className="w-full bg-yellow-600 text-white py-3 rounded-lg hover:bg-yellow-700 transition-colors font-medium">
+                      Schedule Probation Review
+                    </button>
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-4" />
+                    <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                      Probation Completed
+                    </h4>
+                    <p className="text-gray-600">
+                      This employee successfully completed their probation
+                      period on {formatDate(probationEndDate)}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <div className="bg-white border border-gray-200 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Review History
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <p className="font-medium text-gray-900">
+                        Initial Review
+                      </p>
+                      <p className="text-sm text-gray-600">30-day checkpoint</p>
+                    </div>
+                    <span className="px-2 py-1 text-xs font-medium rounded bg-green-100 text-green-800">
+                      Completed
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <p className="font-medium text-gray-900">
+                        Mid-term Review
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        3-month checkpoint
+                      </p>
+                    </div>
+                    <span className="px-2 py-1 text-xs font-medium rounded bg-yellow-100 text-yellow-800">
+                      Scheduled
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "documents" && (
+            <div className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Employee Documents
+                </h3>
+                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
+                  <Plus size={16} />
+                  <span>Add Document</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4">
+                {selectedEmployee.documents.map((document, index) => (
+                  <div
+                    key={index}
+                    className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <FileText className="w-5 h-5 text-gray-400" />
+                        <div>
+                          <h4 className="font-medium text-gray-900">
+                            {document.type}
+                          </h4>
+                          <p className="text-sm text-gray-600">
+                            {document.date
+                              ? `Uploaded on ${formatDate(document.date)}`
+                              : "Pending upload"}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <span
+                          className={`px-2 py-1 text-xs font-medium rounded ${getDocumentStatusBadge(document.status)}`}
+                        >
+                          {document.status}
+                        </span>
+                        <div className="flex items-center space-x-1">
+                          <button className="p-1 text-gray-400 hover:text-blue-600 transition-colors">
+                            <Eye size={16} />
+                          </button>
+                          <button className="p-1 text-gray-400 hover:text-green-600 transition-colors">
+                            <Download size={16} />
+                          </button>
+                          <button className="p-1 text-gray-400 hover:text-red-600 transition-colors">
+                            <X size={16} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                <FileText className="w-8 h-8 text-gray-400 mx-auto mb-4" />
+                <h4 className="text-lg font-medium text-gray-900 mb-2">
+                  Upload New Document
+                </h4>
+                <p className="text-gray-600 mb-4">
+                  Drag and drop files here, or click to browse
+                </p>
+                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                  Choose File
+                </button>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "performance" && (
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-6">
+                  <div className="flex items-center space-x-3 mb-3">
+                    <Award className="w-6 h-6 text-green-600" />
+                    <h3 className="font-semibold text-gray-900">
+                      Overall Rating
+                    </h3>
+                  </div>
+                  <p className="text-3xl font-bold text-green-600">4.2/5</p>
+                  <p className="text-sm text-gray-600">Based on last review</p>
+                </div>
+
+                <div className="bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-lg p-6">
+                  <div className="flex items-center space-x-3 mb-3">
+                    <Target className="w-6 h-6 text-blue-600" />
+                    <h3 className="font-semibold text-gray-900">Goals Met</h3>
+                  </div>
+                  <p className="text-3xl font-bold text-blue-600">85%</p>
+                  <p className="text-sm text-gray-600">This quarter</p>
+                </div>
+
+                <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-6">
+                  <div className="flex items-center space-x-3 mb-3">
+                    <TrendingUp className="w-6 h-6 text-purple-600" />
+                    <h3 className="font-semibold text-gray-900">Growth</h3>
+                  </div>
+                  <p className="text-3xl font-bold text-purple-600">+12%</p>
+                  <p className="text-sm text-gray-600">Year over year</p>
+                </div>
+              </div>
+
+              <div className="bg-white border border-gray-200 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Recent Reviews
+                </h3>
+                <div className="space-y-4">
+                  <div className="border-l-4 border-green-500 pl-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <h4 className="font-medium text-gray-900">
+                        Quarterly Review Q3 2024
+                      </h4>
+                      <span className="text-sm text-gray-500">
+                        Oct 15, 2024
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-2">
+                      Excellent performance in project delivery and team
+                      collaboration. Shows strong technical skills and
+                      leadership potential.
+                    </p>
+                    <div className="flex items-center space-x-4">
+                      <span className="text-sm text-green-600 font-medium">
+                        Rating: 4.5/5
+                      </span>
+                      <span className="text-sm text-gray-500">
+                        by {selectedEmployee.manager}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white border border-gray-200 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Development Plan
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                    <div>
+                      <p className="font-medium text-gray-900">
+                        Leadership Training
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        Complete by December 2024
+                      </p>
+                    </div>
+                    <span className="px-2 py-1 text-xs font-medium rounded bg-blue-100 text-blue-800">
+                      In Progress
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                    <div>
+                      <p className="font-medium text-gray-900">
+                        Advanced Technical Certification
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        AWS Solutions Architect
+                      </p>
+                    </div>
+                    <span className="px-2 py-1 text-xs font-medium rounded bg-green-100 text-green-800">
+                      Completed
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "personal" && (
+            <div className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Personal Information
+                </h3>
+                <button
+                  onClick={() => setIsEditing(!isEditing)}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+                >
+                  <Edit size={16} />
+                  <span>{isEditing ? "Cancel" : "Edit"}</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Email
+                    </label>
+                    {isEditing ? (
+                      <input
+                        type="email"
+                        defaultValue={selectedEmployee.email}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    ) : (
+                      <p className="text-gray-900">{selectedEmployee.email}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Phone
+                    </label>
+                    {isEditing ? (
+                      <input
+                        type="tel"
+                        defaultValue={selectedEmployee.phone}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    ) : (
+                      <p className="text-gray-900">{selectedEmployee.phone}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Department
+                    </label>
+                    {isEditing ? (
+                      <select
+                        defaultValue={selectedEmployee.department}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      >
+                        <option value="Engineering">Engineering</option>
+                        <option value="Design">Design</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Sales">Sales</option>
+                        <option value="Human Resources">Human Resources</option>
+                        <option value="Analytics">Analytics</option>
+                      </select>
+                    ) : (
+                      <p className="text-gray-900">
+                        {selectedEmployee.department}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Position
+                    </label>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        defaultValue={selectedEmployee.position}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    ) : (
+                      <p className="text-gray-900">
+                        {selectedEmployee.position}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Manager
+                    </label>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        defaultValue={selectedEmployee.manager}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    ) : (
+                      <p className="text-gray-900">
+                        {selectedEmployee.manager}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Salary
+                    </label>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        defaultValue={selectedEmployee.salary}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    ) : (
+                      <p className="text-gray-900">{selectedEmployee.salary}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {isEditing && (
+                <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+                  <button
+                    onClick={() => setIsEditing(false)}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleSave}
+                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="border-t border-gray-200 p-6 bg-gray-50">
+          <div className="flex justify-between items-center">
+            <div className="text-sm text-gray-600">
+              Last updated: {formatDate(new Date().toISOString())}
+            </div>
+            <div className="flex space-x-3">
+              <button
+                onClick={closeModal}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+              >
+                Close
+              </button>
+              <button className="px-6 py-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all">
+                Generate Report
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // RecruitModal component for AI recruitment automation
 const RecruitModal = ({
   showRecruitModal,
