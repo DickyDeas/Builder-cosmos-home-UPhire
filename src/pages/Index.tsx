@@ -5272,7 +5272,8 @@ const UPhirePlatform = () => {
         </div>
       )}
 
-      {showPredictionModal && (
+      {/* Temporarily disabled PredictionModal for debugging */}
+      {/* {showPredictionModal && (
         <PredictionModal
           showPredictionModal={showPredictionModal}
           setShowPredictionModal={setShowPredictionModal}
@@ -5280,7 +5281,7 @@ const UPhirePlatform = () => {
           roleFormData={roleFormData}
           marketData={marketData}
         />
-      )}
+      )} */}
     </div>
   );
 };
