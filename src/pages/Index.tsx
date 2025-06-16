@@ -2515,6 +2515,20 @@ Ready to make an impact? Apply now and join our team!`;
   );
 };
 
+// Tab Components
+const DashboardTab = () => (
+  <div className="space-y-6">
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div>
+        <h1 className="text-3xl font-bold text-white">Dashboard</h1>
+        <p className="text-blue-100">
+          Welcome to your AI-powered recruitment platform
+        </p>
+      </div>
+    </div>
+  </div>
+);
+
 const UPhirePlatform = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [roles, setRoles] = useState<Role[]>([]);
