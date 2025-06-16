@@ -113,21 +113,7 @@ interface Document {
   template: string;
 }
 
-// PredictionModal component for AI Success Prediction results
-const PredictionModal = ({
-  showPredictionModal,
-  setShowPredictionModal,
-  currentPrediction,
-  roleFormData,
-  marketData
-}) => {
-  if (!showPredictionModal || !currentPrediction) return null;
-
-  const closeModal = () => {
-    setShowPredictionModal(false);
-  };
-
-  return (
+// PredictionModal component temporarily removed for debugging
     <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
