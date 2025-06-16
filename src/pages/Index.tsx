@@ -119,7 +119,7 @@ const PredictionModal = ({
   setShowPredictionModal,
   currentPrediction,
   roleFormData,
-  marketData,
+  marketData
 }) => {
   if (!showPredictionModal || !currentPrediction) return null;
 
@@ -138,12 +138,8 @@ const PredictionModal = ({
                 <Brain className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">
-                  AI Success Prediction
-                </h2>
-                <p className="text-gray-600">
-                  Analysis for: {roleFormData.title} • {roleFormData.department}
-                </p>
+                <h2 className="text-2xl font-bold text-gray-900">AI Success Prediction</h2>
+                <p className="text-gray-600">Analysis for: {roleFormData.title} • {roleFormData.department}</p>
               </div>
             </div>
             <button
@@ -164,16 +160,11 @@ const PredictionModal = ({
                   <div className="p-2 bg-green-500 rounded-lg">
                     <TrendingUp className="w-5 h-5 text-white" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    Success Rate
-                  </h3>
+                  <h3 className="text-lg font-semibold text-gray-900">Success Rate</h3>
                 </div>
-                <div className="text-4xl font-bold text-green-600 mb-2">
-                  {currentPrediction.successRate}%
-                </div>
+                <div className="text-4xl font-bold text-green-600 mb-2">{currentPrediction.successRate}%</div>
                 <p className="text-gray-600">
-                  Based on role requirements, market conditions, and historical
-                  data
+                  Based on role requirements, market conditions, and historical data
                 </p>
               </div>
 
@@ -182,13 +173,9 @@ const PredictionModal = ({
                   <div className="p-2 bg-blue-500 rounded-lg">
                     <Target className="w-5 h-5 text-white" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    Confidence Level
-                  </h3>
+                  <h3 className="text-lg font-semibold text-gray-900">Confidence Level</h3>
                 </div>
-                <div className="text-4xl font-bold text-blue-600 mb-2">
-                  {currentPrediction.confidence}%
-                </div>
+                <div className="text-4xl font-bold text-blue-600 mb-2">{currentPrediction.confidence}%</div>
                 <p className="text-gray-600">
                   AI model confidence in this prediction
                 </p>
@@ -199,54 +186,35 @@ const PredictionModal = ({
           {/* Market Analysis */}
           {marketData && (
             <div className="mb-8">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Market Analysis
-              </h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Market Analysis</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="flex items-center space-x-2 mb-2">
                     <span className="text-green-600 font-bold text-lg">£</span>
-                    <span className="text-sm font-medium text-gray-900">
-                      Salary Range
-                    </span>
+                    <span className="text-sm font-medium text-gray-900">Salary Range</span>
                   </div>
                   <div className="text-lg font-bold text-gray-900">
-                    £{marketData.salary?.min?.toLocaleString()} - £
-                    {marketData.salary?.max?.toLocaleString()}
+                    £{marketData.salary?.min?.toLocaleString()} - £{marketData.salary?.max?.toLocaleString()}
                   </div>
-                  <div className="text-sm text-gray-600">
-                    Median: £{marketData.salary?.median?.toLocaleString()}
-                  </div>
+                  <div className="text-sm text-gray-600">Median: £{marketData.salary?.median?.toLocaleString()}</div>
                 </div>
 
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="flex items-center space-x-2 mb-2">
                     <TrendingUp className="w-4 h-4 text-blue-600" />
-                    <span className="text-sm font-medium text-gray-900">
-                      Market Demand
-                    </span>
+                    <span className="text-sm font-medium text-gray-900">Market Demand</span>
                   </div>
-                  <div className="text-lg font-bold text-gray-900">
-                    {marketData.demand?.level}
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    {marketData.demand?.trend} trend
-                  </div>
+                  <div className="text-lg font-bold text-gray-900">{marketData.demand?.level}</div>
+                  <div className="text-sm text-gray-600">{marketData.demand?.trend} trend</div>
                 </div>
 
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="flex items-center space-x-2 mb-2">
                     <Clock className="w-4 h-4 text-purple-600" />
-                    <span className="text-sm font-medium text-gray-900">
-                      Time to Fill
-                    </span>
+                    <span className="text-sm font-medium text-gray-900">Time to Fill</span>
                   </div>
-                  <div className="text-lg font-bold text-gray-900">
-                    {marketData.demand?.timeToFill} days
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    Competition: {marketData.demand?.competition}
-                  </div>
+                  <div className="text-lg font-bold text-gray-900">{marketData.demand?.timeToFill} days</div>
+                  <div className="text-sm text-gray-600">Competition: {marketData.demand?.competition}</div>
                 </div>
               </div>
             </div>
@@ -254,38 +222,26 @@ const PredictionModal = ({
 
           {/* Success Factors */}
           <div className="mb-8">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Success Factors Analysis
-            </h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Success Factors Analysis</h3>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-medium text-gray-900 mb-3">
-                  Positive Factors
-                </h4>
+                <h4 className="font-medium text-gray-900 mb-3">Positive Factors</h4>
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2 p-2 bg-green-50 rounded">
                     <CheckCircle className="w-4 h-4 text-green-600" />
-                    <span className="text-sm text-gray-700">
-                      Clear role requirements defined
-                    </span>
+                    <span className="text-sm text-gray-700">Clear role requirements defined</span>
                   </div>
                   <div className="flex items-center space-x-2 p-2 bg-green-50 rounded">
                     <CheckCircle className="w-4 h-4 text-green-600" />
-                    <span className="text-sm text-gray-700">
-                      Competitive salary range
-                    </span>
+                    <span className="text-sm text-gray-700">Competitive salary range</span>
                   </div>
                   <div className="flex items-center space-x-2 p-2 bg-green-50 rounded">
                     <CheckCircle className="w-4 h-4 text-green-600" />
-                    <span className="text-sm text-gray-700">
-                      Strong company profile
-                    </span>
+                    <span className="text-sm text-gray-700">Strong company profile</span>
                   </div>
                   <div className="flex items-center space-x-2 p-2 bg-green-50 rounded">
                     <CheckCircle className="w-4 h-4 text-green-600" />
-                    <span className="text-sm text-gray-700">
-                      High market demand for role
-                    </span>
+                    <span className="text-sm text-gray-700">High market demand for role</span>
                   </div>
                 </div>
               </div>
@@ -295,22 +251,16 @@ const PredictionModal = ({
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2 p-2 bg-yellow-50 rounded">
                     <AlertTriangle className="w-4 h-4 text-yellow-600" />
-                    <span className="text-sm text-gray-700">
-                      High competition for candidates
-                    </span>
+                    <span className="text-sm text-gray-700">High competition for candidates</span>
                   </div>
                   <div className="flex items-center space-x-2 p-2 bg-yellow-50 rounded">
                     <AlertTriangle className="w-4 h-4 text-yellow-600" />
-                    <span className="text-sm text-gray-700">
-                      Specialized skill requirements
-                    </span>
+                    <span className="text-sm text-gray-700">Specialized skill requirements</span>
                   </div>
                   {currentPrediction.successRate < 70 && (
                     <div className="flex items-center space-x-2 p-2 bg-red-50 rounded">
                       <XCircle className="w-4 h-4 text-red-600" />
-                      <span className="text-sm text-gray-700">
-                        Below average success rate
-                      </span>
+                      <span className="text-sm text-gray-700">Below average success rate</span>
                     </div>
                   )}
                 </div>
@@ -320,44 +270,33 @@ const PredictionModal = ({
 
           {/* Recommendations */}
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              AI Recommendations
-            </h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">AI Recommendations</h3>
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <div className="space-y-3">
                 <div className="flex items-start space-x-2">
                   <Lightbulb className="w-5 h-5 text-blue-600 mt-0.5" />
                   <div>
-                    <p className="text-sm font-medium text-gray-900">
-                      Optimize Job Description
-                    </p>
+                    <p className="text-sm font-medium text-gray-900">Optimize Job Description</p>
                     <p className="text-sm text-gray-600">
-                      Include specific technology skills and emphasize growth
-                      opportunities to attract top talent.
+                      Include specific technology skills and emphasize growth opportunities to attract top talent.
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-2">
                   <Lightbulb className="w-5 h-5 text-blue-600 mt-0.5" />
                   <div>
-                    <p className="text-sm font-medium text-gray-900">
-                      Expand Search Channels
-                    </p>
+                    <p className="text-sm font-medium text-gray-900">Expand Search Channels</p>
                     <p className="text-sm text-gray-600">
-                      Consider using additional platforms like GitHub and Stack
-                      Overflow for technical roles.
+                      Consider using additional platforms like GitHub and Stack Overflow for technical roles.
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-2">
                   <Lightbulb className="w-5 h-5 text-blue-600 mt-0.5" />
                   <div>
-                    <p className="text-sm font-medium text-gray-900">
-                      Competitive Positioning
-                    </p>
+                    <p className="text-sm font-medium text-gray-900">Competitive Positioning</p>
                     <p className="text-sm text-gray-600">
-                      Highlight unique benefits and company culture to stand out
-                      from competitors.
+                      Highlight unique benefits and company culture to stand out from competitors.
                     </p>
                   </div>
                 </div>
@@ -370,8 +309,7 @@ const PredictionModal = ({
         <div className="border-t border-gray-200 p-6 bg-gray-50">
           <div className="flex justify-between items-center">
             <div className="text-sm text-gray-600">
-              Analysis generated by AI • Data sources: Market research,
-              historical success rates
+              Analysis generated by AI • Data sources: Market research, historical success rates
             </div>
             <div className="flex space-x-3">
               <button
@@ -406,37 +344,31 @@ const EmployeeModal = ({
 
   const startDate = new Date(selectedEmployee.startDate);
   const today = new Date();
-  const tenure = Math.floor(
-    (today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 30),
-  );
+  const tenure = Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 30));
 
   const probationEndDate = new Date(startDate);
-  probationEndDate.setMonth(
-    probationEndDate.getMonth() + (selectedEmployee.probationMonths || 6),
-  );
-  const probationDaysLeft = Math.ceil(
-    (probationEndDate - today) / (1000 * 60 * 60 * 24),
-  );
+  probationEndDate.setMonth(probationEndDate.getMonth() + (selectedEmployee.probationMonths || 6));
+  const probationDaysLeft = Math.ceil((probationEndDate - today) / (1000 * 60 * 60 * 24));
 
   const formatDate = (dateString) => {
     if (!dateString) return "Not set";
-    return new Date(dateString).toLocaleDateString("en-GB", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
+    return new Date(dateString).toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
     });
   };
 
   const getDocumentStatusBadge = (status) => {
     const statusColors = {
-      Signed: "bg-green-100 text-green-800",
-      Complete: "bg-green-100 text-green-800",
-      Pending: "bg-yellow-100 text-yellow-800",
-      "In Progress": "bg-blue-100 text-blue-800",
-      Valid: "bg-green-100 text-green-800",
-      Active: "bg-blue-100 text-blue-800",
+      'Signed': 'bg-green-100 text-green-800',
+      'Complete': 'bg-green-100 text-green-800',
+      'Pending': 'bg-yellow-100 text-yellow-800',
+      'In Progress': 'bg-blue-100 text-blue-800',
+      'Valid': 'bg-green-100 text-green-800',
+      'Active': 'bg-blue-100 text-blue-800'
     };
-    return statusColors[status] || "bg-gray-100 text-gray-800";
+    return statusColors[status] || 'bg-gray-100 text-gray-800';
   };
 
   const handleSave = () => {
@@ -465,13 +397,10 @@ const EmployeeModal = ({
                 </span>
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">
-                  {selectedEmployee.name}
-                </h2>
+                <h2 className="text-2xl font-bold text-gray-900">{selectedEmployee.name}</h2>
                 <p className="text-gray-600">{selectedEmployee.position}</p>
                 <p className="text-sm text-gray-500">
-                  {selectedEmployee.department} • Employee ID: #
-                  {selectedEmployee.employeeId}
+                  {selectedEmployee.department} • Employee ID: #{selectedEmployee.employeeId}
                 </p>
                 <div className="flex items-center space-x-2 mt-2">
                   <span
@@ -481,9 +410,7 @@ const EmployeeModal = ({
                         : "bg-green-100 text-green-800"
                     }`}
                   >
-                    {selectedEmployee.probationPeriod
-                      ? "On Probation"
-                      : "Confirmed Employee"}
+                    {selectedEmployee.probationPeriod ? "On Probation" : "Confirmed Employee"}
                   </span>
                   <span className="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
                     {selectedEmployee.employmentType}
@@ -535,9 +462,7 @@ const EmployeeModal = ({
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    Employment Details
-                  </h3>
+                  <h3 className="text-lg font-semibold text-gray-900">Employment Details</h3>
                   <div className="bg-gray-50 rounded-lg p-4 space-y-3">
                     <div className="flex justify-between">
                       <span className="text-sm text-gray-600">Start Date:</span>
@@ -547,26 +472,18 @@ const EmployeeModal = ({
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sm text-gray-600">Tenure:</span>
-                      <span className="text-sm font-medium text-gray-900">
-                        {tenure} months
-                      </span>
+                      <span className="text-sm font-medium text-gray-900">{tenure} months</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sm text-gray-600">Salary:</span>
-                      <span className="text-sm font-medium text-gray-900">
-                        {selectedEmployee.salary}
-                      </span>
+                      <span className="text-sm font-medium text-gray-900">{selectedEmployee.salary}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sm text-gray-600">Manager:</span>
-                      <span className="text-sm font-medium text-gray-900">
-                        {selectedEmployee.manager}
-                      </span>
+                      <span className="text-sm font-medium text-gray-900">{selectedEmployee.manager}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">
-                        Employment Type:
-                      </span>
+                      <span className="text-sm text-gray-600">Employment Type:</span>
                       <span className="text-sm font-medium text-gray-900">
                         {selectedEmployee.employmentType}
                       </span>
@@ -575,9 +492,7 @@ const EmployeeModal = ({
                 </div>
 
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    Quick Actions
-                  </h3>
+                  <h3 className="text-lg font-semibold text-gray-900">Quick Actions</h3>
                   <div className="grid grid-cols-2 gap-3">
                     <button className="p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-2">
                       <Mail size={16} />
@@ -600,26 +515,17 @@ const EmployeeModal = ({
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Recent Activity
-                </h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
                     <CheckCircle className="w-5 h-5 text-green-600" />
                     <div>
-                      <p className="text-sm font-medium text-gray-900">
-                        Contract signed
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {formatDate(selectedEmployee.startDate)}
-                      </p>
+                      <p className="text-sm font-medium text-gray-900">Contract signed</p>
+                      <p className="text-xs text-gray-500">{formatDate(selectedEmployee.startDate)}</p>
                     </div>
                   </div>
                   {selectedEmployee.documents.map((doc, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg"
-                    >
+                    <div key={index} className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
                       <FileText className="w-5 h-5 text-blue-600" />
                       <div>
                         <p className="text-sm font-medium text-gray-900">
@@ -641,18 +547,14 @@ const EmployeeModal = ({
               <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg p-6">
                 <div className="flex items-center space-x-3 mb-4">
                   <Timer className="w-6 h-6 text-yellow-600" />
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    Probation Status
-                  </h3>
+                  <h3 className="text-lg font-semibold text-gray-900">Probation Status</h3>
                 </div>
 
                 {selectedEmployee.probationPeriod ? (
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div className="bg-white rounded-lg p-4">
-                        <p className="text-sm text-gray-600">
-                          Probation Period
-                        </p>
+                        <p className="text-sm text-gray-600">Probation Period</p>
                         <p className="text-xl font-bold text-yellow-600">
                           {selectedEmployee.probationMonths} months
                         </p>
@@ -665,52 +567,33 @@ const EmployeeModal = ({
                       </div>
                       <div className="bg-white rounded-lg p-4">
                         <p className="text-sm text-gray-600">Days Remaining</p>
-                        <p
-                          className={`text-xl font-bold ${
-                            probationDaysLeft <= 7
-                              ? "text-red-600"
-                              : probationDaysLeft <= 30
-                                ? "text-yellow-600"
-                                : "text-green-600"
-                          }`}
-                        >
-                          {probationDaysLeft > 0
-                            ? probationDaysLeft
-                            : "Overdue"}
+                        <p className={`text-xl font-bold ${
+                          probationDaysLeft <= 7 ? "text-red-600" :
+                          probationDaysLeft <= 30 ? "text-yellow-600" : "text-green-600"
+                        }`}>
+                          {probationDaysLeft > 0 ? probationDaysLeft : "Overdue"}
                         </p>
                       </div>
                     </div>
 
                     <div className="bg-white rounded-lg p-4">
-                      <h4 className="font-medium text-gray-900 mb-3">
-                        Probation Checklist
-                      </h4>
+                      <h4 className="font-medium text-gray-900 mb-3">Probation Checklist</h4>
                       <div className="space-y-2">
                         <div className="flex items-center space-x-2">
                           <CheckCircle className="w-4 h-4 text-green-600" />
-                          <span className="text-sm text-gray-700">
-                            Contract signed
-                          </span>
+                          <span className="text-sm text-gray-700">Contract signed</span>
                         </div>
                         <div className="flex items-center space-x-2">
                           <CheckCircle className="w-4 h-4 text-green-600" />
-                          <span className="text-sm text-gray-700">
-                            Induction completed
-                          </span>
+                          <span className="text-sm text-gray-700">Induction completed</span>
                         </div>
                         <div className="flex items-center space-x-2">
-                          {selectedEmployee.documents.some(
-                            (doc) =>
-                              doc.type === "Medical Certificate" &&
-                              doc.status === "Complete",
-                          ) ? (
+                          {selectedEmployee.documents.some(doc => doc.type === "Medical Certificate" && doc.status === "Complete") ? (
                             <CheckCircle className="w-4 h-4 text-green-600" />
                           ) : (
                             <Clock className="w-4 h-4 text-yellow-600" />
                           )}
-                          <span className="text-sm text-gray-700">
-                            Medical certificate submitted
-                          </span>
+                          <span className="text-sm text-gray-700">Medical certificate submitted</span>
                         </div>
                         <div className="flex items-center space-x-2">
                           {probationDaysLeft <= 30 ? (
@@ -718,9 +601,7 @@ const EmployeeModal = ({
                           ) : (
                             <Clock className="w-4 h-4 text-gray-400" />
                           )}
-                          <span className="text-sm text-gray-700">
-                            Probation review scheduled
-                          </span>
+                          <span className="text-sm text-gray-700">Probation review scheduled</span>
                         </div>
                       </div>
                     </div>
@@ -732,27 +613,21 @@ const EmployeeModal = ({
                 ) : (
                   <div className="text-center py-8">
                     <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-4" />
-                    <h4 className="text-lg font-semibold text-gray-900 mb-2">
-                      Probation Completed
-                    </h4>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-2">Probation Completed</h4>
                     <p className="text-gray-600">
-                      This employee successfully completed their probation
-                      period on {formatDate(probationEndDate)}
+                      This employee successfully completed their probation period on{" "}
+                      {formatDate(probationEndDate)}
                     </p>
                   </div>
                 )}
               </div>
 
               <div className="bg-white border border-gray-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Review History
-                </h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Review History</h3>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div>
-                      <p className="font-medium text-gray-900">
-                        Initial Review
-                      </p>
+                      <p className="font-medium text-gray-900">Initial Review</p>
                       <p className="text-sm text-gray-600">30-day checkpoint</p>
                     </div>
                     <span className="px-2 py-1 text-xs font-medium rounded bg-green-100 text-green-800">
@@ -761,12 +636,8 @@ const EmployeeModal = ({
                   </div>
                   <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div>
-                      <p className="font-medium text-gray-900">
-                        Mid-term Review
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        3-month checkpoint
-                      </p>
+                      <p className="font-medium text-gray-900">Mid-term Review</p>
+                      <p className="text-sm text-gray-600">3-month checkpoint</p>
                     </div>
                     <span className="px-2 py-1 text-xs font-medium rounded bg-yellow-100 text-yellow-800">
                       Scheduled
@@ -780,9 +651,7 @@ const EmployeeModal = ({
           {activeTab === "documents" && (
             <div className="space-y-6">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Employee Documents
-                </h3>
+                <h3 className="text-lg font-semibold text-gray-900">Employee Documents</h3>
                 <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
                   <Plus size={16} />
                   <span>Add Document</span>
@@ -791,28 +660,19 @@ const EmployeeModal = ({
 
               <div className="grid grid-cols-1 gap-4">
                 {selectedEmployee.documents.map((document, index) => (
-                  <div
-                    key={index}
-                    className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors"
-                  >
+                  <div key={index} className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-3">
                         <FileText className="w-5 h-5 text-gray-400" />
                         <div>
-                          <h4 className="font-medium text-gray-900">
-                            {document.type}
-                          </h4>
+                          <h4 className="font-medium text-gray-900">{document.type}</h4>
                           <p className="text-sm text-gray-600">
-                            {document.date
-                              ? `Uploaded on ${formatDate(document.date)}`
-                              : "Pending upload"}
+                            {document.date ? `Uploaded on ${formatDate(document.date)}` : "Pending upload"}
                           </p>
                         </div>
                       </div>
                       <div className="flex items-center space-x-3">
-                        <span
-                          className={`px-2 py-1 text-xs font-medium rounded ${getDocumentStatusBadge(document.status)}`}
-                        >
+                        <span className={`px-2 py-1 text-xs font-medium rounded ${getDocumentStatusBadge(document.status)}`}>
                           {document.status}
                         </span>
                         <div className="flex items-center space-x-1">
@@ -834,9 +694,7 @@ const EmployeeModal = ({
 
               <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
                 <FileText className="w-8 h-8 text-gray-400 mx-auto mb-4" />
-                <h4 className="text-lg font-medium text-gray-900 mb-2">
-                  Upload New Document
-                </h4>
+                <h4 className="text-lg font-medium text-gray-900 mb-2">Upload New Document</h4>
                 <p className="text-gray-600 mb-4">
                   Drag and drop files here, or click to browse
                 </p>
@@ -853,9 +711,7 @@ const EmployeeModal = ({
                 <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-6">
                   <div className="flex items-center space-x-3 mb-3">
                     <Award className="w-6 h-6 text-green-600" />
-                    <h3 className="font-semibold text-gray-900">
-                      Overall Rating
-                    </h3>
+                    <h3 className="font-semibold text-gray-900">Overall Rating</h3>
                   </div>
                   <p className="text-3xl font-bold text-green-600">4.2/5</p>
                   <p className="text-sm text-gray-600">Based on last review</p>
@@ -881,49 +737,32 @@ const EmployeeModal = ({
               </div>
 
               <div className="bg-white border border-gray-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Recent Reviews
-                </h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Reviews</h3>
                 <div className="space-y-4">
                   <div className="border-l-4 border-green-500 pl-4">
                     <div className="flex justify-between items-start mb-2">
-                      <h4 className="font-medium text-gray-900">
-                        Quarterly Review Q3 2024
-                      </h4>
-                      <span className="text-sm text-gray-500">
-                        Oct 15, 2024
-                      </span>
+                      <h4 className="font-medium text-gray-900">Quarterly Review Q3 2024</h4>
+                      <span className="text-sm text-gray-500">Oct 15, 2024</span>
                     </div>
                     <p className="text-sm text-gray-600 mb-2">
-                      Excellent performance in project delivery and team
-                      collaboration. Shows strong technical skills and
-                      leadership potential.
+                      Excellent performance in project delivery and team collaboration.
+                      Shows strong technical skills and leadership potential.
                     </p>
                     <div className="flex items-center space-x-4">
-                      <span className="text-sm text-green-600 font-medium">
-                        Rating: 4.5/5
-                      </span>
-                      <span className="text-sm text-gray-500">
-                        by {selectedEmployee.manager}
-                      </span>
+                      <span className="text-sm text-green-600 font-medium">Rating: 4.5/5</span>
+                      <span className="text-sm text-gray-500">by {selectedEmployee.manager}</span>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div className="bg-white border border-gray-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Development Plan
-                </h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Development Plan</h3>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
                     <div>
-                      <p className="font-medium text-gray-900">
-                        Leadership Training
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        Complete by December 2024
-                      </p>
+                      <p className="font-medium text-gray-900">Leadership Training</p>
+                      <p className="text-sm text-gray-600">Complete by December 2024</p>
                     </div>
                     <span className="px-2 py-1 text-xs font-medium rounded bg-blue-100 text-blue-800">
                       In Progress
@@ -931,12 +770,8 @@ const EmployeeModal = ({
                   </div>
                   <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
                     <div>
-                      <p className="font-medium text-gray-900">
-                        Advanced Technical Certification
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        AWS Solutions Architect
-                      </p>
+                      <p className="font-medium text-gray-900">Advanced Technical Certification</p>
+                      <p className="text-sm text-gray-600">AWS Solutions Architect</p>
                     </div>
                     <span className="px-2 py-1 text-xs font-medium rounded bg-green-100 text-green-800">
                       Completed
@@ -950,9 +785,7 @@ const EmployeeModal = ({
           {activeTab === "personal" && (
             <div className="space-y-6">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Personal Information
-                </h3>
+                <h3 className="text-lg font-semibold text-gray-900">Personal Information</h3>
                 <button
                   onClick={() => setIsEditing(!isEditing)}
                   className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
@@ -965,9 +798,7 @@ const EmployeeModal = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
                     {isEditing ? (
                       <input
                         type="email"
@@ -980,9 +811,7 @@ const EmployeeModal = ({
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Phone
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
                     {isEditing ? (
                       <input
                         type="tel"
@@ -995,9 +824,7 @@ const EmployeeModal = ({
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Department
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Department</label>
                     {isEditing ? (
                       <select
                         defaultValue={selectedEmployee.department}
@@ -1011,18 +838,14 @@ const EmployeeModal = ({
                         <option value="Analytics">Analytics</option>
                       </select>
                     ) : (
-                      <p className="text-gray-900">
-                        {selectedEmployee.department}
-                      </p>
+                      <p className="text-gray-900">{selectedEmployee.department}</p>
                     )}
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Position
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Position</label>
                     {isEditing ? (
                       <input
                         type="text"
@@ -1030,16 +853,12 @@ const EmployeeModal = ({
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       />
                     ) : (
-                      <p className="text-gray-900">
-                        {selectedEmployee.position}
-                      </p>
+                      <p className="text-gray-900">{selectedEmployee.position}</p>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Manager
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Manager</label>
                     {isEditing ? (
                       <input
                         type="text"
@@ -1047,16 +866,12 @@ const EmployeeModal = ({
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       />
                     ) : (
-                      <p className="text-gray-900">
-                        {selectedEmployee.manager}
-                      </p>
+                      <p className="text-gray-900">{selectedEmployee.manager}</p>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Salary
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Salary</label>
                     {isEditing ? (
                       <input
                         type="text"
@@ -1119,9 +934,7 @@ const EmployeeModal = ({
               <BarChart2 className="w-5 h-5 text-blue-600" />
               <span>Market Intelligence</span>
             </h3>
-            <p className="text-sm text-gray-600">
-              Real-time market data and salary insights
-            </p>
+            <p className="text-sm text-gray-600">Real-time market data and salary insights</p>
           </div>
           <button
             onClick={() => setIsSearching(!isSearching)}
@@ -1135,9 +948,7 @@ const EmployeeModal = ({
         {/* Quick Market Search */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <div>
-            <h4 className="font-medium text-gray-900 mb-3">
-              Quick Market Search
-            </h4>
+            <h4 className="font-medium text-gray-900 mb-3">Quick Market Search</h4>
             <div className="space-y-3">
               <div className="flex space-x-2">
                 <input
@@ -1157,13 +968,7 @@ const EmployeeModal = ({
 
               <div className="flex flex-wrap gap-2">
                 <span className="text-sm text-gray-600">Popular searches:</span>
-                {[
-                  "Software Engineer",
-                  "Product Manager",
-                  "Data Scientist",
-                  "UX Designer",
-                  "DevOps Engineer",
-                ].map((role) => (
+                {["Software Engineer", "Product Manager", "Data Scientist", "UX Designer", "DevOps Engineer"].map((role) => (
                   <button
                     key={role}
                     className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full hover:bg-gray-200 transition-colors"
@@ -1180,49 +985,33 @@ const EmployeeModal = ({
             <div className="space-y-3">
               <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
                 <div>
-                  <p className="text-sm font-medium text-gray-900">
-                    Software Engineer
-                  </p>
+                  <p className="text-sm font-medium text-gray-900">Software Engineer</p>
                   <p className="text-xs text-gray-600">London • High Demand</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-bold text-green-600">
-                    £45k - £85k
-                  </p>
+                  <p className="text-sm font-bold text-green-600">£45k - £85k</p>
                   <p className="text-xs text-gray-500">30 days avg fill</p>
                 </div>
               </div>
 
               <div className="flex items-center justify-between p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                 <div>
-                  <p className="text-sm font-medium text-gray-900">
-                    Product Manager
-                  </p>
-                  <p className="text-xs text-gray-600">
-                    London • Medium Demand
-                  </p>
+                  <p className="text-sm font-medium text-gray-900">Product Manager</p>
+                  <p className="text-xs text-gray-600">London • Medium Demand</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-bold text-yellow-600">
-                    £55k - £95k
-                  </p>
+                  <p className="text-sm font-bold text-yellow-600">£55k - £95k</p>
                   <p className="text-xs text-gray-500">45 days avg fill</p>
                 </div>
               </div>
 
               <div className="flex items-center justify-between p-3 bg-purple-50 border border-purple-200 rounded-lg">
                 <div>
-                  <p className="text-sm font-medium text-gray-900">
-                    Data Scientist
-                  </p>
-                  <p className="text-xs text-gray-600">
-                    London • Very High Demand
-                  </p>
+                  <p className="text-sm font-medium text-gray-900">Data Scientist</p>
+                  <p className="text-xs text-gray-600">London • Very High Demand</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-bold text-purple-600">
-                    £60k - £110k
-                  </p>
+                  <p className="text-sm font-bold text-purple-600">£60k - £110k</p>
                   <p className="text-xs text-gray-500">25 days avg fill</p>
                 </div>
               </div>
@@ -1232,16 +1021,12 @@ const EmployeeModal = ({
 
         {/* Market Trends */}
         <div className="border-t border-gray-200 pt-6">
-          <h4 className="font-medium text-gray-900 mb-4">
-            Market Trends & Analytics
-          </h4>
+          <h4 className="font-medium text-gray-900 mb-4">Market Trends & Analytics</h4>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-lg p-4">
               <div className="flex items-center space-x-2 mb-2">
                 <TrendingUp className="w-4 h-4 text-blue-600" />
-                <span className="text-sm font-medium text-gray-900">
-                  Salary Growth
-                </span>
+                <span className="text-sm font-medium text-gray-900">Salary Growth</span>
               </div>
               <p className="text-2xl font-bold text-blue-600">+8.5%</p>
               <p className="text-xs text-gray-600">Tech sector YoY</p>
@@ -1250,9 +1035,7 @@ const EmployeeModal = ({
             <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
               <div className="flex items-center space-x-2 mb-2">
                 <Users className="w-4 h-4 text-green-600" />
-                <span className="text-sm font-medium text-gray-900">
-                  Job Openings
-                </span>
+                <span className="text-sm font-medium text-gray-900">Job Openings</span>
               </div>
               <p className="text-2xl font-bold text-green-600">127k</p>
               <p className="text-xs text-gray-600">UK tech market</p>
@@ -1261,9 +1044,7 @@ const EmployeeModal = ({
             <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-4">
               <div className="flex items-center space-x-2 mb-2">
                 <Clock className="w-4 h-4 text-purple-600" />
-                <span className="text-sm font-medium text-gray-900">
-                  Time to Fill
-                </span>
+                <span className="text-sm font-medium text-gray-900">Time to Fill</span>
               </div>
               <p className="text-2xl font-bold text-purple-600">34 days</p>
               <p className="text-xs text-gray-600">Average</p>
@@ -1272,9 +1053,7 @@ const EmployeeModal = ({
             <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg p-4">
               <div className="flex items-center space-x-2 mb-2">
                 <Target className="w-4 h-4 text-yellow-600" />
-                <span className="text-sm font-medium text-gray-900">
-                  Competition
-                </span>
+                <span className="text-sm font-medium text-gray-900">Competition</span>
               </div>
               <p className="text-2xl font-bold text-yellow-600">Medium</p>
               <p className="text-xs text-gray-600">Current level</p>
@@ -1284,30 +1063,21 @@ const EmployeeModal = ({
 
         {/* Skills Intelligence */}
         <div className="border-t border-gray-200 pt-6 mt-6">
-          <h4 className="font-medium text-gray-900 mb-4">
-            Skills Intelligence
-          </h4>
+          <h4 className="font-medium text-gray-900 mb-4">Skills Intelligence</h4>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
-              <h5 className="text-sm font-medium text-gray-900 mb-3">
-                Most In-Demand Skills
-              </h5>
+              <h5 className="text-sm font-medium text-gray-900 mb-3">Most In-Demand Skills</h5>
               <div className="space-y-2">
                 {[
                   { skill: "React/JavaScript", demand: 95, growth: "+12%" },
                   { skill: "Python", demand: 89, growth: "+18%" },
                   { skill: "AWS/Cloud", demand: 87, growth: "+24%" },
                   { skill: "Node.js", demand: 82, growth: "+15%" },
-                  { skill: "TypeScript", demand: 78, growth: "+31%" },
+                  { skill: "TypeScript", demand: 78, growth: "+31%" }
                 ].map((item) => (
-                  <div
-                    key={item.skill}
-                    className="flex items-center justify-between p-2 bg-gray-50 rounded"
-                  >
+                  <div key={item.skill} className="flex items-center justify-between p-2 bg-gray-50 rounded">
                     <div className="flex items-center space-x-3">
-                      <span className="text-sm font-medium text-gray-900">
-                        {item.skill}
-                      </span>
+                      <span className="text-sm font-medium text-gray-900">{item.skill}</span>
                       <div className="w-24 bg-gray-200 rounded-full h-2">
                         <div
                           className="bg-blue-600 h-2 rounded-full"
@@ -1315,39 +1085,28 @@ const EmployeeModal = ({
                         />
                       </div>
                     </div>
-                    <span className="text-xs text-green-600 font-medium">
-                      {item.growth}
-                    </span>
+                    <span className="text-xs text-green-600 font-medium">{item.growth}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             <div>
-              <h5 className="text-sm font-medium text-gray-900 mb-3">
-                Emerging Skills
-              </h5>
+              <h5 className="text-sm font-medium text-gray-900 mb-3">Emerging Skills</h5>
               <div className="space-y-2">
                 {[
                   { skill: "AI/Machine Learning", trend: "🔥", growth: "+67%" },
                   { skill: "Blockchain", trend: "📈", growth: "+45%" },
                   { skill: "Cybersecurity", trend: "🛡️", growth: "+38%" },
                   { skill: "DevOps/Kubernetes", trend: "⚡", growth: "+42%" },
-                  { skill: "Data Engineering", trend: "📊", growth: "+29%" },
+                  { skill: "Data Engineering", trend: "📊", growth: "+29%" }
                 ].map((item) => (
-                  <div
-                    key={item.skill}
-                    className="flex items-center justify-between p-2 bg-gray-50 rounded"
-                  >
+                  <div key={item.skill} className="flex items-center justify-between p-2 bg-gray-50 rounded">
                     <div className="flex items-center space-x-3">
                       <span className="text-lg">{item.trend}</span>
-                      <span className="text-sm font-medium text-gray-900">
-                        {item.skill}
-                      </span>
+                      <span className="text-sm font-medium text-gray-900">{item.skill}</span>
                     </div>
-                    <span className="text-xs text-purple-600 font-medium">
-                      {item.growth}
-                    </span>
+                    <span className="text-xs text-purple-600 font-medium">{item.growth}</span>
                   </div>
                 ))}
               </div>
@@ -1378,12 +1137,8 @@ const EmployeeModal = ({
             <Search className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">
-              Market Insights
-            </h3>
-            <p className="text-sm text-gray-600">
-              Get real-time salary and market data for any role
-            </p>
+            <h3 className="text-lg font-semibold text-gray-900">Market Insights</h3>
+            <p className="text-sm text-gray-600">Get real-time salary and market data for any role</p>
           </div>
         </div>
 
@@ -1392,37 +1147,23 @@ const EmployeeModal = ({
           <div className="bg-gray-50 rounded-lg p-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Job Title
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Job Title</label>
                 <input
                   type="text"
                   placeholder="e.g. Software Engineer, Product Manager"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   value={marketSearchForm.jobTitle || ""}
-                  onChange={(e) =>
-                    setMarketSearchForm({
-                      ...marketSearchForm,
-                      jobTitle: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setMarketSearchForm({...marketSearchForm, jobTitle: e.target.value})}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Location
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
                 <input
                   type="text"
                   placeholder="e.g. London, Manchester, Remote"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   value={marketSearchForm.location || ""}
-                  onChange={(e) =>
-                    setMarketSearchForm({
-                      ...marketSearchForm,
-                      location: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setMarketSearchForm({...marketSearchForm, location: e.target.value})}
                 />
               </div>
               <div className="flex items-end">
@@ -1458,15 +1199,12 @@ const EmployeeModal = ({
                   "DevOps Engineer",
                   "Full Stack Developer",
                   "Business Analyst",
-                  "Project Manager",
+                  "Project Manager"
                 ].map((role) => (
                   <button
                     key={role}
                     onClick={() => {
-                      setMarketSearchForm({
-                        ...marketSearchForm,
-                        jobTitle: role,
-                      });
+                      setMarketSearchForm({...marketSearchForm, jobTitle: role});
                       setTimeout(() => searchMarketData(), 100);
                     }}
                     className="px-3 py-1 bg-white border border-gray-300 text-gray-700 text-sm rounded-full hover:bg-gray-50 hover:border-blue-300 transition-colors"
@@ -1485,21 +1223,16 @@ const EmployeeModal = ({
                 <div>
                   <h4 className="text-lg font-semibold text-gray-900">
                     {lastSearchResults.jobTitle}
-                    {lastSearchResults.location &&
-                      ` in ${lastSearchResults.location}`}
+                    {lastSearchResults.location && ` in ${lastSearchResults.location}`}
                   </h4>
                   <div className="flex items-center space-x-2 mt-1">
                     <span className="text-sm text-gray-600">Powered by</span>
-                    <span className="bg-blue-600 text-white px-2 py-1 text-xs font-bold rounded">
-                      ITJobsWatch
-                    </span>
+                    <span className="bg-blue-600 text-white px-2 py-1 text-xs font-bold rounded">ITJobsWatch</span>
                   </div>
                 </div>
                 <div className="text-right">
                   <div className="text-sm text-gray-600">Last updated</div>
-                  <div className="text-sm font-medium text-gray-900">
-                    {lastSearchResults.lastUpdated}
-                  </div>
+                  <div className="text-sm font-medium text-gray-900">{lastSearchResults.lastUpdated}</div>
                 </div>
               </div>
 
@@ -1507,20 +1240,13 @@ const EmployeeModal = ({
                 <div className="bg-white rounded-lg p-4 border border-blue-200">
                   <div className="flex items-center space-x-2 mb-2">
                     <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                      <span className="text-green-600 font-bold text-lg">
-                        £
-                      </span>
+                      <span className="text-green-600 font-bold text-lg">£</span>
                     </div>
-                    <span className="text-sm font-medium text-gray-900">
-                      Average Salary
-                    </span>
+                    <span className="text-sm font-medium text-gray-900">Average Salary</span>
                   </div>
-                  <div className="text-2xl font-bold text-green-600">
-                    {lastSearchResults.salary.average}
-                  </div>
+                  <div className="text-2xl font-bold text-green-600">{lastSearchResults.salary.average}</div>
                   <div className="text-xs text-gray-500">
-                    Range: {lastSearchResults.salary.min} -{" "}
-                    {lastSearchResults.salary.max}
+                    Range: {lastSearchResults.salary.min} - {lastSearchResults.salary.max}
                   </div>
                 </div>
 
@@ -1529,19 +1255,12 @@ const EmployeeModal = ({
                     <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                       <TrendingUp className="w-4 h-4 text-blue-600" />
                     </div>
-                    <span className="text-sm font-medium text-gray-900">
-                      Market Demand
-                    </span>
+                    <span className="text-sm font-medium text-gray-900">Market Demand</span>
                   </div>
-                  <div
-                    className={`text-2xl font-bold ${
-                      lastSearchResults.demand.level === "High"
-                        ? "text-green-600"
-                        : lastSearchResults.demand.level === "Medium"
-                          ? "text-yellow-600"
-                          : "text-red-600"
-                    }`}
-                  >
+                  <div className={`text-2xl font-bold ${
+                    lastSearchResults.demand.level === 'High' ? 'text-green-600' :
+                    lastSearchResults.demand.level === 'Medium' ? 'text-yellow-600' : 'text-red-600'
+                  }`}>
                     {lastSearchResults.demand.level}
                   </div>
                   <div className="text-xs text-gray-500">
@@ -1554,14 +1273,12 @@ const EmployeeModal = ({
                     <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
                       <Clock className="w-4 h-4 text-purple-600" />
                     </div>
-                    <span className="text-sm font-medium text-gray-900">
-                      Time to Fill
-                    </span>
+                    <span className="text-sm font-medium text-gray-900">Time to Fill</span>
                   </div>
-                  <div className="text-2xl font-bold text-purple-600">
-                    {lastSearchResults.timeToFill} days
+                  <div className="text-2xl font-bold text-purple-600">{lastSearchResults.timeToFill} days</div>
+                  <div className="text-xs text-gray-500">
+                    Industry average
                   </div>
-                  <div className="text-xs text-gray-500">Industry average</div>
                 </div>
 
                 <div className="bg-white rounded-lg p-4 border border-blue-200">
@@ -1569,40 +1286,28 @@ const EmployeeModal = ({
                     <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
                       <Target className="w-4 h-4 text-yellow-600" />
                     </div>
-                    <span className="text-sm font-medium text-gray-900">
-                      Competition
-                    </span>
+                    <span className="text-sm font-medium text-gray-900">Competition</span>
                   </div>
-                  <div
-                    className={`text-2xl font-bold ${
-                      lastSearchResults.competition === "High"
-                        ? "text-red-600"
-                        : lastSearchResults.competition === "Medium"
-                          ? "text-yellow-600"
-                          : "text-green-600"
-                    }`}
-                  >
+                  <div className={`text-2xl font-bold ${
+                    lastSearchResults.competition === 'High' ? 'text-red-600' :
+                    lastSearchResults.competition === 'Medium' ? 'text-yellow-600' : 'text-green-600'
+                  }`}>
                     {lastSearchResults.competition}
                   </div>
-                  <div className="text-xs text-gray-500">For this role</div>
+                  <div className="text-xs text-gray-500">
+                    For this role
+                  </div>
                 </div>
               </div>
 
               {/* Skills Analysis */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="bg-white rounded-lg p-4 border border-blue-200">
-                  <h5 className="font-medium text-gray-900 mb-3">
-                    Top Required Skills
-                  </h5>
+                  <h5 className="font-medium text-gray-900 mb-3">Top Required Skills</h5>
                   <div className="space-y-2">
                     {lastSearchResults.skills.required.map((skill, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between"
-                      >
-                        <span className="text-sm text-gray-700">
-                          {skill.name}
-                        </span>
+                      <div key={index} className="flex items-center justify-between">
+                        <span className="text-sm text-gray-700">{skill.name}</span>
                         <div className="flex items-center space-x-2">
                           <div className="w-16 bg-gray-200 rounded-full h-2">
                             <div
@@ -1610,9 +1315,7 @@ const EmployeeModal = ({
                               style={{ width: `${skill.percentage}%` }}
                             />
                           </div>
-                          <span className="text-xs text-gray-500 w-8">
-                            {skill.percentage}%
-                          </span>
+                          <span className="text-xs text-gray-500 w-8">{skill.percentage}%</span>
                         </div>
                       </div>
                     ))}
@@ -1620,22 +1323,13 @@ const EmployeeModal = ({
                 </div>
 
                 <div className="bg-white rounded-lg p-4 border border-blue-200">
-                  <h5 className="font-medium text-gray-900 mb-3">
-                    Trending Skills
-                  </h5>
+                  <h5 className="font-medium text-gray-900 mb-3">Trending Skills</h5>
                   <div className="space-y-2">
                     {lastSearchResults.skills.trending.map((skill, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between"
-                      >
-                        <span className="text-sm text-gray-700">
-                          {skill.name}
-                        </span>
+                      <div key={index} className="flex items-center justify-between">
+                        <span className="text-sm text-gray-700">{skill.name}</span>
                         <div className="flex items-center space-x-2">
-                          <span className="text-xs text-green-600 font-medium">
-                            +{skill.growth}%
-                          </span>
+                          <span className="text-xs text-green-600 font-medium">+{skill.growth}%</span>
                           <TrendingUp className="w-3 h-3 text-green-600" />
                         </div>
                       </div>
@@ -1660,10 +1354,7 @@ const EmployeeModal = ({
                         title: lastSearchResults.jobTitle,
                         location: lastSearchResults.location || "",
                         salary: lastSearchResults.salary.average,
-                        skills: lastSearchResults.skills.required
-                          .slice(0, 5)
-                          .map((s) => s.name)
-                          .join(", "),
+                        skills: lastSearchResults.skills.required.slice(0, 5).map(s => s.name).join(", ")
                       });
                       setActiveTab("roles");
                     }}
@@ -1684,19 +1375,13 @@ const EmployeeModal = ({
                   <Database className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h4 className="font-medium text-gray-900">
-                    ITJobsWatch API Integration
-                  </h4>
-                  <p className="text-sm text-gray-600">
-                    Real-time UK job market data and salary insights
-                  </p>
+                  <h4 className="font-medium text-gray-900">ITJobsWatch API Integration</h4>
+                  <p className="text-sm text-gray-600">Real-time UK job market data and salary insights</p>
                 </div>
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-sm text-green-600 font-medium">
-                  Connected
-                </span>
+                <span className="text-sm text-green-600 font-medium">Connected</span>
               </div>
             </div>
 
@@ -1738,7 +1423,7 @@ const RecruitModal = ({
   const [schedulingCandidate, setSchedulingCandidate] = useState(null);
   const [showCalendlyModal, setShowCalendlyModal] = useState(false);
 
-  const role = roles.find((r) => r.id === recruitingRoleId);
+  const role = roles.find(r => r.id === recruitingRoleId);
 
   // Calendly configuration
   // TODO: Replace with your actual Calendly URL
@@ -1749,7 +1434,7 @@ const RecruitModal = ({
     initial: "https://calendly.com/your-company/initial-screening",
     technical: "https://calendly.com/your-company/technical-interview",
     cultural: "https://calendly.com/your-company/cultural-fit",
-    final: "https://calendly.com/your-company/final-interview",
+    final: "https://calendly.com/your-company/final-interview"
   };
 
   const openCalendlyScheduling = (candidate) => {
@@ -1758,16 +1443,16 @@ const RecruitModal = ({
     // Method 1: Open Calendly in a popup
     if (window.Calendly) {
       window.Calendly.initPopupWidget({
-        url: `${calendlyUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(", "))}`,
-        text: "Schedule Interview",
-        color: "#2563eb",
-        textColor: "#ffffff",
-        branding: true,
+        url: `${calendlyUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || '')}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(', '))}`,
+        text: 'Schedule Interview',
+        color: '#2563eb',
+        textColor: '#ffffff',
+        branding: true
       });
     } else {
       // Fallback: Open Calendly in new tab
-      const calendlyFullUrl = `${calendlyUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(", "))}`;
-      window.open(calendlyFullUrl, "_blank");
+      const calendlyFullUrl = `${calendlyUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || '')}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(', '))}`;
+      window.open(calendlyFullUrl, '_blank');
     }
   };
 
@@ -1778,26 +1463,26 @@ const RecruitModal = ({
 
   const scheduleSpecificInterview = (candidate, interviewType) => {
     const interviewTypeNames = {
-      initial: "Initial Screening",
-      technical: "Technical Interview",
-      cultural: "Cultural Fit Interview",
-      final: "Final Interview",
+      initial: 'Initial Screening',
+      technical: 'Technical Interview',
+      cultural: 'Cultural Fit Interview',
+      final: 'Final Interview'
     };
 
     const selectedUrl = calendlyUrls[interviewType] || calendlyUrl;
-    const interviewTypeName = interviewTypeNames[interviewType] || "Interview";
+    const interviewTypeName = interviewTypeNames[interviewType] || 'Interview';
 
     if (window.Calendly) {
       window.Calendly.initPopupWidget({
-        url: `${selectedUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(", "))}&prefill_custom_3=${encodeURIComponent(interviewTypeName)}`,
+        url: `${selectedUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || '')}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(', '))}&prefill_custom_3=${encodeURIComponent(interviewTypeName)}`,
         text: `Schedule ${interviewTypeName}`,
-        color: "#2563eb",
-        textColor: "#ffffff",
-        branding: true,
+        color: '#2563eb',
+        textColor: '#ffffff',
+        branding: true
       });
     } else {
-      const calendlyFullUrl = `${selectedUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(", "))}&prefill_custom_3=${encodeURIComponent(interviewTypeName)}`;
-      window.open(calendlyFullUrl, "_blank");
+      const calendlyFullUrl = `${selectedUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || '')}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(', '))}&prefill_custom_3=${encodeURIComponent(interviewTypeName)}`;
+      window.open(calendlyFullUrl, '_blank');
     }
   };
 
@@ -1808,23 +1493,21 @@ const RecruitModal = ({
 
       if (window.Calendly) {
         window.Calendly.initPopupWidget({
-          url: `${calendlyUrl}?prefill_name=${encodeURIComponent(topCandidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(topCandidate.skills.join(", "))}`,
-          text: "Schedule Interview",
-          color: "#16a34a",
-          textColor: "#ffffff",
-          branding: true,
+          url: `${calendlyUrl}?prefill_name=${encodeURIComponent(topCandidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || '')}&prefill_custom_2=${encodeURIComponent(topCandidate.skills.join(', '))}`,
+          text: 'Schedule Interview',
+          color: '#16a34a',
+          textColor: '#ffffff',
+          branding: true
         });
 
         // Show notification about scheduling all candidates
-        alert(
-          `Starting interview scheduling for all ${rankedCandidates.length} candidates. After scheduling ${topCandidate.name}, you'll be prompted to schedule the remaining candidates.`,
-        );
+        alert(`Starting interview scheduling for all ${rankedCandidates.length} candidates. After scheduling ${topCandidate.name}, you'll be prompted to schedule the remaining candidates.`);
       } else {
         // Fallback: Open multiple tabs for each candidate
         rankedCandidates.forEach((candidate, index) => {
           setTimeout(() => {
-            const calendlyFullUrl = `${calendlyUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(", "))}`;
-            window.open(calendlyFullUrl, "_blank");
+            const calendlyFullUrl = `${calendlyUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || '')}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(', '))}`;
+            window.open(calendlyFullUrl, '_blank');
           }, index * 1000); // Stagger opening tabs by 1 second
         });
       }
@@ -1836,35 +1519,28 @@ const RecruitModal = ({
   const stages = [
     {
       id: 1,
-      name: "AI Search",
-      description:
-        "Searching across LinkedIn, Indeed, GitHub, AngelList, and Stack Overflow",
-      platforms: [
-        "LinkedIn",
-        "Indeed",
-        "GitHub",
-        "AngelList",
-        "Stack Overflow",
-      ],
+      name: 'AI Search',
+      description: 'Searching across LinkedIn, Indeed, GitHub, AngelList, and Stack Overflow',
+      platforms: ['LinkedIn', 'Indeed', 'GitHub', 'AngelList', 'Stack Overflow']
     },
     {
       id: 2,
-      name: "Outreach",
-      description: "Sending personalized messages to qualified candidates",
-      action: "Automated messaging",
+      name: 'Outreach',
+      description: 'Sending personalized messages to qualified candidates',
+      action: 'Automated messaging'
     },
     {
       id: 3,
-      name: "Interest Collection",
-      description: "Collecting responses and gauging candidate interest",
-      action: "Response tracking",
+      name: 'Interest Collection',
+      description: 'Collecting responses and gauging candidate interest',
+      action: 'Response tracking'
     },
     {
       id: 4,
-      name: "Ranking",
-      description: "AI ranking candidates and selecting top 5 for interviews",
-      action: "Smart selection",
-    },
+      name: 'Ranking',
+      description: 'AI ranking candidates and selecting top 5 for interviews',
+      action: 'Smart selection'
+    }
   ];
 
   const startRecruitment = async () => {
@@ -1874,68 +1550,20 @@ const RecruitModal = ({
     // Stage 1: AI Search
     setStageProgress(0);
     for (let i = 0; i <= 100; i += 10) {
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await new Promise(resolve => setTimeout(resolve, 200));
       setStageProgress(i);
     }
 
     // Mock found candidates
     const mockCandidates = [
-      {
-        id: 1,
-        name: "Sarah Chen",
-        platform: "LinkedIn",
-        match: 95,
-        skills: ["React", "TypeScript", "Node.js"],
-      },
-      {
-        id: 2,
-        name: "Marcus Johnson",
-        platform: "GitHub",
-        match: 92,
-        skills: ["Python", "Django", "PostgreSQL"],
-      },
-      {
-        id: 3,
-        name: "Emma Rodriguez",
-        platform: "Indeed",
-        match: 89,
-        skills: ["Java", "Spring", "AWS"],
-      },
-      {
-        id: 4,
-        name: "Alex Kim",
-        platform: "Stack Overflow",
-        match: 87,
-        skills: ["Vue.js", "Node.js", "MongoDB"],
-      },
-      {
-        id: 5,
-        name: "David Zhang",
-        platform: "AngelList",
-        match: 85,
-        skills: ["Flutter", "Dart", "Firebase"],
-      },
-      {
-        id: 6,
-        name: "Priya Patel",
-        platform: "LinkedIn",
-        match: 83,
-        skills: ["React Native", "iOS", "Android"],
-      },
-      {
-        id: 7,
-        name: "James Wilson",
-        platform: "GitHub",
-        match: 81,
-        skills: ["Go", "Kubernetes", "Docker"],
-      },
-      {
-        id: 8,
-        name: "Lisa Brown",
-        platform: "Indeed",
-        match: 79,
-        skills: ["C#", ".NET", "Azure"],
-      },
+      { id: 1, name: 'Sarah Chen', platform: 'LinkedIn', match: 95, skills: ['React', 'TypeScript', 'Node.js'] },
+      { id: 2, name: 'Marcus Johnson', platform: 'GitHub', match: 92, skills: ['Python', 'Django', 'PostgreSQL'] },
+      { id: 3, name: 'Emma Rodriguez', platform: 'Indeed', match: 89, skills: ['Java', 'Spring', 'AWS'] },
+      { id: 4, name: 'Alex Kim', platform: 'Stack Overflow', match: 87, skills: ['Vue.js', 'Node.js', 'MongoDB'] },
+      { id: 5, name: 'David Zhang', platform: 'AngelList', match: 85, skills: ['Flutter', 'Dart', 'Firebase'] },
+      { id: 6, name: 'Priya Patel', platform: 'LinkedIn', match: 83, skills: ['React Native', 'iOS', 'Android'] },
+      { id: 7, name: 'James Wilson', platform: 'GitHub', match: 81, skills: ['Go', 'Kubernetes', 'Docker'] },
+      { id: 8, name: 'Lisa Brown', platform: 'Indeed', match: 79, skills: ['C#', '.NET', 'Azure'] }
     ];
     setFoundCandidates(mockCandidates);
 
@@ -1943,15 +1571,15 @@ const RecruitModal = ({
     setCurrentStage(2);
     setStageProgress(0);
     for (let i = 0; i <= 100; i += 12.5) {
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      await new Promise(resolve => setTimeout(resolve, 300));
       setStageProgress(i);
     }
 
-    const mockOutreach = mockCandidates.map((candidate) => ({
+    const mockOutreach = mockCandidates.map(candidate => ({
       ...candidate,
       messageSent: true,
       sentAt: new Date().toISOString(),
-      status: Math.random() > 0.3 ? "delivered" : "pending",
+      status: Math.random() > 0.3 ? 'delivered' : 'pending'
     }));
     setOutreachResults(mockOutreach);
 
@@ -1959,25 +1587,23 @@ const RecruitModal = ({
     setCurrentStage(3);
     setStageProgress(0);
     for (let i = 0; i <= 100; i += 16.7) {
-      await new Promise((resolve) => setTimeout(resolve, 250));
+      await new Promise(resolve => setTimeout(resolve, 250));
       setStageProgress(i);
     }
 
-    const mockInterested = mockCandidates
-      .filter(() => Math.random() > 0.4)
-      .map((candidate) => ({
-        ...candidate,
-        interested: true,
-        response: "I would love to learn more about this opportunity!",
-        responseTime: Math.floor(Math.random() * 48) + 1 + " hours",
-      }));
+    const mockInterested = mockCandidates.filter(() => Math.random() > 0.4).map(candidate => ({
+      ...candidate,
+      interested: true,
+      response: 'I would love to learn more about this opportunity!',
+      responseTime: Math.floor(Math.random() * 48) + 1 + ' hours'
+    }));
     setInterestedCandidates(mockInterested);
 
     // Stage 4: Ranking
     setCurrentStage(4);
     setStageProgress(0);
     for (let i = 0; i <= 100; i += 20) {
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await new Promise(resolve => setTimeout(resolve, 200));
       setStageProgress(i);
     }
 
@@ -1988,8 +1614,7 @@ const RecruitModal = ({
         ...candidate,
         rank: index + 1,
         aiScore: candidate.match + Math.floor(Math.random() * 5),
-        recommendation:
-          index === 0 ? "Strong Hire" : index < 3 ? "Hire" : "Consider",
+        recommendation: index === 0 ? 'Strong Hire' : index < 3 ? 'Hire' : 'Consider'
       }));
     setRankedCandidates(topCandidates);
 
@@ -2013,14 +1638,10 @@ const RecruitModal = ({
         <div className="p-6 border-b border-gray-200">
           <div className="flex justify-between items-center">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">
-                AI Recruitment Automation
-              </h2>
+              <h2 className="text-2xl font-bold text-gray-900">AI Recruitment Automation</h2>
               {role && (
                 <p className="text-gray-600 mt-1">
-                  Recruiting for:{" "}
-                  <span className="font-semibold">{role.title}</span> •{" "}
-                  {role.department} • {role.location}
+                  Recruiting for: <span className="font-semibold">{role.title}</span> • {role.department} • {role.location}
                 </p>
               )}
             </div>
@@ -2049,24 +1670,15 @@ const RecruitModal = ({
                             : "bg-gray-200 text-gray-600"
                       }`}
                     >
-                      {currentStage > stage.id ? (
-                        <Check size={16} />
-                      ) : (
+                      {currentStage > stage.id ? <Check size={16} /> : (
                         <span className="text-center leading-tight">
-                          {stage.name
-                            .split(" ")
-                            .map((word) => word.charAt(0))
-                            .join("")}
+                          {stage.name.split(' ').map(word => word.charAt(0)).join('')}
                         </span>
                       )}
                     </div>
-                    <span
-                      className={`text-xs font-medium mt-2 text-center ${
-                        currentStage === stage.id
-                          ? "text-blue-600"
-                          : "text-gray-600"
-                      }`}
-                    >
+                    <span className={`text-xs font-medium mt-2 text-center ${
+                      currentStage === stage.id ? "text-blue-600" : "text-gray-600"
+                    }`}>
                       {stage.name}
                     </span>
                   </div>
@@ -2102,28 +1714,16 @@ const RecruitModal = ({
                   Found {foundCandidates.length} Candidates
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {foundCandidates.map((candidate) => (
-                    <div
-                      key={candidate.id}
-                      className="border border-gray-200 rounded-lg p-4"
-                    >
+                  {foundCandidates.map(candidate => (
+                    <div key={candidate.id} className="border border-gray-200 rounded-lg p-4">
                       <div className="flex justify-between items-start mb-2">
-                        <h5 className="font-semibold text-gray-900">
-                          {candidate.name}
-                        </h5>
-                        <span className="text-sm font-medium text-blue-600">
-                          {candidate.match}% match
-                        </span>
+                        <h5 className="font-semibold text-gray-900">{candidate.name}</h5>
+                        <span className="text-sm font-medium text-blue-600">{candidate.match}% match</span>
                       </div>
-                      <p className="text-sm text-gray-600 mb-2">
-                        Source: {candidate.platform}
-                      </p>
+                      <p className="text-sm text-gray-600 mb-2">Source: {candidate.platform}</p>
                       <div className="flex flex-wrap gap-1">
-                        {candidate.skills.map((skill) => (
-                          <span
-                            key={skill}
-                            className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded"
-                          >
+                        {candidate.skills.map(skill => (
+                          <span key={skill} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
                             {skill}
                           </span>
                         ))}
@@ -2137,34 +1737,18 @@ const RecruitModal = ({
             {currentStage === 2 && outreachResults.length > 0 && (
               <div>
                 <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                  Outreach Results (
-                  {
-                    outreachResults.filter((r) => r.status === "delivered")
-                      .length
-                  }
-                  /{outreachResults.length} delivered)
+                  Outreach Results ({outreachResults.filter(r => r.status === 'delivered').length}/{outreachResults.length} delivered)
                 </h4>
                 <div className="space-y-3">
-                  {outreachResults.map((candidate) => (
-                    <div
-                      key={candidate.id}
-                      className="flex justify-between items-center p-3 border border-gray-200 rounded-lg"
-                    >
+                  {outreachResults.map(candidate => (
+                    <div key={candidate.id} className="flex justify-between items-center p-3 border border-gray-200 rounded-lg">
                       <div>
-                        <span className="font-medium text-gray-900">
-                          {candidate.name}
-                        </span>
-                        <span className="text-sm text-gray-600 ml-2">
-                          via {candidate.platform}
-                        </span>
+                        <span className="font-medium text-gray-900">{candidate.name}</span>
+                        <span className="text-sm text-gray-600 ml-2">via {candidate.platform}</span>
                       </div>
-                      <span
-                        className={`px-2 py-1 text-xs font-medium rounded ${
-                          candidate.status === "delivered"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-yellow-100 text-yellow-800"
-                        }`}
-                      >
+                      <span className={`px-2 py-1 text-xs font-medium rounded ${
+                        candidate.status === 'delivered' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                      }`}>
                         {candidate.status}
                       </span>
                     </div>
@@ -2179,27 +1763,16 @@ const RecruitModal = ({
                   {interestedCandidates.length} Interested Candidates
                 </h4>
                 <div className="space-y-4">
-                  {interestedCandidates.map((candidate) => (
-                    <div
-                      key={candidate.id}
-                      className="border border-gray-200 rounded-lg p-4"
-                    >
+                  {interestedCandidates.map(candidate => (
+                    <div key={candidate.id} className="border border-gray-200 rounded-lg p-4">
                       <div className="flex justify-between items-start mb-2">
                         <div>
-                          <span className="font-medium text-gray-900">
-                            {candidate.name}
-                          </span>
-                          <span className="text-sm text-gray-600 ml-2">
-                            {candidate.match}% match
-                          </span>
+                          <span className="font-medium text-gray-900">{candidate.name}</span>
+                          <span className="text-sm text-gray-600 ml-2">{candidate.match}% match</span>
                         </div>
-                        <span className="text-sm text-gray-500">
-                          Responded in {candidate.responseTime}
-                        </span>
+                        <span className="text-sm text-gray-500">Responded in {candidate.responseTime}</span>
                       </div>
-                      <p className="text-sm text-gray-700 italic">
-                        "{candidate.response}"
-                      </p>
+                      <p className="text-sm text-gray-700 italic">"{candidate.response}"</p>
                     </div>
                   ))}
                 </div>
@@ -2216,52 +1789,35 @@ const RecruitModal = ({
                     <div className="flex items-start space-x-2">
                       <Calendar className="text-blue-600 mt-0.5" size={16} />
                       <div className="text-sm">
-                        <div className="font-medium text-blue-900 mb-1">
-                          Calendly Integration Active
-                        </div>
+                        <div className="font-medium text-blue-900 mb-1">Calendly Integration Active</div>
                         <div className="text-blue-700">
-                          Click "Schedule Interview" to open Calendly and book
-                          interviews directly. Choose from different interview
-                          types or use the quick schedule option.
+                          Click "Schedule Interview" to open Calendly and book interviews directly.
+                          Choose from different interview types or use the quick schedule option.
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="space-y-4">
-                  {rankedCandidates.map((candidate) => (
-                    <div
-                      key={candidate.id}
-                      className="border border-gray-200 rounded-lg p-4"
-                    >
+                  {rankedCandidates.map(candidate => (
+                    <div key={candidate.id} className="border border-gray-200 rounded-lg p-4">
                       <div className="flex justify-between items-start mb-2">
                         <div>
-                          <span className="font-medium text-gray-900">
-                            #{candidate.rank} {candidate.name}
-                          </span>
-                          <span className="text-sm text-gray-600 ml-2">
-                            AI Score: {candidate.aiScore}/100
-                          </span>
+                          <span className="font-medium text-gray-900">#{candidate.rank} {candidate.name}</span>
+                          <span className="text-sm text-gray-600 ml-2">AI Score: {candidate.aiScore}/100</span>
                         </div>
-                        <span
-                          className={`px-2 py-1 text-xs font-medium rounded ${
-                            candidate.recommendation === "Strong Hire"
-                              ? "bg-green-100 text-green-800"
-                              : candidate.recommendation === "Hire"
-                                ? "bg-blue-100 text-blue-800"
-                                : "bg-yellow-100 text-yellow-800"
-                          }`}
-                        >
+                        <span className={`px-2 py-1 text-xs font-medium rounded ${
+                          candidate.recommendation === 'Strong Hire' ? 'bg-green-100 text-green-800' :
+                          candidate.recommendation === 'Hire' ? 'bg-blue-100 text-blue-800' :
+                          'bg-yellow-100 text-yellow-800'
+                        }`}>
                           {candidate.recommendation}
                         </span>
                       </div>
                       <div className="flex justify-between items-center">
                         <div className="flex flex-wrap gap-1">
-                          {candidate.skills.slice(0, 3).map((skill) => (
-                            <span
-                              key={skill}
-                              className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded"
-                            >
+                          {candidate.skills.slice(0, 3).map(skill => (
+                            <span key={skill} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
                               {skill}
                             </span>
                           ))}
@@ -2278,13 +1834,9 @@ const RecruitModal = ({
                           {/* Dropdown for scheduling options */}
                           <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all min-w-[200px]">
                             <div className="px-3 py-2 border-b border-gray-200">
-                              <div className="text-xs font-medium text-gray-700 mb-1">
-                                Quick Schedule
-                              </div>
+                              <div className="text-xs font-medium text-gray-700 mb-1">Quick Schedule</div>
                               <button
-                                onClick={() =>
-                                  openCalendlyScheduling(candidate)
-                                }
+                                onClick={() => openCalendlyScheduling(candidate)}
                                 className="w-full px-2 py-1 text-left text-sm text-gray-600 hover:bg-gray-50 flex items-center space-x-2 rounded"
                               >
                                 <ExternalLink size={12} />
@@ -2293,46 +1845,27 @@ const RecruitModal = ({
                             </div>
 
                             <div className="px-3 py-2 border-b border-gray-200">
-                              <div className="text-xs font-medium text-gray-700 mb-1">
-                                Interview Type
-                              </div>
+                              <div className="text-xs font-medium text-gray-700 mb-1">Interview Type</div>
                               <button
-                                onClick={() =>
-                                  scheduleSpecificInterview(
-                                    candidate,
-                                    "initial",
-                                  )
-                                }
+                                onClick={() => scheduleSpecificInterview(candidate, 'initial')}
                                 className="w-full px-2 py-1 text-left text-xs text-gray-600 hover:bg-gray-50 rounded"
                               >
                                 📋 Initial Screening (30 min)
                               </button>
                               <button
-                                onClick={() =>
-                                  scheduleSpecificInterview(
-                                    candidate,
-                                    "technical",
-                                  )
-                                }
+                                onClick={() => scheduleSpecificInterview(candidate, 'technical')}
                                 className="w-full px-2 py-1 text-left text-xs text-gray-600 hover:bg-gray-50 rounded"
                               >
                                 💻 Technical Interview (60 min)
                               </button>
                               <button
-                                onClick={() =>
-                                  scheduleSpecificInterview(
-                                    candidate,
-                                    "cultural",
-                                  )
-                                }
+                                onClick={() => scheduleSpecificInterview(candidate, 'cultural')}
                                 className="w-full px-2 py-1 text-left text-xs text-gray-600 hover:bg-gray-50 rounded"
                               >
                                 🤝 Cultural Fit (45 min)
                               </button>
                               <button
-                                onClick={() =>
-                                  scheduleSpecificInterview(candidate, "final")
-                                }
+                                onClick={() => scheduleSpecificInterview(candidate, 'final')}
                                 className="w-full px-2 py-1 text-left text-xs text-gray-600 hover:bg-gray-50 rounded"
                               >
                                 🎯 Final Interview (30 min)
@@ -2377,25 +1910,23 @@ const RecruitModal = ({
               </button>
             )}
 
-            {!isRunning &&
-              currentStage === 4 &&
-              rankedCandidates.length > 0 && (
-                <div className="flex space-x-3">
-                  <button
-                    onClick={() => scheduleAllInterviews()}
-                    className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
-                  >
-                    <Calendar size={16} />
-                    <span>Schedule All Interviews</span>
-                  </button>
-                  <button
-                    onClick={resetAndClose}
-                    className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
-                  >
-                    Complete Recruitment
-                  </button>
-                </div>
-              )}
+            {!isRunning && currentStage === 4 && rankedCandidates.length > 0 && (
+              <div className="flex space-x-3">
+                <button
+                  onClick={() => scheduleAllInterviews()}
+                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
+                >
+                  <Calendar size={16} />
+                  <span>Schedule All Interviews</span>
+                </button>
+                <button
+                  onClick={resetAndClose}
+                  className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                >
+                  Complete Recruitment
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -2410,8 +1941,7 @@ const RecruitModal = ({
                   Schedule Interview - {schedulingCandidate.name}
                 </h3>
                 <p className="text-sm text-gray-600">
-                  {role?.title} •{" "}
-                  {schedulingCandidate.skills.slice(0, 3).join(", ")}
+                  {role?.title} • {schedulingCandidate.skills.slice(0, 3).join(', ')}
                 </p>
               </div>
               <button
@@ -2428,15 +1958,14 @@ const RecruitModal = ({
             <div className="h-[600px]">
               <div
                 className="calendly-inline-widget"
-                data-url={`${calendlyUrl}?prefill_name=${encodeURIComponent(schedulingCandidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(schedulingCandidate.skills.join(", "))}`}
-                style={{ minWidth: "320px", height: "100%" }}
+                data-url={`${calendlyUrl}?prefill_name=${encodeURIComponent(schedulingCandidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || '')}&prefill_custom_2=${encodeURIComponent(schedulingCandidate.skills.join(', '))}`}
+                style={{ minWidth: '320px', height: '100%' }}
               />
             </div>
 
             <div className="p-4 border-t border-gray-200 flex justify-between items-center">
               <div className="text-sm text-gray-600">
-                Interview types available: Initial Screening, Technical
-                Interview, Cultural Fit, Final Interview
+                Interview types available: Initial Screening, Technical Interview, Cultural Fit, Final Interview
               </div>
               <button
                 onClick={() => {
@@ -3245,28 +2774,19 @@ const UPhirePlatform = () => {
   const [businessProfile, setBusinessProfile] = useState({
     companyName: "TechVision Solutions",
     industry: "Technology & Software Development",
-    description:
-      "TechVision Solutions is a leading technology company specializing in innovative software solutions, AI-powered platforms, and digital transformation services. We help businesses modernize their operations through cutting-edge technology and exceptional user experiences. Our team of talented developers, designers, and strategists work collaboratively to deliver world-class products that drive growth and efficiency for our clients across various industries.",
+    description: "TechVision Solutions is a leading technology company specializing in innovative software solutions, AI-powered platforms, and digital transformation services. We help businesses modernize their operations through cutting-edge technology and exceptional user experiences. Our team of talented developers, designers, and strategists work collaboratively to deliver world-class products that drive growth and efficiency for our clients across various industries.",
     location: "London, UK (Hybrid/Remote Options Available)",
     size: "51-200 employees",
     foundedYear: "2019",
     website: "https://techvisionsolutions.co.uk",
-    culture:
-      "We foster a collaborative, innovative, and inclusive work environment where creativity thrives. Our culture emphasizes work-life balance, continuous learning, and professional growth. We believe in empowering our team members to take ownership of their projects while providing the support and resources they need to succeed. We celebrate diversity, encourage open communication, and maintain a flat organizational structure that promotes agility and quick decision-making.",
-    benefits:
-      "• Competitive salary with annual reviews and performance bonuses\n• Comprehensive health insurance (medical, dental, vision)\n• 25 days annual leave plus bank holidays\n• Flexible working hours and hybrid/remote work options\n• £2,000 annual learning and development budget\n• Top-spec equipment and home office setup allowance\n• Monthly team events and quarterly company retreats\n• Pension scheme with company contribution\n• Cycle to work scheme and wellness programs\n• Stock options and profit-sharing opportunities\n• Sabbatical leave after 5 years of service\n• Free snacks, coffee, and catered lunches in office",
-    mission:
-      "To empower businesses through innovative technology solutions that simplify complex challenges, enhance productivity, and drive sustainable growth. We are committed to creating software that not only meets today's needs but anticipates tomorrow's opportunities, while maintaining the highest standards of quality, security, and user experience.",
-    values:
-      "Innovation: We constantly push boundaries and embrace new technologies to solve complex problems.\n\nIntegrity: We build trust through transparency, honesty, and ethical business practices.\n\nCollaboration: We believe the best solutions come from diverse teams working together.\n\nExcellence: We strive for the highest quality in everything we deliver.\n\nCustomer-Centric: Our clients' success is our success - we put their needs at the heart of everything we do.\n\nGrowth Mindset: We embrace challenges as opportunities to learn and improve continuously.",
-    sectors:
-      "Financial Services, Healthcare, E-commerce, Education Technology, Government",
-    technologies:
-      "React, Node.js, Python, AWS, Docker, Kubernetes, TypeScript, GraphQL, MongoDB, PostgreSQL",
-    clientBase:
-      "We serve a diverse range of clients from innovative startups to Fortune 500 companies, helping them navigate digital transformation and achieve their technology goals.",
-    achievements:
-      "• Winner of 'Best Tech Startup 2023' - London Tech Awards\n• Certified AWS Partner with 50+ successful cloud migrations\n• 98% client satisfaction rate with 85% repeat business\n• Featured in TechCrunch Top 100 UK Startups to Watch",
+    culture: "We foster a collaborative, innovative, and inclusive work environment where creativity thrives. Our culture emphasizes work-life balance, continuous learning, and professional growth. We believe in empowering our team members to take ownership of their projects while providing the support and resources they need to succeed. We celebrate diversity, encourage open communication, and maintain a flat organizational structure that promotes agility and quick decision-making.",
+    benefits: "• Competitive salary with annual reviews and performance bonuses\n• Comprehensive health insurance (medical, dental, vision)\n• 25 days annual leave plus bank holidays\n• Flexible working hours and hybrid/remote work options\n• £2,000 annual learning and development budget\n• Top-spec equipment and home office setup allowance\n• Monthly team events and quarterly company retreats\n• Pension scheme with company contribution\n• Cycle to work scheme and wellness programs\n• Stock options and profit-sharing opportunities\n• Sabbatical leave after 5 years of service\n• Free snacks, coffee, and catered lunches in office",
+    mission: "To empower businesses through innovative technology solutions that simplify complex challenges, enhance productivity, and drive sustainable growth. We are committed to creating software that not only meets today's needs but anticipates tomorrow's opportunities, while maintaining the highest standards of quality, security, and user experience.",
+    values: "Innovation: We constantly push boundaries and embrace new technologies to solve complex problems.\n\nIntegrity: We build trust through transparency, honesty, and ethical business practices.\n\nCollaboration: We believe the best solutions come from diverse teams working together.\n\nExcellence: We strive for the highest quality in everything we deliver.\n\nCustomer-Centric: Our clients' success is our success - we put their needs at the heart of everything we do.\n\nGrowth Mindset: We embrace challenges as opportunities to learn and improve continuously.",
+    sectors: "Financial Services, Healthcare, E-commerce, Education Technology, Government",
+    technologies: "React, Node.js, Python, AWS, Docker, Kubernetes, TypeScript, GraphQL, MongoDB, PostgreSQL",
+    clientBase: "We serve a diverse range of clients from innovative startups to Fortune 500 companies, helping them navigate digital transformation and achieve their technology goals.",
+    achievements: "• Winner of 'Best Tech Startup 2023' - London Tech Awards\n• Certified AWS Partner with 50+ successful cloud migrations\n• 98% client satisfaction rate with 85% repeat business\n• Featured in TechCrunch Top 100 UK Startups to Watch",
   });
 
   // ML Predictions and Market Data
@@ -3288,7 +2808,7 @@ const UPhirePlatform = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [marketSearchForm, setMarketSearchForm] = useState({
     jobTitle: "",
-    location: "",
+    location: ""
   });
   const [lastSearchResults, setLastSearchResults] = useState(null);
 
@@ -3361,33 +2881,33 @@ const UPhirePlatform = () => {
 
     try {
       // Simulate ITJobsWatch API call with realistic data
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
       const mockMarketData = {
         jobTitle: marketSearchForm.jobTitle,
         location: marketSearchForm.location || "UK",
-        lastUpdated: new Date().toLocaleDateString("en-GB"),
+        lastUpdated: new Date().toLocaleDateString('en-GB'),
         salary: {
           average: generateRealisticSalary(marketSearchForm.jobTitle),
           min: generateRealisticSalary(marketSearchForm.jobTitle, 0.7),
-          max: generateRealisticSalary(marketSearchForm.jobTitle, 1.4),
+          max: generateRealisticSalary(marketSearchForm.jobTitle, 1.4)
         },
         demand: {
           level: getMarketDemand(marketSearchForm.jobTitle),
-          trend: getMarketTrend(marketSearchForm.jobTitle),
+          trend: getMarketTrend(marketSearchForm.jobTitle)
         },
         timeToFill: getTimeToFill(marketSearchForm.jobTitle),
         competition: getCompetitionLevel(marketSearchForm.jobTitle),
         skills: {
           required: getRequiredSkills(marketSearchForm.jobTitle),
-          trending: getTrendingSkills(marketSearchForm.jobTitle),
-        },
+          trending: getTrendingSkills(marketSearchForm.jobTitle)
+        }
       };
 
       setLastSearchResults(mockMarketData);
     } catch (error) {
-      console.error("Error fetching market data:", error);
-      alert("Error fetching market data. Please try again.");
+      console.error('Error fetching market data:', error);
+      alert('Error fetching market data. Please try again.');
     } finally {
       setIsSearching(false);
     }
@@ -3396,14 +2916,14 @@ const UPhirePlatform = () => {
   // Helper functions for realistic market data generation
   const generateRealisticSalary = (jobTitle, multiplier = 1) => {
     const baseSalaries = {
-      "software engineer": 65000,
-      "product manager": 70000,
-      "data scientist": 75000,
-      "ux designer": 55000,
-      "devops engineer": 70000,
-      "full stack developer": 60000,
-      "business analyst": 50000,
-      "project manager": 55000,
+      'software engineer': 65000,
+      'product manager': 70000,
+      'data scientist': 75000,
+      'ux designer': 55000,
+      'devops engineer': 70000,
+      'full stack developer': 60000,
+      'business analyst': 50000,
+      'project manager': 55000
     };
 
     const titleLower = jobTitle.toLowerCase();
@@ -3421,82 +2941,62 @@ const UPhirePlatform = () => {
   };
 
   const getMarketDemand = (jobTitle) => {
-    const highDemandRoles = [
-      "software engineer",
-      "data scientist",
-      "devops",
-      "cloud",
-      "cybersecurity",
-    ];
-    const mediumDemandRoles = [
-      "product manager",
-      "ux designer",
-      "business analyst",
-    ];
+    const highDemandRoles = ['software engineer', 'data scientist', 'devops', 'cloud', 'cybersecurity'];
+    const mediumDemandRoles = ['product manager', 'ux designer', 'business analyst'];
 
     const titleLower = jobTitle.toLowerCase();
-    if (highDemandRoles.some((role) => titleLower.includes(role)))
-      return "High";
-    if (mediumDemandRoles.some((role) => titleLower.includes(role)))
-      return "Medium";
-    return "Low";
+    if (highDemandRoles.some(role => titleLower.includes(role))) return 'High';
+    if (mediumDemandRoles.some(role => titleLower.includes(role))) return 'Medium';
+    return 'Low';
   };
 
   const getMarketTrend = (jobTitle) => {
-    const growingRoles = [
-      "ai",
-      "machine learning",
-      "data",
-      "cloud",
-      "security",
-    ];
+    const growingRoles = ['ai', 'machine learning', 'data', 'cloud', 'security'];
     const titleLower = jobTitle.toLowerCase();
-    if (growingRoles.some((role) => titleLower.includes(role)))
-      return "Growing";
-    return "Stable";
+    if (growingRoles.some(role => titleLower.includes(role))) return 'Growing';
+    return 'Stable';
   };
 
   const getTimeToFill = (jobTitle) => {
-    const fastFillRoles = ["junior", "entry", "intern"];
-    const slowFillRoles = ["senior", "lead", "principal", "director"];
+    const fastFillRoles = ['junior', 'entry', 'intern'];
+    const slowFillRoles = ['senior', 'lead', 'principal', 'director'];
 
     const titleLower = jobTitle.toLowerCase();
-    if (fastFillRoles.some((role) => titleLower.includes(role))) return 25;
-    if (slowFillRoles.some((role) => titleLower.includes(role))) return 45;
+    if (fastFillRoles.some(role => titleLower.includes(role))) return 25;
+    if (slowFillRoles.some(role => titleLower.includes(role))) return 45;
     return 35;
   };
 
   const getCompetitionLevel = (jobTitle) => {
-    const highCompetitionRoles = ["senior", "lead", "principal", "manager"];
+    const highCompetitionRoles = ['senior', 'lead', 'principal', 'manager'];
     const titleLower = jobTitle.toLowerCase();
-    if (highCompetitionRoles.some((role) => titleLower.includes(role)))
-      return "High";
-    return "Medium";
+    if (highCompetitionRoles.some(role => titleLower.includes(role))) return 'High';
+    return 'Medium';
   };
 
   const getRequiredSkills = (jobTitle) => {
     const skillMaps = {
-      "software engineer": [
-        { name: "JavaScript", percentage: 85 },
-        { name: "React", percentage: 75 },
-        { name: "Node.js", percentage: 65 },
-        { name: "Python", percentage: 55 },
-        { name: "Git", percentage: 90 },
+      'software engineer': [
+        { name: 'JavaScript', percentage: 85 },
+        { name: 'React', percentage: 75 },
+        { name: 'Node.js', percentage: 65 },
+        { name: 'Python', percentage: 55 },
+        { name: 'Git', percentage: 90 }
       ],
-      "data scientist": [
-        { name: "Python", percentage: 95 },
-        { name: "SQL", percentage: 85 },
-        { name: "Machine Learning", percentage: 80 },
-        { name: "R", percentage: 60 },
-        { name: "Statistics", percentage: 75 },
+      'data scientist': [
+        { name: 'Python', percentage: 95 },
+        { name: 'SQL', percentage: 85 },
+        { name: 'Machine Learning', percentage: 80 },
+        { name: 'R', percentage: 60 },
+        { name: 'Statistics', percentage: 75 }
       ],
-      "product manager": [
-        { name: "Product Strategy", percentage: 90 },
-        { name: "Analytics", percentage: 75 },
-        { name: "Agile", percentage: 80 },
-        { name: "User Research", percentage: 65 },
-        { name: "Roadmapping", percentage: 85 },
-      ],
+      'product manager': [
+        { name: 'Product Strategy', percentage: 90 },
+        { name: 'Analytics', percentage: 75 },
+        { name: 'Agile', percentage: 80 },
+        { name: 'User Research', percentage: 65 },
+        { name: 'Roadmapping', percentage: 85 }
+      ]
     };
 
     const titleLower = jobTitle.toLowerCase();
@@ -3506,30 +3006,30 @@ const UPhirePlatform = () => {
 
     // Default skills
     return [
-      { name: "Communication", percentage: 85 },
-      { name: "Problem Solving", percentage: 80 },
-      { name: "Team Work", percentage: 75 },
-      { name: "Time Management", percentage: 70 },
-      { name: "Critical Thinking", percentage: 75 },
+      { name: 'Communication', percentage: 85 },
+      { name: 'Problem Solving', percentage: 80 },
+      { name: 'Team Work', percentage: 75 },
+      { name: 'Time Management', percentage: 70 },
+      { name: 'Critical Thinking', percentage: 75 }
     ];
   };
 
   const getTrendingSkills = (jobTitle) => {
     const trendingMaps = {
-      "software engineer": [
-        { name: "TypeScript", growth: 42 },
-        { name: "GraphQL", growth: 35 },
-        { name: "Docker", growth: 28 },
-        { name: "Kubernetes", growth: 45 },
-        { name: "AWS", growth: 38 },
+      'software engineer': [
+        { name: 'TypeScript', growth: 42 },
+        { name: 'GraphQL', growth: 35 },
+        { name: 'Docker', growth: 28 },
+        { name: 'Kubernetes', growth: 45 },
+        { name: 'AWS', growth: 38 }
       ],
-      "data scientist": [
-        { name: "MLOps", growth: 67 },
-        { name: "TensorFlow", growth: 45 },
-        { name: "PyTorch", growth: 52 },
-        { name: "Kubernetes", growth: 38 },
-        { name: "Apache Spark", growth: 25 },
-      ],
+      'data scientist': [
+        { name: 'MLOps', growth: 67 },
+        { name: 'TensorFlow', growth: 45 },
+        { name: 'PyTorch', growth: 52 },
+        { name: 'Kubernetes', growth: 38 },
+        { name: 'Apache Spark', growth: 25 }
+      ]
     };
 
     const titleLower = jobTitle.toLowerCase();
@@ -3539,11 +3039,11 @@ const UPhirePlatform = () => {
 
     // Default trending skills
     return [
-      { name: "AI/ML", growth: 67 },
-      { name: "Cloud Computing", growth: 45 },
-      { name: "DevOps", growth: 38 },
-      { name: "Cybersecurity", growth: 42 },
-      { name: "Data Analytics", growth: 35 },
+      { name: 'AI/ML', growth: 67 },
+      { name: 'Cloud Computing', growth: 45 },
+      { name: 'DevOps', growth: 38 },
+      { name: 'Cybersecurity', growth: 42 },
+      { name: 'Data Analytics', growth: 35 }
     ];
   };
 
@@ -3696,19 +3196,11 @@ const UPhirePlatform = () => {
         pendingReview: false,
         documents: [
           { type: "Contract", status: "Signed", date: "2024-01-15" },
-          {
-            type: "Medical Certificate",
-            status: "Complete",
-            date: "2024-01-20",
-          },
-          {
-            type: "Training Record",
-            status: "In Progress",
-            date: "2024-02-01",
-          },
+          { type: "Medical Certificate", status: "Complete", date: "2024-01-20" },
+          { type: "Training Record", status: "In Progress", date: "2024-02-01" }
         ],
         salary: "£65,000",
-        manager: "Sarah Johnson",
+        manager: "Sarah Johnson"
       },
       {
         id: 2,
@@ -3728,10 +3220,10 @@ const UPhirePlatform = () => {
         documents: [
           { type: "Contract", status: "Signed", date: "2024-03-01" },
           { type: "Medical Certificate", status: "Pending", date: null },
-          { type: "Background Check", status: "Complete", date: "2024-02-28" },
+          { type: "Background Check", status: "Complete", date: "2024-02-28" }
         ],
         salary: "£55,000",
-        manager: "Mike Thompson",
+        manager: "Mike Thompson"
       },
       {
         id: 3,
@@ -3750,19 +3242,11 @@ const UPhirePlatform = () => {
         pendingReview: false,
         documents: [
           { type: "Contract", status: "Signed", date: "2023-11-15" },
-          {
-            type: "Performance Review",
-            status: "Complete",
-            date: "2024-02-15",
-          },
-          {
-            type: "Training Certificate",
-            status: "Complete",
-            date: "2024-01-10",
-          },
+          { type: "Performance Review", status: "Complete", date: "2024-02-15" },
+          { type: "Training Certificate", status: "Complete", date: "2024-01-10" }
         ],
         salary: "£48,000",
-        manager: "Emma Davis",
+        manager: "Emma Davis"
       },
       {
         id: 4,
@@ -3781,20 +3265,12 @@ const UPhirePlatform = () => {
         pendingReview: false,
         documents: [
           { type: "Contract", status: "Signed", date: "2023-06-01" },
-          {
-            type: "Leadership Training",
-            status: "Complete",
-            date: "2023-09-15",
-          },
+          { type: "Leadership Training", status: "Complete", date: "2023-09-15" },
           { type: "Annual Review", status: "Complete", date: "2024-06-01" },
-          {
-            type: "Confidentiality Agreement",
-            status: "Signed",
-            date: "2023-06-01",
-          },
+          { type: "Confidentiality Agreement", status: "Signed", date: "2023-06-01" }
         ],
         salary: "£85,000",
-        manager: "CEO",
+        manager: "CEO"
       },
       {
         id: 5,
@@ -3813,15 +3289,11 @@ const UPhirePlatform = () => {
         pendingReview: false,
         documents: [
           { type: "Contract", status: "Signed", date: "2024-09-01" },
-          {
-            type: "Medical Certificate",
-            status: "Complete",
-            date: "2024-09-05",
-          },
-          { type: "IT Security Training", status: "In Progress", date: null },
+          { type: "Medical Certificate", status: "Complete", date: "2024-09-05" },
+          { type: "IT Security Training", status: "In Progress", date: null }
         ],
         salary: "£42,000",
-        manager: "John Smith",
+        manager: "John Smith"
       },
       {
         id: 6,
@@ -3841,10 +3313,10 @@ const UPhirePlatform = () => {
         documents: [
           { type: "Contract", status: "Signed", date: "2024-02-15" },
           { type: "DBS Check", status: "Complete", date: "2024-02-10" },
-          { type: "HR Certification", status: "Valid", date: "2023-12-01" },
+          { type: "HR Certification", status: "Valid", date: "2023-12-01" }
         ],
         salary: "£32,000",
-        manager: "Director of HR",
+        manager: "Director of HR"
       },
       {
         id: 7,
@@ -3863,24 +3335,12 @@ const UPhirePlatform = () => {
         pendingReview: false,
         documents: [
           { type: "Contract", status: "Signed", date: "2023-08-20" },
-          {
-            type: "Data Protection Training",
-            status: "Complete",
-            date: "2023-09-01",
-          },
-          {
-            type: "Performance Review",
-            status: "Complete",
-            date: "2024-02-20",
-          },
-          {
-            type: "Professional Development Plan",
-            status: "Active",
-            date: "2024-01-15",
-          },
+          { type: "Data Protection Training", status: "Complete", date: "2023-09-01" },
+          { type: "Performance Review", status: "Complete", date: "2024-02-20" },
+          { type: "Professional Development Plan", status: "Active", date: "2024-01-15" }
         ],
         salary: "£52,000",
-        manager: "Analytics Director",
+        manager: "Analytics Director"
       },
       {
         id: 8,
@@ -3900,11 +3360,11 @@ const UPhirePlatform = () => {
         documents: [
           { type: "Contract", status: "Signed", date: "2024-10-01" },
           { type: "Sales Training", status: "In Progress", date: null },
-          { type: "Medical Certificate", status: "Pending", date: null },
+          { type: "Medical Certificate", status: "Pending", date: null }
         ],
         salary: "£45,000",
-        manager: "Sales Manager",
-      },
+        manager: "Sales Manager"
+      }
     ];
 
     setRoles(mockRoles);
@@ -4112,12 +3572,8 @@ const UPhirePlatform = () => {
             <Search className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">
-              Market Insights
-            </h3>
-            <p className="text-sm text-gray-600">
-              Get real-time salary and market data for any role
-            </p>
+            <h3 className="text-lg font-semibold text-gray-900">Market Insights</h3>
+            <p className="text-sm text-gray-600">Get real-time salary and market data for any role</p>
           </div>
         </div>
 
@@ -4126,37 +3582,23 @@ const UPhirePlatform = () => {
           <div className="bg-gray-50 rounded-lg p-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Job Title
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Job Title</label>
                 <input
                   type="text"
                   placeholder="e.g. Software Engineer, Product Manager"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   value={marketSearchForm.jobTitle || ""}
-                  onChange={(e) =>
-                    setMarketSearchForm({
-                      ...marketSearchForm,
-                      jobTitle: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setMarketSearchForm({...marketSearchForm, jobTitle: e.target.value})}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Location
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
                 <input
                   type="text"
                   placeholder="e.g. London, Manchester, Remote"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   value={marketSearchForm.location || ""}
-                  onChange={(e) =>
-                    setMarketSearchForm({
-                      ...marketSearchForm,
-                      location: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setMarketSearchForm({...marketSearchForm, location: e.target.value})}
                 />
               </div>
               <div className="flex items-end">
@@ -4192,15 +3634,12 @@ const UPhirePlatform = () => {
                   "DevOps Engineer",
                   "Full Stack Developer",
                   "Business Analyst",
-                  "Project Manager",
+                  "Project Manager"
                 ].map((role) => (
                   <button
                     key={role}
                     onClick={() => {
-                      setMarketSearchForm({
-                        ...marketSearchForm,
-                        jobTitle: role,
-                      });
+                      setMarketSearchForm({...marketSearchForm, jobTitle: role});
                       setTimeout(() => searchMarketData(), 100);
                     }}
                     className="px-3 py-1 bg-white border border-gray-300 text-gray-700 text-sm rounded-full hover:bg-gray-50 hover:border-blue-300 transition-colors"
@@ -4219,21 +3658,16 @@ const UPhirePlatform = () => {
                 <div>
                   <h4 className="text-lg font-semibold text-gray-900">
                     {lastSearchResults.jobTitle}
-                    {lastSearchResults.location &&
-                      ` in ${lastSearchResults.location}`}
+                    {lastSearchResults.location && ` in ${lastSearchResults.location}`}
                   </h4>
                   <div className="flex items-center space-x-2 mt-1">
                     <span className="text-sm text-gray-600">Powered by</span>
-                    <span className="bg-blue-600 text-white px-2 py-1 text-xs font-bold rounded">
-                      ITJobsWatch
-                    </span>
+                    <span className="bg-blue-600 text-white px-2 py-1 text-xs font-bold rounded">ITJobsWatch</span>
                   </div>
                 </div>
                 <div className="text-right">
                   <div className="text-sm text-gray-600">Last updated</div>
-                  <div className="text-sm font-medium text-gray-900">
-                    {lastSearchResults.lastUpdated}
-                  </div>
+                  <div className="text-sm font-medium text-gray-900">{lastSearchResults.lastUpdated}</div>
                 </div>
               </div>
 
@@ -4241,20 +3675,13 @@ const UPhirePlatform = () => {
                 <div className="bg-white rounded-lg p-4 border border-blue-200">
                   <div className="flex items-center space-x-2 mb-2">
                     <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                      <span className="text-green-600 font-bold text-lg">
-                        £
-                      </span>
+                      <span className="text-green-600 font-bold text-lg">£</span>
                     </div>
-                    <span className="text-sm font-medium text-gray-900">
-                      Average Salary
-                    </span>
+                    <span className="text-sm font-medium text-gray-900">Average Salary</span>
                   </div>
-                  <div className="text-2xl font-bold text-green-600">
-                    {lastSearchResults.salary.average}
-                  </div>
+                  <div className="text-2xl font-bold text-green-600">{lastSearchResults.salary.average}</div>
                   <div className="text-xs text-gray-500">
-                    Range: {lastSearchResults.salary.min} -{" "}
-                    {lastSearchResults.salary.max}
+                    Range: {lastSearchResults.salary.min} - {lastSearchResults.salary.max}
                   </div>
                 </div>
 
@@ -4263,19 +3690,12 @@ const UPhirePlatform = () => {
                     <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                       <TrendingUp className="w-4 h-4 text-blue-600" />
                     </div>
-                    <span className="text-sm font-medium text-gray-900">
-                      Market Demand
-                    </span>
+                    <span className="text-sm font-medium text-gray-900">Market Demand</span>
                   </div>
-                  <div
-                    className={`text-2xl font-bold ${
-                      lastSearchResults.demand.level === "High"
-                        ? "text-green-600"
-                        : lastSearchResults.demand.level === "Medium"
-                          ? "text-yellow-600"
-                          : "text-red-600"
-                    }`}
-                  >
+                  <div className={`text-2xl font-bold ${
+                    lastSearchResults.demand.level === 'High' ? 'text-green-600' :
+                    lastSearchResults.demand.level === 'Medium' ? 'text-yellow-600' : 'text-red-600'
+                  }`}>
                     {lastSearchResults.demand.level}
                   </div>
                   <div className="text-xs text-gray-500">
@@ -4288,14 +3708,12 @@ const UPhirePlatform = () => {
                     <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
                       <Clock className="w-4 h-4 text-purple-600" />
                     </div>
-                    <span className="text-sm font-medium text-gray-900">
-                      Time to Fill
-                    </span>
+                    <span className="text-sm font-medium text-gray-900">Time to Fill</span>
                   </div>
-                  <div className="text-2xl font-bold text-purple-600">
-                    {lastSearchResults.timeToFill} days
+                  <div className="text-2xl font-bold text-purple-600">{lastSearchResults.timeToFill} days</div>
+                  <div className="text-xs text-gray-500">
+                    Industry average
                   </div>
-                  <div className="text-xs text-gray-500">Industry average</div>
                 </div>
 
                 <div className="bg-white rounded-lg p-4 border border-blue-200">
@@ -4303,40 +3721,28 @@ const UPhirePlatform = () => {
                     <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
                       <Target className="w-4 h-4 text-yellow-600" />
                     </div>
-                    <span className="text-sm font-medium text-gray-900">
-                      Competition
-                    </span>
+                    <span className="text-sm font-medium text-gray-900">Competition</span>
                   </div>
-                  <div
-                    className={`text-2xl font-bold ${
-                      lastSearchResults.competition === "High"
-                        ? "text-red-600"
-                        : lastSearchResults.competition === "Medium"
-                          ? "text-yellow-600"
-                          : "text-green-600"
-                    }`}
-                  >
+                  <div className={`text-2xl font-bold ${
+                    lastSearchResults.competition === 'High' ? 'text-red-600' :
+                    lastSearchResults.competition === 'Medium' ? 'text-yellow-600' : 'text-green-600'
+                  }`}>
                     {lastSearchResults.competition}
                   </div>
-                  <div className="text-xs text-gray-500">For this role</div>
+                  <div className="text-xs text-gray-500">
+                    For this role
+                  </div>
                 </div>
               </div>
 
               {/* Skills Analysis */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="bg-white rounded-lg p-4 border border-blue-200">
-                  <h5 className="font-medium text-gray-900 mb-3">
-                    Top Required Skills
-                  </h5>
+                  <h5 className="font-medium text-gray-900 mb-3">Top Required Skills</h5>
                   <div className="space-y-2">
                     {lastSearchResults.skills.required.map((skill, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between"
-                      >
-                        <span className="text-sm text-gray-700">
-                          {skill.name}
-                        </span>
+                      <div key={index} className="flex items-center justify-between">
+                        <span className="text-sm text-gray-700">{skill.name}</span>
                         <div className="flex items-center space-x-2">
                           <div className="w-16 bg-gray-200 rounded-full h-2">
                             <div
@@ -4344,9 +3750,7 @@ const UPhirePlatform = () => {
                               style={{ width: `${skill.percentage}%` }}
                             />
                           </div>
-                          <span className="text-xs text-gray-500 w-8">
-                            {skill.percentage}%
-                          </span>
+                          <span className="text-xs text-gray-500 w-8">{skill.percentage}%</span>
                         </div>
                       </div>
                     ))}
@@ -4354,22 +3758,13 @@ const UPhirePlatform = () => {
                 </div>
 
                 <div className="bg-white rounded-lg p-4 border border-blue-200">
-                  <h5 className="font-medium text-gray-900 mb-3">
-                    Trending Skills
-                  </h5>
+                  <h5 className="font-medium text-gray-900 mb-3">Trending Skills</h5>
                   <div className="space-y-2">
                     {lastSearchResults.skills.trending.map((skill, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between"
-                      >
-                        <span className="text-sm text-gray-700">
-                          {skill.name}
-                        </span>
+                      <div key={index} className="flex items-center justify-between">
+                        <span className="text-sm text-gray-700">{skill.name}</span>
                         <div className="flex items-center space-x-2">
-                          <span className="text-xs text-green-600 font-medium">
-                            +{skill.growth}%
-                          </span>
+                          <span className="text-xs text-green-600 font-medium">+{skill.growth}%</span>
                           <TrendingUp className="w-3 h-3 text-green-600" />
                         </div>
                       </div>
@@ -4394,10 +3789,7 @@ const UPhirePlatform = () => {
                         title: lastSearchResults.jobTitle,
                         location: lastSearchResults.location || "",
                         salary: lastSearchResults.salary.average,
-                        skills: lastSearchResults.skills.required
-                          .slice(0, 5)
-                          .map((s) => s.name)
-                          .join(", "),
+                        skills: lastSearchResults.skills.required.slice(0, 5).map(s => s.name).join(", ")
                       });
                       setActiveTab("roles");
                     }}
@@ -4418,19 +3810,13 @@ const UPhirePlatform = () => {
                   <Database className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h4 className="font-medium text-gray-900">
-                    ITJobsWatch API Integration
-                  </h4>
-                  <p className="text-sm text-gray-600">
-                    Real-time UK job market data and salary insights
-                  </p>
+                  <h4 className="font-medium text-gray-900">ITJobsWatch API Integration</h4>
+                  <p className="text-sm text-gray-600">Real-time UK job market data and salary insights</p>
                 </div>
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-sm text-green-600 font-medium">
-                  Connected
-                </span>
+                <span className="text-sm text-green-600 font-medium">Connected</span>
               </div>
             </div>
 
@@ -4842,12 +4228,20 @@ const UPhirePlatform = () => {
             <Clock className="h-8 w-8 text-green-600" />
           </div>
         </div>
-        <div className="bg-white bg-opacity-95 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white border-opacity-20">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Quality Score</p>
-              <p className="text-2xl font-bold text-yellow-600">8.7/10</p>
-              <p className="text-xs text-green-500">+0.3 from last month</p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center">
+              <img src="/api/placeholder/32/32" alt="UPhire - AI-Powered Recruitment" className="h-8" />
+              <span className="ml-3 text-blue-100 text-sm">AI-Powered Recruitment</span>
+
+              {/* Breadcrumb Navigation */}
+              <div className="ml-6 text-blue-100 text-sm">
+                <span>Home</span>
+                {activeTab !== "dashboard" && (
+                  <span> / {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}</span>
+                )}
+              </div>
+            </div>
             </div>
             <Star className="h-8 w-8 text-yellow-600" />
           </div>
@@ -4935,9 +4329,7 @@ const UPhirePlatform = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white">Employee Management</h1>
-          <p className="text-blue-100">
-            Comprehensive team management and HR records
-          </p>
+          <p className="text-blue-100">Comprehensive team management and HR records</p>
         </div>
         <button
           onClick={() => setShowEmployeeModal(true)}
@@ -4954,9 +4346,7 @@ const UPhirePlatform = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">Total Employees</p>
-              <p className="text-3xl font-bold text-gray-900">
-                {employees.length}
-              </p>
+              <p className="text-3xl font-bold text-gray-900">{employees.length}</p>
             </div>
             <Users className="w-8 h-8 text-blue-600" />
           </div>
@@ -4967,7 +4357,7 @@ const UPhirePlatform = () => {
             <div>
               <p className="text-sm text-gray-600">On Probation</p>
               <p className="text-3xl font-bold text-yellow-600">
-                {employees.filter((emp) => emp.probationPeriod).length}
+                {employees.filter(emp => emp.probationPeriod).length}
               </p>
             </div>
             <Timer className="w-8 h-8 text-yellow-600" />
@@ -4979,10 +4369,7 @@ const UPhirePlatform = () => {
             <div>
               <p className="text-sm text-gray-600">Full-Time</p>
               <p className="text-3xl font-bold text-green-600">
-                {
-                  employees.filter((emp) => emp.employmentType === "Full-time")
-                    .length
-                }
+                {employees.filter(emp => emp.employmentType === 'Full-time').length}
               </p>
             </div>
             <CheckCircle className="w-8 h-8 text-green-600" />
@@ -4994,7 +4381,7 @@ const UPhirePlatform = () => {
             <div>
               <p className="text-sm text-gray-600">Pending Reviews</p>
               <p className="text-3xl font-bold text-red-600">
-                {employees.filter((emp) => emp.pendingReview).length}
+                {employees.filter(emp => emp.pendingReview).length}
               </p>
             </div>
             <AlertTriangle className="w-8 h-8 text-red-600" />
@@ -5005,9 +4392,7 @@ const UPhirePlatform = () => {
       {/* Employee Directory */}
       <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-lg font-semibold text-gray-900">
-            Employee Directory
-          </h3>
+          <h3 className="text-lg font-semibold text-gray-900">Employee Directory</h3>
           <div className="flex items-center space-x-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -5026,17 +4411,12 @@ const UPhirePlatform = () => {
             const startDate = new Date(employee.startDate);
             const today = new Date();
             const tenure = Math.floor(
-              (today.getTime() - startDate.getTime()) /
-                (1000 * 60 * 60 * 24 * 30),
+              (today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 30)
             );
 
             const probationEndDate = new Date(startDate);
-            probationEndDate.setMonth(
-              probationEndDate.getMonth() + (employee.probationMonths || 6),
-            );
-            const probationDaysLeft = Math.ceil(
-              (probationEndDate - today) / (1000 * 60 * 60 * 24),
-            );
+            probationEndDate.setMonth(probationEndDate.getMonth() + (employee.probationMonths || 6));
+            const probationDaysLeft = Math.ceil((probationEndDate - today) / (1000 * 60 * 60 * 24));
 
             return (
               <div
@@ -5055,12 +4435,8 @@ const UPhirePlatform = () => {
                   </div>
                   <div>
                     <div className="flex items-center space-x-2">
-                      <h4 className="font-medium text-gray-900">
-                        {employee.name}
-                      </h4>
-                      <span className="text-xs text-gray-500">
-                        #{employee.employeeId}
-                      </span>
+                      <h4 className="font-medium text-gray-900">{employee.name}</h4>
+                      <span className="text-xs text-gray-500">#{employee.employeeId}</span>
                     </div>
                     <p className="text-sm text-gray-600">
                       {employee.position} • {employee.department}
@@ -5071,10 +4447,7 @@ const UPhirePlatform = () => {
                       </p>
                       {employee.probationPeriod && (
                         <span className="text-xs text-yellow-600">
-                          Probation:{" "}
-                          {probationDaysLeft > 0
-                            ? `${probationDaysLeft} days left`
-                            : "Ended"}
+                          Probation: {probationDaysLeft > 0 ? `${probationDaysLeft} days left` : 'Ended'}
                         </span>
                       )}
                     </div>
@@ -5089,7 +4462,7 @@ const UPhirePlatform = () => {
                           "px-2 py-1 text-xs font-medium rounded-full",
                           employee.probationPeriod
                             ? "bg-yellow-100 text-yellow-800"
-                            : "bg-green-100 text-green-800",
+                            : "bg-green-100 text-green-800"
                         )}
                       >
                         {employee.probationPeriod ? "Probation" : "Confirmed"}
@@ -5100,8 +4473,8 @@ const UPhirePlatform = () => {
                           employee.employmentType === "Full-time"
                             ? "bg-blue-100 text-blue-800"
                             : employee.employmentType === "Part-time"
-                              ? "bg-purple-100 text-purple-800"
-                              : "bg-gray-100 text-gray-800",
+                            ? "bg-purple-100 text-purple-800"
+                            : "bg-gray-100 text-gray-800"
                         )}
                       >
                         {employee.employmentType}
@@ -5151,95 +4524,62 @@ const UPhirePlatform = () => {
       {/* Quick Actions & Reports */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            Probation Periods
-          </h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Probation Periods</h3>
           <div className="space-y-3">
-            {employees
-              .filter((emp) => emp.probationPeriod)
-              .map((employee) => {
-                const startDate = new Date(employee.startDate);
-                const probationEndDate = new Date(startDate);
-                probationEndDate.setMonth(
-                  probationEndDate.getMonth() + (employee.probationMonths || 6),
-                );
-                const today = new Date();
-                const daysLeft = Math.ceil(
-                  (probationEndDate - today) / (1000 * 60 * 60 * 24),
-                );
+            {employees.filter(emp => emp.probationPeriod).map(employee => {
+              const startDate = new Date(employee.startDate);
+              const probationEndDate = new Date(startDate);
+              probationEndDate.setMonth(probationEndDate.getMonth() + (employee.probationMonths || 6));
+              const today = new Date();
+              const daysLeft = Math.ceil((probationEndDate - today) / (1000 * 60 * 60 * 24));
 
-                return (
-                  <div
-                    key={employee.id}
-                    className="flex justify-between items-center p-3 bg-yellow-50 rounded-lg"
-                  >
-                    <div>
-                      <p className="font-medium text-gray-900">
-                        {employee.name}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        {employee.position}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p
-                        className={cn(
-                          "text-sm font-medium",
-                          daysLeft <= 7
-                            ? "text-red-600"
-                            : daysLeft <= 30
-                              ? "text-yellow-600"
-                              : "text-gray-600",
-                        )}
-                      >
-                        {daysLeft > 0
-                          ? `${daysLeft} days left`
-                          : "Review overdue"}
-                      </p>
-                      <button className="text-xs text-blue-600 hover:text-blue-800">
-                        Schedule Review
-                      </button>
-                    </div>
+              return (
+                <div key={employee.id} className="flex justify-between items-center p-3 bg-yellow-50 rounded-lg">
+                  <div>
+                    <p className="font-medium text-gray-900">{employee.name}</p>
+                    <p className="text-sm text-gray-600">{employee.position}</p>
                   </div>
-                );
-              })}
-            {employees.filter((emp) => emp.probationPeriod).length === 0 && (
-              <p className="text-gray-500 text-center py-4">
-                No employees currently on probation
-              </p>
+                  <div className="text-right">
+                    <p className={cn(
+                      "text-sm font-medium",
+                      daysLeft <= 7 ? "text-red-600" : daysLeft <= 30 ? "text-yellow-600" : "text-gray-600"
+                    )}>
+                      {daysLeft > 0 ? `${daysLeft} days left` : 'Review overdue'}
+                    </p>
+                    <button className="text-xs text-blue-600 hover:text-blue-800">
+                      Schedule Review
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+            {employees.filter(emp => emp.probationPeriod).length === 0 && (
+              <p className="text-gray-500 text-center py-4">No employees currently on probation</p>
             )}
           </div>
         </div>
 
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            Recent Activity
-          </h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
           <div className="space-y-3">
             <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
               <CheckCircle className="w-5 h-5 text-green-600" />
               <div>
-                <p className="text-sm font-medium text-gray-900">
-                  Sarah Johnson completed probation
-                </p>
+                <p className="text-sm font-medium text-gray-900">Sarah Johnson completed probation</p>
                 <p className="text-xs text-gray-500">2 days ago</p>
               </div>
             </div>
             <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
               <FileText className="w-5 h-5 text-blue-600" />
               <div>
-                <p className="text-sm font-medium text-gray-900">
-                  New contract uploaded for Mike Chen
-                </p>
+                <p className="text-sm font-medium text-gray-900">New contract uploaded for Mike Chen</p>
                 <p className="text-xs text-gray-500">1 week ago</p>
               </div>
             </div>
             <div className="flex items-center space-x-3 p-3 bg-yellow-50 rounded-lg">
               <Clock className="w-5 h-5 text-yellow-600" />
               <div>
-                <p className="text-sm font-medium text-gray-900">
-                  Performance review due for Alex Kim
-                </p>
+                <p className="text-sm font-medium text-gray-900">Performance review due for Alex Kim</p>
                 <p className="text-xs text-gray-500">In 3 days</p>
               </div>
             </div>
@@ -5784,12 +5124,8 @@ const UPhirePlatform = () => {
             <div className="p-6 border-b border-gray-200">
               <div className="flex justify-between items-center">
                 <div>
-                  <h2 className="text-xl font-bold text-gray-900">
-                    Document Management
-                  </h2>
-                  <p className="text-gray-600">
-                    {selectedEmployee.name} - {selectedEmployee.position}
-                  </p>
+                  <h2 className="text-xl font-bold text-gray-900">Document Management</h2>
+                  <p className="text-gray-600">{selectedEmployee.name} - {selectedEmployee.position}</p>
                 </div>
                 <button
                   onClick={() => setShowDocumentUploadModal(false)}
@@ -5802,21 +5138,14 @@ const UPhirePlatform = () => {
 
             <div className="p-6">
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Current Documents
-                </h3>
+                <h3 className="text-lg font-semibold text-gray-900">Current Documents</h3>
                 {selectedEmployee.documents.map((doc, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between p-3 border border-gray-200 rounded-lg"
-                  >
+                  <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
                     <div className="flex items-center space-x-3">
                       <FileText className="w-5 h-5 text-gray-400" />
                       <div>
                         <p className="font-medium text-gray-900">{doc.type}</p>
-                        <p className="text-sm text-gray-600">
-                          Status: {doc.status}
-                        </p>
+                        <p className="text-sm text-gray-600">Status: {doc.status}</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -5833,12 +5162,8 @@ const UPhirePlatform = () => {
 
               <div className="mt-6 border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
                 <FileText className="w-8 h-8 text-gray-400 mx-auto mb-4" />
-                <h4 className="text-lg font-medium text-gray-900 mb-2">
-                  Upload New Document
-                </h4>
-                <p className="text-gray-600 mb-4">
-                  Select document type and upload file
-                </p>
+                <h4 className="text-lg font-medium text-gray-900 mb-2">Upload New Document</h4>
+                <p className="text-gray-600 mb-4">Select document type and upload file</p>
                 <div className="space-y-4">
                   <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     <option value="">Select document type</option>
