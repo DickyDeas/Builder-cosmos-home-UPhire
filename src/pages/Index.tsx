@@ -931,8 +931,9 @@ const PredictionModal = ({ showModal, closeModal, roleFormData, currentPredictio
             <p className="text-sm text-gray-600">Get real-time salary and market data for any role</p>
           </div>
         </div>
+      </div>
 
-        <div className="space-y-6">
+      <div className="space-y-6">
           {/* Search Form */}
           <div className="bg-gray-50 rounded-lg p-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
