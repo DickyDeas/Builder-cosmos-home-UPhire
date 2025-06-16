@@ -168,7 +168,15 @@ const EmployeeModal = ({
     setSelectedEmployee(null);
     setIsEditing(false);
     setActiveTab("overview");
-}
+  };
+
+  return (
+    <div>
+      {/* EmployeeModal content would go here */}
+      <div>Employee Modal Placeholder</div>
+    </div>
+  );
+};
 
 // PredictionModal component
 const PredictionModal = ({ showModal, closeModal, roleFormData, currentPrediction, marketData }) => {
