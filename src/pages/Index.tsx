@@ -178,6 +178,17 @@ const UPhirePlatform = () => {
   const [showPredictionModal, setShowPredictionModal] = useState(false);
   const [currentPrediction, setCurrentPrediction] = useState(null);
 
+  // Enhanced Candidate Search
+  const [allCandidates, setAllCandidates] = useState([]); // Historical + current candidates
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFilters, setSearchFilters] = useState({
+    status: "all", // all, active, archived, outreach
+    source: "all", // all, direct, outreach, referral, etc.
+    dateRange: "all", // all, last30days, last90days, lastyear
+    skills: [],
+  });
+  const [isSearching, setIsSearching] = useState(false);
+
   useEffect(() => {
     const mockRoles: Role[] = [
       {
