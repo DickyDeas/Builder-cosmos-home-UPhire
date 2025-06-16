@@ -504,10 +504,279 @@ const UPhirePlatform = () => {
       },
     ];
 
+    // Historical Candidates Database (includes all applications and outreach)
+    const historicalCandidates = [
+      // Current active candidates
+      ...mockCandidates,
+
+      // Historical applications (past 12 months)
+      {
+        id: 201,
+        name: "Jennifer Adams",
+        role: "Senior Frontend Developer",
+        email: "jennifer.adams@email.com",
+        location: "London",
+        experience: "6 years",
+        skills: ["React", "Vue.js", "TypeScript", "Node.js", "GraphQL"],
+        aiMatch: 92,
+        status: "archived",
+        source: "LinkedIn",
+        applied: "2024-08-15",
+        avatar: "👩‍💻",
+        applicationHistory: [
+          {
+            role: "Senior Frontend Developer",
+            date: "2024-08-15",
+            status: "rejected",
+            reason: "Position filled",
+          },
+          {
+            role: "Frontend Lead",
+            date: "2024-03-20",
+            status: "withdrew",
+            reason: "Accepted other offer",
+          },
+        ],
+        outreachHistory: [
+          {
+            date: "2024-08-10",
+            type: "LinkedIn message",
+            response: "interested",
+          },
+          {
+            date: "2024-03-15",
+            type: "Email outreach",
+            response: "interested",
+          },
+        ],
+        notes:
+          "Strong candidate, good cultural fit. Keep for future opportunities.",
+      },
+      {
+        id: 202,
+        name: "Robert Taylor",
+        role: "Product Manager",
+        email: "robert.taylor@email.com",
+        location: "Manchester",
+        experience: "8 years",
+        skills: [
+          "Product Strategy",
+          "Agile",
+          "Analytics",
+          "Leadership",
+          "Stakeholder Management",
+        ],
+        aiMatch: 89,
+        status: "outreach_contacted",
+        source: "AI Outreach",
+        applied: "2024-11-15",
+        avatar: "👨‍💼",
+        applicationHistory: [],
+        outreachHistory: [
+          { date: "2024-11-15", type: "AI Email", response: "no_response" },
+          {
+            date: "2024-11-18",
+            type: "LinkedIn follow-up",
+            response: "interested",
+          },
+        ],
+        notes:
+          "Contacted through AI recruitment system. Expressed interest in remote opportunities.",
+      },
+      {
+        id: 203,
+        name: "Lisa Wong",
+        role: "UX Designer",
+        email: "lisa.wong@email.com",
+        location: "Birmingham",
+        experience: "4 years",
+        skills: [
+          "Figma",
+          "Adobe XD",
+          "User Research",
+          "Prototyping",
+          "Design Systems",
+        ],
+        aiMatch: 86,
+        status: "hired_elsewhere",
+        source: "Direct Application",
+        applied: "2024-09-22",
+        avatar: "👩‍🎨",
+        applicationHistory: [
+          {
+            role: "UX Designer",
+            date: "2024-09-22",
+            status: "hired_elsewhere",
+            reason: "Accepted offer at competitor",
+          },
+        ],
+        outreachHistory: [],
+        notes:
+          "Excellent portfolio. Hired by competitor but maintain relationship.",
+      },
+      {
+        id: 204,
+        name: "Mark Stevens",
+        role: "Backend Developer",
+        email: "mark.stevens@email.com",
+        location: "Edinburgh",
+        experience: "5 years",
+        skills: ["Python", "Django", "PostgreSQL", "Redis", "Docker"],
+        aiMatch: 88,
+        status: "archive_contacted",
+        source: "Stack Overflow",
+        applied: "2024-07-10",
+        avatar: "👨‍💻",
+        applicationHistory: [
+          {
+            role: "Senior Backend Developer",
+            date: "2024-07-10",
+            status: "rejected",
+            reason: "Salary expectations too high",
+          },
+        ],
+        outreachHistory: [
+          {
+            date: "2024-07-05",
+            type: "Stack Overflow message",
+            response: "interested",
+          },
+        ],
+        notes: "High salary expectations (£95k+). Consider for senior roles.",
+      },
+      {
+        id: 205,
+        name: "Amanda Foster",
+        role: "Data Scientist",
+        email: "amanda.foster@email.com",
+        location: "Remote",
+        experience: "7 years",
+        skills: [
+          "Python",
+          "Machine Learning",
+          "TensorFlow",
+          "SQL",
+          "Statistics",
+        ],
+        aiMatch: 95,
+        status: "outreach_interested",
+        source: "AI Outreach",
+        applied: "2024-11-20",
+        avatar: "👩‍🔬",
+        applicationHistory: [],
+        outreachHistory: [
+          { date: "2024-11-20", type: "AI Email", response: "very_interested" },
+          {
+            date: "2024-11-22",
+            type: "Phone call",
+            response: "scheduled_interview",
+          },
+        ],
+        notes:
+          "AI-sourced candidate. Very strong profile. Interview scheduled.",
+      },
+      {
+        id: 206,
+        name: "David Kumar",
+        role: "DevOps Engineer",
+        email: "david.kumar@email.com",
+        location: "Bristol",
+        experience: "6 years",
+        skills: ["Kubernetes", "AWS", "Terraform", "Docker", "CI/CD"],
+        aiMatch: 90,
+        status: "blacklisted",
+        source: "Referral",
+        applied: "2024-05-30",
+        avatar: "👨‍💻",
+        applicationHistory: [
+          {
+            role: "DevOps Engineer",
+            date: "2024-05-30",
+            status: "rejected",
+            reason: "Cultural fit concerns",
+          },
+        ],
+        outreachHistory: [],
+        notes: "Not a good cultural fit. Professional concerns noted.",
+      },
+      {
+        id: 207,
+        name: "Rachel Green",
+        role: "Marketing Manager",
+        email: "rachel.green@email.com",
+        location: "London",
+        experience: "5 years",
+        skills: [
+          "Digital Marketing",
+          "SEO",
+          "Content Strategy",
+          "Analytics",
+          "Brand Management",
+        ],
+        aiMatch: 83,
+        status: "archived",
+        source: "LinkedIn",
+        applied: "2024-06-15",
+        avatar: "👩‍💼",
+        applicationHistory: [
+          {
+            role: "Marketing Manager",
+            date: "2024-06-15",
+            status: "rejected",
+            reason: "Overqualified",
+          },
+          {
+            role: "Senior Marketing Manager",
+            date: "2024-04-10",
+            status: "withdrawn",
+            reason: "Personal reasons",
+          },
+        ],
+        outreachHistory: [
+          {
+            date: "2024-04-05",
+            type: "LinkedIn message",
+            response: "interested",
+          },
+        ],
+        notes:
+          "Strong candidate but overqualified for current roles. Consider for senior positions.",
+      },
+      {
+        id: 208,
+        name: "Thomas Anderson",
+        role: "Full Stack Developer",
+        email: "thomas.anderson@email.com",
+        location: "Remote",
+        experience: "4 years",
+        skills: ["React", "Node.js", "MongoDB", "Express", "TypeScript"],
+        aiMatch: 87,
+        status: "outreach_no_response",
+        source: "GitHub",
+        applied: "2024-10-25",
+        avatar: "👨‍💻",
+        applicationHistory: [],
+        outreachHistory: [
+          {
+            date: "2024-10-25",
+            type: "GitHub message",
+            response: "no_response",
+          },
+          {
+            date: "2024-11-01",
+            type: "Email follow-up",
+            response: "no_response",
+          },
+        ],
+        notes: "Strong GitHub profile but not responsive to outreach.",
+      },
+    ];
+
     setRoles(mockRoles);
     setCandidates(mockCandidates);
     setDocuments(mockDocuments);
     setEmployees(mockEmployees);
+    setAllCandidates(historicalCandidates);
 
     // Initialize demo user (in real app, this would come from authentication)
     setUser({
