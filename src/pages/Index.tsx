@@ -4783,9 +4783,12 @@ Ready to make an impact? Apply now and join our team!`;
                     <input
                       type="text"
                       required
-                      value={formData.salary}
+                      value={roleFormData.salary}
                       onChange={(e) =>
-                        setFormData({ ...formData, salary: e.target.value })
+                        setRoleFormData({
+                          ...roleFormData,
+                          salary: e.target.value,
+                        })
                       }
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="e.g. £50,000 - £70,000"
