@@ -234,7 +234,7 @@ We are seeking a talented ${roleFormData.title} to join our ${roleFormData.depar
 • ${roleFormData.experience || "3-5 years"} of relevant experience in ${roleFormData.department.toLowerCase()}
 • Strong analytical and problem-solving skills
 • Excellent communication and collaboration abilities
-��� Proven track record of delivering results in a fast-paced environment
+• Proven track record of delivering results in a fast-paced environment
 • Bachelor's degree in relevant field or equivalent experience
 
 ## Technical Skills
@@ -860,6 +860,8 @@ const UPhirePlatform = () => {
   const [showNewRoleModal, setShowNewRoleModal] = useState(false);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
   const [showDocumentModal, setShowDocumentModal] = useState(false);
+  const [showRecruitModal, setShowRecruitModal] = useState(false);
+  const [recruitingRoleId, setRecruitingRoleId] = useState<number | null>(null);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showRecruitModal, setShowRecruitModal] = useState(false);
