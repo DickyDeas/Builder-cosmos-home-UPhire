@@ -3188,7 +3188,22 @@ const UPhirePlatform = () => {
     { id: "business", label: "My Business", icon: Factory },
   ];
 
-  const DashboardTab = () => (
+  // Main component render logic would go here
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-pink-800">
+      {/* Main app content */}
+      <div>
+        {activeTab === "dashboard" && <DashboardTab />}
+        {activeTab === "roles" && <RolesTab />}
+        {activeTab === "candidates" && <CandidatesTab />}
+        {/* Other tab renders */}
+      </div>
+    </div>
+  );
+};
+
+// Tab Components (moved outside main component)
+const DashboardTab = () => (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
