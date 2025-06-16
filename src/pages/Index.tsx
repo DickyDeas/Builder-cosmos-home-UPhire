@@ -4738,9 +4738,12 @@ Ready to make an impact? Apply now and join our team!`;
                     </label>
                     <select
                       required
-                      value={formData.department}
+                      value={roleFormData.department}
                       onChange={(e) =>
-                        setFormData({ ...formData, department: e.target.value })
+                        setRoleFormData({
+                          ...roleFormData,
+                          department: e.target.value,
+                        })
                       }
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     >
