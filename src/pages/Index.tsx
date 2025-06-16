@@ -3857,7 +3857,7 @@ const UPhirePlatform = () => {
         probationPeriod: false,
         probationMonths: 6,
         employmentType: "Full-time",
-        avatar: "����‍🔬",
+        avatar: "👨‍🔬",
         email: "david.kim@company.com",
         phone: "+44 7789 012345",
         pendingReview: false,
@@ -5867,6 +5867,16 @@ const UPhirePlatform = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {showPredictionModal && (
+        <PredictionModal
+          showPredictionModal={showPredictionModal}
+          setShowPredictionModal={setShowPredictionModal}
+          currentPrediction={currentPrediction}
+          roleFormData={roleFormData}
+          marketData={marketData}
+        />
       )}
     </div>
   );
