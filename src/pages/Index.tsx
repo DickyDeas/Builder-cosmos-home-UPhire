@@ -2419,7 +2419,7 @@ const UPhirePlatform = () => {
                   onClick={() => {
                     // Pre-fill role creation form
                     setActiveTab("roles");
-                    setShowNewRoleModal(true);
+                    startNewRole();
                     // Note: In a real implementation, you'd pass this data to the form
                   }}
                   className="px-3 py-1 bg-green-600 text-white text-xs rounded-full hover:bg-green-700 transition-colors"
@@ -4585,7 +4585,7 @@ We are seeking a talented ${roleFormData.title} to join our ${roleFormData.depar
 • Lead and execute ${roleFormData.department.toLowerCase()} initiatives that drive business growth
 • Collaborate with cross-functional teams to deliver high-quality solutions
 • Drive innovation and continuous improvement in processes and technologies
-��� Mentor junior team members and contribute to team knowledge sharing
+• Mentor junior team members and contribute to team knowledge sharing
 • Ensure project delivery meets quality standards and timelines
 
 ## Required Qualifications
