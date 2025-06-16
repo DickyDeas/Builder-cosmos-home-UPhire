@@ -133,7 +133,16 @@ const RecruitModal = ({
   const role = roles.find((r) => r.id === recruitingRoleId);
 
   // Calendly configuration
-  const calendlyUrl = "https://calendly.com/your-company/interview"; // Replace with your actual Calendly URL
+  // TODO: Replace with your actual Calendly URL
+  const calendlyUrl = "https://calendly.com/your-company/interview";
+
+  // Alternative: You can create different Calendly URLs for different interview types
+  const calendlyUrls = {
+    initial: "https://calendly.com/your-company/initial-screening",
+    technical: "https://calendly.com/your-company/technical-interview",
+    cultural: "https://calendly.com/your-company/cultural-fit",
+    final: "https://calendly.com/your-company/final-interview",
+  };
 
   const openCalendlyScheduling = (candidate) => {
     setSchedulingCandidate(candidate);
