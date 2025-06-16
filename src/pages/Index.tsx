@@ -6,6 +6,7 @@ import {
   Filter,
   TrendingUp,
   Calendar,
+  Check,
   CheckCircle,
   XCircle,
   BarChart3,
