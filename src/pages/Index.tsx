@@ -113,7 +113,7 @@ interface Document {
   template: string;
 }
 
-// PredictionModal component temporarily removed for debugging
+// === COMPONENT DEFINITIONS ===
 
 // EmployeeModal component for detailed employee information
 const EmployeeModal = ({
