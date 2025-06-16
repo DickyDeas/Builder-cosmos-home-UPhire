@@ -4863,7 +4863,7 @@ Ready to make an impact? Apply now and join our team!`;
                     <button
                       type="button"
                       onClick={async () => {
-                        if (!formData.title || !formData.department) {
+                        if (!roleFormData.title || !roleFormData.department) {
                           alert(
                             "Please fill in job title and department first.",
                           );
@@ -4871,13 +4871,13 @@ Ready to make an impact? Apply now and join our team!`;
                         }
                         setIsAnalyzing(true);
                         const market = await fetchMarketData(
-                          formData.title,
-                          formData.location,
-                          formData.department,
+                          roleFormData.title,
+                          roleFormData.location,
+                          roleFormData.department,
                         );
                         setMarketData(market);
                         const prediction = await predictRoleSuccess(
-                          formData,
+                          roleFormData,
                           market,
                         );
                         setCurrentPrediction(prediction);
