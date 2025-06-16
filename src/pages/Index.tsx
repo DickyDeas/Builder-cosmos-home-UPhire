@@ -1761,32 +1761,46 @@ const RecruitModal = ({
             <div className="flex items-center justify-between mb-4">
               {stages.map((stage, index) => (
                 <div key={stage.id} className="flex items-center">
-                  <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold ${
-                      currentStage > stage.id
-                        ? "bg-green-500 text-white"
-                        : currentStage === stage.id
-                          ? "bg-blue-500 text-white"
-                          : "bg-gray-200 text-gray-600"
-                    }`}
-                  >
-                    {currentStage > stage.id ? <Check size={16} /> : stage.id}
+                  <div className="flex flex-col items-center">
+                    <div
+                      className={`w-12 h-12 rounded-full flex items-center justify-center text-xs font-semibold ${
+                        currentStage > stage.id
+                          ? "bg-green-500 text-white"
+                          : currentStage === stage.id
+                            ? "bg-blue-500 text-white"
+                            : "bg-gray-200 text-gray-600"
+                      }`}
+                    >
+                      {currentStage > stage.id ? (
+                        <Check size={16} />
+                      ) : (
+                        <span className="text-center leading-tight">
+                          {stage.name
+                            .split(" ")
+                            .map((word) => word.charAt(0))
+                            .join("")}
+                        </span>
+                      )}
+                    </div>
+                    <span
+                      className={`text-xs font-medium mt-2 text-center ${
+                        currentStage === stage.id
+                          ? "text-blue-600"
+                          : "text-gray-600"
+                      }`}
+                    >
+                      {stage.name}
+                    </span>
                   </div>
                   {index < stages.length - 1 && (
                     <div
-                      className={`w-24 h-1 mx-2 ${
+                      className={`w-16 h-1 mx-3 ${
                         currentStage > stage.id ? "bg-green-500" : "bg-gray-200"
                       }`}
                     />
                   )}
                 </div>
               ))}
-            </div>
-
-            <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                {stages[currentStage - 1]?.name}
-              </h3>
               <p className="text-gray-600 mb-4">
                 {stages[currentStage - 1]?.description}
               </p>
