@@ -1868,7 +1868,7 @@ const RecruitModal = ({
                                 onClick={() => scheduleSpecificInterview(candidate, 'final')}
                                 className="w-full px-2 py-1 text-left text-xs text-gray-600 hover:bg-gray-50 rounded"
                               >
-                                🎯 Final Interview (30 min)
+                                �� Final Interview (30 min)
                               </button>
                             </div>
 
@@ -4242,11 +4242,89 @@ const UPhirePlatform = () => {
                 )}
               </div>
             </div>
+
+            {/* User Profile / Login */}
+            <div className="flex items-center space-x-4">
+              {isLoggedIn ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setShowUserDropdown(!showUserDropdown)}
+                    className="flex items-center space-x-2 text-white hover:bg-white hover:bg-opacity-10 px-3 py-2 rounded-lg transition-all"
+                  >
+                    <div className="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-sm font-bold">
+                      {user.initials}
+                    </div>
+                    <ChevronDown size={16} />
+                  </button>
+
+                  {showUserDropdown && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border z-50">
+                      <div className="p-3 border-b">
+                        <p className="font-medium text-gray-900">{user.name}</p>
+                        <p className="text-sm text-gray-600">{user.email}</p>
+                        <p className="text-xs text-gray-500">{user.role}</p>
+                      </div>
+                      <div className="py-1">
+                        <button
+                          onClick={() => {
+                            setShowUserDropdown(false);
+                            setShowSettingsModal(true);
+                          }}
+                          className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          <Settings size={16} />
+                          <span>Settings</span>
+                        </button>
+                        <button
+                          onClick={() => {
+                            setShowUserDropdown(false);
+                            setActiveTab("business");
+                          }}
+                          className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          <Factory size={16} />
+                          <span>My Business</span>
+                        </button>
+                        <button className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          <HelpCircle size={16} />
+                          <span>Help & Support</span>
+                        </button>
+                        <div className="border-t my-1"></div>
+                        <button
+                          onClick={() => {
+                            setIsLoggedIn(false);
+                            setUser({ name: "", email: "", role: "", initials: "" });
+                            setShowUserDropdown(false);
+                          }}
+                          className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                        >
+                          <LogOut size={16} />
+                          <span>Sign Out</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button
+                  onClick={() => setShowLoginModal(true)}
+                  className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white px-6 py-2 rounded-lg hover:shadow-lg transition-all flex items-center space-x-2 font-medium"
+                >
+                  <LogIn size={16} />
+                  <span>Sign In</span>
+                </button>
+              )}
+
+              {/* Mobile menu button */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="lg:hidden text-white p-2"
+              >
+                {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
             </div>
-            <Star className="h-8 w-8 text-yellow-600" />
           </div>
         </div>
-      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
