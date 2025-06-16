@@ -114,7 +114,13 @@ interface Document {
 }
 
 // PredictionModal component for AI Success Prediction results
-const PredictionModal = ({
+const PredictionModal: React.FC<{
+  showPredictionModal: boolean;
+  setShowPredictionModal: (show: boolean) => void;
+  currentPrediction: any;
+  roleFormData: any;
+  marketData: any;
+}> = ({
   showPredictionModal,
   setShowPredictionModal,
   currentPrediction,
