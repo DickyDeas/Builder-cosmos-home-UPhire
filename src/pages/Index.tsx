@@ -4188,8 +4188,7 @@ const UPhirePlatform = () => {
             ))}
           </div>
         </div>
-        </div>
-      </main>
+      </div>
     </div>
   );
 
