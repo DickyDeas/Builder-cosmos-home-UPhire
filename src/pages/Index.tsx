@@ -1055,7 +1055,7 @@ const EmployeeModal = ({
                   { skill: "Blockchain", trend: "📈", growth: "+45%" },
                   { skill: "Cybersecurity", trend: "🛡️", growth: "+38%" },
                   { skill: "DevOps/Kubernetes", trend: "⚡", growth: "+42%" },
-                  { skill: "Data Engineering", trend: "���", growth: "+29%" },
+                  { skill: "Data Engineering", trend: "📊", growth: "+29%" },
                 ].map((item) => (
                   <div
                     key={item.skill}
@@ -3056,6 +3056,203 @@ const UPhirePlatform = () => {
         resolve(marketInsights);
       }, 1500);
     });
+  };
+
+  // Market Insights Search with ITJobsWatch API Integration
+  const searchMarketData = async () => {
+    if (!marketSearchForm.jobTitle) {
+      alert("Please enter a job title to search");
+      return;
+    }
+
+    setIsSearching(true);
+
+    try {
+      // Simulate ITJobsWatch API call with realistic data
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      const mockMarketData = {
+        jobTitle: marketSearchForm.jobTitle,
+        location: marketSearchForm.location || "UK",
+        lastUpdated: new Date().toLocaleDateString("en-GB"),
+        salary: {
+          average: generateRealisticSalary(marketSearchForm.jobTitle),
+          min: generateRealisticSalary(marketSearchForm.jobTitle, 0.7),
+          max: generateRealisticSalary(marketSearchForm.jobTitle, 1.4),
+        },
+        demand: {
+          level: getMarketDemand(marketSearchForm.jobTitle),
+          trend: getMarketTrend(marketSearchForm.jobTitle),
+        },
+        timeToFill: getTimeToFill(marketSearchForm.jobTitle),
+        competition: getCompetitionLevel(marketSearchForm.jobTitle),
+        skills: {
+          required: getRequiredSkills(marketSearchForm.jobTitle),
+          trending: getTrendingSkills(marketSearchForm.jobTitle),
+        },
+      };
+
+      setLastSearchResults(mockMarketData);
+    } catch (error) {
+      console.error("Error fetching market data:", error);
+      alert("Error fetching market data. Please try again.");
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  // Helper functions for realistic market data generation
+  const generateRealisticSalary = (jobTitle, multiplier = 1) => {
+    const baseSalaries = {
+      "software engineer": 65000,
+      "product manager": 70000,
+      "data scientist": 75000,
+      "ux designer": 55000,
+      "devops engineer": 70000,
+      "full stack developer": 60000,
+      "business analyst": 50000,
+      "project manager": 55000,
+    };
+
+    const titleLower = jobTitle.toLowerCase();
+    let baseSalary = 50000; // default
+
+    for (const [key, value] of Object.entries(baseSalaries)) {
+      if (titleLower.includes(key)) {
+        baseSalary = value;
+        break;
+      }
+    }
+
+    const salary = Math.round(baseSalary * multiplier);
+    return `£${salary.toLocaleString()}`;
+  };
+
+  const getMarketDemand = (jobTitle) => {
+    const highDemandRoles = [
+      "software engineer",
+      "data scientist",
+      "devops",
+      "cloud",
+      "cybersecurity",
+    ];
+    const mediumDemandRoles = [
+      "product manager",
+      "ux designer",
+      "business analyst",
+    ];
+
+    const titleLower = jobTitle.toLowerCase();
+    if (highDemandRoles.some((role) => titleLower.includes(role)))
+      return "High";
+    if (mediumDemandRoles.some((role) => titleLower.includes(role)))
+      return "Medium";
+    return "Low";
+  };
+
+  const getMarketTrend = (jobTitle) => {
+    const growingRoles = [
+      "ai",
+      "machine learning",
+      "data",
+      "cloud",
+      "security",
+    ];
+    const titleLower = jobTitle.toLowerCase();
+    if (growingRoles.some((role) => titleLower.includes(role)))
+      return "Growing";
+    return "Stable";
+  };
+
+  const getTimeToFill = (jobTitle) => {
+    const fastFillRoles = ["junior", "entry", "intern"];
+    const slowFillRoles = ["senior", "lead", "principal", "director"];
+
+    const titleLower = jobTitle.toLowerCase();
+    if (fastFillRoles.some((role) => titleLower.includes(role))) return 25;
+    if (slowFillRoles.some((role) => titleLower.includes(role))) return 45;
+    return 35;
+  };
+
+  const getCompetitionLevel = (jobTitle) => {
+    const highCompetitionRoles = ["senior", "lead", "principal", "manager"];
+    const titleLower = jobTitle.toLowerCase();
+    if (highCompetitionRoles.some((role) => titleLower.includes(role)))
+      return "High";
+    return "Medium";
+  };
+
+  const getRequiredSkills = (jobTitle) => {
+    const skillMaps = {
+      "software engineer": [
+        { name: "JavaScript", percentage: 85 },
+        { name: "React", percentage: 75 },
+        { name: "Node.js", percentage: 65 },
+        { name: "Python", percentage: 55 },
+        { name: "Git", percentage: 90 },
+      ],
+      "data scientist": [
+        { name: "Python", percentage: 95 },
+        { name: "SQL", percentage: 85 },
+        { name: "Machine Learning", percentage: 80 },
+        { name: "R", percentage: 60 },
+        { name: "Statistics", percentage: 75 },
+      ],
+      "product manager": [
+        { name: "Product Strategy", percentage: 90 },
+        { name: "Analytics", percentage: 75 },
+        { name: "Agile", percentage: 80 },
+        { name: "User Research", percentage: 65 },
+        { name: "Roadmapping", percentage: 85 },
+      ],
+    };
+
+    const titleLower = jobTitle.toLowerCase();
+    for (const [key, skills] of Object.entries(skillMaps)) {
+      if (titleLower.includes(key)) return skills;
+    }
+
+    // Default skills
+    return [
+      { name: "Communication", percentage: 85 },
+      { name: "Problem Solving", percentage: 80 },
+      { name: "Team Work", percentage: 75 },
+      { name: "Time Management", percentage: 70 },
+      { name: "Critical Thinking", percentage: 75 },
+    ];
+  };
+
+  const getTrendingSkills = (jobTitle) => {
+    const trendingMaps = {
+      "software engineer": [
+        { name: "TypeScript", growth: 42 },
+        { name: "GraphQL", growth: 35 },
+        { name: "Docker", growth: 28 },
+        { name: "Kubernetes", growth: 45 },
+        { name: "AWS", growth: 38 },
+      ],
+      "data scientist": [
+        { name: "MLOps", growth: 67 },
+        { name: "TensorFlow", growth: 45 },
+        { name: "PyTorch", growth: 52 },
+        { name: "Kubernetes", growth: 38 },
+        { name: "Apache Spark", growth: 25 },
+      ],
+    };
+
+    const titleLower = jobTitle.toLowerCase();
+    for (const [key, skills] of Object.entries(trendingMaps)) {
+      if (titleLower.includes(key)) return skills;
+    }
+
+    // Default trending skills
+    return [
+      { name: "AI/ML", growth: 67 },
+      { name: "Cloud Computing", growth: 45 },
+      { name: "DevOps", growth: 38 },
+      { name: "Cybersecurity", growth: 42 },
+      { name: "Data Analytics", growth: 35 },
+    ];
   };
 
   const predictRoleSuccess = async (roleData, marketData) => {
