@@ -168,6 +168,31 @@ const RecruitModal = ({
     setShowCalendlyModal(true);
   };
 
+  const scheduleSpecificInterview = (candidate, interviewType) => {
+    const interviewTypeNames = {
+      initial: "Initial Screening",
+      technical: "Technical Interview",
+      cultural: "Cultural Fit Interview",
+      final: "Final Interview",
+    };
+
+    const selectedUrl = calendlyUrls[interviewType] || calendlyUrl;
+    const interviewTypeName = interviewTypeNames[interviewType] || "Interview";
+
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({
+        url: `${selectedUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(", "))}&prefill_custom_3=${encodeURIComponent(interviewTypeName)}`,
+        text: `Schedule ${interviewTypeName}`,
+        color: "#2563eb",
+        textColor: "#ffffff",
+        branding: true,
+      });
+    } else {
+      const calendlyFullUrl = `${selectedUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(", "))}&prefill_custom_3=${encodeURIComponent(interviewTypeName)}`;
+      window.open(calendlyFullUrl, "_blank");
+    }
+  };
+
   const scheduleAllInterviews = () => {
     // Open Calendly for the top candidate first
     if (rankedCandidates.length > 0) {
