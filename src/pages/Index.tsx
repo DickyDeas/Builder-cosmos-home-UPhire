@@ -1417,7 +1417,7 @@ const RecruitModal = ({
                                 }
                                 className="w-full px-2 py-1 text-left text-xs text-gray-600 hover:bg-gray-50 rounded"
                               >
-                                💻 Technical Interview (60 min)
+                                �� Technical Interview (60 min)
                               </button>
                               <button
                                 onClick={() =>
@@ -4305,6 +4305,15 @@ const UPhirePlatform = () => {
           setShowRecruitModal={setShowRecruitModal}
           recruitingRoleId={recruitingRoleId}
           roles={roles}
+        />
+      )}
+
+      {showEmployeeModal && (
+        <EmployeeModal
+          showEmployeeModal={showEmployeeModal}
+          setShowEmployeeModal={setShowEmployeeModal}
+          selectedEmployee={selectedEmployee}
+          setSelectedEmployee={setSelectedEmployee}
         />
       )}
     </div>
