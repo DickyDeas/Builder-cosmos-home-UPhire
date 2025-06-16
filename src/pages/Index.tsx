@@ -4764,9 +4764,12 @@ Ready to make an impact? Apply now and join our team!`;
                     <input
                       type="text"
                       required
-                      value={formData.location}
+                      value={roleFormData.location}
                       onChange={(e) =>
-                        setFormData({ ...formData, location: e.target.value })
+                        setRoleFormData({
+                          ...roleFormData,
+                          location: e.target.value,
+                        })
                       }
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="e.g. London, Remote, Hybrid"
