@@ -6292,98 +6292,391 @@ Ready to join our team? Apply now and let's shape the future together!
     </div>
   );
 
-  const CandidatesTab = () => (
-    <div className="space-y-6">
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-        <h2 className="text-2xl font-bold text-white">Candidates</h2>
-        <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
-          <input
-            type="text"
-            placeholder="Search candidates..."
-            className="px-4 py-2 bg-white bg-opacity-90 backdrop-blur-sm border border-white border-opacity-30 rounded-lg focus:ring-2 focus:ring-white focus:border-white"
-          />
-          <button className="flex items-center space-x-2 px-4 py-2 bg-white bg-opacity-20 backdrop-blur-sm text-white border border-white border-opacity-30 rounded-lg hover:bg-opacity-30 transition-all">
-            <Filter size={16} />
-            <span>Filter</span>
-          </button>
-        </div>
-      </div>
+  const CandidatesTab = () => {
+    const [currentSearchQuery, setCurrentSearchQuery] = useState("");
+    const [currentFilters, setCurrentFilters] = useState(searchFilters);
+    const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
-      <div className="grid grid-cols-1 gap-4">
-        {candidates.map((candidate) => (
-          <div
-            key={candidate.id}
-            className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6"
-          >
-            <div className="flex flex-col lg:flex-row items-start justify-between mb-4 gap-4">
-              <div className="flex items-start space-x-4">
-                <div className="text-3xl">{candidate.avatar}</div>
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    {candidate.name}
-                  </h3>
-                  <p className="text-sm text-gray-600">{candidate.role}</p>
-                  <div className="flex flex-wrap items-center gap-4 mt-2 text-sm text-gray-500">
-                    <span>{candidate.email}</span>
-                    <span>{candidate.location}</span>
-                    <span>{candidate.experience}</span>
-                  </div>
-                </div>
+    const searchResults = searchCandidates(currentSearchQuery, currentFilters);
+    const resultsText = getSearchResultsCount(
+      searchResults,
+      currentSearchQuery,
+      currentFilters,
+    );
+
+    const handleSearch = () => {
+      setSearchQuery(currentSearchQuery);
+      setSearchFilters(currentFilters);
+    };
+
+    const clearFilters = () => {
+      setCurrentSearchQuery("");
+      setCurrentFilters({
+        status: "all",
+        source: "all",
+        dateRange: "all",
+        skills: [],
+      });
+      setSearchQuery("");
+      setSearchFilters({
+        status: "all",
+        source: "all",
+        dateRange: "all",
+        skills: [],
+      });
+    };
+
+    return (
+      <div className="space-y-6">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+          <div>
+            <h2 className="text-2xl font-bold text-white">
+              Candidate Database
+            </h2>
+            <p className="text-blue-100">
+              Search through all applications, outreach, and historical data
+            </p>
+          </div>
+        </div>
+
+        {/* Enhanced Search Interface */}
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <div className="space-y-4">
+            {/* Main Search Bar */}
+            <div className="flex flex-col lg:flex-row gap-3">
+              <div className="flex-1">
+                <input
+                  type="text"
+                  placeholder="Search by name, email, skills, location, or notes..."
+                  value={currentSearchQuery}
+                  onChange={(e) => setCurrentSearchQuery(e.target.value)}
+                  onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
               </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-blue-600">
-                  {candidate.aiMatch}%
-                </p>
-                <p className="text-xs text-gray-500">AI Match</p>
-                <span
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
                   className={cn(
-                    "inline-block px-2 py-1 rounded-full text-xs font-medium mt-1",
-                    candidate.status === "shortlisted"
-                      ? "bg-yellow-100 text-yellow-800"
-                      : candidate.status === "interviewed"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-gray-100 text-gray-800",
+                    "flex items-center space-x-2 px-4 py-3 border rounded-lg transition-all",
+                    showAdvancedFilters
+                      ? "bg-blue-100 border-blue-300 text-blue-700"
+                      : "bg-gray-100 border-gray-300 text-gray-700 hover:bg-gray-200",
                   )}
                 >
-                  {candidate.status}
-                </span>
-              </div>
-            </div>
-
-            <div className="mb-4">
-              <p className="text-sm text-gray-600 mb-2">Skills:</p>
-              <div className="flex flex-wrap gap-2">
-                {candidate.skills.map((skill, index) => (
-                  <span
-                    key={index}
-                    className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div className="text-sm text-gray-500">
-                <span>
-                  Source: {candidate.source} • Applied: {candidate.applied}
-                </span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                  View Profile
+                  <Filter size={16} />
+                  <span>Filters</span>
                 </button>
-                <button className="text-green-600 hover:text-green-800 text-sm font-medium">
-                  Schedule Interview
+                <button
+                  onClick={handleSearch}
+                  className="flex items-center space-x-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all"
+                >
+                  <Search size={16} />
+                  <span>Search</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Advanced Filters */}
+            {showAdvancedFilters && (
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg border">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Status
+                  </label>
+                  <select
+                    value={currentFilters.status}
+                    onChange={(e) =>
+                      setCurrentFilters({
+                        ...currentFilters,
+                        status: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="all">All Statuses</option>
+                    <option value="active">
+                      Active (Applied/Shortlisted/Interviewed)
+                    </option>
+                    <option value="outreach">Outreach Contacts</option>
+                    <option value="archived">Archived</option>
+                    <option value="hired_elsewhere">Hired Elsewhere</option>
+                    <option value="blacklisted">Blacklisted</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Source
+                  </label>
+                  <select
+                    value={currentFilters.source}
+                    onChange={(e) =>
+                      setCurrentFilters({
+                        ...currentFilters,
+                        source: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="all">All Sources</option>
+                    <option value="LinkedIn">LinkedIn</option>
+                    <option value="Indeed">Indeed</option>
+                    <option value="outreach">AI Outreach</option>
+                    <option value="Direct Application">
+                      Direct Application
+                    </option>
+                    <option value="Referral">Referral</option>
+                    <option value="GitHub">GitHub</option>
+                    <option value="Stack Overflow">Stack Overflow</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Date Range
+                  </label>
+                  <select
+                    value={currentFilters.dateRange}
+                    onChange={(e) =>
+                      setCurrentFilters({
+                        ...currentFilters,
+                        dateRange: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="all">All Time</option>
+                    <option value="last30days">Last 30 Days</option>
+                    <option value="last90days">Last 90 Days</option>
+                    <option value="lastyear">Last Year</option>
+                  </select>
+                </div>
+
+                <div className="flex items-end">
+                  <button
+                    onClick={clearFilters}
+                    className="w-full px-3 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors"
+                  >
+                    Clear Filters
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Results Summary */}
+            <div className="flex items-center justify-between text-sm text-gray-600">
+              <span>{resultsText}</span>
+              <div className="flex items-center space-x-4">
+                <span>Sort by: AI Match Score</span>
+                <button className="text-blue-600 hover:text-blue-800">
+                  Export Results
                 </button>
               </div>
             </div>
           </div>
-        ))}
+        </div>
+
+        {/* Search Results */}
+        <div className="grid grid-cols-1 gap-4">
+          {searchResults.map((candidate) => (
+            <div
+              key={candidate.id}
+              className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6"
+            >
+              <div className="flex flex-col lg:flex-row items-start justify-between mb-4 gap-4">
+                <div className="flex items-start space-x-4 flex-1">
+                  <div className="text-3xl">{candidate.avatar}</div>
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-3 mb-2">
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {candidate.name}
+                      </h3>
+                      <span
+                        className={cn(
+                          "px-2 py-1 rounded-full text-xs font-medium",
+                          getCandidateStatusColor(candidate.status),
+                        )}
+                      >
+                        {candidate.status.replace(/_/g, " ")}
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-2">
+                      {candidate.role}
+                    </p>
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+                      <span className="flex items-center space-x-1">
+                        <Mail size={14} />
+                        <span>{candidate.email}</span>
+                      </span>
+                      <span className="flex items-center space-x-1">
+                        <MapPin size={14} />
+                        <span>{candidate.location}</span>
+                      </span>
+                      <span>{candidate.experience}</span>
+                      <span>Applied: {candidate.applied}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-blue-600">
+                    {candidate.aiMatch}%
+                  </p>
+                  <p className="text-xs text-gray-500">AI Match</p>
+                </div>
+              </div>
+
+              {/* Skills */}
+              <div className="mb-4">
+                <p className="text-sm text-gray-600 mb-2">Skills:</p>
+                <div className="flex flex-wrap gap-2">
+                  {candidate.skills.map((skill, index) => (
+                    <span
+                      key={index}
+                      className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Application History */}
+              {candidate.applicationHistory &&
+                candidate.applicationHistory.length > 0 && (
+                  <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                    <p className="text-sm font-medium text-blue-800 mb-2">
+                      Application History:
+                    </p>
+                    <div className="space-y-1">
+                      {candidate.applicationHistory.map((app, index) => (
+                        <div key={index} className="text-sm text-blue-700">
+                          <span className="font-medium">{app.role}</span> •{" "}
+                          {app.date} •
+                          <span
+                            className={cn(
+                              "ml-1 px-1 rounded",
+                              app.status === "rejected"
+                                ? "bg-red-100 text-red-700"
+                                : app.status === "hired_elsewhere"
+                                  ? "bg-purple-100 text-purple-700"
+                                  : "bg-gray-100 text-gray-700",
+                            )}
+                          >
+                            {app.status}
+                          </span>
+                          {app.reason && (
+                            <span className="text-blue-600">
+                              {" "}
+                              - {app.reason}
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+              {/* Outreach History */}
+              {candidate.outreachHistory &&
+                candidate.outreachHistory.length > 0 && (
+                  <div className="mb-4 p-3 bg-green-50 rounded-lg border border-green-200">
+                    <p className="text-sm font-medium text-green-800 mb-2">
+                      Outreach History:
+                    </p>
+                    <div className="space-y-1">
+                      {candidate.outreachHistory.map((outreach, index) => (
+                        <div key={index} className="text-sm text-green-700">
+                          <span className="font-medium">{outreach.type}</span> •{" "}
+                          {outreach.date} •
+                          <span
+                            className={cn(
+                              "ml-1 px-1 rounded",
+                              outreach.response === "interested" ||
+                                outreach.response === "very_interested"
+                                ? "bg-green-100 text-green-700"
+                                : outreach.response === "no_response"
+                                  ? "bg-gray-100 text-gray-700"
+                                  : "bg-blue-100 text-blue-700",
+                            )}
+                          >
+                            {outreach.response.replace(/_/g, " ")}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+              {/* Notes */}
+              {candidate.notes && (
+                <div className="mb-4 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                  <p className="text-sm text-yellow-800">
+                    <strong>Notes:</strong> {candidate.notes}
+                  </p>
+                </div>
+              )}
+
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-4 border-t">
+                <div className="text-sm text-gray-500">
+                  <span>Source: {candidate.source}</span>
+                  {candidate.outreachHistory?.length > 0 && (
+                    <span className="ml-4">
+                      • {candidate.outreachHistory.length} outreach contact(s)
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => {
+                      setSelectedCandidate(candidate);
+                      setShowCandidatesModal(true);
+                    }}
+                    className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                  >
+                    View Full Profile
+                  </button>
+                  {!["blacklisted", "hired_elsewhere"].includes(
+                    candidate.status,
+                  ) && (
+                    <button
+                      onClick={() => {
+                        setSelectedCandidate(candidate);
+                        setShowInterviewModal(true);
+                      }}
+                      className="text-green-600 hover:text-green-800 text-sm font-medium"
+                    >
+                      Schedule Interview
+                    </button>
+                  )}
+                  {candidate.status.startsWith("outreach_") && (
+                    <button className="text-purple-600 hover:text-purple-800 text-sm font-medium">
+                      Follow Up
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {searchResults.length === 0 && (
+          <div className="text-center py-12">
+            <Search className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <p className="text-gray-600">
+              No candidates found matching your search criteria.
+            </p>
+            <button
+              onClick={clearFilters}
+              className="mt-2 text-blue-600 hover:text-blue-800 text-sm font-medium"
+            >
+              Clear filters to see all candidates
+            </button>
+          </div>
+        )}
       </div>
-    </div>
-  );
+    );
+  };
 
   const AnalyticsTab = () => (
     <div className="space-y-6">
