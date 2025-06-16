@@ -112,6 +112,749 @@ interface Document {
   template: string;
 }
 
+// NewRoleModal component moved outside to prevent re-renders
+const NewRoleModal = ({
+  showNewRoleModal,
+  setShowNewRoleModal,
+  roleFormData,
+  setRoleFormData,
+  generatedDescription,
+  setGeneratedDescription,
+  businessProfile,
+  roles,
+  setRoles,
+  isAnalyzing,
+  setIsAnalyzing,
+  marketData,
+  setMarketData,
+  currentPrediction,
+  setCurrentPrediction,
+  showPredictionModal,
+  setShowPredictionModal,
+  fetchMarketData,
+  predictRoleSuccess,
+}) => {
+  const [activeModalTab, setActiveModalTab] = useState("details");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isPosting, setIsPosting] = useState(false);
+  const [postingStatus, setPostingStatus] = useState({
+    website: "pending",
+    broadbean: "pending",
+    jobBoards: [],
+  });
+
+  if (!showNewRoleModal) return null;
+
+  const postAdvert = () => {
+    setIsPosting(true);
+    setPostingStatus({
+      website: "posting",
+      broadbean: "posting",
+      jobBoards: [],
+    });
+
+    // Simulate posting to company website
+    setTimeout(() => {
+      setPostingStatus((prev) => ({
+        ...prev,
+        website: "success",
+      }));
+    }, 1500);
+
+    // Simulate Broadbean API call
+    setTimeout(() => {
+      const mockJobBoards = [
+        {
+          name: "Indeed",
+          status: "success",
+          url: "https://indeed.com/job/12345",
+        },
+        {
+          name: "LinkedIn",
+          status: "success",
+          url: "https://linkedin.com/jobs/view/67890",
+        },
+        {
+          name: "Glassdoor",
+          status: "success",
+          url: "https://glassdoor.com/job/54321",
+        },
+        {
+          name: "Reed",
+          status: "success",
+          url: "https://reed.co.uk/jobs/98765",
+        },
+        {
+          name: "Totaljobs",
+          status: "success",
+          url: "https://totaljobs.com/job/13579",
+        },
+        {
+          name: "CV Library",
+          status: "success",
+          url: "https://cv-library.co.uk/job/24680",
+        },
+      ];
+
+      setPostingStatus((prev) => ({
+        ...prev,
+        broadbean: "success",
+        jobBoards: mockJobBoards,
+      }));
+      setIsPosting(false);
+    }, 4000);
+  };
+
+  const generateJobDescription = () => {
+    if (!roleFormData.title || !roleFormData.department) {
+      alert("Please fill in at least the job title and department first.");
+      return;
+    }
+
+    setIsGenerating(true);
+    setTimeout(() => {
+      const description = `# ${roleFormData.title}
+
+${businessProfile.companyName ? `## About ${businessProfile.companyName}` : "## About Us"}
+${businessProfile.description || "We are a dynamic, innovative company committed to excellence and growth in our industry."}
+
+${businessProfile.mission ? `\n**Our Mission:** ${businessProfile.mission}` : ""}
+
+## Position Overview
+We are seeking a talented ${roleFormData.title} to join our ${roleFormData.department} team${roleFormData.location ? ` in ${roleFormData.location}` : ""}. ${businessProfile.description || "This is an excellent opportunity for a professional looking to make a significant impact in a dynamic, fast-growing organization."}
+
+## Key Responsibilities
+• Lead and execute ${roleFormData.department.toLowerCase()} initiatives that drive business growth
+• Collaborate with cross-functional teams to deliver high-quality solutions
+• Drive innovation and continuous improvement in processes and technologies
+• Mentor junior team members and contribute to team knowledge sharing
+• Ensure project delivery meets quality standards and timelines
+
+## Required Qualifications
+• ${roleFormData.experience || "3-5 years"} of relevant experience in ${roleFormData.department.toLowerCase()}
+• Strong analytical and problem-solving skills
+• Excellent communication and collaboration abilities
+• Proven track record of delivering results in a fast-paced environment
+• Bachelor's degree in relevant field or equivalent experience
+
+## Technical Skills
+${
+  roleFormData.skills
+    ? `• ${roleFormData.skills
+        .split(",")
+        .map((skill) => skill.trim())
+        .join("\n• ")}`
+    : "• Strong technical foundation relevant to the role\n• Proficiency in industry-standard tools and technologies"
+}
+
+## What We Offer
+${
+  businessProfile.benefits ||
+  roleFormData.benefits ||
+  `• Competitive salary range${roleFormData.salary ? `: ${roleFormData.salary}` : ""}
+• Comprehensive health and wellness benefits
+• Professional development opportunities
+• Flexible working arrangements
+• Collaborative and inclusive work environment`
+}
+
+${businessProfile.culture ? `\n## Our Culture\n${businessProfile.culture}` : ""}
+
+${businessProfile.values ? `\n## Our Values\n${businessProfile.values}` : ""}
+
+---
+
+Ready to make an impact? Apply now and join our team!`;
+
+      setGeneratedDescription(description);
+      setRoleFormData({ ...roleFormData, description });
+      setIsGenerating(false);
+    }, 2000);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newRole: Role = {
+      id: roles.length + 1,
+      ...roleFormData,
+      status: "active",
+      candidates: 0,
+      shortlisted: 0,
+      interviewed: 0,
+      created: new Date().toISOString().split("T")[0],
+      priority: "medium",
+      deiScore: 85,
+    };
+    setRoles([...roles, newRole]);
+    setShowNewRoleModal(false);
+    resetModal(); // Reset after successful creation
+  };
+
+  const resetModal = () => {
+    setRoleFormData({
+      title: "",
+      department: "",
+      location: "",
+      salary: "",
+      description: "",
+      experience: "",
+      skills: "",
+      benefits: "",
+    });
+    setGeneratedDescription("");
+    setActiveModalTab("details");
+    setPostingStatus({
+      website: "pending",
+      broadbean: "pending",
+      jobBoards: [],
+    });
+    setIsPosting(false);
+  };
+
+  const modalTabs = [
+    { id: "details", label: "Role Details", icon: Building },
+    { id: "description", label: "Job Description", icon: MessageSquare },
+    {
+      id: "post",
+      label: "Post Advert",
+      icon: Share2,
+      disabled: !generatedDescription,
+    },
+  ];
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+        <div className="flex justify-between items-center p-6 border-b">
+          <h2 className="text-2xl font-bold text-gray-900">Create New Role</h2>
+          <button
+            onClick={() => {
+              setShowNewRoleModal(false);
+              // Don't reset modal to preserve form data during AI prediction flow
+            }}
+            className="text-gray-400 hover:text-gray-600"
+          >
+            <X size={24} />
+          </button>
+        </div>
+
+        {/* Tab Navigation */}
+        <div className="flex border-b">
+          {modalTabs.map((tab) => {
+            const Icon = tab.icon;
+            const isDisabled = tab.disabled;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => !isDisabled && setActiveModalTab(tab.id)}
+                disabled={isDisabled}
+                className={cn(
+                  "flex items-center space-x-2 px-6 py-3 text-sm font-medium transition-colors",
+                  isDisabled
+                    ? "text-gray-300 cursor-not-allowed"
+                    : activeModalTab === tab.id
+                      ? "border-b-2 border-blue-500 text-blue-600 bg-blue-50"
+                      : "text-gray-500 hover:text-gray-700 hover:bg-gray-50",
+                )}
+              >
+                <Icon size={16} />
+                <span>{tab.label}</span>
+                {isDisabled && <Clock size={12} className="text-gray-300" />}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="p-6 overflow-y-auto max-h-[60vh]">
+          {activeModalTab === "details" && (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Job Title *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={roleFormData.title}
+                    onChange={(e) =>
+                      setRoleFormData({
+                        ...roleFormData,
+                        title: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="e.g. Senior Software Engineer"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Department *
+                  </label>
+                  <select
+                    required
+                    value={roleFormData.department}
+                    onChange={(e) =>
+                      setRoleFormData({
+                        ...roleFormData,
+                        department: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="">Select Department</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Product">Product</option>
+                    <option value="Design">Design</option>
+                    <option value="Sales">Sales</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Operations">Operations</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Location *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={roleFormData.location}
+                    onChange={(e) =>
+                      setRoleFormData({
+                        ...roleFormData,
+                        location: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="e.g. London, Remote, Hybrid"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Salary Range *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={roleFormData.salary}
+                    onChange={(e) =>
+                      setRoleFormData({
+                        ...roleFormData,
+                        salary: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="e.g. £50,000 - £70,000"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Experience Level
+                  </label>
+                  <input
+                    type="text"
+                    value={roleFormData.experience}
+                    onChange={(e) =>
+                      setRoleFormData({
+                        ...roleFormData,
+                        experience: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="e.g. 3-5 years"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Key Skills
+                  </label>
+                  <input
+                    type="text"
+                    value={roleFormData.skills}
+                    onChange={(e) =>
+                      setRoleFormData({
+                        ...roleFormData,
+                        skills: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="e.g. React, TypeScript, Node.js"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Benefits & Perks
+                </label>
+                <textarea
+                  rows={3}
+                  value={roleFormData.benefits}
+                  onChange={(e) =>
+                    setRoleFormData({
+                      ...roleFormData,
+                      benefits: e.target.value,
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="List key benefits and perks..."
+                />
+              </div>
+
+              <div className="flex justify-between items-center pt-4">
+                <div className="flex space-x-3">
+                  <button
+                    type="button"
+                    onClick={() => setActiveModalTab("description")}
+                    className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center space-x-1"
+                  >
+                    <Zap size={16} />
+                    <span>Generate Job Description</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      if (!roleFormData.title || !roleFormData.department) {
+                        alert("Please fill in job title and department first.");
+                        return;
+                      }
+                      setIsAnalyzing(true);
+                      const market = await fetchMarketData(
+                        roleFormData.title,
+                        roleFormData.location,
+                        roleFormData.department,
+                      );
+                      setMarketData(market);
+                      const prediction = await predictRoleSuccess(
+                        roleFormData,
+                        market,
+                      );
+                      setCurrentPrediction(prediction);
+                      setIsAnalyzing(false);
+                      setShowPredictionModal(true);
+                    }}
+                    disabled={isAnalyzing}
+                    className={cn(
+                      "text-purple-600 hover:text-purple-800 text-sm font-medium flex items-center space-x-1",
+                      isAnalyzing && "opacity-50 cursor-not-allowed",
+                    )}
+                  >
+                    {isAnalyzing ? (
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-purple-600"></div>
+                    ) : (
+                      <Brain size={16} />
+                    )}
+                    <span>
+                      {isAnalyzing ? "Analyzing..." : "AI Success Prediction"}
+                    </span>
+                  </button>
+                </div>
+                <div className="flex space-x-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowNewRoleModal(false);
+                      resetModal(); // Reset on explicit cancel
+                    }}
+                    className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all"
+                  >
+                    Create Role
+                  </button>
+                </div>
+              </div>
+            </form>
+          )}
+
+          {activeModalTab === "description" && (
+            <div className="space-y-6">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    AI-Generated Job Description
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Create a tailored job description based on your role details
+                  </p>
+                </div>
+                <button
+                  onClick={generateJobDescription}
+                  disabled={isGenerating}
+                  className={cn(
+                    "flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all",
+                    isGenerating
+                      ? "bg-gray-400 text-white cursor-not-allowed"
+                      : "bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white hover:shadow-lg",
+                  )}
+                >
+                  {isGenerating ? (
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  ) : (
+                    <Zap size={16} />
+                  )}
+                  <span>
+                    {isGenerating ? "Generating..." : "Generate Description"}
+                  </span>
+                </button>
+              </div>
+
+              {generatedDescription ? (
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <h4 className="font-medium text-gray-900">
+                      Generated Job Description
+                    </h4>
+                    <button
+                      onClick={generateJobDescription}
+                      className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                    >
+                      Regenerate
+                    </button>
+                  </div>
+                  <div className="prose prose-sm max-w-none">
+                    <pre className="whitespace-pre-wrap text-sm text-gray-700 font-sans">
+                      {generatedDescription}
+                    </pre>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <MessageSquare className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-600">
+                    Fill out the role details first, then generate a tailored
+                    job description with AI.
+                  </p>
+                </div>
+              )}
+
+              <div className="flex justify-between items-center pt-4 border-t">
+                <button
+                  onClick={() => setActiveModalTab("details")}
+                  className="text-gray-600 hover:text-gray-800 text-sm font-medium"
+                >
+                  ← Back to Details
+                </button>
+                <div className="flex space-x-3">
+                  <button
+                    onClick={() => setActiveModalTab("post")}
+                    disabled={!generatedDescription}
+                    className={cn(
+                      "px-4 py-2 text-sm font-medium rounded-lg transition-colors",
+                      !generatedDescription
+                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                        : "bg-blue-600 text-white hover:bg-blue-700",
+                    )}
+                  >
+                    Next: Post Advert
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeModalTab === "post" && (
+            <div className="space-y-6">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Post Job Advert
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Publish your role to company website and job boards via
+                    Broadbean
+                  </p>
+                </div>
+                <button
+                  onClick={postAdvert}
+                  disabled={isPosting || !generatedDescription}
+                  className={cn(
+                    "flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all",
+                    isPosting || !generatedDescription
+                      ? "bg-gray-400 text-white cursor-not-allowed"
+                      : "bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white hover:shadow-lg",
+                  )}
+                >
+                  <Share2 size={16} />
+                  <span>{isPosting ? "Publishing..." : "Publish Advert"}</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Company Website */}
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <Globe className="h-6 w-6 text-blue-600" />
+                    <div>
+                      <h4 className="font-semibold text-gray-900">
+                        Company Website
+                      </h4>
+                      <p className="text-sm text-gray-600">
+                        careers.company.com
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    {postingStatus.website === "pending" && (
+                      <>
+                        <div className="w-3 h-3 rounded-full bg-gray-300"></div>
+                        <span className="text-sm text-gray-600">
+                          Ready to publish
+                        </span>
+                      </>
+                    )}
+                    {postingStatus.website === "posting" && (
+                      <>
+                        <div className="w-3 h-3 rounded-full bg-yellow-400 animate-pulse"></div>
+                        <span className="text-sm text-yellow-600">
+                          Publishing to website...
+                        </span>
+                      </>
+                    )}
+                    {postingStatus.website === "success" && (
+                      <>
+                        <CheckCircle className="w-4 h-4 text-green-600" />
+                        <span className="text-sm text-green-600">
+                          Published successfully
+                        </span>
+                        <a
+                          href="#"
+                          className="text-blue-600 hover:text-blue-800 text-sm flex items-center space-x-1"
+                        >
+                          <ExternalLink size={12} />
+                          <span>View</span>
+                        </a>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                {/* Broadbean Integration */}
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="w-6 h-6 bg-gradient-to-r from-orange-400 to-red-500 rounded flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">B</span>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">
+                        Broadbean API
+                      </h4>
+                      <p className="text-sm text-gray-600">
+                        Multi-board distribution
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    {postingStatus.broadbean === "pending" && (
+                      <>
+                        <div className="w-3 h-3 rounded-full bg-gray-300"></div>
+                        <span className="text-sm text-gray-600">
+                          Ready to distribute
+                        </span>
+                      </>
+                    )}
+                    {postingStatus.broadbean === "posting" && (
+                      <>
+                        <div className="w-3 h-3 rounded-full bg-orange-400 animate-pulse"></div>
+                        <span className="text-sm text-orange-600">
+                          Distributing via Broadbean...
+                        </span>
+                      </>
+                    )}
+                    {postingStatus.broadbean === "success" && (
+                      <>
+                        <CheckCircle className="w-4 h-4 text-green-600" />
+                        <span className="text-sm text-green-600">
+                          Distributed to {postingStatus.jobBoards.length} job
+                          boards
+                        </span>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Job Board Results */}
+              {postingStatus.jobBoards.length > 0 && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+                  <h4 className="font-semibold text-green-800 mb-4 flex items-center space-x-2">
+                    <CheckCircle className="w-5 h-5" />
+                    <span>Successfully Posted to Job Boards</span>
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {postingStatus.jobBoards.map((board, index) => (
+                      <div
+                        key={index}
+                        className="bg-white rounded-lg p-4 border border-green-200"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <CheckCircle className="w-4 h-4 text-green-600" />
+                            <span className="font-medium text-gray-900">
+                              {board.name}
+                            </span>
+                          </div>
+                          <a
+                            href={board.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800 text-sm flex items-center space-x-1"
+                          >
+                            <ExternalLink size={12} />
+                            <span>View</span>
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="flex justify-between items-center pt-4 border-t">
+                <button
+                  onClick={() => setActiveModalTab("description")}
+                  className="text-gray-600 hover:text-gray-800 text-sm font-medium"
+                >
+                  ← Back to Description
+                </button>
+                <div className="flex space-x-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowNewRoleModal(false);
+                      resetModal(); // Reset when explicitly closing after posting
+                    }}
+                    className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
+                  >
+                    Close
+                  </button>
+                  <button
+                    onClick={handleSubmit}
+                    className="px-6 py-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all"
+                  >
+                    Create Role & Finish
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const UPhirePlatform = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [roles, setRoles] = useState<Role[]>([]);
