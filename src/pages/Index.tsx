@@ -1868,7 +1868,7 @@ const RecruitModal = ({
                                 onClick={() => scheduleSpecificInterview(candidate, 'final')}
                                 className="w-full px-2 py-1 text-left text-xs text-gray-600 hover:bg-gray-50 rounded"
                               >
-                                �� Final Interview (30 min)
+                                🎯 Final Interview (30 min)
                               </button>
                             </div>
 
@@ -4112,8 +4112,7 @@ const UPhirePlatform = () => {
                   </div>
                 </div>
               </div>
-            );
-          })}
+            ))}
         </div>
       </div>
     </div>
