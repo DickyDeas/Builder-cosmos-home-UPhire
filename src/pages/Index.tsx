@@ -114,13 +114,13 @@ interface Document {
 }
 
 // PredictionModal component for AI Success Prediction results
-function PredictionModal({
+const PredictionModal = ({
   showPredictionModal,
   setShowPredictionModal,
   currentPrediction,
   roleFormData,
   marketData
-}) {
+}) => {
   if (!showPredictionModal || !currentPrediction) return null;
 
   const closeModal = () => {
