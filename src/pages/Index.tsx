@@ -327,7 +327,6 @@ const PredictionModal = ({
       </div>
     );
   };
-};
 
 // EmployeeModal component for detailed employee information
 const EmployeeModal = ({
