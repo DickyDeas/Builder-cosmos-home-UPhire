@@ -3498,7 +3498,7 @@ const UPhirePlatform = () => {
               ) : (
                 <button
                   onClick={() => setShowLoginModal(true)}
-                  className="flex items-center space-x-2 bg-white bg-opacity-20 backdrop-blur-sm text-white px-4 py-2 rounded-lg hover:bg-opacity-30 border border-white border-opacity-30 transition-all"
+                  className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white px-6 py-2 rounded-lg hover:shadow-lg transition-all flex items-center space-x-2 font-medium"
                 >
                   <LogIn size={16} />
                   <span>Sign In</span>
