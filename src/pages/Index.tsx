@@ -586,9 +586,26 @@ const RecruitModal = ({
 
             {currentStage === 4 && rankedCandidates.length > 0 && (
               <div>
-                <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                  Top 5 Candidates Selected for Interviews
-                </h4>
+                <div className="mb-4">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                    Top 5 Candidates Selected for Interviews
+                  </h4>
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+                    <div className="flex items-start space-x-2">
+                      <Calendar className="text-blue-600 mt-0.5" size={16} />
+                      <div className="text-sm">
+                        <div className="font-medium text-blue-900 mb-1">
+                          Calendly Integration Active
+                        </div>
+                        <div className="text-blue-700">
+                          Click "Schedule Interview" to open Calendly and book
+                          interviews directly. Choose from different interview
+                          types or use the quick schedule option.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div className="space-y-4">
                   {rankedCandidates.map((candidate) => (
                     <div
