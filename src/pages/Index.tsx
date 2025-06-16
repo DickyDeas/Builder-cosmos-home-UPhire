@@ -534,7 +534,10 @@ const RecruitModal = ({
                             </span>
                           ))}
                         </div>
-                        <button className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors">
+                        <button
+                          onClick={() => openCalendlyScheduling(candidate)}
+                          className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors"
+                        >
                           Schedule Interview
                         </button>
                       </div>
