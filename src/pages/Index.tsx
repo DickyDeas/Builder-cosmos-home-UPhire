@@ -2344,17 +2344,22 @@ const UPhirePlatform = () => {
 
   // Business Profile
   const [businessProfile, setBusinessProfile] = useState({
-    companyName: "",
-    industry: "",
-    description: "",
-    location: "",
-    size: "",
-    foundedYear: "",
-    website: "",
-    culture: "",
-    benefits: "",
-    mission: "",
-    values: "",
+    companyName: "TechVision Solutions",
+    industry: "Technology & Software Development",
+    description:
+      "TechVision Solutions is a leading technology company specializing in innovative software solutions, AI-powered platforms, and digital transformation services. We help businesses modernize their operations through cutting-edge technology and exceptional user experiences. Our team of talented developers, designers, and strategists work collaboratively to deliver world-class products that drive growth and efficiency for our clients across various industries.",
+    location: "London, UK (Hybrid/Remote Options Available)",
+    size: "51-200 employees",
+    foundedYear: "2019",
+    website: "https://techvisionsolutions.co.uk",
+    culture:
+      "We foster a collaborative, innovative, and inclusive work environment where creativity thrives. Our culture emphasizes work-life balance, continuous learning, and professional growth. We believe in empowering our team members to take ownership of their projects while providing the support and resources they need to succeed. We celebrate diversity, encourage open communication, and maintain a flat organizational structure that promotes agility and quick decision-making.",
+    benefits:
+      "• Competitive salary with annual reviews and performance bonuses\n• Comprehensive health insurance (medical, dental, vision)\n• 25 days annual leave plus bank holidays\n• Flexible working hours and hybrid/remote work options\n• £2,000 annual learning and development budget\n• Top-spec equipment and home office setup allowance\n• Monthly team events and quarterly company retreats\n• Pension scheme with company contribution\n• Cycle to work scheme and wellness programs\n• Stock options and profit-sharing opportunities\n• Sabbatical leave after 5 years of service\n• Free snacks, coffee, and catered lunches in office",
+    mission:
+      "To empower businesses through innovative technology solutions that simplify complex challenges, enhance productivity, and drive sustainable growth. We are committed to creating software that not only meets today's needs but anticipates tomorrow's opportunities, while maintaining the highest standards of quality, security, and user experience.",
+    values:
+      "Innovation: We constantly push boundaries and embrace new technologies to solve complex problems.\n\nIntegrity: We build trust through transparency, honesty, and ethical business practices.\n\nCollaboration: We believe the best solutions come from diverse teams working together.\n\nExcellence: We strive for the highest quality in everything we deliver.\n\nCustomer-Centric: Our clients' success is our success - we put their needs at the heart of everything we do.\n\nGrowth Mindset: We embrace challenges as opportunities to learn and improve continuously.",
   });
 
   // ML Predictions and Market Data
