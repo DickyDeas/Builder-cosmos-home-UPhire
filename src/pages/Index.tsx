@@ -1092,6 +1092,353 @@ const EmployeeModal = ({
           </div>
         </div>
       </div>
+
+      {/* Market Insights Search Section - ITJobsWatch Integration */}
+      <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+        <div className="flex items-center space-x-3 mb-6">
+          <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
+            <Search className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900">
+              Market Insights
+            </h3>
+            <p className="text-sm text-gray-600">
+              Get real-time salary and market data for any role
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          {/* Search Form */}
+          <div className="bg-gray-50 rounded-lg p-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Job Title
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. Software Engineer, Product Manager"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  value={marketSearchForm.jobTitle || ""}
+                  onChange={(e) =>
+                    setMarketSearchForm({
+                      ...marketSearchForm,
+                      jobTitle: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Location
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. London, Manchester, Remote"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  value={marketSearchForm.location || ""}
+                  onChange={(e) =>
+                    setMarketSearchForm({
+                      ...marketSearchForm,
+                      location: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="flex items-end">
+                <button
+                  onClick={searchMarketData}
+                  disabled={isSearching || !marketSearchForm.jobTitle}
+                  className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                >
+                  {isSearching ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      <span>Searching...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Search size={16} />
+                      <span>Get Market Data</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Quick Search Buttons */}
+            <div className="mt-4">
+              <p className="text-sm text-gray-600 mb-2">Quick searches:</p>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  "Software Engineer",
+                  "Product Manager",
+                  "Data Scientist",
+                  "UX Designer",
+                  "DevOps Engineer",
+                  "Full Stack Developer",
+                  "Business Analyst",
+                  "Project Manager",
+                ].map((role) => (
+                  <button
+                    key={role}
+                    onClick={() => {
+                      setMarketSearchForm({
+                        ...marketSearchForm,
+                        jobTitle: role,
+                      });
+                      setTimeout(() => searchMarketData(), 100);
+                    }}
+                    className="px-3 py-1 bg-white border border-gray-300 text-gray-700 text-sm rounded-full hover:bg-gray-50 hover:border-blue-300 transition-colors"
+                  >
+                    {role}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Market Data Results */}
+          {lastSearchResults && (
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h4 className="text-lg font-semibold text-gray-900">
+                    {lastSearchResults.jobTitle}
+                    {lastSearchResults.location &&
+                      ` in ${lastSearchResults.location}`}
+                  </h4>
+                  <div className="flex items-center space-x-2 mt-1">
+                    <span className="text-sm text-gray-600">Powered by</span>
+                    <span className="bg-blue-600 text-white px-2 py-1 text-xs font-bold rounded">
+                      ITJobsWatch
+                    </span>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm text-gray-600">Last updated</div>
+                  <div className="text-sm font-medium text-gray-900">
+                    {lastSearchResults.lastUpdated}
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div className="bg-white rounded-lg p-4 border border-blue-200">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                      <span className="text-green-600 font-bold text-lg">
+                        £
+                      </span>
+                    </div>
+                    <span className="text-sm font-medium text-gray-900">
+                      Average Salary
+                    </span>
+                  </div>
+                  <div className="text-2xl font-bold text-green-600">
+                    {lastSearchResults.salary.average}
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    Range: {lastSearchResults.salary.min} -{" "}
+                    {lastSearchResults.salary.max}
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg p-4 border border-blue-200">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <TrendingUp className="w-4 h-4 text-blue-600" />
+                    </div>
+                    <span className="text-sm font-medium text-gray-900">
+                      Market Demand
+                    </span>
+                  </div>
+                  <div
+                    className={`text-2xl font-bold ${
+                      lastSearchResults.demand.level === "High"
+                        ? "text-green-600"
+                        : lastSearchResults.demand.level === "Medium"
+                          ? "text-yellow-600"
+                          : "text-red-600"
+                    }`}
+                  >
+                    {lastSearchResults.demand.level}
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    {lastSearchResults.demand.trend} trend
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg p-4 border border-blue-200">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                      <Clock className="w-4 h-4 text-purple-600" />
+                    </div>
+                    <span className="text-sm font-medium text-gray-900">
+                      Time to Fill
+                    </span>
+                  </div>
+                  <div className="text-2xl font-bold text-purple-600">
+                    {lastSearchResults.timeToFill} days
+                  </div>
+                  <div className="text-xs text-gray-500">Industry average</div>
+                </div>
+
+                <div className="bg-white rounded-lg p-4 border border-blue-200">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
+                      <Target className="w-4 h-4 text-yellow-600" />
+                    </div>
+                    <span className="text-sm font-medium text-gray-900">
+                      Competition
+                    </span>
+                  </div>
+                  <div
+                    className={`text-2xl font-bold ${
+                      lastSearchResults.competition === "High"
+                        ? "text-red-600"
+                        : lastSearchResults.competition === "Medium"
+                          ? "text-yellow-600"
+                          : "text-green-600"
+                    }`}
+                  >
+                    {lastSearchResults.competition}
+                  </div>
+                  <div className="text-xs text-gray-500">For this role</div>
+                </div>
+              </div>
+
+              {/* Skills Analysis */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="bg-white rounded-lg p-4 border border-blue-200">
+                  <h5 className="font-medium text-gray-900 mb-3">
+                    Top Required Skills
+                  </h5>
+                  <div className="space-y-2">
+                    {lastSearchResults.skills.required.map((skill, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between"
+                      >
+                        <span className="text-sm text-gray-700">
+                          {skill.name}
+                        </span>
+                        <div className="flex items-center space-x-2">
+                          <div className="w-16 bg-gray-200 rounded-full h-2">
+                            <div
+                              className="bg-blue-600 h-2 rounded-full"
+                              style={{ width: `${skill.percentage}%` }}
+                            />
+                          </div>
+                          <span className="text-xs text-gray-500 w-8">
+                            {skill.percentage}%
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-lg p-4 border border-blue-200">
+                  <h5 className="font-medium text-gray-900 mb-3">
+                    Trending Skills
+                  </h5>
+                  <div className="space-y-2">
+                    {lastSearchResults.skills.trending.map((skill, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between"
+                      >
+                        <span className="text-sm text-gray-700">
+                          {skill.name}
+                        </span>
+                        <div className="flex items-center space-x-2">
+                          <span className="text-xs text-green-600 font-medium">
+                            +{skill.growth}%
+                          </span>
+                          <TrendingUp className="w-3 h-3 text-green-600" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex justify-between items-center mt-6 pt-4 border-t border-blue-200">
+                <div className="text-sm text-gray-600">
+                  Data refreshed every 24 hours • Source: ITJobsWatch API
+                </div>
+                <div className="flex space-x-3">
+                  <button className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                    Export Data
+                  </button>
+                  <button
+                    onClick={() => {
+                      setRoleFormData({
+                        ...roleFormData,
+                        title: lastSearchResults.jobTitle,
+                        location: lastSearchResults.location || "",
+                        salary: lastSearchResults.salary.average,
+                        skills: lastSearchResults.skills.required
+                          .slice(0, 5)
+                          .map((s) => s.name)
+                          .join(", "),
+                      });
+                      setActiveTab("roles");
+                    }}
+                    className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all"
+                  >
+                    Create Role from Data
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ITJobsWatch Integration Status */}
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <Database className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900">
+                    ITJobsWatch API Integration
+                  </h4>
+                  <p className="text-sm text-gray-600">
+                    Real-time UK job market data and salary insights
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span className="text-sm text-green-600 font-medium">
+                  Connected
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+              <div className="flex items-center space-x-2">
+                <CheckCircle className="w-4 h-4 text-green-500" />
+                <span className="text-gray-700">Live salary data</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckCircle className="w-4 h-4 text-green-500" />
+                <span className="text-gray-700">Market demand analytics</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckCircle className="w-4 h-4 text-green-500" />
+                <span className="text-gray-700">Skills intelligence</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
