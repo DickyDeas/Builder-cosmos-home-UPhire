@@ -4189,7 +4189,8 @@ const UPhirePlatform = () => {
           </div>
         </div>
       </div>
-    );
+    </div>
+  );
 
   const EmployeesTab = () => (
     <div className="space-y-6">
