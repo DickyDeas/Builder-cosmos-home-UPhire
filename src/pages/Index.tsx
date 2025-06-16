@@ -7362,7 +7362,7 @@ Ready to make an impact? Apply now and join our team!`;
                       {candidate.outreachHistory.map((outreach, index) => (
                         <div key={index} className="text-sm text-green-700">
                           <span className="font-medium">{outreach.type}</span> •{" "}
-                          {outreach.date} •
+                          {outreach.date} ��
                           <span
                             className={cn(
                               "ml-1 px-1 rounded",
@@ -7776,7 +7776,29 @@ Ready to make an impact? Apply now and join our team!`;
       </main>
 
       {/* Modals */}
-      {showNewRoleModal && <NewRoleModal />}
+      {showNewRoleModal && (
+        <NewRoleModal
+          showNewRoleModal={showNewRoleModal}
+          setShowNewRoleModal={setShowNewRoleModal}
+          roleFormData={roleFormData}
+          setRoleFormData={setRoleFormData}
+          generatedDescription={generatedDescription}
+          setGeneratedDescription={setGeneratedDescription}
+          businessProfile={businessProfile}
+          roles={roles}
+          setRoles={setRoles}
+          isAnalyzing={isAnalyzing}
+          setIsAnalyzing={setIsAnalyzing}
+          marketData={marketData}
+          setMarketData={setMarketData}
+          currentPrediction={currentPrediction}
+          setCurrentPrediction={setCurrentPrediction}
+          showPredictionModal={showPredictionModal}
+          setShowPredictionModal={setShowPredictionModal}
+          fetchMarketData={fetchMarketData}
+          predictRoleSuccess={predictRoleSuccess}
+        />
+      )}
       {showDocumentModal && <DocumentModal />}
       {showRecruitModal && <RecruitModal />}
       {showCandidatesModal && <CandidatesDetailModal />}
