@@ -4674,7 +4674,7 @@ Ready to make an impact? Apply now and join our team!`;
             <button
               onClick={() => {
                 setShowNewRoleModal(false);
-                resetModal();
+                // Don't reset modal to preserve form data during AI prediction flow
               }}
               className="text-gray-400 hover:text-gray-600"
             >
