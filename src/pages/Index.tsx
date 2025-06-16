@@ -612,33 +612,77 @@ const RecruitModal = ({
                           </button>
 
                           {/* Dropdown for scheduling options */}
-                          <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all min-w-[180px]">
-                            <button
-                              onClick={() => openCalendlyScheduling(candidate)}
-                              className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
-                            >
-                              <ExternalLink size={14} />
-                              <span>Quick Schedule (Popup)</span>
-                            </button>
-                            <button
-                              onClick={() => openCalendlyInline(candidate)}
-                              className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
-                            >
-                              <Calendar size={14} />
-                              <span>Full Calendar View</span>
-                            </button>
-                            <div className="border-t border-gray-200 px-3 py-2">
-                              <div className="text-xs text-gray-500">
-                                Interview Types:
+                          <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all min-w-[200px]">
+                            <div className="px-3 py-2 border-b border-gray-200">
+                              <div className="text-xs font-medium text-gray-700 mb-1">
+                                Quick Schedule
                               </div>
-                              <div className="text-xs text-gray-600 mt-1">
-                                • Initial Screening (30 min)
-                                <br />
-                                • Technical Interview (60 min)
-                                <br />
-                                • Cultural Fit (45 min)
-                                <br />• Final Interview (30 min)
+                              <button
+                                onClick={() =>
+                                  openCalendlyScheduling(candidate)
+                                }
+                                className="w-full px-2 py-1 text-left text-sm text-gray-600 hover:bg-gray-50 flex items-center space-x-2 rounded"
+                              >
+                                <ExternalLink size={12} />
+                                <span>Any Available Slot</span>
+                              </button>
+                            </div>
+
+                            <div className="px-3 py-2 border-b border-gray-200">
+                              <div className="text-xs font-medium text-gray-700 mb-1">
+                                Interview Type
                               </div>
+                              <button
+                                onClick={() =>
+                                  scheduleSpecificInterview(
+                                    candidate,
+                                    "initial",
+                                  )
+                                }
+                                className="w-full px-2 py-1 text-left text-xs text-gray-600 hover:bg-gray-50 rounded"
+                              >
+                                📋 Initial Screening (30 min)
+                              </button>
+                              <button
+                                onClick={() =>
+                                  scheduleSpecificInterview(
+                                    candidate,
+                                    "technical",
+                                  )
+                                }
+                                className="w-full px-2 py-1 text-left text-xs text-gray-600 hover:bg-gray-50 rounded"
+                              >
+                                💻 Technical Interview (60 min)
+                              </button>
+                              <button
+                                onClick={() =>
+                                  scheduleSpecificInterview(
+                                    candidate,
+                                    "cultural",
+                                  )
+                                }
+                                className="w-full px-2 py-1 text-left text-xs text-gray-600 hover:bg-gray-50 rounded"
+                              >
+                                🤝 Cultural Fit (45 min)
+                              </button>
+                              <button
+                                onClick={() =>
+                                  scheduleSpecificInterview(candidate, "final")
+                                }
+                                className="w-full px-2 py-1 text-left text-xs text-gray-600 hover:bg-gray-50 rounded"
+                              >
+                                🎯 Final Interview (30 min)
+                              </button>
+                            </div>
+
+                            <div className="px-3 py-2">
+                              <button
+                                onClick={() => openCalendlyInline(candidate)}
+                                className="w-full px-2 py-1 text-left text-sm text-blue-600 hover:bg-blue-50 flex items-center space-x-2 rounded"
+                              >
+                                <Calendar size={14} />
+                                <span>Full Calendar View</span>
+                              </button>
                             </div>
                           </div>
                         </div>
