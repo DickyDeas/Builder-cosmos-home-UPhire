@@ -4404,24 +4404,13 @@ const UPhirePlatform = () => {
 
   const NewRoleModal = () => {
     const [activeModalTab, setActiveModalTab] = useState("details");
-    const [formData, setFormData] = useState({
-      title: "",
-      department: "",
-      location: "",
-      salary: "",
-      description: "",
-      experience: "",
-      skills: "",
-      benefits: "",
-    });
-    const [generatedDescription, setGeneratedDescription] = useState("");
     const [isGenerating, setIsGenerating] = useState(false);
+    const [isPosting, setIsPosting] = useState(false);
     const [postingStatus, setPostingStatus] = useState({
-      website: "pending", // pending, posting, success, error
+      website: "pending",
       broadbean: "pending",
       jobBoards: [],
     });
-    const [isPosting, setIsPosting] = useState(false);
 
     const generateJobDescription = () => {
       if (!formData.title || !formData.department) {
