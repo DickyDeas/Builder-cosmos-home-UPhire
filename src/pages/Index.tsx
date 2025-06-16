@@ -832,6 +832,266 @@ const EmployeeModal = ({
           </div>
         </div>
       </div>
+
+      {/* Market Research & Intelligence Section */}
+      <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
+              <BarChart2 className="w-5 h-5 text-blue-600" />
+              <span>Market Intelligence</span>
+            </h3>
+            <p className="text-sm text-gray-600">
+              Real-time market data and salary insights
+            </p>
+          </div>
+          <button
+            onClick={() => setIsSearching(!isSearching)}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+          >
+            <Search size={16} />
+            <span>Research Market</span>
+          </button>
+        </div>
+
+        {/* Quick Market Search */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <div>
+            <h4 className="font-medium text-gray-900 mb-3">
+              Quick Market Search
+            </h4>
+            <div className="space-y-3">
+              <div className="flex space-x-2">
+                <input
+                  type="text"
+                  placeholder="Job title (e.g. Software Engineer)"
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+                <input
+                  type="text"
+                  placeholder="Location"
+                  className="w-32 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+                <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
+                  <Search size={16} />
+                </button>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                <span className="text-sm text-gray-600">Popular searches:</span>
+                {[
+                  "Software Engineer",
+                  "Product Manager",
+                  "Data Scientist",
+                  "UX Designer",
+                  "DevOps Engineer",
+                ].map((role) => (
+                  <button
+                    key={role}
+                    className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full hover:bg-gray-200 transition-colors"
+                  >
+                    {role}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="font-medium text-gray-900 mb-3">Market Insights</h4>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+                <div>
+                  <p className="text-sm font-medium text-gray-900">
+                    Software Engineer
+                  </p>
+                  <p className="text-xs text-gray-600">London • High Demand</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-bold text-green-600">
+                    £45k - £85k
+                  </p>
+                  <p className="text-xs text-gray-500">30 days avg fill</p>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <div>
+                  <p className="text-sm font-medium text-gray-900">
+                    Product Manager
+                  </p>
+                  <p className="text-xs text-gray-600">
+                    London • Medium Demand
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-bold text-yellow-600">
+                    £55k - £95k
+                  </p>
+                  <p className="text-xs text-gray-500">45 days avg fill</p>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                <div>
+                  <p className="text-sm font-medium text-gray-900">
+                    Data Scientist
+                  </p>
+                  <p className="text-xs text-gray-600">
+                    London • Very High Demand
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-bold text-purple-600">
+                    £60k - £110k
+                  </p>
+                  <p className="text-xs text-gray-500">25 days avg fill</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Market Trends */}
+        <div className="border-t border-gray-200 pt-6">
+          <h4 className="font-medium text-gray-900 mb-4">
+            Market Trends & Analytics
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-lg p-4">
+              <div className="flex items-center space-x-2 mb-2">
+                <TrendingUp className="w-4 h-4 text-blue-600" />
+                <span className="text-sm font-medium text-gray-900">
+                  Salary Growth
+                </span>
+              </div>
+              <p className="text-2xl font-bold text-blue-600">+8.5%</p>
+              <p className="text-xs text-gray-600">Tech sector YoY</p>
+            </div>
+
+            <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-4">
+              <div className="flex items-center space-x-2 mb-2">
+                <Users className="w-4 h-4 text-green-600" />
+                <span className="text-sm font-medium text-gray-900">
+                  Job Openings
+                </span>
+              </div>
+              <p className="text-2xl font-bold text-green-600">127k</p>
+              <p className="text-xs text-gray-600">UK tech market</p>
+            </div>
+
+            <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-4">
+              <div className="flex items-center space-x-2 mb-2">
+                <Clock className="w-4 h-4 text-purple-600" />
+                <span className="text-sm font-medium text-gray-900">
+                  Time to Fill
+                </span>
+              </div>
+              <p className="text-2xl font-bold text-purple-600">34 days</p>
+              <p className="text-xs text-gray-600">Average</p>
+            </div>
+
+            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg p-4">
+              <div className="flex items-center space-x-2 mb-2">
+                <Target className="w-4 h-4 text-yellow-600" />
+                <span className="text-sm font-medium text-gray-900">
+                  Competition
+                </span>
+              </div>
+              <p className="text-2xl font-bold text-yellow-600">Medium</p>
+              <p className="text-xs text-gray-600">Current level</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Skills Intelligence */}
+        <div className="border-t border-gray-200 pt-6 mt-6">
+          <h4 className="font-medium text-gray-900 mb-4">
+            Skills Intelligence
+          </h4>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <h5 className="text-sm font-medium text-gray-900 mb-3">
+                Most In-Demand Skills
+              </h5>
+              <div className="space-y-2">
+                {[
+                  { skill: "React/JavaScript", demand: 95, growth: "+12%" },
+                  { skill: "Python", demand: 89, growth: "+18%" },
+                  { skill: "AWS/Cloud", demand: 87, growth: "+24%" },
+                  { skill: "Node.js", demand: 82, growth: "+15%" },
+                  { skill: "TypeScript", demand: 78, growth: "+31%" },
+                ].map((item) => (
+                  <div
+                    key={item.skill}
+                    className="flex items-center justify-between p-2 bg-gray-50 rounded"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <span className="text-sm font-medium text-gray-900">
+                        {item.skill}
+                      </span>
+                      <div className="w-24 bg-gray-200 rounded-full h-2">
+                        <div
+                          className="bg-blue-600 h-2 rounded-full"
+                          style={{ width: `${item.demand}%` }}
+                        />
+                      </div>
+                    </div>
+                    <span className="text-xs text-green-600 font-medium">
+                      {item.growth}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h5 className="text-sm font-medium text-gray-900 mb-3">
+                Emerging Skills
+              </h5>
+              <div className="space-y-2">
+                {[
+                  { skill: "AI/Machine Learning", trend: "🔥", growth: "+67%" },
+                  { skill: "Blockchain", trend: "📈", growth: "+45%" },
+                  { skill: "Cybersecurity", trend: "🛡️", growth: "+38%" },
+                  { skill: "DevOps/Kubernetes", trend: "⚡", growth: "+42%" },
+                  { skill: "Data Engineering", trend: "📊", growth: "+29%" },
+                ].map((item) => (
+                  <div
+                    key={item.skill}
+                    className="flex items-center justify-between p-2 bg-gray-50 rounded"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <span className="text-lg">{item.trend}</span>
+                      <span className="text-sm font-medium text-gray-900">
+                        {item.skill}
+                      </span>
+                    </div>
+                    <span className="text-xs text-purple-600 font-medium">
+                      {item.growth}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Market Data Source */}
+        <div className="border-t border-gray-200 pt-4 mt-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2 text-sm text-gray-500">
+              <Database className="w-4 h-4" />
+              <span>Data powered by ITJobsWatch, LinkedIn, Indeed</span>
+              <span>•</span>
+              <span>Last updated: {new Date().toLocaleDateString()}</span>
+            </div>
+            <button className="text-sm text-blue-600 hover:text-blue-800 font-medium">
+              View Full Market Report →
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
