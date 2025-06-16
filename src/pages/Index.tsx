@@ -633,12 +633,21 @@ const RecruitModal = ({
             {!isRunning &&
               currentStage === 4 &&
               rankedCandidates.length > 0 && (
-                <button
-                  onClick={resetAndClose}
-                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-                >
-                  Complete & Schedule Interviews
-                </button>
+                <div className="flex space-x-3">
+                  <button
+                    onClick={() => scheduleAllInterviews()}
+                    className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
+                  >
+                    <Calendar size={16} />
+                    <span>Schedule All Interviews</span>
+                  </button>
+                  <button
+                    onClick={resetAndClose}
+                    className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                  >
+                    Complete Recruitment
+                  </button>
+                </div>
               )}
           </div>
         </div>
