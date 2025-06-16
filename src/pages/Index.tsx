@@ -1417,7 +1417,7 @@ const RecruitModal = ({
                                 }
                                 className="w-full px-2 py-1 text-left text-xs text-gray-600 hover:bg-gray-50 rounded"
                               >
-                                �� Technical Interview (60 min)
+                                💻 Technical Interview (60 min)
                               </button>
                               <button
                                 onClick={() =>
@@ -4315,6 +4315,97 @@ const UPhirePlatform = () => {
           selectedEmployee={selectedEmployee}
           setSelectedEmployee={setSelectedEmployee}
         />
+      )}
+
+      {showDocumentUploadModal && selectedEmployee && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900">
+                    Document Management
+                  </h2>
+                  <p className="text-gray-600">
+                    {selectedEmployee.name} - {selectedEmployee.position}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowDocumentUploadModal(false)}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+            </div>
+
+            <div className="p-6">
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Current Documents
+                </h3>
+                {selectedEmployee.documents.map((doc, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-3 border border-gray-200 rounded-lg"
+                  >
+                    <div className="flex items-center space-x-3">
+                      <FileText className="w-5 h-5 text-gray-400" />
+                      <div>
+                        <p className="font-medium text-gray-900">{doc.type}</p>
+                        <p className="text-sm text-gray-600">
+                          Status: {doc.status}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <button className="p-1 text-blue-600 hover:text-blue-800">
+                        <Eye size={16} />
+                      </button>
+                      <button className="p-1 text-green-600 hover:text-green-800">
+                        <Download size={16} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-6 border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                <FileText className="w-8 h-8 text-gray-400 mx-auto mb-4" />
+                <h4 className="text-lg font-medium text-gray-900 mb-2">
+                  Upload New Document
+                </h4>
+                <p className="text-gray-600 mb-4">
+                  Select document type and upload file
+                </p>
+                <div className="space-y-4">
+                  <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">Select document type</option>
+                    <option value="contract">Employment Contract</option>
+                    <option value="medical">Medical Certificate</option>
+                    <option value="training">Training Certificate</option>
+                    <option value="performance">Performance Review</option>
+                    <option value="disciplinary">Disciplinary Record</option>
+                    <option value="legal">Legal Document</option>
+                    <option value="other">Other</option>
+                  </select>
+                  <button className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    Choose File & Upload
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t border-gray-200 p-6 flex justify-end space-x-3">
+              <button
+                onClick={() => setShowDocumentUploadModal(false)}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
