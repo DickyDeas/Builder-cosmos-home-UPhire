@@ -159,6 +159,36 @@ const RecruitModal = ({
     setShowCalendlyModal(true);
   };
 
+  const scheduleAllInterviews = () => {
+    // Open Calendly for the top candidate first
+    if (rankedCandidates.length > 0) {
+      const topCandidate = rankedCandidates[0];
+
+      if (window.Calendly) {
+        window.Calendly.initPopupWidget({
+          url: `${calendlyUrl}?prefill_name=${encodeURIComponent(topCandidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(topCandidate.skills.join(", "))}`,
+          text: "Schedule Interview",
+          color: "#16a34a",
+          textColor: "#ffffff",
+          branding: true,
+        });
+
+        // Show notification about scheduling all candidates
+        alert(
+          `Starting interview scheduling for all ${rankedCandidates.length} candidates. After scheduling ${topCandidate.name}, you'll be prompted to schedule the remaining candidates.`,
+        );
+      } else {
+        // Fallback: Open multiple tabs for each candidate
+        rankedCandidates.forEach((candidate, index) => {
+          setTimeout(() => {
+            const calendlyFullUrl = `${calendlyUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(", "))}`;
+            window.open(calendlyFullUrl, "_blank");
+          }, index * 1000); // Stagger opening tabs by 1 second
+        });
+      }
+    }
+  };
+
   if (!showRecruitModal) return null;
 
   const stages = [
