@@ -4905,7 +4905,7 @@ Ready to make an impact? Apply now and join our team!`;
                       type="button"
                       onClick={() => {
                         setShowNewRoleModal(false);
-                        resetModal();
+                        resetModal(); // Reset on explicit cancel
                       }}
                       className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
                     >
