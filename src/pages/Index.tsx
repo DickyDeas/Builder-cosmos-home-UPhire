@@ -4838,9 +4838,12 @@ Ready to make an impact? Apply now and join our team!`;
                   </label>
                   <textarea
                     rows={3}
-                    value={formData.benefits}
+                    value={roleFormData.benefits}
                     onChange={(e) =>
-                      setFormData({ ...formData, benefits: e.target.value })
+                      setRoleFormData({
+                        ...roleFormData,
+                        benefits: e.target.value,
+                      })
                     }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="List key benefits and perks..."
