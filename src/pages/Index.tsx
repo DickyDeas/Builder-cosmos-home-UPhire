@@ -130,7 +130,7 @@ const RecruitModal = ({
   const [schedulingCandidate, setSchedulingCandidate] = useState(null);
   const [showCalendlyModal, setShowCalendlyModal] = useState(false);
 
-  const role = roles.find(r => r.id === recruitingRoleId);
+  const role = roles.find((r) => r.id === recruitingRoleId);
 
   // Calendly configuration
   // TODO: Replace with your actual Calendly URL
@@ -141,7 +141,7 @@ const RecruitModal = ({
     initial: "https://calendly.com/your-company/initial-screening",
     technical: "https://calendly.com/your-company/technical-interview",
     cultural: "https://calendly.com/your-company/cultural-fit",
-    final: "https://calendly.com/your-company/final-interview"
+    final: "https://calendly.com/your-company/final-interview",
   };
 
   const openCalendlyScheduling = (candidate) => {
@@ -150,16 +150,16 @@ const RecruitModal = ({
     // Method 1: Open Calendly in a popup
     if (window.Calendly) {
       window.Calendly.initPopupWidget({
-        url: `${calendlyUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || '')}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(', '))}`,
-        text: 'Schedule Interview',
-        color: '#2563eb',
-        textColor: '#ffffff',
-        branding: true
+        url: `${calendlyUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(", "))}`,
+        text: "Schedule Interview",
+        color: "#2563eb",
+        textColor: "#ffffff",
+        branding: true,
       });
     } else {
       // Fallback: Open Calendly in new tab
-      const calendlyFullUrl = `${calendlyUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || '')}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(', '))}`;
-      window.open(calendlyFullUrl, '_blank');
+      const calendlyFullUrl = `${calendlyUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(", "))}`;
+      window.open(calendlyFullUrl, "_blank");
     }
   };
 
@@ -170,26 +170,26 @@ const RecruitModal = ({
 
   const scheduleSpecificInterview = (candidate, interviewType) => {
     const interviewTypeNames = {
-      initial: 'Initial Screening',
-      technical: 'Technical Interview',
-      cultural: 'Cultural Fit Interview',
-      final: 'Final Interview'
+      initial: "Initial Screening",
+      technical: "Technical Interview",
+      cultural: "Cultural Fit Interview",
+      final: "Final Interview",
     };
 
     const selectedUrl = calendlyUrls[interviewType] || calendlyUrl;
-    const interviewTypeName = interviewTypeNames[interviewType] || 'Interview';
+    const interviewTypeName = interviewTypeNames[interviewType] || "Interview";
 
     if (window.Calendly) {
       window.Calendly.initPopupWidget({
-        url: `${selectedUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || '')}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(', '))}&prefill_custom_3=${encodeURIComponent(interviewTypeName)}`,
+        url: `${selectedUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(", "))}&prefill_custom_3=${encodeURIComponent(interviewTypeName)}`,
         text: `Schedule ${interviewTypeName}`,
-        color: '#2563eb',
-        textColor: '#ffffff',
-        branding: true
+        color: "#2563eb",
+        textColor: "#ffffff",
+        branding: true,
       });
     } else {
-      const calendlyFullUrl = `${selectedUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || '')}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(', '))}&prefill_custom_3=${encodeURIComponent(interviewTypeName)}`;
-      window.open(calendlyFullUrl, '_blank');
+      const calendlyFullUrl = `${selectedUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(", "))}&prefill_custom_3=${encodeURIComponent(interviewTypeName)}`;
+      window.open(calendlyFullUrl, "_blank");
     }
   };
 
@@ -200,21 +200,23 @@ const RecruitModal = ({
 
       if (window.Calendly) {
         window.Calendly.initPopupWidget({
-          url: `${calendlyUrl}?prefill_name=${encodeURIComponent(topCandidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || '')}&prefill_custom_2=${encodeURIComponent(topCandidate.skills.join(', '))}`,
-          text: 'Schedule Interview',
-          color: '#16a34a',
-          textColor: '#ffffff',
-          branding: true
+          url: `${calendlyUrl}?prefill_name=${encodeURIComponent(topCandidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(topCandidate.skills.join(", "))}`,
+          text: "Schedule Interview",
+          color: "#16a34a",
+          textColor: "#ffffff",
+          branding: true,
         });
 
         // Show notification about scheduling all candidates
-        alert(`Starting interview scheduling for all ${rankedCandidates.length} candidates. After scheduling ${topCandidate.name}, you'll be prompted to schedule the remaining candidates.`);
+        alert(
+          `Starting interview scheduling for all ${rankedCandidates.length} candidates. After scheduling ${topCandidate.name}, you'll be prompted to schedule the remaining candidates.`,
+        );
       } else {
         // Fallback: Open multiple tabs for each candidate
         rankedCandidates.forEach((candidate, index) => {
           setTimeout(() => {
-            const calendlyFullUrl = `${calendlyUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || '')}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(', '))}`;
-            window.open(calendlyFullUrl, '_blank');
+            const calendlyFullUrl = `${calendlyUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(", "))}`;
+            window.open(calendlyFullUrl, "_blank");
           }, index * 1000); // Stagger opening tabs by 1 second
         });
       }
@@ -226,28 +228,35 @@ const RecruitModal = ({
   const stages = [
     {
       id: 1,
-      name: 'AI Search',
-      description: 'Searching across LinkedIn, Indeed, GitHub, AngelList, and Stack Overflow',
-      platforms: ['LinkedIn', 'Indeed', 'GitHub', 'AngelList', 'Stack Overflow']
+      name: "AI Search",
+      description:
+        "Searching across LinkedIn, Indeed, GitHub, AngelList, and Stack Overflow",
+      platforms: [
+        "LinkedIn",
+        "Indeed",
+        "GitHub",
+        "AngelList",
+        "Stack Overflow",
+      ],
     },
     {
       id: 2,
-      name: 'Outreach',
-      description: 'Sending personalized messages to qualified candidates',
-      action: 'Automated messaging'
+      name: "Outreach",
+      description: "Sending personalized messages to qualified candidates",
+      action: "Automated messaging",
     },
     {
       id: 3,
-      name: 'Interest Collection',
-      description: 'Collecting responses and gauging candidate interest',
-      action: 'Response tracking'
+      name: "Interest Collection",
+      description: "Collecting responses and gauging candidate interest",
+      action: "Response tracking",
     },
     {
       id: 4,
-      name: 'Ranking',
-      description: 'AI ranking candidates and selecting top 5 for interviews',
-      action: 'Smart selection'
-    }
+      name: "Ranking",
+      description: "AI ranking candidates and selecting top 5 for interviews",
+      action: "Smart selection",
+    },
   ];
 
   const startRecruitment = async () => {
@@ -257,20 +266,68 @@ const RecruitModal = ({
     // Stage 1: AI Search
     setStageProgress(0);
     for (let i = 0; i <= 100; i += 10) {
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
       setStageProgress(i);
     }
 
     // Mock found candidates
     const mockCandidates = [
-      { id: 1, name: 'Sarah Chen', platform: 'LinkedIn', match: 95, skills: ['React', 'TypeScript', 'Node.js'] },
-      { id: 2, name: 'Marcus Johnson', platform: 'GitHub', match: 92, skills: ['Python', 'Django', 'PostgreSQL'] },
-      { id: 3, name: 'Emma Rodriguez', platform: 'Indeed', match: 89, skills: ['Java', 'Spring', 'AWS'] },
-      { id: 4, name: 'Alex Kim', platform: 'Stack Overflow', match: 87, skills: ['Vue.js', 'Node.js', 'MongoDB'] },
-      { id: 5, name: 'David Zhang', platform: 'AngelList', match: 85, skills: ['Flutter', 'Dart', 'Firebase'] },
-      { id: 6, name: 'Priya Patel', platform: 'LinkedIn', match: 83, skills: ['React Native', 'iOS', 'Android'] },
-      { id: 7, name: 'James Wilson', platform: 'GitHub', match: 81, skills: ['Go', 'Kubernetes', 'Docker'] },
-      { id: 8, name: 'Lisa Brown', platform: 'Indeed', match: 79, skills: ['C#', '.NET', 'Azure'] }
+      {
+        id: 1,
+        name: "Sarah Chen",
+        platform: "LinkedIn",
+        match: 95,
+        skills: ["React", "TypeScript", "Node.js"],
+      },
+      {
+        id: 2,
+        name: "Marcus Johnson",
+        platform: "GitHub",
+        match: 92,
+        skills: ["Python", "Django", "PostgreSQL"],
+      },
+      {
+        id: 3,
+        name: "Emma Rodriguez",
+        platform: "Indeed",
+        match: 89,
+        skills: ["Java", "Spring", "AWS"],
+      },
+      {
+        id: 4,
+        name: "Alex Kim",
+        platform: "Stack Overflow",
+        match: 87,
+        skills: ["Vue.js", "Node.js", "MongoDB"],
+      },
+      {
+        id: 5,
+        name: "David Zhang",
+        platform: "AngelList",
+        match: 85,
+        skills: ["Flutter", "Dart", "Firebase"],
+      },
+      {
+        id: 6,
+        name: "Priya Patel",
+        platform: "LinkedIn",
+        match: 83,
+        skills: ["React Native", "iOS", "Android"],
+      },
+      {
+        id: 7,
+        name: "James Wilson",
+        platform: "GitHub",
+        match: 81,
+        skills: ["Go", "Kubernetes", "Docker"],
+      },
+      {
+        id: 8,
+        name: "Lisa Brown",
+        platform: "Indeed",
+        match: 79,
+        skills: ["C#", ".NET", "Azure"],
+      },
     ];
     setFoundCandidates(mockCandidates);
 
@@ -278,15 +335,15 @@ const RecruitModal = ({
     setCurrentStage(2);
     setStageProgress(0);
     for (let i = 0; i <= 100; i += 12.5) {
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 300));
       setStageProgress(i);
     }
 
-    const mockOutreach = mockCandidates.map(candidate => ({
+    const mockOutreach = mockCandidates.map((candidate) => ({
       ...candidate,
       messageSent: true,
       sentAt: new Date().toISOString(),
-      status: Math.random() > 0.3 ? 'delivered' : 'pending'
+      status: Math.random() > 0.3 ? "delivered" : "pending",
     }));
     setOutreachResults(mockOutreach);
 
@@ -294,23 +351,25 @@ const RecruitModal = ({
     setCurrentStage(3);
     setStageProgress(0);
     for (let i = 0; i <= 100; i += 16.7) {
-      await new Promise(resolve => setTimeout(resolve, 250));
+      await new Promise((resolve) => setTimeout(resolve, 250));
       setStageProgress(i);
     }
 
-    const mockInterested = mockCandidates.filter(() => Math.random() > 0.4).map(candidate => ({
-      ...candidate,
-      interested: true,
-      response: 'I would love to learn more about this opportunity!',
-      responseTime: Math.floor(Math.random() * 48) + 1 + ' hours'
-    }));
+    const mockInterested = mockCandidates
+      .filter(() => Math.random() > 0.4)
+      .map((candidate) => ({
+        ...candidate,
+        interested: true,
+        response: "I would love to learn more about this opportunity!",
+        responseTime: Math.floor(Math.random() * 48) + 1 + " hours",
+      }));
     setInterestedCandidates(mockInterested);
 
     // Stage 4: Ranking
     setCurrentStage(4);
     setStageProgress(0);
     for (let i = 0; i <= 100; i += 20) {
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 200));
       setStageProgress(i);
     }
 
@@ -321,7 +380,8 @@ const RecruitModal = ({
         ...candidate,
         rank: index + 1,
         aiScore: candidate.match + Math.floor(Math.random() * 5),
-        recommendation: index === 0 ? 'Strong Hire' : index < 3 ? 'Hire' : 'Consider'
+        recommendation:
+          index === 0 ? "Strong Hire" : index < 3 ? "Hire" : "Consider",
       }));
     setRankedCandidates(topCandidates);
 
@@ -345,10 +405,14 @@ const RecruitModal = ({
         <div className="p-6 border-b border-gray-200">
           <div className="flex justify-between items-center">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">AI Recruitment Automation</h2>
+              <h2 className="text-2xl font-bold text-gray-900">
+                AI Recruitment Automation
+              </h2>
               {role && (
                 <p className="text-gray-600 mt-1">
-                  Recruiting for: <span className="font-semibold">{role.title}</span> • {role.department} • {role.location}
+                  Recruiting for:{" "}
+                  <span className="font-semibold">{role.title}</span> •{" "}
+                  {role.department} • {role.location}
                 </p>
               )}
             </div>
@@ -367,17 +431,23 @@ const RecruitModal = ({
             <div className="flex items-center justify-between mb-4">
               {stages.map((stage, index) => (
                 <div key={stage.id} className="flex items-center">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold ${
-                    currentStage > stage.id ? 'bg-green-500 text-white' :
-                    currentStage === stage.id ? 'bg-blue-500 text-white' :
-                    'bg-gray-200 text-gray-600'
-                  }`}>
+                  <div
+                    className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold ${
+                      currentStage > stage.id
+                        ? "bg-green-500 text-white"
+                        : currentStage === stage.id
+                          ? "bg-blue-500 text-white"
+                          : "bg-gray-200 text-gray-600"
+                    }`}
+                  >
                     {currentStage > stage.id ? <Check size={16} /> : stage.id}
                   </div>
                   {index < stages.length - 1 && (
-                    <div className={`w-24 h-1 mx-2 ${
-                      currentStage > stage.id ? 'bg-green-500' : 'bg-gray-200'
-                    }`} />
+                    <div
+                      className={`w-24 h-1 mx-2 ${
+                        currentStage > stage.id ? "bg-green-500" : "bg-gray-200"
+                      }`}
+                    />
                   )}
                 </div>
               ))}
@@ -410,16 +480,28 @@ const RecruitModal = ({
                   Found {foundCandidates.length} Candidates
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {foundCandidates.map(candidate => (
-                    <div key={candidate.id} className="border border-gray-200 rounded-lg p-4">
+                  {foundCandidates.map((candidate) => (
+                    <div
+                      key={candidate.id}
+                      className="border border-gray-200 rounded-lg p-4"
+                    >
                       <div className="flex justify-between items-start mb-2">
-                        <h5 className="font-semibold text-gray-900">{candidate.name}</h5>
-                        <span className="text-sm font-medium text-blue-600">{candidate.match}% match</span>
+                        <h5 className="font-semibold text-gray-900">
+                          {candidate.name}
+                        </h5>
+                        <span className="text-sm font-medium text-blue-600">
+                          {candidate.match}% match
+                        </span>
                       </div>
-                      <p className="text-sm text-gray-600 mb-2">Source: {candidate.platform}</p>
+                      <p className="text-sm text-gray-600 mb-2">
+                        Source: {candidate.platform}
+                      </p>
                       <div className="flex flex-wrap gap-1">
-                        {candidate.skills.map(skill => (
-                          <span key={skill} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
+                        {candidate.skills.map((skill) => (
+                          <span
+                            key={skill}
+                            className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded"
+                          >
                             {skill}
                           </span>
                         ))}
@@ -433,18 +515,34 @@ const RecruitModal = ({
             {currentStage === 2 && outreachResults.length > 0 && (
               <div>
                 <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                  Outreach Results ({outreachResults.filter(r => r.status === 'delivered').length}/{outreachResults.length} delivered)
+                  Outreach Results (
+                  {
+                    outreachResults.filter((r) => r.status === "delivered")
+                      .length
+                  }
+                  /{outreachResults.length} delivered)
                 </h4>
                 <div className="space-y-3">
-                  {outreachResults.map(candidate => (
-                    <div key={candidate.id} className="flex justify-between items-center p-3 border border-gray-200 rounded-lg">
+                  {outreachResults.map((candidate) => (
+                    <div
+                      key={candidate.id}
+                      className="flex justify-between items-center p-3 border border-gray-200 rounded-lg"
+                    >
                       <div>
-                        <span className="font-medium text-gray-900">{candidate.name}</span>
-                        <span className="text-sm text-gray-600 ml-2">via {candidate.platform}</span>
+                        <span className="font-medium text-gray-900">
+                          {candidate.name}
+                        </span>
+                        <span className="text-sm text-gray-600 ml-2">
+                          via {candidate.platform}
+                        </span>
                       </div>
-                      <span className={`px-2 py-1 text-xs font-medium rounded ${
-                        candidate.status === 'delivered' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                      }`}>
+                      <span
+                        className={`px-2 py-1 text-xs font-medium rounded ${
+                          candidate.status === "delivered"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-yellow-100 text-yellow-800"
+                        }`}
+                      >
                         {candidate.status}
                       </span>
                     </div>
@@ -459,16 +557,27 @@ const RecruitModal = ({
                   {interestedCandidates.length} Interested Candidates
                 </h4>
                 <div className="space-y-4">
-                  {interestedCandidates.map(candidate => (
-                    <div key={candidate.id} className="border border-gray-200 rounded-lg p-4">
+                  {interestedCandidates.map((candidate) => (
+                    <div
+                      key={candidate.id}
+                      className="border border-gray-200 rounded-lg p-4"
+                    >
                       <div className="flex justify-between items-start mb-2">
                         <div>
-                          <span className="font-medium text-gray-900">{candidate.name}</span>
-                          <span className="text-sm text-gray-600 ml-2">{candidate.match}% match</span>
+                          <span className="font-medium text-gray-900">
+                            {candidate.name}
+                          </span>
+                          <span className="text-sm text-gray-600 ml-2">
+                            {candidate.match}% match
+                          </span>
                         </div>
-                        <span className="text-sm text-gray-500">Responded in {candidate.responseTime}</span>
+                        <span className="text-sm text-gray-500">
+                          Responded in {candidate.responseTime}
+                        </span>
                       </div>
-                      <p className="text-sm text-gray-700 italic">"{candidate.response}"</p>
+                      <p className="text-sm text-gray-700 italic">
+                        "{candidate.response}"
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -485,35 +594,52 @@ const RecruitModal = ({
                     <div className="flex items-start space-x-2">
                       <Calendar className="text-blue-600 mt-0.5" size={16} />
                       <div className="text-sm">
-                        <div className="font-medium text-blue-900 mb-1">Calendly Integration Active</div>
+                        <div className="font-medium text-blue-900 mb-1">
+                          Calendly Integration Active
+                        </div>
                         <div className="text-blue-700">
-                          Click "Schedule Interview" to open Calendly and book interviews directly.
-                          Choose from different interview types or use the quick schedule option.
+                          Click "Schedule Interview" to open Calendly and book
+                          interviews directly. Choose from different interview
+                          types or use the quick schedule option.
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="space-y-4">
-                  {rankedCandidates.map(candidate => (
-                    <div key={candidate.id} className="border border-gray-200 rounded-lg p-4">
+                  {rankedCandidates.map((candidate) => (
+                    <div
+                      key={candidate.id}
+                      className="border border-gray-200 rounded-lg p-4"
+                    >
                       <div className="flex justify-between items-start mb-2">
                         <div>
-                          <span className="font-medium text-gray-900">#{candidate.rank} {candidate.name}</span>
-                          <span className="text-sm text-gray-600 ml-2">AI Score: {candidate.aiScore}/100</span>
+                          <span className="font-medium text-gray-900">
+                            #{candidate.rank} {candidate.name}
+                          </span>
+                          <span className="text-sm text-gray-600 ml-2">
+                            AI Score: {candidate.aiScore}/100
+                          </span>
                         </div>
-                        <span className={`px-2 py-1 text-xs font-medium rounded ${
-                          candidate.recommendation === 'Strong Hire' ? 'bg-green-100 text-green-800' :
-                          candidate.recommendation === 'Hire' ? 'bg-blue-100 text-blue-800' :
-                          'bg-yellow-100 text-yellow-800'
-                        }`}>
+                        <span
+                          className={`px-2 py-1 text-xs font-medium rounded ${
+                            candidate.recommendation === "Strong Hire"
+                              ? "bg-green-100 text-green-800"
+                              : candidate.recommendation === "Hire"
+                                ? "bg-blue-100 text-blue-800"
+                                : "bg-yellow-100 text-yellow-800"
+                          }`}
+                        >
                           {candidate.recommendation}
                         </span>
                       </div>
                       <div className="flex justify-between items-center">
                         <div className="flex flex-wrap gap-1">
-                          {candidate.skills.slice(0, 3).map(skill => (
-                            <span key={skill} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
+                          {candidate.skills.slice(0, 3).map((skill) => (
+                            <span
+                              key={skill}
+                              className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded"
+                            >
                               {skill}
                             </span>
                           ))}
@@ -530,9 +656,13 @@ const RecruitModal = ({
                           {/* Dropdown for scheduling options */}
                           <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all min-w-[200px]">
                             <div className="px-3 py-2 border-b border-gray-200">
-                              <div className="text-xs font-medium text-gray-700 mb-1">Quick Schedule</div>
+                              <div className="text-xs font-medium text-gray-700 mb-1">
+                                Quick Schedule
+                              </div>
                               <button
-                                onClick={() => openCalendlyScheduling(candidate)}
+                                onClick={() =>
+                                  openCalendlyScheduling(candidate)
+                                }
                                 className="w-full px-2 py-1 text-left text-sm text-gray-600 hover:bg-gray-50 flex items-center space-x-2 rounded"
                               >
                                 <ExternalLink size={12} />
@@ -541,27 +671,46 @@ const RecruitModal = ({
                             </div>
 
                             <div className="px-3 py-2 border-b border-gray-200">
-                              <div className="text-xs font-medium text-gray-700 mb-1">Interview Type</div>
+                              <div className="text-xs font-medium text-gray-700 mb-1">
+                                Interview Type
+                              </div>
                               <button
-                                onClick={() => scheduleSpecificInterview(candidate, 'initial')}
+                                onClick={() =>
+                                  scheduleSpecificInterview(
+                                    candidate,
+                                    "initial",
+                                  )
+                                }
                                 className="w-full px-2 py-1 text-left text-xs text-gray-600 hover:bg-gray-50 rounded"
                               >
                                 📋 Initial Screening (30 min)
                               </button>
                               <button
-                                onClick={() => scheduleSpecificInterview(candidate, 'technical')}
+                                onClick={() =>
+                                  scheduleSpecificInterview(
+                                    candidate,
+                                    "technical",
+                                  )
+                                }
                                 className="w-full px-2 py-1 text-left text-xs text-gray-600 hover:bg-gray-50 rounded"
                               >
                                 💻 Technical Interview (60 min)
                               </button>
                               <button
-                                onClick={() => scheduleSpecificInterview(candidate, 'cultural')}
+                                onClick={() =>
+                                  scheduleSpecificInterview(
+                                    candidate,
+                                    "cultural",
+                                  )
+                                }
                                 className="w-full px-2 py-1 text-left text-xs text-gray-600 hover:bg-gray-50 rounded"
                               >
                                 🤝 Cultural Fit (45 min)
                               </button>
                               <button
-                                onClick={() => scheduleSpecificInterview(candidate, 'final')}
+                                onClick={() =>
+                                  scheduleSpecificInterview(candidate, "final")
+                                }
                                 className="w-full px-2 py-1 text-left text-xs text-gray-600 hover:bg-gray-50 rounded"
                               >
                                 🎯 Final Interview (30 min)
@@ -606,23 +755,25 @@ const RecruitModal = ({
               </button>
             )}
 
-            {!isRunning && currentStage === 4 && rankedCandidates.length > 0 && (
-              <div className="flex space-x-3">
-                <button
-                  onClick={() => scheduleAllInterviews()}
-                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
-                >
-                  <Calendar size={16} />
-                  <span>Schedule All Interviews</span>
-                </button>
-                <button
-                  onClick={resetAndClose}
-                  className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
-                >
-                  Complete Recruitment
-                </button>
-              </div>
-            )}
+            {!isRunning &&
+              currentStage === 4 &&
+              rankedCandidates.length > 0 && (
+                <div className="flex space-x-3">
+                  <button
+                    onClick={() => scheduleAllInterviews()}
+                    className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
+                  >
+                    <Calendar size={16} />
+                    <span>Schedule All Interviews</span>
+                  </button>
+                  <button
+                    onClick={resetAndClose}
+                    className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                  >
+                    Complete Recruitment
+                  </button>
+                </div>
+              )}
           </div>
         </div>
       </div>
@@ -637,7 +788,8 @@ const RecruitModal = ({
                   Schedule Interview - {schedulingCandidate.name}
                 </h3>
                 <p className="text-sm text-gray-600">
-                  {role?.title} • {schedulingCandidate.skills.slice(0, 3).join(', ')}
+                  {role?.title} •{" "}
+                  {schedulingCandidate.skills.slice(0, 3).join(", ")}
                 </p>
               </div>
               <button
@@ -654,14 +806,15 @@ const RecruitModal = ({
             <div className="h-[600px]">
               <div
                 className="calendly-inline-widget"
-                data-url={`${calendlyUrl}?prefill_name=${encodeURIComponent(schedulingCandidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || '')}&prefill_custom_2=${encodeURIComponent(schedulingCandidate.skills.join(', '))}`}
-                style={{ minWidth: '320px', height: '100%' }}
+                data-url={`${calendlyUrl}?prefill_name=${encodeURIComponent(schedulingCandidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(schedulingCandidate.skills.join(", "))}`}
+                style={{ minWidth: "320px", height: "100%" }}
               />
             </div>
 
             <div className="p-4 border-t border-gray-200 flex justify-between items-center">
               <div className="text-sm text-gray-600">
-                Interview types available: Initial Screening, Technical Interview, Cultural Fit, Final Interview
+                Interview types available: Initial Screening, Technical
+                Interview, Cultural Fit, Final Interview
               </div>
               <button
                 onClick={() => {
@@ -2396,7 +2549,9 @@ const UPhirePlatform = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white">Employee Management</h1>
-          <p className="text-blue-100">Comprehensive team management and HR records</p>
+          <p className="text-blue-100">
+            Comprehensive team management and HR records
+          </p>
         </div>
         <button
           onClick={() => setShowEmployeeModal(true)}
@@ -2413,7 +2568,9 @@ const UPhirePlatform = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600">Total Employees</p>
-              <p className="text-3xl font-bold text-gray-900">{employees.length}</p>
+              <p className="text-3xl font-bold text-gray-900">
+                {employees.length}
+              </p>
             </div>
             <Users className="w-8 h-8 text-blue-600" />
           </div>
@@ -2424,7 +2581,7 @@ const UPhirePlatform = () => {
             <div>
               <p className="text-sm text-gray-600">On Probation</p>
               <p className="text-3xl font-bold text-yellow-600">
-                {employees.filter(emp => emp.probationPeriod).length}
+                {employees.filter((emp) => emp.probationPeriod).length}
               </p>
             </div>
             <Timer className="w-8 h-8 text-yellow-600" />
@@ -2436,7 +2593,10 @@ const UPhirePlatform = () => {
             <div>
               <p className="text-sm text-gray-600">Full-Time</p>
               <p className="text-3xl font-bold text-green-600">
-                {employees.filter(emp => emp.employmentType === 'Full-time').length}
+                {
+                  employees.filter((emp) => emp.employmentType === "Full-time")
+                    .length
+                }
               </p>
             </div>
             <CheckCircle className="w-8 h-8 text-green-600" />
@@ -2448,7 +2608,7 @@ const UPhirePlatform = () => {
             <div>
               <p className="text-sm text-gray-600">Pending Reviews</p>
               <p className="text-3xl font-bold text-red-600">
-                {employees.filter(emp => emp.pendingReview).length}
+                {employees.filter((emp) => emp.pendingReview).length}
               </p>
             </div>
             <AlertTriangle className="w-8 h-8 text-red-600" />
@@ -2459,7 +2619,9 @@ const UPhirePlatform = () => {
       {/* Employee Directory */}
       <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-lg font-semibold text-gray-900">Employee Directory</h3>
+          <h3 className="text-lg font-semibold text-gray-900">
+            Employee Directory
+          </h3>
           <div className="flex items-center space-x-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -2478,12 +2640,17 @@ const UPhirePlatform = () => {
             const startDate = new Date(employee.startDate);
             const today = new Date();
             const tenure = Math.floor(
-              (today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 30)
+              (today.getTime() - startDate.getTime()) /
+                (1000 * 60 * 60 * 24 * 30),
             );
 
             const probationEndDate = new Date(startDate);
-            probationEndDate.setMonth(probationEndDate.getMonth() + (employee.probationMonths || 6));
-            const probationDaysLeft = Math.ceil((probationEndDate - today) / (1000 * 60 * 60 * 24));
+            probationEndDate.setMonth(
+              probationEndDate.getMonth() + (employee.probationMonths || 6),
+            );
+            const probationDaysLeft = Math.ceil(
+              (probationEndDate - today) / (1000 * 60 * 60 * 24),
+            );
 
             return (
               <div
@@ -2502,8 +2669,12 @@ const UPhirePlatform = () => {
                   </div>
                   <div>
                     <div className="flex items-center space-x-2">
-                      <h4 className="font-medium text-gray-900">{employee.name}</h4>
-                      <span className="text-xs text-gray-500">#{employee.employeeId}</span>
+                      <h4 className="font-medium text-gray-900">
+                        {employee.name}
+                      </h4>
+                      <span className="text-xs text-gray-500">
+                        #{employee.employeeId}
+                      </span>
                     </div>
                     <p className="text-sm text-gray-600">
                       {employee.position} • {employee.department}
@@ -2514,7 +2685,10 @@ const UPhirePlatform = () => {
                       </p>
                       {employee.probationPeriod && (
                         <span className="text-xs text-yellow-600">
-                          Probation: {probationDaysLeft > 0 ? `${probationDaysLeft} days left` : 'Ended'}
+                          Probation:{" "}
+                          {probationDaysLeft > 0
+                            ? `${probationDaysLeft} days left`
+                            : "Ended"}
                         </span>
                       )}
                     </div>
@@ -2529,7 +2703,7 @@ const UPhirePlatform = () => {
                           "px-2 py-1 text-xs font-medium rounded-full",
                           employee.probationPeriod
                             ? "bg-yellow-100 text-yellow-800"
-                            : "bg-green-100 text-green-800"
+                            : "bg-green-100 text-green-800",
                         )}
                       >
                         {employee.probationPeriod ? "Probation" : "Confirmed"}
@@ -2540,8 +2714,8 @@ const UPhirePlatform = () => {
                           employee.employmentType === "Full-time"
                             ? "bg-blue-100 text-blue-800"
                             : employee.employmentType === "Part-time"
-                            ? "bg-purple-100 text-purple-800"
-                            : "bg-gray-100 text-gray-800"
+                              ? "bg-purple-100 text-purple-800"
+                              : "bg-gray-100 text-gray-800",
                         )}
                       >
                         {employee.employmentType}
@@ -2591,80 +2765,99 @@ const UPhirePlatform = () => {
       {/* Quick Actions & Reports */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Probation Periods</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Probation Periods
+          </h3>
           <div className="space-y-3">
-            {employees.filter(emp => emp.probationPeriod).map(employee => {
-              const startDate = new Date(employee.startDate);
-              const probationEndDate = new Date(startDate);
-              probationEndDate.setMonth(probationEndDate.getMonth() + (employee.probationMonths || 6));
-              const today = new Date();
-              const daysLeft = Math.ceil((probationEndDate - today) / (1000 * 60 * 60 * 24));
+            {employees
+              .filter((emp) => emp.probationPeriod)
+              .map((employee) => {
+                const startDate = new Date(employee.startDate);
+                const probationEndDate = new Date(startDate);
+                probationEndDate.setMonth(
+                  probationEndDate.getMonth() + (employee.probationMonths || 6),
+                );
+                const today = new Date();
+                const daysLeft = Math.ceil(
+                  (probationEndDate - today) / (1000 * 60 * 60 * 24),
+                );
 
-              return (
-                <div key={employee.id} className="flex justify-between items-center p-3 bg-yellow-50 rounded-lg">
-                  <div>
-                    <p className="font-medium text-gray-900">{employee.name}</p>
-                    <p className="text-sm text-gray-600">{employee.position}</p>
+                return (
+                  <div
+                    key={employee.id}
+                    className="flex justify-between items-center p-3 bg-yellow-50 rounded-lg"
+                  >
+                    <div>
+                      <p className="font-medium text-gray-900">
+                        {employee.name}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        {employee.position}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p
+                        className={cn(
+                          "text-sm font-medium",
+                          daysLeft <= 7
+                            ? "text-red-600"
+                            : daysLeft <= 30
+                              ? "text-yellow-600"
+                              : "text-gray-600",
+                        )}
+                      >
+                        {daysLeft > 0
+                          ? `${daysLeft} days left`
+                          : "Review overdue"}
+                      </p>
+                      <button className="text-xs text-blue-600 hover:text-blue-800">
+                        Schedule Review
+                      </button>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p className={cn(
-                      "text-sm font-medium",
-                      daysLeft <= 7 ? "text-red-600" : daysLeft <= 30 ? "text-yellow-600" : "text-gray-600"
-                    )}>
-                      {daysLeft > 0 ? `${daysLeft} days left` : 'Review overdue'}
-                    </p>
-                    <button className="text-xs text-blue-600 hover:text-blue-800">
-                      Schedule Review
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-            {employees.filter(emp => emp.probationPeriod).length === 0 && (
-              <p className="text-gray-500 text-center py-4">No employees currently on probation</p>
+                );
+              })}
+            {employees.filter((emp) => emp.probationPeriod).length === 0 && (
+              <p className="text-gray-500 text-center py-4">
+                No employees currently on probation
+              </p>
             )}
           </div>
         </div>
 
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Recent Activity
+          </h3>
           <div className="space-y-3">
             <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
               <CheckCircle className="w-5 h-5 text-green-600" />
               <div>
-                <p className="text-sm font-medium text-gray-900">Sarah Johnson completed probation</p>
+                <p className="text-sm font-medium text-gray-900">
+                  Sarah Johnson completed probation
+                </p>
                 <p className="text-xs text-gray-500">2 days ago</p>
               </div>
             </div>
             <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
               <FileText className="w-5 h-5 text-blue-600" />
               <div>
-                <p className="text-sm font-medium text-gray-900">New contract uploaded for Mike Chen</p>
+                <p className="text-sm font-medium text-gray-900">
+                  New contract uploaded for Mike Chen
+                </p>
                 <p className="text-xs text-gray-500">1 week ago</p>
               </div>
             </div>
             <div className="flex items-center space-x-3 p-3 bg-yellow-50 rounded-lg">
               <Clock className="w-5 h-5 text-yellow-600" />
               <div>
-                <p className="text-sm font-medium text-gray-900">Performance review due for Alex Kim</p>
+                <p className="text-sm font-medium text-gray-900">
+                  Performance review due for Alex Kim
+                </p>
                 <p className="text-xs text-gray-500">In 3 days</p>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  );
-                  >
-                    {employee.probationPeriod ? "Probation" : "Confirmed"}
-                  </span>
-                  <button className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition-colors">
-                    View Profile
-                  </button>
-                </div>
-              </div>
-            );
-          })}
         </div>
       </div>
     </div>
