@@ -4585,7 +4585,7 @@ We are seeking a talented ${roleFormData.title} to join our ${roleFormData.depar
 • Lead and execute ${roleFormData.department.toLowerCase()} initiatives that drive business growth
 • Collaborate with cross-functional teams to deliver high-quality solutions
 • Drive innovation and continuous improvement in processes and technologies
-• Mentor junior team members and contribute to team knowledge sharing
+��� Mentor junior team members and contribute to team knowledge sharing
 • Ensure project delivery meets quality standards and timelines
 
 ## Required Qualifications
@@ -6290,7 +6290,7 @@ Ready to make an impact? Apply now and join our team!`;
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-2xl font-bold text-white">Open Roles</h2>
         <button
-          onClick={() => setShowNewRoleModal(true)}
+          onClick={startNewRole}
           className="bg-white bg-opacity-20 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-opacity-30 border border-white border-opacity-30 transition-all"
         >
           <Plus size={16} />
