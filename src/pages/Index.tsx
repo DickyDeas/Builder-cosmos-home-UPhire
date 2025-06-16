@@ -4112,7 +4112,8 @@ const UPhirePlatform = () => {
                   </div>
                 </div>
               </div>
-            ))}
+            );
+          })}
         </div>
       </div>
     </div>
