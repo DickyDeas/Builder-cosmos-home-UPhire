@@ -961,6 +961,12 @@ const UPhirePlatform = () => {
     setShowNewRoleModal(true);
   };
 
+  // Function to start AI recruitment for a specific role
+  const startRecruitment = (roleId: number) => {
+    setRecruitingRoleId(roleId);
+    setShowRecruitModal(true);
+  };
+
   // Mock data functions
   const fetchMarketData = async (jobTitle, location, department) => {
     return new Promise((resolve) => {
