@@ -609,6 +609,58 @@ const RecruitModal = ({
           </div>
         </div>
       </div>
+
+      {/* Calendly Inline Modal */}
+      {showCalendlyModal && schedulingCandidate && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-60 p-4">
+          <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+            <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Schedule Interview - {schedulingCandidate.name}
+                </h3>
+                <p className="text-sm text-gray-600">
+                  {role?.title} •{" "}
+                  {schedulingCandidate.skills.slice(0, 3).join(", ")}
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setShowCalendlyModal(false);
+                  setSchedulingCandidate(null);
+                }}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="h-[600px]">
+              <div
+                className="calendly-inline-widget"
+                data-url={`${calendlyUrl}?prefill_name=${encodeURIComponent(schedulingCandidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(schedulingCandidate.skills.join(", "))}`}
+                style={{ minWidth: "320px", height: "100%" }}
+              />
+            </div>
+
+            <div className="p-4 border-t border-gray-200 flex justify-between items-center">
+              <div className="text-sm text-gray-600">
+                Interview types available: Initial Screening, Technical
+                Interview, Cultural Fit, Final Interview
+              </div>
+              <button
+                onClick={() => {
+                  setShowCalendlyModal(false);
+                  setSchedulingCandidate(null);
+                }}
+                className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
