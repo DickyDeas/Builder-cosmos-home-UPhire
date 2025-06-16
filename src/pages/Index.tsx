@@ -1333,7 +1333,6 @@ const UPhirePlatform = () => {
   const [recruitingRoleId, setRecruitingRoleId] = useState<number | null>(null);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showRecruitModal, setShowRecruitModal] = useState(false);
   const [recruitmentProcess, setRecruitmentProcess] = useState({
     stage: "idle",
     searchResults: [],
