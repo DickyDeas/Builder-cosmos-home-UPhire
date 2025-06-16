@@ -202,6 +202,22 @@ const UPhirePlatform = () => {
   });
   const [generatedDescription, setGeneratedDescription] = useState("");
 
+  // Function to start a new role creation with clean form
+  const startNewRole = () => {
+    setRoleFormData({
+      title: "",
+      department: "",
+      location: "",
+      salary: "",
+      description: "",
+      experience: "",
+      skills: "",
+      benefits: "",
+    });
+    setGeneratedDescription("");
+    setShowNewRoleModal(true);
+  };
+
   useEffect(() => {
     const mockRoles: Role[] = [
       {
