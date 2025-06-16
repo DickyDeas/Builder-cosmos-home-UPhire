@@ -145,6 +145,66 @@ const NewRoleModal = ({
 
   if (!showNewRoleModal) return null;
 
+  const postAdvert = () => {
+    setIsPosting(true);
+    setPostingStatus({
+      website: "posting",
+      broadbean: "posting",
+      jobBoards: [],
+    });
+
+    // Simulate posting to company website
+    setTimeout(() => {
+      setPostingStatus((prev) => ({
+        ...prev,
+        website: "success",
+      }));
+    }, 1500);
+
+    // Simulate Broadbean API call
+    setTimeout(() => {
+      const mockJobBoards = [
+        {
+          name: "Indeed",
+          status: "success",
+          url: "https://indeed.com/job/12345",
+        },
+        {
+          name: "LinkedIn",
+          status: "success",
+          url: "https://linkedin.com/jobs/view/67890",
+        },
+        {
+          name: "Glassdoor",
+          status: "success",
+          url: "https://glassdoor.com/job/54321",
+        },
+        {
+          name: "Reed",
+          status: "success",
+          url: "https://reed.co.uk/jobs/98765",
+        },
+        {
+          name: "Totaljobs",
+          status: "success",
+          url: "https://totaljobs.com/job/13579",
+        },
+        {
+          name: "CV Library",
+          status: "success",
+          url: "https://cv-library.co.uk/job/24680",
+        },
+      ];
+
+      setPostingStatus((prev) => ({
+        ...prev,
+        broadbean: "success",
+        jobBoards: mockJobBoards,
+      }));
+      setIsPosting(false);
+    }, 4000);
+  };
+
   const generateJobDescription = () => {
     if (!roleFormData.title || !roleFormData.department) {
       alert("Please fill in at least the job title and department first.");
@@ -599,6 +659,194 @@ Ready to make an impact? Apply now and join our team!`;
               </div>
             </div>
           )}
+
+          {activeModalTab === "post" && (
+            <div className="space-y-6">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Post Job Advert
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Publish your role to company website and job boards via
+                    Broadbean
+                  </p>
+                </div>
+                <button
+                  onClick={postAdvert}
+                  disabled={isPosting || !generatedDescription}
+                  className={cn(
+                    "flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all",
+                    isPosting || !generatedDescription
+                      ? "bg-gray-400 text-white cursor-not-allowed"
+                      : "bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white hover:shadow-lg",
+                  )}
+                >
+                  <Share2 size={16} />
+                  <span>{isPosting ? "Publishing..." : "Publish Advert"}</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Company Website */}
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <Globe className="h-6 w-6 text-blue-600" />
+                    <div>
+                      <h4 className="font-semibold text-gray-900">
+                        Company Website
+                      </h4>
+                      <p className="text-sm text-gray-600">
+                        careers.company.com
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    {postingStatus.website === "pending" && (
+                      <>
+                        <div className="w-3 h-3 rounded-full bg-gray-300"></div>
+                        <span className="text-sm text-gray-600">
+                          Ready to publish
+                        </span>
+                      </>
+                    )}
+                    {postingStatus.website === "posting" && (
+                      <>
+                        <div className="w-3 h-3 rounded-full bg-yellow-400 animate-pulse"></div>
+                        <span className="text-sm text-yellow-600">
+                          Publishing to website...
+                        </span>
+                      </>
+                    )}
+                    {postingStatus.website === "success" && (
+                      <>
+                        <CheckCircle className="w-4 h-4 text-green-600" />
+                        <span className="text-sm text-green-600">
+                          Published successfully
+                        </span>
+                        <a
+                          href="#"
+                          className="text-blue-600 hover:text-blue-800 text-sm flex items-center space-x-1"
+                        >
+                          <ExternalLink size={12} />
+                          <span>View</span>
+                        </a>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                {/* Broadbean Integration */}
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="w-6 h-6 bg-gradient-to-r from-orange-400 to-red-500 rounded flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">B</span>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">
+                        Broadbean API
+                      </h4>
+                      <p className="text-sm text-gray-600">
+                        Multi-board distribution
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    {postingStatus.broadbean === "pending" && (
+                      <>
+                        <div className="w-3 h-3 rounded-full bg-gray-300"></div>
+                        <span className="text-sm text-gray-600">
+                          Ready to distribute
+                        </span>
+                      </>
+                    )}
+                    {postingStatus.broadbean === "posting" && (
+                      <>
+                        <div className="w-3 h-3 rounded-full bg-orange-400 animate-pulse"></div>
+                        <span className="text-sm text-orange-600">
+                          Distributing via Broadbean...
+                        </span>
+                      </>
+                    )}
+                    {postingStatus.broadbean === "success" && (
+                      <>
+                        <CheckCircle className="w-4 h-4 text-green-600" />
+                        <span className="text-sm text-green-600">
+                          Distributed to {postingStatus.jobBoards.length} job
+                          boards
+                        </span>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Job Board Results */}
+              {postingStatus.jobBoards.length > 0 && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+                  <h4 className="font-semibold text-green-800 mb-4 flex items-center space-x-2">
+                    <CheckCircle className="w-5 h-5" />
+                    <span>Successfully Posted to Job Boards</span>
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {postingStatus.jobBoards.map((board, index) => (
+                      <div
+                        key={index}
+                        className="bg-white rounded-lg p-4 border border-green-200"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <CheckCircle className="w-4 h-4 text-green-600" />
+                            <span className="font-medium text-gray-900">
+                              {board.name}
+                            </span>
+                          </div>
+                          <a
+                            href={board.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800 text-sm flex items-center space-x-1"
+                          >
+                            <ExternalLink size={12} />
+                            <span>View</span>
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="flex justify-between items-center pt-4 border-t">
+                <button
+                  onClick={() => setActiveModalTab("description")}
+                  className="text-gray-600 hover:text-gray-800 text-sm font-medium"
+                >
+                  ← Back to Description
+                </button>
+                <div className="flex space-x-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowNewRoleModal(false);
+                      resetModal();
+                    }}
+                    className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
+                  >
+                    Close
+                  </button>
+                  <button
+                    onClick={handleSubmit}
+                    className="px-6 py-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all"
+                  >
+                    Create Role & Finish
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -781,283 +1029,1172 @@ const UPhirePlatform = () => {
         priority: "medium",
         deiScore: 92,
       },
+      {
+        id: 3,
+        title: "UX Designer",
+        department: "Design",
+        location: "Hybrid/London",
+        status: "active",
+        candidates: 12,
+        shortlisted: 4,
+        interviewed: 1,
+        created: "2025-06-08",
+        salary: "£45,000 - £65,000",
+        priority: "medium",
+        deiScore: 78,
+      },
+    ];
+
+    const mockCandidates: Candidate[] = [
+      {
+        id: 1,
+        name: "Sarah Johnson",
+        role: "Senior Frontend Developer",
+        email: "sarah.j@email.com",
+        location: "London",
+        experience: "5 years",
+        skills: ["React", "TypeScript", "Node.js", "AWS"],
+        aiMatch: 94,
+        status: "shortlisted",
+        source: "LinkedIn",
+        applied: "2025-06-10",
+        avatar: "👩‍💻",
+      },
+      {
+        id: 2,
+        name: "Michael Chen",
+        role: "Senior Frontend Developer",
+        email: "m.chen@email.com",
+        location: "Manchester",
+        experience: "7 years",
+        skills: ["Vue.js", "JavaScript", "Python", "Docker"],
+        aiMatch: 87,
+        status: "interviewed",
+        source: "Indeed",
+        applied: "2025-06-08",
+        avatar: "👨‍💻",
+      },
+      {
+        id: 3,
+        name: "Emma Rodriguez",
+        role: "UX Designer",
+        email: "emma.r@email.com",
+        location: "London",
+        experience: "4 years",
+        skills: ["Figma", "Sketch", "User Research", "Prototyping"],
+        aiMatch: 91,
+        status: "shortlisted",
+        source: "Dribbble",
+        applied: "2025-06-12",
+        avatar: "👩‍🎨",
+      },
+    ];
+
+    const mockDocuments: Document[] = [
+      {
+        id: 1,
+        name: "Standard Offer Letter",
+        type: "offer_letter",
+        category: "Offers",
+        lastModified: "2025-06-10",
+        autoSend: true,
+        template:
+          "Dear {{candidate_name}}, We are delighted to offer you the position of {{role_title}} at {{company_name}}. Your starting salary will be {{salary}} and your start date is {{start_date}}.",
+      },
+      {
+        id: 2,
+        name: "Employment Contract",
+        type: "contract",
+        category: "Contracts",
+        lastModified: "2025-06-08",
+        autoSend: false,
+        template:
+          "This Employment Agreement is entered into between {{company_name}} and {{candidate_name}} for the position of {{role_title}}.",
+      },
+    ];
+
+    const mockEmployees = [
+      {
+        id: 1,
+        name: "John Smith",
+        position: "Senior Developer",
+        department: "Engineering",
+        startDate: "2024-01-15",
+        status: "active",
+        probationPeriod: false,
+        avatar: "👨‍💼",
+        email: "john.smith@company.com",
+        documents: [],
+      },
+      {
+        id: 2,
+        name: "Lisa Wang",
+        position: "Product Designer",
+        department: "Design",
+        startDate: "2024-03-01",
+        status: "active",
+        probationPeriod: true,
+        avatar: "👩‍🎨",
+        email: "lisa.wang@company.com",
+        documents: [],
+      },
     ];
 
     setRoles(mockRoles);
+    setCandidates(mockCandidates);
+    setDocuments(mockDocuments);
+    setEmployees(mockEmployees);
   }, []);
 
   const tabs = [
     { id: "dashboard", label: "Dashboard", icon: BarChart3 },
     { id: "roles", label: "Roles", icon: Briefcase },
     { id: "candidates", label: "Candidates", icon: Users },
+    { id: "savings", label: "Savings", icon: TrendingUp },
+    { id: "documents", label: "Documents", icon: FileText },
+    { id: "analytics", label: "Analytics", icon: PieChart },
+    { id: "employees", label: "Employees", icon: UserCheck },
+    { id: "business", label: "My Business", icon: Factory },
   ];
 
-  const renderTabContent = () => {
-    switch (activeTab) {
-      case "dashboard":
-        return (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div>
-                <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-                <p className="text-blue-100">
-                  Welcome to your AI-powered recruitment platform
-                </p>
-              </div>
-              <button
-                onClick={startNewRole}
-                className="bg-white bg-opacity-20 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-opacity-30 border border-white border-opacity-30 transition-all"
-              >
-                <Plus size={16} />
-                <span>Create New Role</span>
-              </button>
-            </div>
+  const DashboardTab = () => (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Dashboard</h1>
+          <p className="text-blue-100">
+            Welcome to your AI-powered recruitment platform
+          </p>
+        </div>
+        <button
+          onClick={startNewRole}
+          className="bg-white bg-opacity-20 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-opacity-30 border border-white border-opacity-30 transition-all"
+        >
+          <Plus size={16} />
+          <span>Create New Role</span>
+        </button>
+      </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-white bg-opacity-95 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white border-opacity-20">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">
-                      Total Candidates
-                    </p>
-                    <p className="text-3xl font-bold text-gray-900">
-                      {roles.reduce((sum, role) => sum + role.candidates, 0)}
-                    </p>
-                  </div>
-                  <Users className="h-8 w-8 text-green-600" />
-                </div>
-              </div>
-              <div className="bg-white bg-opacity-95 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white border-opacity-20">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">
-                      Shortlisted
-                    </p>
-                    <p className="text-3xl font-bold text-gray-900">
-                      {roles.reduce((sum, role) => sum + role.shortlisted, 0)}
-                    </p>
-                  </div>
-                  <Star className="h-8 w-8 text-yellow-600" />
-                </div>
-              </div>
-              <div className="bg-white bg-opacity-95 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white border-opacity-20">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">
-                      Avg DEI Score
-                    </p>
-                    <p className="text-3xl font-bold text-gray-900">88</p>
-                  </div>
-                  <Award className="h-8 w-8 text-purple-600" />
-                </div>
-              </div>
-              <div className="bg-white bg-opacity-95 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white border-opacity-20">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">
-                      Agency Savings
-                    </p>
-                    <p className="text-3xl font-bold text-green-600">£47,250</p>
-                    <p className="text-xs text-green-500 mt-1">
-                      vs 15% agency fees
-                    </p>
-                  </div>
-                  <div className="h-8 w-8 bg-green-100 rounded-lg flex items-center justify-center">
-                    <span className="text-green-600 font-bold text-lg">£</span>
-                  </div>
-                </div>
-              </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white border-opacity-20">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">
+                Total Candidates
+              </p>
+              <p className="text-3xl font-bold text-gray-900">
+                {roles.reduce((sum, role) => sum + role.candidates, 0)}
+              </p>
             </div>
-
-            <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Active Roles
-              </h3>
-              <div className="space-y-4">
-                {roles.map((role) => (
-                  <div
-                    key={role.id}
-                    className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
-                  >
-                    <div className="flex-1">
-                      <h4 className="font-medium text-gray-900">
-                        {role.title}
-                      </h4>
-                      <p className="text-sm text-gray-600">
-                        {role.department} • {role.location}
-                      </p>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                      <div className="text-center">
-                        <p className="text-2xl font-bold text-blue-600">
-                          {role.candidates}
-                        </p>
-                        <p className="text-xs text-gray-500">Applied</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-2xl font-bold text-yellow-600">
-                          {role.shortlisted}
-                        </p>
-                        <p className="text-xs text-gray-500">Shortlisted</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-2xl font-bold text-green-600">
-                          {role.interviewed}
-                        </p>
-                        <p className="text-xs text-gray-500">Interviewed</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+            <Users className="h-8 w-8 text-green-600" />
+          </div>
+        </div>
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white border-opacity-20">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Shortlisted</p>
+              <p className="text-3xl font-bold text-gray-900">
+                {roles.reduce((sum, role) => sum + role.shortlisted, 0)}
+              </p>
+            </div>
+            <Star className="h-8 w-8 text-yellow-600" />
+          </div>
+        </div>
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white border-opacity-20">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Avg DEI Score</p>
+              <p className="text-3xl font-bold text-gray-900">88</p>
+            </div>
+            <Award className="h-8 w-8 text-purple-600" />
+          </div>
+        </div>
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white border-opacity-20">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">
+                Agency Savings
+              </p>
+              <p className="text-3xl font-bold text-green-600">£47,250</p>
+              <p className="text-xs text-green-500 mt-1">vs 15% agency fees</p>
+            </div>
+            <div className="h-8 w-8 bg-green-100 rounded-lg flex items-center justify-center">
+              <span className="text-green-600 font-bold text-lg">£</span>
             </div>
           </div>
-        );
+        </div>
+      </div>
 
-      case "roles":
-        return (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div>
-                <h1 className="text-3xl font-bold text-white">Roles</h1>
-                <p className="text-blue-100">
-                  Manage your open positions and recruitment pipeline
-                </p>
-              </div>
-              <button
-                onClick={startNewRole}
-                className="bg-white bg-opacity-20 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-opacity-30 border border-white border-opacity-30 transition-all"
-              >
-                <Plus size={16} />
-                <span>Create New Role</span>
-              </button>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Recent Activity
+          </h3>
+          <div className="space-y-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <p className="text-sm text-gray-700">
+                Sarah Johnson shortlisted for Senior Frontend Developer
+              </p>
+              <span className="text-xs text-gray-500">2h ago</span>
             </div>
+            <div className="flex items-center space-x-3">
+              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              <p className="text-sm text-gray-700">
+                New role created: UX Designer
+              </p>
+              <span className="text-xs text-gray-500">4h ago</span>
+            </div>
+            <div className="flex items-center space-x-3">
+              <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+              <p className="text-sm text-gray-700">
+                Interview scheduled with Michael Chen
+              </p>
+              <span className="text-xs text-gray-500">1d ago</span>
+            </div>
+          </div>
+        </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-              {roles.map((role) => (
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Upcoming Interviews
+          </h3>
+          {scheduledInterviews.length === 0 ? (
+            <div className="text-center py-8">
+              <CalendarDays className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+              <p className="text-sm text-gray-500">No interviews scheduled</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {scheduledInterviews.slice(0, 3).map((interview) => (
                 <div
-                  key={role.id}
-                  className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6"
+                  key={interview.id}
+                  className="flex items-center justify-between p-3 bg-blue-50 rounded-lg"
                 >
-                  <div className="flex justify-between items-start mb-4">
+                  <div className="flex items-center space-x-3">
+                    <CalendarDays className="w-4 h-4 text-blue-600" />
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        {role.title}
-                      </h3>
-                      <p className="text-sm text-gray-600">
-                        {role.department} • {role.location}
+                      <p className="text-sm font-medium text-gray-900">
+                        {interview.candidate.name}
                       </p>
-                    </div>
-                    <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
-                      {role.status}
-                    </span>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">Salary:</span>
-                      <span className="text-sm font-medium text-gray-900">
-                        {role.salary}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">DEI Score:</span>
-                      <span className="text-sm font-medium text-purple-600">
-                        {role.deiScore}%
-                      </span>
+                      <p className="text-xs text-gray-500">
+                        {interview.type.charAt(0).toUpperCase() +
+                          interview.type.slice(1)}{" "}
+                        Interview
+                      </p>
                     </div>
                   </div>
-
-                  <div className="mt-4 grid grid-cols-3 gap-4 text-center">
-                    <div>
-                      <p className="text-2xl font-bold text-blue-600">
-                        {role.candidates}
-                      </p>
-                      <p className="text-xs text-gray-500">Applied</p>
-                    </div>
-                    <div>
-                      <p className="text-2xl font-bold text-yellow-600">
-                        {role.shortlisted}
-                      </p>
-                      <p className="text-xs text-gray-500">Shortlisted</p>
-                    </div>
-                    <div>
-                      <p className="text-2xl font-bold text-green-600">
-                        {role.interviewed}
-                      </p>
-                      <p className="text-xs text-gray-500">Interviewed</p>
-                    </div>
+                  <div className="text-right">
+                    <p className="text-sm font-medium text-gray-900">
+                      {interview.date}
+                    </p>
+                    <p className="text-xs text-gray-500">{interview.time}</p>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        );
+          )}
+        </div>
+      </div>
 
-      case "candidates":
-        return (
-          <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div>
-                <h1 className="text-3xl font-bold text-white">Candidates</h1>
-                <p className="text-blue-100">
-                  Review and manage candidate applications
+      <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Active Roles
+        </h3>
+        <div className="space-y-4">
+          {roles.map((role) => (
+            <div
+              key={role.id}
+              className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+            >
+              <div className="flex-1">
+                <h4 className="font-medium text-gray-900">{role.title}</h4>
+                <p className="text-sm text-gray-600">
+                  {role.department} • {role.location}
                 </p>
               </div>
+              <div className="flex items-center space-x-4">
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-blue-600">
+                    {role.candidates}
+                  </p>
+                  <p className="text-xs text-gray-500">Applied</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-yellow-600">
+                    {role.shortlisted}
+                  </p>
+                  <p className="text-xs text-gray-500">Shortlisted</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-green-600">
+                    {role.interviewed}
+                  </p>
+                  <p className="text-xs text-gray-500">Interviewed</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  const RolesTab = () => (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Roles</h1>
+          <p className="text-blue-100">
+            Manage your open positions and recruitment pipeline
+          </p>
+        </div>
+        <button
+          onClick={startNewRole}
+          className="bg-white bg-opacity-20 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-opacity-30 border border-white border-opacity-30 transition-all"
+        >
+          <Plus size={16} />
+          <span>Create New Role</span>
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+        {roles.map((role) => (
+          <div
+            key={role.id}
+            className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6"
+          >
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {role.title}
+                </h3>
+                <p className="text-sm text-gray-600">
+                  {role.department} • {role.location}
+                </p>
+              </div>
+              <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                {role.status}
+              </span>
             </div>
 
-            <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Recent Applications
-              </h3>
-              <div className="space-y-4">
-                {candidates.map((candidate) => (
-                  <div
-                    key={candidate.id}
-                    className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
-                  >
-                    <div className="flex items-center space-x-4">
-                      <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                        <span className="text-lg">{candidate.avatar}</span>
-                      </div>
-                      <div>
-                        <h4 className="font-medium text-gray-900">
-                          {candidate.name}
-                        </h4>
-                        <p className="text-sm text-gray-600">
-                          {candidate.role} • {candidate.location}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                      <div className="text-center">
-                        <p className="text-lg font-bold text-green-600">
-                          {candidate.aiMatch}%
-                        </p>
-                        <p className="text-xs text-gray-500">AI Match</p>
-                      </div>
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-sm text-gray-600">Salary:</span>
+                <span className="text-sm font-medium text-gray-900">
+                  {role.salary}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm text-gray-600">DEI Score:</span>
+                <span className="text-sm font-medium text-purple-600">
+                  {role.deiScore}%
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-4 grid grid-cols-3 gap-4 text-center">
+              <div>
+                <p className="text-2xl font-bold text-blue-600">
+                  {role.candidates}
+                </p>
+                <p className="text-xs text-gray-500">Applied</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-yellow-600">
+                  {role.shortlisted}
+                </p>
+                <p className="text-xs text-gray-500">Shortlisted</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-green-600">
+                  {role.interviewed}
+                </p>
+                <p className="text-xs text-gray-500">Interviewed</p>
+              </div>
+            </div>
+
+            <div className="mt-4 flex space-x-2">
+              <button className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors">
+                View Details
+              </button>
+              <button className="px-3 py-2 bg-gray-600 text-white rounded-lg text-sm hover:bg-gray-700 transition-colors">
+                <Eye size={16} />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const CandidatesTab = () => (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Candidates</h1>
+          <p className="text-blue-100">
+            Review and manage candidate applications
+          </p>
+        </div>
+        <div className="flex items-center space-x-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <input
+              type="text"
+              placeholder="Search candidates..."
+              className="pl-10 pr-4 py-2 bg-white bg-opacity-20 backdrop-blur-sm text-white placeholder-blue-200 border border-white border-opacity-30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+            />
+          </div>
+          <button className="bg-white bg-opacity-20 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-opacity-30 border border-white border-opacity-30 transition-all">
+            <Filter size={16} />
+            <span>Filter</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Recent Applications
+        </h3>
+        <div className="space-y-4">
+          {candidates.map((candidate) => (
+            <div
+              key={candidate.id}
+              className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+            >
+              <div className="flex items-center space-x-4">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                  <span className="text-lg">{candidate.avatar}</span>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900">
+                    {candidate.name}
+                  </h4>
+                  <p className="text-sm text-gray-600">
+                    {candidate.role} • {candidate.location}
+                  </p>
+                  <div className="flex items-center space-x-2 mt-1">
+                    {candidate.skills.slice(0, 3).map((skill, index) => (
                       <span
-                        className={cn(
-                          "px-2 py-1 text-xs font-medium rounded-full",
-                          candidate.status === "shortlisted"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : candidate.status === "interviewed"
-                              ? "bg-green-100 text-green-800"
-                              : "bg-blue-100 text-blue-800",
-                        )}
+                        key={index}
+                        className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
                       >
-                        {candidate.status}
+                        {skill}
                       </span>
-                    </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+              </div>
+              <div className="flex items-center space-x-4">
+                <div className="text-center">
+                  <p className="text-lg font-bold text-green-600">
+                    {candidate.aiMatch}%
+                  </p>
+                  <p className="text-xs text-gray-500">AI Match</p>
+                </div>
+                <span
+                  className={cn(
+                    "px-2 py-1 text-xs font-medium rounded-full",
+                    candidate.status === "shortlisted"
+                      ? "bg-yellow-100 text-yellow-800"
+                      : candidate.status === "interviewed"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-blue-100 text-blue-800",
+                  )}
+                >
+                  {candidate.status}
+                </span>
+                <button className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition-colors">
+                  View Profile
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  const SavingsTab = () => (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Cost Savings</h1>
+          <p className="text-blue-100">
+            Track your recruitment cost savings vs traditional agency fees
+          </p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white border-opacity-20">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Total Saved</p>
+              <p className="text-3xl font-bold text-green-600">£47,250</p>
+              <p className="text-sm text-green-500">vs 15% agency fees</p>
+            </div>
+            <TrendingUp className="h-8 w-8 text-green-600" />
+          </div>
+        </div>
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white border-opacity-20">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Cost Per Hire</p>
+              <p className="text-3xl font-bold text-blue-600">£2,350</p>
+              <p className="text-sm text-blue-500">UPhire platform</p>
+            </div>
+            <Target className="h-8 w-8 text-blue-600" />
+          </div>
+        </div>
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white border-opacity-20">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">ROI</p>
+              <p className="text-3xl font-bold text-purple-600">2,010%</p>
+              <p className="text-sm text-purple-500">return on investment</p>
+            </div>
+            <Trophy className="h-8 w-8 text-purple-600" />
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Savings Breakdown by Role
+        </h3>
+        <div className="space-y-4">
+          {roles.map((role) => {
+            const agencyCost = Math.round(
+              (parseInt(role.salary.split("-")[1]?.replace(/[£,]/g, "")) ||
+                60000) * 0.15,
+            );
+            const uphireCost = 2350;
+            const savings = agencyCost - uphireCost;
+
+            return (
+              <div
+                key={role.id}
+                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+              >
+                <div className="flex-1">
+                  <h4 className="font-medium text-gray-900">{role.title}</h4>
+                  <p className="text-sm text-gray-600">
+                    {role.department} • {role.salary}
+                  </p>
+                </div>
+                <div className="flex items-center space-x-6">
+                  <div className="text-center">
+                    <p className="text-sm font-medium text-red-600">
+                      £{agencyCost.toLocaleString()}
+                    </p>
+                    <p className="text-xs text-gray-500">Agency Cost</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-sm font-medium text-blue-600">
+                      £{uphireCost.toLocaleString()}
+                    </p>
+                    <p className="text-xs text-gray-500">UPhire Cost</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-lg font-bold text-green-600">
+                      £{savings.toLocaleString()}
+                    </p>
+                    <p className="text-xs text-gray-500">Saved</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+
+  const DocumentsTab = () => (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Documents</h1>
+          <p className="text-blue-100">
+            Manage offer letters, contracts, and automated communications
+          </p>
+        </div>
+        <button
+          onClick={() => setShowDocumentModal(true)}
+          className="bg-white bg-opacity-20 backdrop-blur-sm text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-opacity-30 border border-white border-opacity-30 transition-all"
+        >
+          <Plus size={16} />
+          <span>Create Document</span>
+        </button>
+      </div>
+
+      <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Document Templates
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {documents.map((doc) => (
+            <div
+              key={doc.id}
+              className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex items-center space-x-2">
+                  <FileText className="h-5 w-5 text-blue-600" />
+                  <h4 className="font-medium text-gray-900">{doc.name}</h4>
+                </div>
+                <span
+                  className={cn(
+                    "px-2 py-1 text-xs font-medium rounded-full",
+                    doc.autoSend
+                      ? "bg-green-100 text-green-800"
+                      : "bg-gray-100 text-gray-800",
+                  )}
+                >
+                  {doc.autoSend ? "Auto-send" : "Manual"}
+                </span>
+              </div>
+              <p className="text-sm text-gray-600 mb-2">{doc.category}</p>
+              <p className="text-xs text-gray-500">
+                Last modified: {doc.lastModified}
+              </p>
+              <div className="mt-3 flex space-x-2">
+                <button className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition-colors">
+                  Edit
+                </button>
+                <button className="px-3 py-1 bg-gray-600 text-white rounded text-sm hover:bg-gray-700 transition-colors">
+                  Preview
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  const AnalyticsTab = () => (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Analytics</h1>
+          <p className="text-blue-100">
+            Deep insights into your recruitment performance
+          </p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white border-opacity-20">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">
+                Application Rate
+              </p>
+              <p className="text-2xl font-bold text-blue-600">18.5%</p>
+              <p className="text-xs text-green-500">+2.3% from last month</p>
+            </div>
+            <BarChart2 className="h-8 w-8 text-blue-600" />
+          </div>
+        </div>
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white border-opacity-20">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">
+                Interview Rate
+              </p>
+              <p className="text-2xl font-bold text-purple-600">12.8%</p>
+              <p className="text-xs text-green-500">+1.2% from last month</p>
+            </div>
+            <PieChart className="h-8 w-8 text-purple-600" />
+          </div>
+        </div>
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white border-opacity-20">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Time to Hire</p>
+              <p className="text-2xl font-bold text-green-600">23 days</p>
+              <p className="text-xs text-green-500">-3 days from last month</p>
+            </div>
+            <Clock className="h-8 w-8 text-green-600" />
+          </div>
+        </div>
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white border-opacity-20">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Quality Score</p>
+              <p className="text-2xl font-bold text-yellow-600">8.7/10</p>
+              <p className="text-xs text-green-500">+0.3 from last month</p>
+            </div>
+            <Star className="h-8 w-8 text-yellow-600" />
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Source Performance
+          </h3>
+          <div className="space-y-4">
+            {[
+              { source: "LinkedIn", applications: 156, quality: 8.9 },
+              { source: "Indeed", applications: 89, quality: 7.2 },
+              { source: "Company Website", applications: 67, quality: 9.1 },
+              { source: "Referrals", applications: 23, quality: 9.5 },
+            ].map((source) => (
+              <div
+                key={source.source}
+                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+              >
+                <span className="font-medium text-gray-900">
+                  {source.source}
+                </span>
+                <div className="flex items-center space-x-4">
+                  <div className="text-center">
+                    <p className="text-sm font-bold text-blue-600">
+                      {source.applications}
+                    </p>
+                    <p className="text-xs text-gray-500">Applications</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-sm font-bold text-green-600">
+                      {source.quality}
+                    </p>
+                    <p className="text-xs text-gray-500">Quality</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Department Performance
+          </h3>
+          <div className="space-y-4">
+            {[
+              { dept: "Engineering", time: 21, cost: 2100 },
+              { dept: "Product", time: 28, cost: 2600 },
+              { dept: "Design", time: 19, cost: 1900 },
+              { dept: "Sales", time: 15, cost: 1500 },
+            ].map((dept) => (
+              <div
+                key={dept.dept}
+                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+              >
+                <span className="font-medium text-gray-900">{dept.dept}</span>
+                <div className="flex items-center space-x-4">
+                  <div className="text-center">
+                    <p className="text-sm font-bold text-blue-600">
+                      {dept.time}d
+                    </p>
+                    <p className="text-xs text-gray-500">Avg Time</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-sm font-bold text-green-600">
+                      £{dept.cost}
+                    </p>
+                    <p className="text-xs text-gray-500">Avg Cost</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const EmployeesTab = () => (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Employees</h1>
+          <p className="text-blue-100">Manage your team and employee records</p>
+        </div>
+      </div>
+
+      <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Employee Directory
+        </h3>
+        <div className="space-y-4">
+          {employees.map((employee) => {
+            const startDate = new Date(employee.startDate);
+            const today = new Date();
+            const tenure = Math.floor(
+              (today.getTime() - startDate.getTime()) /
+                (1000 * 60 * 60 * 24 * 30),
+            );
+
+            return (
+              <div
+                key={employee.id}
+                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+              >
+                <div className="flex items-center space-x-4">
+                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-lg">{employee.avatar}</span>
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900">
+                      {employee.name}
+                    </h4>
+                    <p className="text-sm text-gray-600">
+                      {employee.position} • {employee.department}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Started: {employee.startDate} • {tenure} months tenure
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <span
+                    className={cn(
+                      "px-2 py-1 text-xs font-medium rounded-full",
+                      employee.probationPeriod
+                        ? "bg-yellow-100 text-yellow-800"
+                        : "bg-green-100 text-green-800",
+                    )}
+                  >
+                    {employee.probationPeriod ? "Probation" : "Confirmed"}
+                  </span>
+                  <button className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition-colors">
+                    View Profile
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+
+  const MyBusinessTab = () => {
+    const [isEditing, setIsEditing] = useState(false);
+    const [editForm, setEditForm] = useState(businessProfile);
+
+    const handleSave = () => {
+      setBusinessProfile(editForm);
+      setIsEditing(false);
+      alert(
+        "Business profile updated! This information will enhance AI job descriptions.",
+      );
+    };
+
+    const handleCancel = () => {
+      setEditForm(businessProfile);
+      setIsEditing(false);
+    };
+
+    return (
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h2 className="text-2xl font-bold text-white">My Business</h2>
+            <p className="text-blue-100">
+              Manage your company information to enhance AI-powered job
+              descriptions
+            </p>
+          </div>
+          <button
+            onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
+            className="flex items-center space-x-2 px-4 py-2 bg-white bg-opacity-20 backdrop-blur-sm text-white border border-white border-opacity-30 rounded-lg hover:bg-opacity-30 transition-all"
+          >
+            {isEditing ? <Save size={16} /> : <Edit size={16} />}
+            <span>{isEditing ? "Save Changes" : "Edit Profile"}</span>
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Company Information */}
+          <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Company Information
+            </h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Company Name
+                </label>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editForm.companyName}
+                    onChange={(e) =>
+                      setEditForm({
+                        ...editForm,
+                        companyName: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                ) : (
+                  <p className="text-gray-900 font-medium">
+                    {businessProfile.companyName || "Not set"}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Industry
+                </label>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editForm.industry}
+                    onChange={(e) =>
+                      setEditForm({ ...editForm, industry: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                ) : (
+                  <p className="text-gray-900 font-medium">
+                    {businessProfile.industry || "Not set"}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Location
+                </label>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={editForm.location}
+                    onChange={(e) =>
+                      setEditForm({ ...editForm, location: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                ) : (
+                  <p className="text-gray-900 font-medium">
+                    {businessProfile.location || "Not set"}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Company Size
+                </label>
+                {isEditing ? (
+                  <select
+                    value={editForm.size}
+                    onChange={(e) =>
+                      setEditForm({ ...editForm, size: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="">Select size</option>
+                    <option value="1-10">1-10 employees</option>
+                    <option value="11-50">11-50 employees</option>
+                    <option value="51-200">51-200 employees</option>
+                    <option value="201-500">201-500 employees</option>
+                    <option value="500+">500+ employees</option>
+                  </select>
+                ) : (
+                  <p className="text-gray-900 font-medium">
+                    {businessProfile.size || "Not set"}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Website
+                </label>
+                {isEditing ? (
+                  <input
+                    type="url"
+                    value={editForm.website}
+                    onChange={(e) =>
+                      setEditForm({ ...editForm, website: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="https://..."
+                  />
+                ) : (
+                  <a
+                    href={businessProfile.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-800 font-medium"
+                  >
+                    {businessProfile.website || "Not set"}
+                  </a>
+                )}
               </div>
             </div>
           </div>
-        );
 
+          {/* Company Description */}
+          <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Company Description
+            </h3>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                About Your Company
+              </label>
+              {isEditing ? (
+                <textarea
+                  rows={4}
+                  value={editForm.description}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, description: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Tell us about your company..."
+                />
+              ) : (
+                <p className="text-gray-700">
+                  {businessProfile.description || "Not set"}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Culture & Values */}
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Culture & Values
+          </h3>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Company Mission
+              </label>
+              {isEditing ? (
+                <textarea
+                  rows={3}
+                  value={editForm.mission}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, mission: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="What is your company's mission?"
+                />
+              ) : (
+                <p className="text-gray-700">
+                  {businessProfile.mission || "Not set"}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Company Values
+              </label>
+              {isEditing ? (
+                <textarea
+                  rows={3}
+                  value={editForm.values}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, values: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="What are your core values?"
+                />
+              ) : (
+                <p className="text-gray-700">
+                  {businessProfile.values || "Not set"}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Company Culture
+              </label>
+              {isEditing ? (
+                <textarea
+                  rows={3}
+                  value={editForm.culture}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, culture: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Describe your company culture..."
+                />
+              ) : (
+                <p className="text-gray-700">
+                  {businessProfile.culture || "Not set"}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Benefits & Perks
+              </label>
+              {isEditing ? (
+                <textarea
+                  rows={3}
+                  value={editForm.benefits}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, benefits: e.target.value })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="What benefits do you offer?"
+                />
+              ) : (
+                <p className="text-gray-700">
+                  {businessProfile.benefits || "Not set"}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {isEditing && (
+          <div className="flex justify-end space-x-3">
+            <button
+              onClick={handleCancel}
+              className="px-4 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleSave}
+              className="px-6 py-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all"
+            >
+              Save Changes
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case "dashboard":
+        return <DashboardTab />;
+      case "roles":
+        return <RolesTab />;
+      case "candidates":
+        return <CandidatesTab />;
+      case "savings":
+        return <SavingsTab />;
+      case "documents":
+        return <DocumentsTab />;
+      case "analytics":
+        return <AnalyticsTab />;
+      case "employees":
+        return <EmployeesTab />;
+      case "business":
+        return <MyBusinessTab />;
       default:
-        return null;
+        return <DashboardTab />;
     }
   };
 
@@ -1100,13 +2237,92 @@ const UPhirePlatform = () => {
               })}
             </nav>
 
-            {/* Mobile menu button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden text-white p-2"
-            >
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            {/* User Profile / Login */}
+            <div className="flex items-center space-x-4">
+              {isLoggedIn ? (
+                <div className="relative">
+                  <button
+                    onClick={() => setShowUserDropdown(!showUserDropdown)}
+                    className="flex items-center space-x-2 text-white hover:bg-white hover:bg-opacity-10 px-3 py-2 rounded-lg transition-all"
+                  >
+                    <div className="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-sm font-bold">
+                      {user.initials}
+                    </div>
+                    <ChevronDown size={16} />
+                  </button>
+
+                  {showUserDropdown && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border z-50">
+                      <div className="p-3 border-b">
+                        <p className="font-medium text-gray-900">{user.name}</p>
+                        <p className="text-sm text-gray-600">{user.email}</p>
+                        <p className="text-xs text-gray-500">{user.role}</p>
+                      </div>
+                      <div className="py-1">
+                        <button
+                          onClick={() => {
+                            setShowUserDropdown(false);
+                            setShowSettingsModal(true);
+                          }}
+                          className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          <Settings size={16} />
+                          <span>Settings</span>
+                        </button>
+                        <button
+                          onClick={() => {
+                            setShowUserDropdown(false);
+                            setActiveTab("business");
+                          }}
+                          className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          <Factory size={16} />
+                          <span>My Business</span>
+                        </button>
+                        <button className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          <HelpCircle size={16} />
+                          <span>Help & Support</span>
+                        </button>
+                        <div className="border-t my-1"></div>
+                        <button
+                          onClick={() => {
+                            setIsLoggedIn(false);
+                            setUser({
+                              name: "",
+                              email: "",
+                              initials: "",
+                              role: "",
+                              company: "",
+                            });
+                            setShowUserDropdown(false);
+                          }}
+                          className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-red-700 hover:bg-red-50"
+                        >
+                          <LogOut size={16} />
+                          <span>Sign Out</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button
+                  onClick={() => setShowLoginModal(true)}
+                  className="flex items-center space-x-2 bg-white bg-opacity-20 backdrop-blur-sm text-white px-4 py-2 rounded-lg hover:bg-opacity-30 border border-white border-opacity-30 transition-all"
+                >
+                  <LogIn size={16} />
+                  <span>Sign In</span>
+                </button>
+              )}
+
+              {/* Mobile menu button */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="lg:hidden text-white p-2"
+              >
+                {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </div>
 
