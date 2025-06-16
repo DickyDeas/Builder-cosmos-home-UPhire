@@ -127,8 +127,37 @@ const RecruitModal = ({
   const [outreachResults, setOutreachResults] = useState([]);
   const [interestedCandidates, setInterestedCandidates] = useState([]);
   const [rankedCandidates, setRankedCandidates] = useState([]);
+  const [schedulingCandidate, setSchedulingCandidate] = useState(null);
+  const [showCalendlyModal, setShowCalendlyModal] = useState(false);
 
   const role = roles.find((r) => r.id === recruitingRoleId);
+
+  // Calendly configuration
+  const calendlyUrl = "https://calendly.com/your-company/interview"; // Replace with your actual Calendly URL
+
+  const openCalendlyScheduling = (candidate) => {
+    setSchedulingCandidate(candidate);
+
+    // Method 1: Open Calendly in a popup
+    if (window.Calendly) {
+      window.Calendly.initPopupWidget({
+        url: `${calendlyUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(", "))}`,
+        text: "Schedule Interview",
+        color: "#2563eb",
+        textColor: "#ffffff",
+        branding: true,
+      });
+    } else {
+      // Fallback: Open Calendly in new tab
+      const calendlyFullUrl = `${calendlyUrl}?prefill_name=${encodeURIComponent(candidate.name)}&prefill_custom_1=${encodeURIComponent(role?.title || "")}&prefill_custom_2=${encodeURIComponent(candidate.skills.join(", "))}`;
+      window.open(calendlyFullUrl, "_blank");
+    }
+  };
+
+  const openCalendlyInline = (candidate) => {
+    setSchedulingCandidate(candidate);
+    setShowCalendlyModal(true);
+  };
 
   if (!showRecruitModal) return null;
 
