@@ -4547,11 +4547,78 @@ Ready to join our team? Apply now and let's shape the future together!
       }, 4000);
     };
 
+    const generateJobDescription = () => {
+      if (!roleFormData.title || !roleFormData.department) {
+        alert("Please fill in at least the job title and department first.");
+        return;
+      }
+
+      setIsGenerating(true);
+      setTimeout(() => {
+        const description = `# ${roleFormData.title}
+
+${businessProfile.companyName ? `## About ${businessProfile.companyName}` : "## About Us"}
+${businessProfile.description || "We are a dynamic, innovative company committed to excellence and growth in our industry."}
+
+${businessProfile.mission ? `\n**Our Mission:** ${businessProfile.mission}` : ""}
+
+## Position Overview
+We are seeking a talented ${roleFormData.title} to join our ${roleFormData.department} team${roleFormData.location ? ` in ${roleFormData.location}` : ""}. ${businessProfile.description || "This is an excellent opportunity for a professional looking to make a significant impact in a dynamic, fast-growing organization."}
+
+## Key Responsibilities
+• Lead and execute ${roleFormData.department.toLowerCase()} initiatives that drive business growth
+• Collaborate with cross-functional teams to deliver high-quality solutions
+• Drive innovation and continuous improvement in processes and technologies
+• Mentor junior team members and contribute to team knowledge sharing
+• Ensure project delivery meets quality standards and timelines
+
+## Required Qualifications
+• ${roleFormData.experience || "3-5 years"} of relevant experience in ${roleFormData.department.toLowerCase()}
+• Strong analytical and problem-solving skills
+• Excellent communication and collaboration abilities
+• Proven track record of delivering results in a fast-paced environment
+• Bachelor's degree in relevant field or equivalent experience
+
+## Technical Skills
+${
+  roleFormData.skills
+    ? `• ${roleFormData.skills
+        .split(",")
+        .map((skill) => skill.trim())
+        .join("\n• ")}`
+    : "• Strong technical foundation relevant to the role\n• Proficiency in industry-standard tools and technologies"
+}
+
+## What We Offer
+${
+  businessProfile.benefits ||
+  roleFormData.benefits ||
+  `• Competitive salary range${roleFormData.salary ? `: ${roleFormData.salary}` : ""}
+• Comprehensive health and wellness benefits
+• Professional development opportunities
+• Flexible working arrangements
+• Collaborative and inclusive work environment`
+}
+
+${businessProfile.culture ? `\n## Our Culture\n${businessProfile.culture}` : ""}
+
+${businessProfile.values ? `\n## Our Values\n${businessProfile.values}` : ""}
+
+---
+
+Ready to make an impact? Apply now and join our team!`;
+
+        setGeneratedDescription(description);
+        setRoleFormData({ ...roleFormData, description });
+        setIsGenerating(false);
+      }, 2000);
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
       const newRole: Role = {
         id: roles.length + 1,
-        ...formData,
+        ...roleFormData,
         status: "active",
         candidates: 0,
         shortlisted: 0,
@@ -4566,7 +4633,7 @@ Ready to join our team? Apply now and let's shape the future together!
     };
 
     const resetModal = () => {
-      setFormData({
+      setRoleFormData({
         title: "",
         department: "",
         location: "",
