@@ -113,8 +113,7 @@ interface Document {
   template: string;
 }
 
-// PredictionModal component for AI Success Prediction results - temporarily disabled
-/*
+// PredictionModal component for AI Success Prediction results
 const PredictionModal = ({
   showPredictionModal,
   setShowPredictionModal,
