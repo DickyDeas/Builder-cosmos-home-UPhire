@@ -4819,9 +4819,12 @@ Ready to make an impact? Apply now and join our team!`;
                     </label>
                     <input
                       type="text"
-                      value={formData.skills}
+                      value={roleFormData.skills}
                       onChange={(e) =>
-                        setFormData({ ...formData, skills: e.target.value })
+                        setRoleFormData({
+                          ...roleFormData,
+                          skills: e.target.value,
+                        })
                       }
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="e.g. React, TypeScript, Node.js"
