@@ -2868,6 +2868,15 @@ const UPhirePlatform = () => {
           predictRoleSuccess={predictRoleSuccess}
         />
       )}
+
+      {showRecruitModal && (
+        <RecruitModal
+          showRecruitModal={showRecruitModal}
+          setShowRecruitModal={setShowRecruitModal}
+          recruitingRoleId={recruitingRoleId}
+          roles={roles}
+        />
+      )}
     </div>
   );
 };
