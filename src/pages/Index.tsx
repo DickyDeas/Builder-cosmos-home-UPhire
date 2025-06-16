@@ -3188,7 +3188,42 @@ const UPhirePlatform = () => {
     { id: "business", label: "My Business", icon: Factory },
   ];
 
-  // DashboardTab moved outside - placeholder
+  const DashboardTab = () => (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Dashboard</h1>
+          <p className="text-blue-100">
+            Welcome to your AI-powered recruitment platform
+          </p>
+        </div>
+      </div>
+
+      {/* Dashboard content placeholder */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Stats</h3>
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <CheckCircle className="w-4 h-4 text-green-500" />
+              <span className="text-gray-700">Real-time data</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <CheckCircle className="w-4 h-4 text-green-500" />
+              <span className="text-gray-700">Live salary data</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <CheckCircle className="w-4 h-4 text-green-500" />
+              <span className="text-gray-700">Market demand analytics</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <CheckCircle className="w-4 h-4 text-green-500" />
+              <span className="text-gray-700">Skills intelligence</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
