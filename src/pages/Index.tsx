@@ -1055,7 +1055,7 @@ const EmployeeModal = ({
                   { skill: "Blockchain", trend: "📈", growth: "+45%" },
                   { skill: "Cybersecurity", trend: "🛡️", growth: "+38%" },
                   { skill: "DevOps/Kubernetes", trend: "⚡", growth: "+42%" },
-                  { skill: "Data Engineering", trend: "📊", growth: "+29%" },
+                  { skill: "Data Engineering", trend: "���", growth: "+29%" },
                 ].map((item) => (
                   <div
                     key={item.skill}
@@ -2994,6 +2994,11 @@ const UPhirePlatform = () => {
     skills: [],
   });
   const [isSearching, setIsSearching] = useState(false);
+  const [marketSearchForm, setMarketSearchForm] = useState({
+    jobTitle: "",
+    location: "",
+  });
+  const [lastSearchResults, setLastSearchResults] = useState(null);
 
   // Role Creation Form Data - moved outside NewRoleModal to persist during navigation
   const [roleFormData, setRoleFormData] = useState({
