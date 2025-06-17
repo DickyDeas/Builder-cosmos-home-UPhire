@@ -2233,7 +2233,10 @@ const RolesTab = () => {
 
             <div className="space-y-2">
               <div className="flex space-x-2">
-                <button className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                <button
+                  onClick={() => viewJobDetails(role)}
+                  className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                >
                   View Details
                 </button>
                 <button
