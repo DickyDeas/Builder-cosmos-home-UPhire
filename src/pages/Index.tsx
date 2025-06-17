@@ -1786,6 +1786,89 @@ const DashboardTab = () => {
         </div>
       </div>
 
+      {/* Market Intelligence Section */}
+      <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Market Intelligence
+        </h3>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="space-y-4">
+            <h4 className="font-medium text-gray-900">Salary Insights</h4>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                <span className="text-sm font-medium text-gray-700">
+                  React Developer
+                </span>
+                <span className="text-sm text-gray-900">£45k - £85k</span>
+              </div>
+              <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                <span className="text-sm font-medium text-gray-700">
+                  Product Manager
+                </span>
+                <span className="text-sm text-gray-900">£55k - £90k</span>
+              </div>
+              <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                <span className="text-sm font-medium text-gray-700">
+                  UX Designer
+                </span>
+                <span className="text-sm text-gray-900">£40k - £65k</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="font-medium text-gray-900">Market Trends</h4>
+            <div className="space-y-3">
+              <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-900">
+                    High Demand
+                  </p>
+                  <p className="text-xs text-gray-600">
+                    React & TypeScript skills
+                  </p>
+                </div>
+                <ArrowUp className="w-4 h-4 text-green-600" />
+              </div>
+              <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-900">Growing</p>
+                  <p className="text-xs text-gray-600">UX/UI Design roles</p>
+                </div>
+                <TrendingUp className="w-4 h-4 text-blue-600" />
+              </div>
+              <div className="flex items-center space-x-3 p-3 bg-yellow-50 rounded-lg">
+                <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-gray-900">Stable</p>
+                  <p className="text-xs text-gray-600">Product Management</p>
+                </div>
+                <Target className="w-4 h-4 text-yellow-600" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 pt-6 border-t border-gray-200">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="text-center">
+              <p className="text-2xl font-bold text-blue-600">23d</p>
+              <p className="text-sm text-gray-600">Avg. Time to Fill</p>
+            </div>
+            <div className="text-center">
+              <p className="text-2xl font-bold text-green-600">85%</p>
+              <p className="text-sm text-gray-600">Market Competitiveness</p>
+            </div>
+            <div className="text-center">
+              <p className="text-2xl font-bold text-purple-600">42</p>
+              <p className="text-sm text-gray-600">Active Competitors</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Recent Activity & Performance */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
