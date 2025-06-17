@@ -74,6 +74,48 @@ interface Role {
   description?: string;
   requirements?: string[];
   benefits?: string[];
+  shortlistedCandidates?: ShortlistedCandidate[];
+}
+
+interface ShortlistedCandidate {
+  id: number;
+  name: string;
+  email: string;
+  location: string;
+  experience: string;
+  skills: string[];
+  aiMatch: number;
+  source: string;
+  applied: string;
+  avatar: string;
+  phoneNumber?: string;
+  linkedinProfile?: string;
+  githubProfile?: string;
+  portfolio?: string;
+  notes?: string;
+  interviewStage:
+    | "shortlisted"
+    | "screening_scheduled"
+    | "screening_completed"
+    | "technical_scheduled"
+    | "technical_completed"
+    | "final_scheduled"
+    | "final_completed"
+    | "offer_made"
+    | "hired"
+    | "rejected";
+  interviewHistory: InterviewRecord[];
+  lastUpdated: string;
+}
+
+interface InterviewRecord {
+  id: number;
+  type: "screening" | "technical" | "cultural" | "final";
+  status: "scheduled" | "completed" | "cancelled";
+  date: string;
+  interviewer: string;
+  feedback?: string;
+  rating?: number;
 }
 
 interface Candidate {
