@@ -1669,7 +1669,7 @@ const DashboardTab = () => (
               Total Candidates
             </p>
             <p className="text-3xl font-bold text-gray-900">
-              {mockCandidates.length + 244}
+              {mockCandidates.length}
             </p>
             <p className="text-sm text-green-600 flex items-center">
               <ArrowUp className="w-4 h-4 mr-1" />
