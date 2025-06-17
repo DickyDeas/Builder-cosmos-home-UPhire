@@ -6027,13 +6027,18 @@ const UPhirePlatform = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
               <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6 text-center">
-                <Brain className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+                <img
+                  src="https://cdn.builder.io/api/v1/assets/e3ae173b79f74e84b0580a7f82f9aa6c/uphire-iq-logo-no-background-a3ed8d?format=webp&width=800"
+                  alt="UPhireIQ AI Logo"
+                  className="w-12 h-12 mx-auto mb-4 object-contain"
+                />
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  AI-Powered Recruitment
+                  UPhireIQ AI-Powered Recruitment
                 </h3>
                 <p className="text-gray-600">
-                  4-stage AI recruitment automation across LinkedIn, Indeed,
-                  GitHub, and more platforms with intelligent candidate ranking.
+                  4-stage UPhireIQ AI recruitment automation across LinkedIn,
+                  Indeed, GitHub, and more platforms with intelligent candidate
+                  ranking.
                 </p>
               </div>
 
