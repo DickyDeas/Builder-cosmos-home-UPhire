@@ -5851,10 +5851,11 @@ const UPhirePlatform = () => {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-8">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                  <Zap className="w-6 h-6 text-white" />
-                </div>
-                <h1 className="text-2xl font-bold text-white">UPhire</h1>
+                <img
+                  src="https://cdn.builder.io/api/v1/assets/e3ae173b79f74e84b0580a7f82f9aa6c/uphire-logo-no-background-pink-text-72849d?format=webp&width=800"
+                  alt="UPhire Logo"
+                  className="h-10 w-auto"
+                />
               </div>
 
               {/* Desktop Navigation */}
