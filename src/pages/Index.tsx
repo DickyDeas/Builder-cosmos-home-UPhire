@@ -1057,7 +1057,37 @@ const RoleShortlistView = ({
         <h3 className="text-lg font-semibold text-gray-900 mb-4">
           Interview Pipeline Overview
         </h3>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
+          {/* All Candidates Tab */}
+          <button
+            onClick={() => setFilterStage("all")}
+            className={`border rounded-lg p-4 text-center transition-all hover:shadow-md ${
+              filterStage === "all"
+                ? "bg-blue-100 border-blue-300 ring-2 ring-blue-500 ring-opacity-50"
+                : "bg-gray-50 border-gray-200 hover:bg-gray-100"
+            }`}
+          >
+            <Users
+              className={`w-6 h-6 mx-auto mb-2 ${
+                filterStage === "all" ? "text-blue-600" : "text-gray-600"
+              }`}
+            />
+            <p
+              className={`text-2xl font-bold ${
+                filterStage === "all" ? "text-blue-600" : "text-gray-900"
+              }`}
+            >
+              {role.shortlistedCandidates?.length || 0}
+            </p>
+            <p
+              className={`text-sm ${
+                filterStage === "all" ? "text-blue-600" : "text-gray-600"
+              }`}
+            >
+              All
+            </p>
+          </button>
+
           {[
             { stage: "shortlisted", label: "Shortlisted", icon: Users },
             {
@@ -1077,16 +1107,24 @@ const RoleShortlistView = ({
                     `${stage.replace("_scheduled", "_completed")}`,
               ).length || 0;
             const colors = getInterviewStageColor(stage);
+            const isActive =
+              filterStage === stage ||
+              filterStage === `${stage.replace("_scheduled", "_completed")}`;
 
             return (
-              <div
+              <button
                 key={stage}
-                className={`${colors.bg} ${colors.border} border rounded-lg p-4 text-center`}
+                onClick={() => setFilterStage(stage)}
+                className={`border rounded-lg p-4 text-center transition-all hover:shadow-md ${
+                  isActive
+                    ? `${colors.bg} ${colors.border} ring-2 ring-opacity-50 ${colors.text.replace("text-", "ring-")}`
+                    : `${colors.bg} ${colors.border} hover:shadow-lg`
+                }`}
               >
                 <Icon className={`w-6 h-6 ${colors.text} mx-auto mb-2`} />
                 <p className={`text-2xl font-bold ${colors.text}`}>{count}</p>
                 <p className={`text-sm ${colors.text}`}>{label}</p>
-              </div>
+              </button>
             );
           })}
         </div>
