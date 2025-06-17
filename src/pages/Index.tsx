@@ -1037,7 +1037,7 @@ const RoleShortlistView = ({
             className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg backdrop-blur-sm border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
           >
             <option value="aiMatch" className="text-gray-900">
-              Sort by AI Match
+              Sort by UPhireIQ AI Match
             </option>
             <option value="name" className="text-gray-900">
               Sort by Name
