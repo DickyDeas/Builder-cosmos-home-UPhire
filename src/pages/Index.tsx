@@ -1795,8 +1795,12 @@ const RolesTab = () => {
   const [showNewRoleModal, setShowNewRoleModal] = useState(false);
   const [showRecruitModal, setShowRecruitModal] = useState(false);
   const [showPredictionModal, setShowPredictionModal] = useState(false);
+  const [showCalendlyModal, setShowCalendlyModal] = useState(false);
   const [recruitingRoleId, setRecruitingRoleId] = useState<number | null>(null);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
+  const [viewingShortlist, setViewingShortlist] = useState<Role | null>(null);
+  const [schedulingCandidate, setSchedulingCandidate] =
+    useState<ShortlistedCandidate | null>(null);
 
   const startRecruitment = (roleId: number) => {
     setRecruitingRoleId(roleId);
@@ -1807,6 +1811,26 @@ const RolesTab = () => {
     setSelectedRole(role);
     setShowPredictionModal(true);
   };
+
+  const viewShortlist = (role: Role) => {
+    setViewingShortlist(role);
+  };
+
+  const scheduleInterviewFromShortlist = (candidate: ShortlistedCandidate) => {
+    setSchedulingCandidate(candidate);
+    setShowCalendlyModal(true);
+  };
+
+  // If viewing shortlist, show the shortlist view
+  if (viewingShortlist) {
+    return (
+      <RoleShortlistView
+        role={viewingShortlist}
+        onBack={() => setViewingShortlist(null)}
+        onScheduleInterview={scheduleInterviewFromShortlist}
+      />
+    );
+  }
 
   return (
     <div className="space-y-6">
