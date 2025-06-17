@@ -2113,7 +2113,9 @@ const CandidatesTab = () => {
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Avg AI Match</p>
+              <p className="text-sm font-medium text-gray-600">
+                Avg UPhireIQ AI Match
+              </p>
               <p className="text-2xl font-bold text-gray-900">
                 {Math.round(
                   mockCandidates.reduce((acc, c) => acc + c.aiMatch, 0) /
