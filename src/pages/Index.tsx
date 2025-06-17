@@ -2172,7 +2172,7 @@ const CandidatesTab = () => {
             <div className="mb-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium text-gray-700">
-                  AI Match Score
+                  UPhireIQ AI Match Score
                 </span>
                 <span className="text-sm font-bold text-green-600">
                   {candidate.aiMatch}%
