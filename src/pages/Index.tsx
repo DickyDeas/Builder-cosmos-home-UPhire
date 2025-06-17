@@ -4242,7 +4242,7 @@ const PredictionModal = ({
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">
-                  AI Success Prediction
+                  UPhireIQ AI Success Prediction
                 </h2>
                 <p className="text-gray-600">
                   Analysis for: {selectedRole.title} • {selectedRole.department}
