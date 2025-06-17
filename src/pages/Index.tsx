@@ -918,7 +918,14 @@ const MarketIntelligence = () => {
           <h3 className="text-lg font-semibold text-gray-900">
             Market Intelligence
           </h3>
-          <p className="text-sm text-gray-600">Powered by ITJobsWatch API</p>
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-gray-600">Powered by</span>
+            <img
+              src="https://cdn.builder.io/api/v1/assets/e3ae173b79f74e84b0580a7f82f9aa6c/uphire-iq-logo-no-background-a3ed8d?format=webp&width=800"
+              alt="UPhireIQ"
+              className="h-4 object-contain"
+            />
+          </div>
         </div>
         <div className="flex items-center space-x-2 text-xs text-gray-500">
           <Globe className="w-4 h-4" />
@@ -1613,7 +1620,7 @@ const JobDetailsView = ({
           <div>
             <h1 className="text-3xl font-bold text-white">{role.title}</h1>
             <p className="text-blue-100">
-              {role.department} • {role.location} �� Posted: {role.created}
+              {role.department} • {role.location} • Posted: {role.created}
             </p>
           </div>
         </div>
