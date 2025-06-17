@@ -93,25 +93,15 @@ interface ShortlistedCandidate {
   githubProfile?: string;
   portfolio?: string;
   notes?: string;
-  interviewStage:
-    | "shortlisted"
-    | "screening_scheduled"
-    | "screening_completed"
-    | "technical_scheduled"
-    | "technical_completed"
-    | "final_scheduled"
-    | "final_completed"
-    | "offer_made"
-    | "hired"
-    | "rejected";
+  interviewStage: 'shortlisted' | 'screening_scheduled' | 'screening_completed' | 'technical_scheduled' | 'technical_completed' | 'final_scheduled' | 'final_completed' | 'offer_made' | 'hired' | 'rejected';
   interviewHistory: InterviewRecord[];
   lastUpdated: string;
 }
 
 interface InterviewRecord {
   id: number;
-  type: "screening" | "technical" | "cultural" | "final";
-  status: "scheduled" | "completed" | "cancelled";
+  type: 'screening' | 'technical' | 'cultural' | 'final';
+  status: 'scheduled' | 'completed' | 'cancelled';
   date: string;
   interviewer: string;
   feedback?: string;
@@ -198,83 +188,35 @@ interface PredictionData {
 
 // Utility Functions
 const getInterviewStageColor = (stage: string) => {
-  const stageColors: {
-    [key: string]: { bg: string; text: string; border: string };
-  } = {
-    shortlisted: {
-      bg: "bg-blue-50",
-      text: "text-blue-700",
-      border: "border-blue-200",
-    },
-    screening_scheduled: {
-      bg: "bg-yellow-50",
-      text: "text-yellow-700",
-      border: "border-yellow-200",
-    },
-    screening_completed: {
-      bg: "bg-purple-50",
-      text: "text-purple-700",
-      border: "border-purple-200",
-    },
-    technical_scheduled: {
-      bg: "bg-orange-50",
-      text: "text-orange-700",
-      border: "border-orange-200",
-    },
-    technical_completed: {
-      bg: "bg-indigo-50",
-      text: "text-indigo-700",
-      border: "border-indigo-200",
-    },
-    final_scheduled: {
-      bg: "bg-pink-50",
-      text: "text-pink-700",
-      border: "border-pink-200",
-    },
-    final_completed: {
-      bg: "bg-emerald-50",
-      text: "text-emerald-700",
-      border: "border-emerald-200",
-    },
-    offer_made: {
-      bg: "bg-green-50",
-      text: "text-green-700",
-      border: "border-green-200",
-    },
-    hired: {
-      bg: "bg-green-100",
-      text: "text-green-800",
-      border: "border-green-300",
-    },
-    rejected: {
-      bg: "bg-red-50",
-      text: "text-red-700",
-      border: "border-red-200",
-    },
+  const stageColors: { [key: string]: { bg: string; text: string; border: string } } = {
+    'shortlisted': { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200' },
+    'screening_scheduled': { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-200' },
+    'screening_completed': { bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-200' },
+    'technical_scheduled': { bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-200' },
+    'technical_completed': { bg: 'bg-indigo-50', text: 'text-indigo-700', border: 'border-indigo-200' },
+    'final_scheduled': { bg: 'bg-pink-50', text: 'text-pink-700', border: 'border-pink-200' },
+    'final_completed': { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200' },
+    'offer_made': { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200' },
+    'hired': { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-300' },
+    'rejected': { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200' }
   };
-  return (
-    stageColors[stage] || {
-      bg: "bg-gray-50",
-      text: "text-gray-700",
-      border: "border-gray-200",
-    }
-  );
+  return stageColors[stage] || { bg: 'bg-gray-50', text: 'text-gray-700', border: 'border-gray-200' };
 };
 
 const getInterviewStageLabel = (stage: string) => {
   const stageLabels: { [key: string]: string } = {
-    shortlisted: "Shortlisted",
-    screening_scheduled: "Screening Scheduled",
-    screening_completed: "Screening Complete",
-    technical_scheduled: "Technical Scheduled",
-    technical_completed: "Technical Complete",
-    final_scheduled: "Final Interview Scheduled",
-    final_completed: "Final Interview Complete",
-    offer_made: "Offer Made",
-    hired: "Hired",
-    rejected: "Rejected",
+    'shortlisted': 'Shortlisted',
+    'screening_scheduled': 'Screening Scheduled',
+    'screening_completed': 'Screening Complete',
+    'technical_scheduled': 'Technical Scheduled',
+    'technical_completed': 'Technical Complete',
+    'final_scheduled': 'Final Interview Scheduled',
+    'final_completed': 'Final Interview Complete',
+    'offer_made': 'Offer Made',
+    'hired': 'Hired',
+    'rejected': 'Rejected'
   };
-  return stageLabels[stage] || "Unknown";
+  return stageLabels[stage] || 'Unknown';
 };
 
 // Mock Data
@@ -317,29 +259,28 @@ const mockRoles: Role[] = [
         githubProfile: "https://github.com/alicejohnson",
         portfolio: "https://alicejohnson.dev",
         notes: "Strong technical background, excellent communication skills.",
-        interviewStage: "technical_completed",
+        interviewStage: 'technical_completed',
         lastUpdated: "2024-01-22",
         interviewHistory: [
           {
             id: 1,
-            type: "screening",
-            status: "completed",
+            type: 'screening',
+            status: 'completed',
             date: "2024-01-21",
             interviewer: "HR Team",
             feedback: "Excellent communication, strong cultural fit",
-            rating: 9,
+            rating: 9
           },
           {
             id: 2,
-            type: "technical",
-            status: "completed",
+            type: 'technical',
+            status: 'completed',
             date: "2024-01-22",
             interviewer: "Senior Developer",
-            feedback:
-              "Impressive technical skills, solved problems efficiently",
-            rating: 8,
-          },
-        ],
+            feedback: "Impressive technical skills, solved problems efficiently",
+            rating: 8
+          }
+        ]
       },
       {
         id: 2,
@@ -355,17 +296,17 @@ const mockRoles: Role[] = [
         phoneNumber: "+44 161 496 0058",
         githubProfile: "https://github.com/davidrodriguez",
         notes: "Full-stack expertise, DevOps experience",
-        interviewStage: "screening_scheduled",
+        interviewStage: 'screening_scheduled',
         lastUpdated: "2024-01-20",
         interviewHistory: [
           {
             id: 3,
-            type: "screening",
-            status: "scheduled",
+            type: 'screening',
+            status: 'scheduled',
             date: "2024-01-24",
-            interviewer: "HR Team",
-          },
-        ],
+            interviewer: "HR Team"
+          }
+        ]
       },
       {
         id: 3,
@@ -380,9 +321,9 @@ const mockRoles: Role[] = [
         avatar: "SM",
         phoneNumber: "+44 121 496 0058",
         notes: "Creative problem solver, strong UI/UX sense",
-        interviewStage: "shortlisted",
+        interviewStage: 'shortlisted',
         lastUpdated: "2024-01-18",
-        interviewHistory: [],
+        interviewHistory: []
       },
       {
         id: 4,
@@ -398,35 +339,35 @@ const mockRoles: Role[] = [
         phoneNumber: "+44 113 496 0058",
         linkedinProfile: "https://linkedin.com/in/jameschen",
         notes: "Senior level experience, architecture expertise",
-        interviewStage: "final_scheduled",
+        interviewStage: 'final_scheduled',
         lastUpdated: "2024-01-23",
         interviewHistory: [
           {
             id: 4,
-            type: "screening",
-            status: "completed",
+            type: 'screening',
+            status: 'completed',
             date: "2024-01-20",
             interviewer: "HR Team",
             feedback: "Excellent experience and communication",
-            rating: 9,
+            rating: 9
           },
           {
             id: 5,
-            type: "technical",
-            status: "completed",
+            type: 'technical',
+            status: 'completed',
             date: "2024-01-22",
             interviewer: "Tech Lead",
             feedback: "Outstanding technical knowledge and problem-solving",
-            rating: 10,
+            rating: 10
           },
           {
             id: 6,
-            type: "final",
-            status: "scheduled",
+            type: 'final',
+            status: 'scheduled',
             date: "2024-01-25",
-            interviewer: "Engineering Manager",
-          },
-        ],
+            interviewer: "Engineering Manager"
+          }
+        ]
       },
       {
         id: 5,
@@ -442,39 +383,39 @@ const mockRoles: Role[] = [
         phoneNumber: "+44 20 7946 0789",
         portfolio: "https://emmathompson.design",
         notes: "Strong design background, excellent React skills",
-        interviewStage: "offer_made",
+        interviewStage: 'offer_made',
         lastUpdated: "2024-01-24",
         interviewHistory: [
           {
             id: 7,
-            type: "screening",
-            status: "completed",
+            type: 'screening',
+            status: 'completed',
             date: "2024-01-19",
             interviewer: "HR Team",
             feedback: "Great personality, strong motivation",
-            rating: 8,
+            rating: 8
           },
           {
             id: 8,
-            type: "technical",
-            status: "completed",
+            type: 'technical',
+            status: 'completed',
             date: "2024-01-21",
             interviewer: "Senior Developer",
             feedback: "Solid technical skills with design flair",
-            rating: 8,
+            rating: 8
           },
           {
             id: 9,
-            type: "final",
-            status: "completed",
+            type: 'final',
+            status: 'completed',
             date: "2024-01-23",
             interviewer: "Engineering Manager",
             feedback: "Perfect fit for the team, recommend hire",
-            rating: 9,
-          },
-        ],
-      },
-    ],
+            rating: 9
+          }
+        ]
+      }
+    ]
   },
   {
     id: 2,
@@ -504,13 +445,7 @@ const mockRoles: Role[] = [
         email: "michael.foster@email.com",
         location: "London, UK",
         experience: "6+ years",
-        skills: [
-          "Product Strategy",
-          "Analytics",
-          "User Research",
-          "Agile",
-          "SQL",
-        ],
+        skills: ["Product Strategy", "Analytics", "User Research", "Agile", "SQL"],
         aiMatch: 91,
         source: "LinkedIn",
         applied: "2024-01-12",
@@ -518,26 +453,26 @@ const mockRoles: Role[] = [
         phoneNumber: "+44 20 7946 1234",
         linkedinProfile: "https://linkedin.com/in/michaelfoster",
         notes: "Strong product background at fintech companies",
-        interviewStage: "technical_scheduled",
+        interviewStage: 'technical_scheduled',
         lastUpdated: "2024-01-21",
         interviewHistory: [
           {
             id: 10,
-            type: "screening",
-            status: "completed",
+            type: 'screening',
+            status: 'completed',
             date: "2024-01-19",
             interviewer: "HR Team",
             feedback: "Passionate about product, good cultural fit",
-            rating: 8,
+            rating: 8
           },
           {
             id: 11,
-            type: "technical",
-            status: "scheduled",
+            type: 'technical',
+            status: 'scheduled',
             date: "2024-01-25",
-            interviewer: "Senior Product Manager",
-          },
-        ],
+            interviewer: "Senior Product Manager"
+          }
+        ]
       },
       {
         id: 7,
@@ -545,33 +480,28 @@ const mockRoles: Role[] = [
         email: "lisa.wang@email.com",
         location: "Edinburgh, UK",
         experience: "4+ years",
-        skills: [
-          "Product Management",
-          "UX Research",
-          "Data Analysis",
-          "Roadmapping",
-        ],
+        skills: ["Product Management", "UX Research", "Data Analysis", "Roadmapping"],
         aiMatch: 88,
         source: "Indeed",
         applied: "2024-01-11",
         avatar: "LW",
         phoneNumber: "+44 131 496 0058",
         notes: "UX background transitioning to product management",
-        interviewStage: "screening_completed",
+        interviewStage: 'screening_completed',
         lastUpdated: "2024-01-20",
         interviewHistory: [
           {
             id: 12,
-            type: "screening",
-            status: "completed",
+            type: 'screening',
+            status: 'completed',
             date: "2024-01-20",
             interviewer: "HR Team",
             feedback: "Strong analytical skills, good communication",
-            rating: 7,
-          },
-        ],
-      },
-    ],
+            rating: 7
+          }
+        ]
+      }
+    ]
   },
   {
     id: 3,
@@ -605,13 +535,7 @@ const mockRoles: Role[] = [
         email: "carol.williams@email.com",
         location: "Birmingham, UK",
         experience: "4+ years",
-        skills: [
-          "UX Design",
-          "Figma",
-          "User Research",
-          "Prototyping",
-          "Design Systems",
-        ],
+        skills: ["UX Design", "Figma", "User Research", "Prototyping", "Design Systems"],
         aiMatch: 85,
         source: "Company Website",
         applied: "2024-01-22",
@@ -619,17 +543,17 @@ const mockRoles: Role[] = [
         phoneNumber: "+44 121 496 0058",
         portfolio: "https://carolwilliams.design",
         notes: "Creative designer with strong research background",
-        interviewStage: "screening_scheduled",
+        interviewStage: 'screening_scheduled',
         lastUpdated: "2024-01-23",
         interviewHistory: [
           {
             id: 13,
-            type: "screening",
-            status: "scheduled",
+            type: 'screening',
+            status: 'scheduled',
             date: "2024-01-26",
-            interviewer: "Design Manager",
-          },
-        ],
+            interviewer: "Design Manager"
+          }
+        ]
       },
       {
         id: 9,
@@ -644,11 +568,11 @@ const mockRoles: Role[] = [
         avatar: "AK",
         portfolio: "https://alexkumar.portfolio.com",
         notes: "Strong visual design skills, junior but promising",
-        interviewStage: "shortlisted",
+        interviewStage: 'shortlisted',
         lastUpdated: "2024-01-21",
-        interviewHistory: [],
-      },
-    ],
+        interviewHistory: []
+      }
+    ]
   },
 ];
 
@@ -950,28 +874,24 @@ const businessProfile = {
 const RoleShortlistView = ({
   role,
   onBack,
-  onScheduleInterview,
+  onScheduleInterview
 }: {
   role: Role;
   onBack: () => void;
   onScheduleInterview: (candidate: ShortlistedCandidate) => void;
 }) => {
-  const [filterStage, setFilterStage] = useState<string>("all");
-  const [sortBy, setSortBy] = useState<string>("aiMatch");
+  const [filterStage, setFilterStage] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<string>('aiMatch');
 
-  const filteredCandidates =
-    role.shortlistedCandidates?.filter(
-      (candidate) =>
-        filterStage === "all" || candidate.interviewStage === filterStage,
-    ) || [];
+  const filteredCandidates = role.shortlistedCandidates?.filter(candidate =>
+    filterStage === 'all' || candidate.interviewStage === filterStage
+  ) || [];
 
   const sortedCandidates = [...filteredCandidates].sort((a, b) => {
-    if (sortBy === "aiMatch") return b.aiMatch - a.aiMatch;
-    if (sortBy === "name") return a.name.localeCompare(b.name);
-    if (sortBy === "applied")
-      return new Date(b.applied).getTime() - new Date(a.applied).getTime();
-    if (sortBy === "stage")
-      return a.interviewStage.localeCompare(b.interviewStage);
+    if (sortBy === 'aiMatch') return b.aiMatch - a.aiMatch;
+    if (sortBy === 'name') return a.name.localeCompare(b.name);
+    if (sortBy === 'applied') return new Date(b.applied).getTime() - new Date(a.applied).getTime();
+    if (sortBy === 'stage') return a.interviewStage.localeCompare(b.interviewStage);
     return 0;
   });
 
@@ -981,16 +901,16 @@ const RoleShortlistView = ({
   };
 
   const stageOptions = [
-    { value: "all", label: "All Stages" },
-    { value: "shortlisted", label: "Shortlisted" },
-    { value: "screening_scheduled", label: "Screening Scheduled" },
-    { value: "screening_completed", label: "Screening Complete" },
-    { value: "technical_scheduled", label: "Technical Scheduled" },
-    { value: "technical_completed", label: "Technical Complete" },
-    { value: "final_scheduled", label: "Final Scheduled" },
-    { value: "final_completed", label: "Final Complete" },
-    { value: "offer_made", label: "Offer Made" },
-    { value: "hired", label: "Hired" },
+    { value: 'all', label: 'All Stages' },
+    { value: 'shortlisted', label: 'Shortlisted' },
+    { value: 'screening_scheduled', label: 'Screening Scheduled' },
+    { value: 'screening_completed', label: 'Screening Complete' },
+    { value: 'technical_scheduled', label: 'Technical Scheduled' },
+    { value: 'technical_completed', label: 'Technical Complete' },
+    { value: 'final_scheduled', label: 'Final Scheduled' },
+    { value: 'final_completed', label: 'Final Complete' },
+    { value: 'offer_made', label: 'Offer Made' },
+    { value: 'hired', label: 'Hired' }
   ];
 
   return (
@@ -1006,12 +926,9 @@ const RoleShortlistView = ({
             <span>Back to Roles</span>
           </button>
           <div>
-            <h1 className="text-3xl font-bold text-white">
-              {role.title} - Shortlist
-            </h1>
+            <h1 className="text-3xl font-bold text-white">{role.title} - Shortlist</h1>
             <p className="text-blue-100">
-              {role.shortlistedCandidates?.length || 0} candidates shortlisted •{" "}
-              {role.department}
+              {role.shortlistedCandidates?.length || 0} candidates shortlisted • {role.department}
             </p>
           </div>
         </div>
@@ -1021,12 +938,8 @@ const RoleShortlistView = ({
             onChange={(e) => setFilterStage(e.target.value)}
             className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg backdrop-blur-sm border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
           >
-            {stageOptions.map((option) => (
-              <option
-                key={option.value}
-                value={option.value}
-                className="text-gray-900"
-              >
+            {stageOptions.map(option => (
+              <option key={option.value} value={option.value} className="text-gray-900">
                 {option.label}
               </option>
             ))}
@@ -1039,77 +952,55 @@ const RoleShortlistView = ({
             <option value="aiMatch" className="text-gray-900">
               Sort by UPhireIQ AI Match
             </option>
-            <option value="name" className="text-gray-900">
-              Sort by Name
-            </option>
-            <option value="applied" className="text-gray-900">
-              Sort by Applied Date
-            </option>
-            <option value="stage" className="text-gray-900">
-              Sort by Stage
-            </option>
+            <option value="name" className="text-gray-900">Sort by Name</option>
+            <option value="applied" className="text-gray-900">Sort by Applied Date</option>
+            <option value="stage" className="text-gray-900">Sort by Stage</option>
           </select>
         </div>
       </div>
 
       {/* Stage Overview */}
       <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          Interview Pipeline Overview
-        </h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Interview Pipeline Overview</h3>
         <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
           {/* All Candidates Tab */}
           <button
-            onClick={() => setFilterStage("all")}
+            onClick={() => setFilterStage('all')}
             className={`border rounded-lg p-4 text-center transition-all hover:shadow-md ${
-              filterStage === "all"
-                ? "bg-blue-100 border-blue-300 ring-2 ring-blue-500 ring-opacity-50"
-                : "bg-gray-50 border-gray-200 hover:bg-gray-100"
+              filterStage === 'all'
+                ? 'bg-blue-100 border-blue-300 ring-2 ring-blue-500 ring-opacity-50'
+                : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
             }`}
           >
-            <Users
-              className={`w-6 h-6 mx-auto mb-2 ${
-                filterStage === "all" ? "text-blue-600" : "text-gray-600"
-              }`}
-            />
-            <p
-              className={`text-2xl font-bold ${
-                filterStage === "all" ? "text-blue-600" : "text-gray-900"
-              }`}
-            >
+            <Users className={`w-6 h-6 mx-auto mb-2 ${
+              filterStage === 'all' ? 'text-blue-600' : 'text-gray-600'
+            }`} />
+            <p className={`text-2xl font-bold ${
+              filterStage === 'all' ? 'text-blue-600' : 'text-gray-900'
+            }`}>
               {role.shortlistedCandidates?.length || 0}
             </p>
-            <p
-              className={`text-sm ${
-                filterStage === "all" ? "text-blue-600" : "text-gray-600"
-              }`}
-            >
+            <p className={`text-sm ${
+              filterStage === 'all' ? 'text-blue-600' : 'text-gray-600'
+            }`}>
               All
             </p>
           </button>
 
           {[
-            { stage: "shortlisted", label: "Shortlisted", icon: Users },
-            {
-              stage: "screening_scheduled",
-              label: "Screening",
-              icon: Calendar,
-            },
-            { stage: "technical_scheduled", label: "Technical", icon: Brain },
-            { stage: "final_scheduled", label: "Final", icon: Star },
-            { stage: "offer_made", label: "Offers", icon: Award },
+            { stage: 'shortlisted', label: 'Shortlisted', icon: Users },
+            { stage: 'screening_scheduled', label: 'Screening', icon: Calendar },
+            { stage: 'technical_scheduled', label: 'Technical', icon: Brain },
+            { stage: 'final_scheduled', label: 'Final', icon: Star },
+            { stage: 'offer_made', label: 'Offers', icon: Award }
           ].map(({ stage, label, icon: Icon }) => {
-            const count =
-              role.shortlistedCandidates?.filter(
-                (c) =>
-                  c.interviewStage === stage ||
-                  c.interviewStage ===
-                    `${stage.replace("_scheduled", "_completed")}`,
-              ).length || 0;
+            const count = role.shortlistedCandidates?.filter(c =>
+              c.interviewStage === stage ||
+              c.interviewStage === `${stage.replace('_scheduled', '_completed')}`
+            ).length || 0;
             const colors = getInterviewStageColor(stage);
-            const isActive =
-              filterStage === stage ||
-              filterStage === `${stage.replace("_scheduled", "_completed")}`;
+            const isActive = filterStage === stage ||
+              filterStage === `${stage.replace('_scheduled', '_completed')}`;
 
             return (
               <button
@@ -1117,7 +1008,7 @@ const RoleShortlistView = ({
                 onClick={() => setFilterStage(stage)}
                 className={`border rounded-lg p-4 text-center transition-all hover:shadow-md ${
                   isActive
-                    ? `${colors.bg} ${colors.border} ring-2 ring-opacity-50 ${colors.text.replace("text-", "ring-")}`
+                    ? `${colors.bg} ${colors.border} ring-2 ring-opacity-50 ${colors.text.replace('text-', 'ring-')}`
                     : `${colors.bg} ${colors.border} hover:shadow-lg`
                 }`}
               >
@@ -1144,12 +1035,8 @@ const RoleShortlistView = ({
 
         <div className="space-y-4">
           {sortedCandidates.map((candidate) => {
-            const stageColors = getInterviewStageColor(
-              candidate.interviewStage,
-            );
-            const nextInterviews = candidate.interviewHistory.filter(
-              (i) => i.status === "scheduled",
-            );
+            const stageColors = getInterviewStageColor(candidate.interviewStage);
+            const nextInterviews = candidate.interviewHistory.filter(i => i.status === 'scheduled');
 
             return (
               <div
@@ -1165,12 +1052,8 @@ const RoleShortlistView = ({
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center space-x-3 mb-2">
-                        <h4 className="text-lg font-semibold text-gray-900">
-                          {candidate.name}
-                        </h4>
-                        <span
-                          className={`px-3 py-1 rounded-full text-sm font-medium border ${stageColors.bg} ${stageColors.text} ${stageColors.border}`}
-                        >
+                        <h4 className="text-lg font-semibold text-gray-900">{candidate.name}</h4>
+                        <span className={`px-3 py-1 rounded-full text-sm font-medium border ${stageColors.bg} ${stageColors.text} ${stageColors.border}`}>
                           {getInterviewStageLabel(candidate.interviewStage)}
                         </span>
                         <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
@@ -1205,8 +1088,7 @@ const RoleShortlistView = ({
                           {nextInterviews.length > 0 && (
                             <p className="text-sm text-orange-600 font-medium">
                               <Calendar className="w-4 h-4 inline mr-1" />
-                              Next: {nextInterviews[0].type} on{" "}
-                              {nextInterviews[0].date}
+                              Next: {nextInterviews[0].type} on {nextInterviews[0].date}
                             </p>
                           )}
                         </div>
@@ -1230,59 +1112,36 @@ const RoleShortlistView = ({
 
                       {candidate.notes && (
                         <div className="bg-blue-50 border border-blue-200 rounded p-3 mb-4">
-                          <p className="text-sm text-blue-800">
-                            {candidate.notes}
-                          </p>
+                          <p className="text-sm text-blue-800">{candidate.notes}</p>
                         </div>
                       )}
 
                       {/* Interview History */}
                       {candidate.interviewHistory.length > 0 && (
                         <div className="mb-4">
-                          <h5 className="text-sm font-medium text-gray-900 mb-2">
-                            Interview History
-                          </h5>
+                          <h5 className="text-sm font-medium text-gray-900 mb-2">Interview History</h5>
                           <div className="space-y-2">
                             {candidate.interviewHistory.map((interview) => (
-                              <div
-                                key={interview.id}
-                                className="flex items-center justify-between text-sm"
-                              >
+                              <div key={interview.id} className="flex items-center justify-between text-sm">
                                 <div className="flex items-center space-x-2">
-                                  <span
-                                    className={`w-2 h-2 rounded-full ${
-                                      interview.status === "completed"
-                                        ? "bg-green-500"
-                                        : interview.status === "scheduled"
-                                          ? "bg-yellow-500"
-                                          : "bg-gray-500"
-                                    }`}
-                                  ></span>
-                                  <span className="capitalize">
-                                    {interview.type}
-                                  </span>
+                                  <span className={`w-2 h-2 rounded-full ${
+                                    interview.status === 'completed' ? 'bg-green-500' :
+                                    interview.status === 'scheduled' ? 'bg-yellow-500' : 'bg-gray-500'
+                                  }`}></span>
+                                  <span className="capitalize">{interview.type}</span>
                                   <span className="text-gray-500">•</span>
-                                  <span className="text-gray-600">
-                                    {interview.date}
-                                  </span>
+                                  <span className="text-gray-600">{interview.date}</span>
                                   {interview.rating && (
                                     <>
                                       <span className="text-gray-500">•</span>
-                                      <span className="text-green-600">
-                                        {interview.rating}/10
-                                      </span>
+                                      <span className="text-green-600">{interview.rating}/10</span>
                                     </>
                                   )}
                                 </div>
-                                <span
-                                  className={`capitalize ${
-                                    interview.status === "completed"
-                                      ? "text-green-600"
-                                      : interview.status === "scheduled"
-                                        ? "text-yellow-600"
-                                        : "text-gray-600"
-                                  }`}
-                                >
+                                <span className={`capitalize ${
+                                  interview.status === 'completed' ? 'text-green-600' :
+                                  interview.status === 'scheduled' ? 'text-yellow-600' : 'text-gray-600'
+                                }`}>
                                   {interview.status}
                                 </span>
                               </div>
@@ -1310,24 +1169,14 @@ const RoleShortlistView = ({
                     <div className="relative">
                       <select
                         value={candidate.interviewStage}
-                        onChange={(e) =>
-                          updateCandidateStage(candidate.id, e.target.value)
-                        }
+                        onChange={(e) => updateCandidateStage(candidate.id, e.target.value)}
                         className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
                       >
                         <option value="shortlisted">Shortlisted</option>
-                        <option value="screening_scheduled">
-                          Schedule Screening
-                        </option>
-                        <option value="screening_completed">
-                          Screening Complete
-                        </option>
-                        <option value="technical_scheduled">
-                          Schedule Technical
-                        </option>
-                        <option value="technical_completed">
-                          Technical Complete
-                        </option>
+                        <option value="screening_scheduled">Schedule Screening</option>
+                        <option value="screening_completed">Screening Complete</option>
+                        <option value="technical_scheduled">Schedule Technical</option>
+                        <option value="technical_completed">Technical Complete</option>
                         <option value="final_scheduled">Schedule Final</option>
                         <option value="final_completed">Final Complete</option>
                         <option value="offer_made">Make Offer</option>
@@ -1345,13 +1194,12 @@ const RoleShortlistView = ({
         {sortedCandidates.length === 0 && (
           <div className="text-center py-12">
             <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              No candidates found
-            </h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">No candidates found</h3>
             <p className="text-gray-600">
-              {filterStage === "all"
+              {filterStage === 'all'
                 ? "No candidates have been shortlisted for this role yet."
-                : `No candidates in "${stageOptions.find((s) => s.value === filterStage)?.label}" stage.`}
+                : `No candidates in "${stageOptions.find(s => s.value === filterStage)?.label}" stage.`
+              }
             </p>
           </div>
         )}
@@ -1633,52 +1481,79 @@ const MarketIntelligence = () => {
 };
 
 // Dashboard Tab Component
-const DashboardTab = () => (
-  <div className="space-y-6">
-    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-      <div>
-        <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-        <p className="text-blue-100">
-          Welcome to your AI-powered recruitment platform
-        </p>
+const DashboardTab = () => {
+  // Get total candidates including shortlisted ones from roles
+  const getAllCandidatesCount = () => {
+    const baseCount = mockCandidates.length;
+    let shortlistedCount = 0;
+
+    // Count unique shortlisted candidates from roles
+    const seenEmails = new Set(mockCandidates.map(c => c.email));
+
+    mockRoles.forEach(role => {
+      if (role.shortlistedCandidates) {
+        role.shortlistedCandidates.forEach(candidate => {
+          if (!seenEmails.has(candidate.email)) {
+            shortlistedCount++;
+            seenEmails.add(candidate.email);
+          }
+        });
+      }
+    });
+
+    return baseCount + shortlistedCount;
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Dashboard</h1>
+          <p className="text-blue-100">
+            Welcome to your AI-powered recruitment platform
+          </p>
+        </div>
+      </div>
+
+      {/* Dashboard Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Active Roles</p>
+              <p className="text-3xl font-bold text-gray-900">
+                {mockRoles.filter((r) => r.status === "Active").length}
+              </p>
+              <p className="text-sm text-green-600 flex items-center">
+                <ArrowUp className="w-4 h-4 mr-1" />
+                +2 this week
+              </p>
+            </div>
+            <Briefcase className="w-8 h-8 text-blue-600" />
+          </div>
+        </div>
+
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">
+                Total Candidates
+              </p>
+              <p className="text-3xl font-bold text-gray-900">
+                {getAllCandidatesCount()}
+              </p>
+              <p className="text-sm text-green-600 flex items-center">
+                <ArrowUp className="w-4 h-4 mr-1" />
+                +18 this week
+              </p>
+            </div>
+            <Users className="w-8 h-8 text-green-600" />
+          </div>
+        </div>
       </div>
     </div>
-
-    {/* Dashboard Stats */}
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-      <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm font-medium text-gray-600">Active Roles</p>
-            <p className="text-3xl font-bold text-gray-900">
-              {mockRoles.filter((r) => r.status === "Active").length}
-            </p>
-            <p className="text-sm text-green-600 flex items-center">
-              <ArrowUp className="w-4 h-4 mr-1" />
-              +2 this week
-            </p>
-          </div>
-          <Briefcase className="w-8 h-8 text-blue-600" />
-        </div>
-      </div>
-
-      <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm font-medium text-gray-600">
-              Total Candidates
-            </p>
-            <p className="text-3xl font-bold text-gray-900">
-              {mockCandidates.length}
-            </p>
-            <p className="text-sm text-green-600 flex items-center">
-              <ArrowUp className="w-4 h-4 mr-1" />
-              +18 this week
-            </p>
-          </div>
-          <Users className="w-8 h-8 text-green-600" />
-        </div>
-      </div>
+  );
+};
 
       <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
         <div className="flex items-center justify-between">
@@ -1835,7 +1710,7 @@ const DashboardTab = () => (
 // Job Details View Component
 const JobDetailsView = ({
   role,
-  onBack,
+  onBack
 }: {
   role: Role;
   onBack: () => void;
@@ -1860,24 +1735,15 @@ const JobDetailsView = ({
           </div>
         </div>
         <div className="flex space-x-3">
-          <span
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
-              role.status === "Active"
-                ? "bg-green-100 text-green-800"
-                : "bg-gray-100 text-gray-800"
-            }`}
-          >
+          <span className={`px-4 py-2 rounded-lg text-sm font-medium ${
+            role.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+          }`}>
             {role.status}
           </span>
-          <span
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
-              role.priority === "High"
-                ? "bg-red-100 text-red-800"
-                : role.priority === "Medium"
-                  ? "bg-yellow-100 text-yellow-800"
-                  : "bg-blue-100 text-blue-800"
-            }`}
-          >
+          <span className={`px-4 py-2 rounded-lg text-sm font-medium ${
+            role.priority === 'High' ? 'bg-red-100 text-red-800' :
+            role.priority === 'Medium' ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800'
+          }`}>
             {role.priority} Priority
           </span>
         </div>
@@ -1912,48 +1778,35 @@ const JobDetailsView = ({
         {/* Job Description */}
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Job Description
-            </h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Job Description</h2>
             <div className="prose max-w-none">
               <p className="text-gray-700 leading-relaxed">
-                {role.description ||
-                  "We're looking for a talented professional to join our dynamic team. This role offers exciting opportunities to work on cutting-edge projects and contribute to our company's growth."}
+                {role.description || "We're looking for a talented professional to join our dynamic team. This role offers exciting opportunities to work on cutting-edge projects and contribute to our company's growth."}
               </p>
             </div>
           </div>
 
           <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Requirements
-            </h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Requirements</h2>
             <ul className="space-y-2">
-              {role.requirements ? (
-                role.requirements.map((req, index) => (
-                  <li key={index} className="flex items-start space-x-2">
-                    <Check className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700">{req}</span>
-                  </li>
-                ))
-              ) : (
+              {role.requirements ? role.requirements.map((req, index) => (
+                <li key={index} className="flex items-start space-x-2">
+                  <Check className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">{req}</span>
+                </li>
+              )) : (
                 <>
                   <li className="flex items-start space-x-2">
                     <Check className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700">
-                      Bachelor's degree in relevant field
-                    </span>
+                    <span className="text-gray-700">Bachelor's degree in relevant field</span>
                   </li>
                   <li className="flex items-start space-x-2">
                     <Check className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700">
-                      3+ years of professional experience
-                    </span>
+                    <span className="text-gray-700">3+ years of professional experience</span>
                   </li>
                   <li className="flex items-start space-x-2">
                     <Check className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700">
-                      Strong communication skills
-                    </span>
+                    <span className="text-gray-700">Strong communication skills</span>
                   </li>
                 </>
               )}
@@ -1961,42 +1814,30 @@ const JobDetailsView = ({
           </div>
 
           <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Benefits & Perks
-            </h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Benefits & Perks</h2>
             <ul className="space-y-2">
-              {role.benefits ? (
-                role.benefits.map((benefit, index) => (
-                  <li key={index} className="flex items-start space-x-2">
-                    <Award className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700">{benefit}</span>
-                  </li>
-                ))
-              ) : (
+              {role.benefits ? role.benefits.map((benefit, index) => (
+                <li key={index} className="flex items-start space-x-2">
+                  <Award className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-700">{benefit}</span>
+                </li>
+              )) : (
                 <>
                   <li className="flex items-start space-x-2">
                     <Award className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700">
-                      Competitive salary and equity package
-                    </span>
+                    <span className="text-gray-700">Competitive salary and equity package</span>
                   </li>
                   <li className="flex items-start space-x-2">
                     <Award className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700">
-                      Comprehensive health and dental coverage
-                    </span>
+                    <span className="text-gray-700">Comprehensive health and dental coverage</span>
                   </li>
                   <li className="flex items-start space-x-2">
                     <Award className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700">
-                      Flexible working arrangements
-                    </span>
+                    <span className="text-gray-700">Flexible working arrangements</span>
                   </li>
                   <li className="flex items-start space-x-2">
                     <Award className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700">
-                      Professional development opportunities
-                    </span>
+                    <span className="text-gray-700">Professional development opportunities</span>
                   </li>
                 </>
               )}
@@ -2007,9 +1848,7 @@ const JobDetailsView = ({
         {/* Sidebar */}
         <div className="space-y-6">
           <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Role Information
-            </h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Role Information</h3>
             <div className="space-y-3">
               <div>
                 <p className="text-sm font-medium text-gray-600">Department</p>
@@ -2024,24 +1863,18 @@ const JobDetailsView = ({
                 <p className="text-gray-900">{role.created}</p>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">
-                  Employment Type
-                </p>
+                <p className="text-sm font-medium text-gray-600">Employment Type</p>
                 <p className="text-gray-900">Full-time</p>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">
-                  Experience Level
-                </p>
+                <p className="text-sm font-medium text-gray-600">Experience Level</p>
                 <p className="text-gray-900">Mid to Senior Level</p>
               </div>
             </div>
           </div>
 
           <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Diversity & Inclusion
-            </h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Diversity & Inclusion</h3>
             <div className="space-y-3">
               <div>
                 <p className="text-sm font-medium text-gray-600">DEI Score</p>
@@ -2052,22 +1885,17 @@ const JobDetailsView = ({
                       style={{ width: `${role.deiScore}%` }}
                     ></div>
                   </div>
-                  <span className="text-sm font-medium text-green-600">
-                    {role.deiScore}%
-                  </span>
+                  <span className="text-sm font-medium text-green-600">{role.deiScore}%</span>
                 </div>
               </div>
               <p className="text-sm text-gray-600">
-                This role meets our diversity and inclusion standards with focus
-                on equal opportunity hiring.
+                This role meets our diversity and inclusion standards with focus on equal opportunity hiring.
               </p>
             </div>
           </div>
 
           <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Quick Actions
-            </h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
             <div className="space-y-3">
               <button className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                 Edit Job Description
@@ -2098,8 +1926,7 @@ const RolesTab = () => {
   const [recruitingRoleId, setRecruitingRoleId] = useState<number | null>(null);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
   const [viewingShortlist, setViewingShortlist] = useState<Role | null>(null);
-  const [schedulingCandidate, setSchedulingCandidate] =
-    useState<ShortlistedCandidate | null>(null);
+  const [schedulingCandidate, setSchedulingCandidate] = useState<ShortlistedCandidate | null>(null);
   const [viewingJobDetails, setViewingJobDetails] = useState<Role | null>(null);
 
   const startRecruitment = (roleId: number) => {
@@ -2249,16 +2076,11 @@ const RolesTab = () => {
               <div className="flex space-x-2">
                 <button
                   onClick={() => viewShortlist(role)}
-                  disabled={
-                    !role.shortlistedCandidates ||
-                    role.shortlistedCandidates.length === 0
-                  }
+                  disabled={!role.shortlistedCandidates || role.shortlistedCandidates.length === 0}
                   className="flex-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors text-sm flex items-center justify-center space-x-1"
                 >
                   <Users size={14} />
-                  <span>
-                    Shortlist ({role.shortlistedCandidates?.length || 0})
-                  </span>
+                  <span>Shortlist ({role.shortlistedCandidates?.length || 0})</span>
                 </button>
                 <button
                   onClick={() => startRecruitment(role.id)}
@@ -2302,7 +2124,7 @@ const RolesTab = () => {
           candidate={{
             ...schedulingCandidate,
             role: viewingShortlist?.title || "Unknown Role",
-            status: getInterviewStageLabel(schedulingCandidate.interviewStage),
+            status: getInterviewStageLabel(schedulingCandidate.interviewStage)
           }}
           isOpen={showCalendlyModal}
           onClose={() => {
@@ -2341,14 +2163,12 @@ const CandidatesTab = () => {
     const allCandidates: Candidate[] = [...mockCandidates];
 
     // Add shortlisted candidates from roles
-    mockRoles.forEach((role) => {
+    mockRoles.forEach(role => {
       if (role.shortlistedCandidates) {
-        role.shortlistedCandidates.forEach((shortlistedCandidate) => {
+        role.shortlistedCandidates.forEach(shortlistedCandidate => {
           // Convert ShortlistedCandidate to Candidate format and avoid duplicates
-          const existingCandidate = allCandidates.find(
-            (c) =>
-              c.email === shortlistedCandidate.email ||
-              c.id === shortlistedCandidate.id,
+          const existingCandidate = allCandidates.find(c =>
+            c.email === shortlistedCandidate.email || c.id === shortlistedCandidate.id
           );
 
           if (!existingCandidate) {
@@ -2361,20 +2181,11 @@ const CandidatesTab = () => {
               experience: shortlistedCandidate.experience,
               skills: shortlistedCandidate.skills,
               aiMatch: shortlistedCandidate.aiMatch,
-              status:
-                shortlistedCandidate.interviewStage === "shortlisted"
-                  ? "Shortlisted"
-                  : shortlistedCandidate.interviewStage === "hired"
-                    ? "Hired"
-                    : shortlistedCandidate.interviewStage.includes("scheduled")
-                      ? "Interview Scheduled"
-                      : shortlistedCandidate.interviewStage.includes(
-                            "completed",
-                          )
-                        ? "Interview Completed"
-                        : shortlistedCandidate.interviewStage === "offer_made"
-                          ? "Offer Made"
-                          : "In Process",
+              status: shortlistedCandidate.interviewStage === 'shortlisted' ? 'Shortlisted' :
+                      shortlistedCandidate.interviewStage === 'hired' ? 'Hired' :
+                      shortlistedCandidate.interviewStage.includes('scheduled') ? 'Interview Scheduled' :
+                      shortlistedCandidate.interviewStage.includes('completed') ? 'Interview Completed' :
+                      shortlistedCandidate.interviewStage === 'offer_made' ? 'Offer Made' : 'In Process',
               source: shortlistedCandidate.source,
               applied: shortlistedCandidate.applied,
               avatar: shortlistedCandidate.avatar,
@@ -2382,7 +2193,7 @@ const CandidatesTab = () => {
               linkedinProfile: shortlistedCandidate.linkedinProfile,
               githubProfile: shortlistedCandidate.githubProfile,
               portfolio: shortlistedCandidate.portfolio,
-              notes: shortlistedCandidate.notes,
+              notes: shortlistedCandidate.notes
             };
             allCandidates.push(convertedCandidate);
           }
@@ -2458,7 +2269,10 @@ const CandidatesTab = () => {
             <div>
               <p className="text-sm font-medium text-gray-600">Shortlisted</p>
               <p className="text-2xl font-bold text-gray-900">
-                {allCandidates.filter((c) => c.status === "Shortlisted").length}
+                {
+                  allCandidates.filter((c) => c.status === "Shortlisted")
+                    .length
+                }
               </p>
             </div>
             <Star className="w-6 h-6 text-yellow-600" />
@@ -2471,9 +2285,7 @@ const CandidatesTab = () => {
               <p className="text-2xl font-bold text-gray-900">
                 {
                   allCandidates.filter(
-                    (c) =>
-                      c.status === "Interview Scheduled" ||
-                      c.status === "Interview Completed",
+                    (c) => c.status === "Interview Scheduled" || c.status === "Interview Completed",
                   ).length
                 }
               </p>
@@ -2484,16 +2296,12 @@ const CandidatesTab = () => {
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">
-                Avg UPhireIQ AI Match
-              </p>
+              <p className="text-sm font-medium text-gray-600">Avg UPhireIQ AI Match</p>
               <p className="text-2xl font-bold text-gray-900">
-                {allCandidates.length > 0
-                  ? Math.round(
-                      allCandidates.reduce((acc, c) => acc + c.aiMatch, 0) /
-                        allCandidates.length,
-                    )
-                  : 0}
+                {allCandidates.length > 0 ? Math.round(
+                  allCandidates.reduce((acc, c) => acc + c.aiMatch, 0) /
+                    allCandidates.length,
+                ) : 0}
                 %
               </p>
             </div>
@@ -6416,9 +6224,8 @@ const UPhirePlatform = () => {
                   AI-Powered Recruitment
                 </h3>
                 <p className="text-gray-600">
-                  4-stage UPhireIQ AI recruitment automation across LinkedIn,
-                  Indeed, GitHub, and more platforms with intelligent candidate
-                  ranking.
+                  4-stage UPhireIQ AI recruitment automation across LinkedIn, Indeed,
+                  GitHub, and more platforms with intelligent candidate ranking.
                 </p>
               </div>
 
