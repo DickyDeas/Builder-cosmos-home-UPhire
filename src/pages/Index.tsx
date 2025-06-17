@@ -1832,6 +1832,263 @@ const DashboardTab = () => (
   </div>
 );
 
+// Job Details View Component
+const JobDetailsView = ({
+  role,
+  onBack,
+}: {
+  role: Role;
+  onBack: () => void;
+}) => {
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={onBack}
+            className="flex items-center space-x-2 text-white hover:text-blue-100 transition-colors"
+          >
+            <ChevronDown className="w-5 h-5 rotate-90" />
+            <span>Back to Roles</span>
+          </button>
+          <div>
+            <h1 className="text-3xl font-bold text-white">{role.title}</h1>
+            <p className="text-blue-100">
+              {role.department} • {role.location} • Posted: {role.created}
+            </p>
+          </div>
+        </div>
+        <div className="flex space-x-3">
+          <span
+            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+              role.status === "Active"
+                ? "bg-green-100 text-green-800"
+                : "bg-gray-100 text-gray-800"
+            }`}
+          >
+            {role.status}
+          </span>
+          <span
+            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+              role.priority === "High"
+                ? "bg-red-100 text-red-800"
+                : role.priority === "Medium"
+                  ? "bg-yellow-100 text-yellow-800"
+                  : "bg-blue-100 text-blue-800"
+            }`}
+          >
+            {role.priority} Priority
+          </span>
+        </div>
+      </div>
+
+      {/* Job Overview Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6 text-center">
+          <Users className="w-8 h-8 text-blue-600 mx-auto mb-3" />
+          <p className="text-2xl font-bold text-gray-900">{role.candidates}</p>
+          <p className="text-sm text-gray-600">Total Candidates</p>
+        </div>
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6 text-center">
+          <Star className="w-8 h-8 text-yellow-600 mx-auto mb-3" />
+          <p className="text-2xl font-bold text-gray-900">{role.shortlisted}</p>
+          <p className="text-sm text-gray-600">Shortlisted</p>
+        </div>
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6 text-center">
+          <Calendar className="w-8 h-8 text-purple-600 mx-auto mb-3" />
+          <p className="text-2xl font-bold text-gray-900">{role.interviewed}</p>
+          <p className="text-sm text-gray-600">Interviewed</p>
+        </div>
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6 text-center">
+          <DollarSign className="w-8 h-8 text-green-600 mx-auto mb-3" />
+          <p className="text-lg font-bold text-gray-900">{role.salary}</p>
+          <p className="text-sm text-gray-600">Salary Range</p>
+        </div>
+      </div>
+
+      {/* Job Details Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Job Description */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              Job Description
+            </h2>
+            <div className="prose max-w-none">
+              <p className="text-gray-700 leading-relaxed">
+                {role.description ||
+                  "We're looking for a talented professional to join our dynamic team. This role offers exciting opportunities to work on cutting-edge projects and contribute to our company's growth."}
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              Requirements
+            </h2>
+            <ul className="space-y-2">
+              {role.requirements ? (
+                role.requirements.map((req, index) => (
+                  <li key={index} className="flex items-start space-x-2">
+                    <Check className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">{req}</span>
+                  </li>
+                ))
+              ) : (
+                <>
+                  <li className="flex items-start space-x-2">
+                    <Check className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">
+                      Bachelor's degree in relevant field
+                    </span>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <Check className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">
+                      3+ years of professional experience
+                    </span>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <Check className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">
+                      Strong communication skills
+                    </span>
+                  </li>
+                </>
+              )}
+            </ul>
+          </div>
+
+          <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              Benefits & Perks
+            </h2>
+            <ul className="space-y-2">
+              {role.benefits ? (
+                role.benefits.map((benefit, index) => (
+                  <li key={index} className="flex items-start space-x-2">
+                    <Award className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">{benefit}</span>
+                  </li>
+                ))
+              ) : (
+                <>
+                  <li className="flex items-start space-x-2">
+                    <Award className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">
+                      Competitive salary and equity package
+                    </span>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <Award className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">
+                      Comprehensive health and dental coverage
+                    </span>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <Award className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">
+                      Flexible working arrangements
+                    </span>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <Award className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700">
+                      Professional development opportunities
+                    </span>
+                  </li>
+                </>
+              )}
+            </ul>
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <div className="space-y-6">
+          <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Role Information
+            </h3>
+            <div className="space-y-3">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Department</p>
+                <p className="text-gray-900">{role.department}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-600">Location</p>
+                <p className="text-gray-900">{role.location}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-600">Date Posted</p>
+                <p className="text-gray-900">{role.created}</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-600">
+                  Employment Type
+                </p>
+                <p className="text-gray-900">Full-time</p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-600">
+                  Experience Level
+                </p>
+                <p className="text-gray-900">Mid to Senior Level</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Diversity & Inclusion
+            </h3>
+            <div className="space-y-3">
+              <div>
+                <p className="text-sm font-medium text-gray-600">DEI Score</p>
+                <div className="flex items-center space-x-2">
+                  <div className="flex-1 bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-green-500 h-2 rounded-full"
+                      style={{ width: `${role.deiScore}%` }}
+                    ></div>
+                  </div>
+                  <span className="text-sm font-medium text-green-600">
+                    {role.deiScore}%
+                  </span>
+                </div>
+              </div>
+              <p className="text-sm text-gray-600">
+                This role meets our diversity and inclusion standards with focus
+                on equal opportunity hiring.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Quick Actions
+            </h3>
+            <div className="space-y-3">
+              <button className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                Edit Job Description
+              </button>
+              <button className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                View Applications
+              </button>
+              <button className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                Share Job Posting
+              </button>
+              <button className="w-full px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                Close Position
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Roles Tab Component
 const RolesTab = () => {
   const [showNewRoleModal, setShowNewRoleModal] = useState(false);
@@ -1843,6 +2100,7 @@ const RolesTab = () => {
   const [viewingShortlist, setViewingShortlist] = useState<Role | null>(null);
   const [schedulingCandidate, setSchedulingCandidate] =
     useState<ShortlistedCandidate | null>(null);
+  const [viewingJobDetails, setViewingJobDetails] = useState<Role | null>(null);
 
   const startRecruitment = (roleId: number) => {
     setRecruitingRoleId(roleId);
@@ -1858,10 +2116,24 @@ const RolesTab = () => {
     setViewingShortlist(role);
   };
 
+  const viewJobDetails = (role: Role) => {
+    setViewingJobDetails(role);
+  };
+
   const scheduleInterviewFromShortlist = (candidate: ShortlistedCandidate) => {
     setSchedulingCandidate(candidate);
     setShowCalendlyModal(true);
   };
+
+  // If viewing job details, show the job details view
+  if (viewingJobDetails) {
+    return (
+      <JobDetailsView
+        role={viewingJobDetails}
+        onBack={() => setViewingJobDetails(null)}
+      />
+    );
+  }
 
   // If viewing shortlist, show the shortlist view
   if (viewingShortlist) {
