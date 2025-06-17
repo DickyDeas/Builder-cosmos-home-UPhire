@@ -196,6 +196,87 @@ interface PredictionData {
   recommendations: string[];
 }
 
+// Utility Functions
+const getInterviewStageColor = (stage: string) => {
+  const stageColors: {
+    [key: string]: { bg: string; text: string; border: string };
+  } = {
+    shortlisted: {
+      bg: "bg-blue-50",
+      text: "text-blue-700",
+      border: "border-blue-200",
+    },
+    screening_scheduled: {
+      bg: "bg-yellow-50",
+      text: "text-yellow-700",
+      border: "border-yellow-200",
+    },
+    screening_completed: {
+      bg: "bg-purple-50",
+      text: "text-purple-700",
+      border: "border-purple-200",
+    },
+    technical_scheduled: {
+      bg: "bg-orange-50",
+      text: "text-orange-700",
+      border: "border-orange-200",
+    },
+    technical_completed: {
+      bg: "bg-indigo-50",
+      text: "text-indigo-700",
+      border: "border-indigo-200",
+    },
+    final_scheduled: {
+      bg: "bg-pink-50",
+      text: "text-pink-700",
+      border: "border-pink-200",
+    },
+    final_completed: {
+      bg: "bg-emerald-50",
+      text: "text-emerald-700",
+      border: "border-emerald-200",
+    },
+    offer_made: {
+      bg: "bg-green-50",
+      text: "text-green-700",
+      border: "border-green-200",
+    },
+    hired: {
+      bg: "bg-green-100",
+      text: "text-green-800",
+      border: "border-green-300",
+    },
+    rejected: {
+      bg: "bg-red-50",
+      text: "text-red-700",
+      border: "border-red-200",
+    },
+  };
+  return (
+    stageColors[stage] || {
+      bg: "bg-gray-50",
+      text: "text-gray-700",
+      border: "border-gray-200",
+    }
+  );
+};
+
+const getInterviewStageLabel = (stage: string) => {
+  const stageLabels: { [key: string]: string } = {
+    shortlisted: "Shortlisted",
+    screening_scheduled: "Screening Scheduled",
+    screening_completed: "Screening Complete",
+    technical_scheduled: "Technical Scheduled",
+    technical_completed: "Technical Complete",
+    final_scheduled: "Final Interview Scheduled",
+    final_completed: "Final Interview Complete",
+    offer_made: "Offer Made",
+    hired: "Hired",
+    rejected: "Rejected",
+  };
+  return stageLabels[stage] || "Unknown";
+};
+
 // Mock Data
 const mockRoles: Role[] = [
   {
