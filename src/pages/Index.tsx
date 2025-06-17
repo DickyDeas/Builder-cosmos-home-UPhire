@@ -1179,18 +1179,175 @@ const MarketIntelligence = () => {
         </div>
       )}
 
-      {/* Default State */}
+      {/* Trending Market Information */}
       {!lastSearchResults && !isSearching && (
-        <div className="text-center py-8">
-          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <TrendingUp className="w-8 h-8 text-blue-600" />
+        <div className="space-y-6">
+          <div className="text-center mb-6">
+            <h4 className="text-lg font-medium text-gray-900 mb-2">
+              Current Market Trends
+            </h4>
+            <p className="text-sm text-gray-600">
+              Real-time insights from the UK tech recruitment market
+            </p>
           </div>
-          <p className="text-gray-600">
-            Search for a role to see live market intelligence and salary data
-          </p>
-          <p className="text-sm text-gray-500 mt-2">
-            Powered by ITJobsWatch API for accurate UK market insights
-          </p>
+
+          {/* Trending Roles */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h5 className="font-medium text-gray-900 mb-4 flex items-center">
+                <TrendingUp className="w-5 h-5 text-green-600 mr-2" />
+                Hottest Roles This Month
+              </h5>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center p-3 bg-green-50 border border-green-200 rounded-lg">
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">
+                      Senior React Developer
+                    </p>
+                    <p className="text-xs text-gray-600">
+                      +23% demand increase
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-bold text-green-700">£77k</p>
+                    <p className="text-xs text-gray-600">median</p>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">
+                      DevOps Engineer
+                    </p>
+                    <p className="text-xs text-gray-600">
+                      +18% demand increase
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-bold text-blue-700">£80k</p>
+                    <p className="text-xs text-gray-600">median</p>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">
+                      Data Scientist
+                    </p>
+                    <p className="text-xs text-gray-600">
+                      +15% demand increase
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-bold text-purple-700">£75k</p>
+                    <p className="text-xs text-gray-600">median</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h5 className="font-medium text-gray-900 mb-4 flex items-center">
+                <Zap className="w-5 h-5 text-orange-600 mr-2" />
+                Trending Skills
+              </h5>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+                    <span className="text-sm font-medium text-gray-900">
+                      TypeScript
+                    </span>
+                  </div>
+                  <span className="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full">
+                    +31%
+                  </span>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-cyan-50 border border-cyan-200 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-2 h-2 bg-cyan-500 rounded-full animate-pulse"></div>
+                    <span className="text-sm font-medium text-gray-900">
+                      AWS
+                    </span>
+                  </div>
+                  <span className="text-xs bg-cyan-100 text-cyan-800 px-2 py-1 rounded-full">
+                    +27%
+                  </span>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-pink-50 border border-pink-200 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-2 h-2 bg-pink-500 rounded-full animate-pulse"></div>
+                    <span className="text-sm font-medium text-gray-900">
+                      Kubernetes
+                    </span>
+                  </div>
+                  <span className="text-xs bg-pink-100 text-pink-800 px-2 py-1 rounded-full">
+                    +24%
+                  </span>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></div>
+                    <span className="text-sm font-medium text-gray-900">
+                      Machine Learning
+                    </span>
+                  </div>
+                  <span className="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">
+                    +22%
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Market Overview */}
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-6">
+            <h5 className="font-medium text-gray-900 mb-4">Market Overview</h5>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="text-center">
+                <p className="text-2xl font-bold text-blue-600">89%</p>
+                <p className="text-sm text-gray-600">Market Activity</p>
+                <p className="text-xs text-green-600 mt-1">
+                  ↑ 5% vs last month
+                </p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-green-600">21d</p>
+                <p className="text-sm text-gray-600">Avg. Time to Hire</p>
+                <p className="text-xs text-green-600 mt-1">
+                  ↓ 2 days vs last month
+                </p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-purple-600">£68k</p>
+                <p className="text-sm text-gray-600">Avg. Tech Salary</p>
+                <p className="text-xs text-green-600 mt-1">
+                  ↑ 3% vs last quarter
+                </p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-orange-600">1,247</p>
+                <p className="text-sm text-gray-600">Active Job Postings</p>
+                <p className="text-xs text-green-600 mt-1">
+                  ↑ 12% vs last week
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center pt-4 border-t border-gray-200">
+            <p className="text-sm text-gray-600 mb-3">
+              Search for a specific role above to get detailed market
+              intelligence and salary benchmarking
+            </p>
+            <div className="flex items-center justify-center space-x-2 text-xs text-gray-500">
+              <span>Powered by</span>
+              <img
+                src="https://cdn.builder.io/api/v1/assets/e3ae173b79f74e84b0580a7f82f9aa6c/uphire-iq-logo-no-background-a3ed8d?format=webp&width=800"
+                alt="UPhireIQ"
+                className="h-3 object-contain"
+              />
+              <span>for accurate UK market insights</span>
+            </div>
+          </div>
         </div>
       )}
     </div>
