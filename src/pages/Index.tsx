@@ -6077,7 +6077,7 @@ const UPhirePlatform = () => {
                 <div className="text-center">
                   <Zap className="w-8 h-8 text-orange-600 mx-auto mb-2" />
                   <p className="font-medium text-gray-900">
-                    AI Success Prediction
+                    UPhireIQ AI Success Prediction
                   </p>
                   <p className="text-sm text-gray-600">
                     Role success analysis and recommendations
