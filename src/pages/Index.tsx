@@ -6036,10 +6036,10 @@ const UPhirePlatform = () => {
                 <img
                   src="https://cdn.builder.io/api/v1/assets/e3ae173b79f74e84b0580a7f82f9aa6c/uphire-iq-logo-no-background-a3ed8d?format=webp&width=800"
                   alt="UPhireIQ AI Logo"
-                  className="w-12 h-12 mx-auto mb-4 object-contain"
+                  className="h-10 mx-auto mb-4 object-contain"
                 />
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  UPhireIQ AI-Powered Recruitment
+                  AI-Powered Recruitment
                 </h3>
                 <p className="text-gray-600">
                   4-stage UPhireIQ AI recruitment automation across LinkedIn,
