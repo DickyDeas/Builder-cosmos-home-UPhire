@@ -2447,7 +2447,7 @@ const CandidatesTab = () => {
                 Total Candidates
               </p>
               <p className="text-2xl font-bold text-gray-900">
-                {mockCandidates.length}
+                {allCandidates.length}
               </p>
             </div>
             <Users className="w-6 h-6 text-blue-600" />
@@ -2458,10 +2458,7 @@ const CandidatesTab = () => {
             <div>
               <p className="text-sm font-medium text-gray-600">Shortlisted</p>
               <p className="text-2xl font-bold text-gray-900">
-                {
-                  mockCandidates.filter((c) => c.status === "Shortlisted")
-                    .length
-                }
+                {allCandidates.filter((c) => c.status === "Shortlisted").length}
               </p>
             </div>
             <Star className="w-6 h-6 text-yellow-600" />
@@ -2473,8 +2470,10 @@ const CandidatesTab = () => {
               <p className="text-sm font-medium text-gray-600">Interviews</p>
               <p className="text-2xl font-bold text-gray-900">
                 {
-                  mockCandidates.filter(
-                    (c) => c.status === "Interview Scheduled",
+                  allCandidates.filter(
+                    (c) =>
+                      c.status === "Interview Scheduled" ||
+                      c.status === "Interview Completed",
                   ).length
                 }
               </p>
@@ -2489,10 +2488,12 @@ const CandidatesTab = () => {
                 Avg UPhireIQ AI Match
               </p>
               <p className="text-2xl font-bold text-gray-900">
-                {Math.round(
-                  mockCandidates.reduce((acc, c) => acc + c.aiMatch, 0) /
-                    mockCandidates.length,
-                )}
+                {allCandidates.length > 0
+                  ? Math.round(
+                      allCandidates.reduce((acc, c) => acc + c.aiMatch, 0) /
+                        allCandidates.length,
+                    )
+                  : 0}
                 %
               </p>
             </div>
