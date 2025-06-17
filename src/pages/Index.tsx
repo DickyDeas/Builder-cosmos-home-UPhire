@@ -1978,6 +1978,22 @@ const RolesTab = () => {
           setShowNewRoleModal={setShowNewRoleModal}
         />
       )}
+
+      {/* Calendly Modal for Shortlist Interview Scheduling */}
+      {showCalendlyModal && schedulingCandidate && (
+        <CalendlyModal
+          candidate={{
+            ...schedulingCandidate,
+            role: viewingShortlist?.title || "Unknown Role",
+            status: getInterviewStageLabel(schedulingCandidate.interviewStage),
+          }}
+          isOpen={showCalendlyModal}
+          onClose={() => {
+            setShowCalendlyModal(false);
+            setSchedulingCandidate(null);
+          }}
+        />
+      )}
     </div>
   );
 };
