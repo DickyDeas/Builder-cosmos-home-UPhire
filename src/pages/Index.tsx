@@ -2336,10 +2336,69 @@ const CandidatesTab = () => {
     setShowCalendlyModal(true);
   };
 
+  // Aggregate all candidates from multiple sources
+  const getAllCandidates = (): Candidate[] => {
+    const allCandidates: Candidate[] = [...mockCandidates];
+
+    // Add shortlisted candidates from roles
+    mockRoles.forEach((role) => {
+      if (role.shortlistedCandidates) {
+        role.shortlistedCandidates.forEach((shortlistedCandidate) => {
+          // Convert ShortlistedCandidate to Candidate format and avoid duplicates
+          const existingCandidate = allCandidates.find(
+            (c) =>
+              c.email === shortlistedCandidate.email ||
+              c.id === shortlistedCandidate.id,
+          );
+
+          if (!existingCandidate) {
+            const convertedCandidate: Candidate = {
+              id: shortlistedCandidate.id,
+              name: shortlistedCandidate.name,
+              role: role.title, // Use the role title
+              email: shortlistedCandidate.email,
+              location: shortlistedCandidate.location,
+              experience: shortlistedCandidate.experience,
+              skills: shortlistedCandidate.skills,
+              aiMatch: shortlistedCandidate.aiMatch,
+              status:
+                shortlistedCandidate.interviewStage === "shortlisted"
+                  ? "Shortlisted"
+                  : shortlistedCandidate.interviewStage === "hired"
+                    ? "Hired"
+                    : shortlistedCandidate.interviewStage.includes("scheduled")
+                      ? "Interview Scheduled"
+                      : shortlistedCandidate.interviewStage.includes(
+                            "completed",
+                          )
+                        ? "Interview Completed"
+                        : shortlistedCandidate.interviewStage === "offer_made"
+                          ? "Offer Made"
+                          : "In Process",
+              source: shortlistedCandidate.source,
+              applied: shortlistedCandidate.applied,
+              avatar: shortlistedCandidate.avatar,
+              phoneNumber: shortlistedCandidate.phoneNumber,
+              linkedinProfile: shortlistedCandidate.linkedinProfile,
+              githubProfile: shortlistedCandidate.githubProfile,
+              portfolio: shortlistedCandidate.portfolio,
+              notes: shortlistedCandidate.notes,
+            };
+            allCandidates.push(convertedCandidate);
+          }
+        });
+      }
+    });
+
+    return allCandidates;
+  };
+
+  const allCandidates = getAllCandidates();
+
   const filteredCandidates =
     filterStatus === "All"
-      ? mockCandidates
-      : mockCandidates.filter((c) => c.status === filterStatus);
+      ? allCandidates
+      : allCandidates.filter((c) => c.status === filterStatus);
 
   return (
     <div className="space-y-6">
