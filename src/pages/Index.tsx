@@ -1712,10 +1712,14 @@ const DashboardTab = () => (
             </div>
           </div>
           <div className="flex items-center space-x-3 p-3 bg-orange-50 rounded-lg">
-            <Brain className="w-5 h-5 text-orange-600" />
+            <img
+              src="https://cdn.builder.io/api/v1/assets/e3ae173b79f74e84b0580a7f82f9aa6c/uphire-iq-logo-no-background-a3ed8d?format=webp&width=800"
+              alt="UPhireIQ AI"
+              className="w-5 h-5 object-contain"
+            />
             <div>
               <p className="text-sm font-medium text-gray-900">
-                AI recruitment completed for Product Manager role
+                UPhireIQ AI recruitment completed for Product Manager role
               </p>
               <p className="text-xs text-gray-500">5 hours ago</p>
             </div>
