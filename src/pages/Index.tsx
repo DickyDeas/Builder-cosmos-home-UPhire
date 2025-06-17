@@ -1550,6 +1550,155 @@ const DashboardTab = () => {
             <Users className="w-8 h-8 text-green-600" />
           </div>
         </div>
+
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">
+                Interviews This Week
+              </p>
+              <p className="text-3xl font-bold text-gray-900">18</p>
+              <p className="text-sm text-blue-600 flex items-center">
+                <Calendar className="w-4 h-4 mr-1" />6 scheduled today
+              </p>
+            </div>
+            <Calendar className="w-8 h-8 text-purple-600" />
+          </div>
+        </div>
+
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">
+                Time to Hire (avg)
+              </p>
+              <p className="text-3xl font-bold text-gray-900">23d</p>
+              <p className="text-sm text-green-600 flex items-center">
+                <ArrowDown className="w-4 h-4 mr-1" />
+                -3 days vs last month
+              </p>
+            </div>
+            <Clock className="w-8 h-8 text-orange-600" />
+          </div>
+        </div>
+      </div>
+
+      {/* Market Intelligence Section */}
+      <MarketIntelligence />
+
+      {/* Recent Activity & Performance */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Recent Activity
+          </h3>
+          <div className="space-y-4">
+            <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
+              <Users className="w-5 h-5 text-blue-600" />
+              <div>
+                <p className="text-sm font-medium text-gray-900">
+                  New candidate applied for Senior React Developer
+                </p>
+                <p className="text-xs text-gray-500">2 minutes ago</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
+              <CheckCircle className="w-5 h-5 text-green-600" />
+              <div>
+                <p className="text-sm font-medium text-gray-900">
+                  Interview completed with Alice Johnson
+                </p>
+                <p className="text-xs text-gray-500">1 hour ago</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
+              <Briefcase className="w-5 h-5 text-purple-600" />
+              <div>
+                <p className="text-sm font-medium text-gray-900">
+                  New role created: UX Designer
+                </p>
+                <p className="text-xs text-gray-500">3 hours ago</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3 p-3 bg-orange-50 rounded-lg">
+              <img
+                src="https://cdn.builder.io/api/v1/assets/e3ae173b79f74e84b0580a7f82f9aa6c/uphire-iq-logo-no-background-a3ed8d?format=webp&width=800"
+                alt="UPhireIQ AI"
+                className="w-5 h-5 object-contain"
+              />
+              <div>
+                <p className="text-sm font-medium text-gray-900">
+                  UPhireIQ AI recruitment completed for Product Manager role
+                </p>
+                <p className="text-xs text-gray-500">5 hours ago</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Performance Overview
+          </h3>
+          <div className="space-y-4">
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm font-medium text-gray-700">
+                  Applications to Interview Rate
+                </span>
+                <span className="text-sm font-bold text-green-600">34%</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-green-500 h-2 rounded-full"
+                  style={{ width: "34%" }}
+                ></div>
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm font-medium text-gray-700">
+                  Interview to Offer Rate
+                </span>
+                <span className="text-sm font-bold text-blue-600">67%</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-blue-500 h-2 rounded-full"
+                  style={{ width: "67%" }}
+                ></div>
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm font-medium text-gray-700">
+                  Offer Acceptance Rate
+                </span>
+                <span className="text-sm font-bold text-purple-600">89%</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-purple-500 h-2 rounded-full"
+                  style={{ width: "89%" }}
+                ></div>
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm font-medium text-gray-700">
+                  Employee Retention (1 year)
+                </span>
+                <span className="text-sm font-bold text-orange-600">94%</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className="bg-orange-500 h-2 rounded-full"
+                  style={{ width: "94%" }}
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
