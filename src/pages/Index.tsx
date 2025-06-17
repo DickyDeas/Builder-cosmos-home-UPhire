@@ -946,6 +946,382 @@ const businessProfile = {
 
 // Component Definitions
 
+// Role Shortlist View Component
+const RoleShortlistView = ({
+  role,
+  onBack,
+  onScheduleInterview,
+}: {
+  role: Role;
+  onBack: () => void;
+  onScheduleInterview: (candidate: ShortlistedCandidate) => void;
+}) => {
+  const [filterStage, setFilterStage] = useState<string>("all");
+  const [sortBy, setSortBy] = useState<string>("aiMatch");
+
+  const filteredCandidates =
+    role.shortlistedCandidates?.filter(
+      (candidate) =>
+        filterStage === "all" || candidate.interviewStage === filterStage,
+    ) || [];
+
+  const sortedCandidates = [...filteredCandidates].sort((a, b) => {
+    if (sortBy === "aiMatch") return b.aiMatch - a.aiMatch;
+    if (sortBy === "name") return a.name.localeCompare(b.name);
+    if (sortBy === "applied")
+      return new Date(b.applied).getTime() - new Date(a.applied).getTime();
+    if (sortBy === "stage")
+      return a.interviewStage.localeCompare(b.interviewStage);
+    return 0;
+  });
+
+  const updateCandidateStage = (candidateId: number, newStage: string) => {
+    // In a real app, this would update the backend
+    console.log(`Updating candidate ${candidateId} to stage ${newStage}`);
+  };
+
+  const stageOptions = [
+    { value: "all", label: "All Stages" },
+    { value: "shortlisted", label: "Shortlisted" },
+    { value: "screening_scheduled", label: "Screening Scheduled" },
+    { value: "screening_completed", label: "Screening Complete" },
+    { value: "technical_scheduled", label: "Technical Scheduled" },
+    { value: "technical_completed", label: "Technical Complete" },
+    { value: "final_scheduled", label: "Final Scheduled" },
+    { value: "final_completed", label: "Final Complete" },
+    { value: "offer_made", label: "Offer Made" },
+    { value: "hired", label: "Hired" },
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={onBack}
+            className="flex items-center space-x-2 text-white hover:text-blue-100 transition-colors"
+          >
+            <ChevronDown className="w-5 h-5 rotate-90" />
+            <span>Back to Roles</span>
+          </button>
+          <div>
+            <h1 className="text-3xl font-bold text-white">
+              {role.title} - Shortlist
+            </h1>
+            <p className="text-blue-100">
+              {role.shortlistedCandidates?.length || 0} candidates shortlisted •{" "}
+              {role.department}
+            </p>
+          </div>
+        </div>
+        <div className="flex space-x-3">
+          <select
+            value={filterStage}
+            onChange={(e) => setFilterStage(e.target.value)}
+            className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg backdrop-blur-sm border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+          >
+            {stageOptions.map((option) => (
+              <option
+                key={option.value}
+                value={option.value}
+                className="text-gray-900"
+              >
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg backdrop-blur-sm border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+          >
+            <option value="aiMatch" className="text-gray-900">
+              Sort by AI Match
+            </option>
+            <option value="name" className="text-gray-900">
+              Sort by Name
+            </option>
+            <option value="applied" className="text-gray-900">
+              Sort by Applied Date
+            </option>
+            <option value="stage" className="text-gray-900">
+              Sort by Stage
+            </option>
+          </select>
+        </div>
+      </div>
+
+      {/* Stage Overview */}
+      <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Interview Pipeline Overview
+        </h3>
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          {[
+            { stage: "shortlisted", label: "Shortlisted", icon: Users },
+            {
+              stage: "screening_scheduled",
+              label: "Screening",
+              icon: Calendar,
+            },
+            { stage: "technical_scheduled", label: "Technical", icon: Brain },
+            { stage: "final_scheduled", label: "Final", icon: Star },
+            { stage: "offer_made", label: "Offers", icon: Award },
+          ].map(({ stage, label, icon: Icon }) => {
+            const count =
+              role.shortlistedCandidates?.filter(
+                (c) =>
+                  c.interviewStage === stage ||
+                  c.interviewStage ===
+                    `${stage.replace("_scheduled", "_completed")}`,
+              ).length || 0;
+            const colors = getInterviewStageColor(stage);
+
+            return (
+              <div
+                key={stage}
+                className={`${colors.bg} ${colors.border} border rounded-lg p-4 text-center`}
+              >
+                <Icon className={`w-6 h-6 ${colors.text} mx-auto mb-2`} />
+                <p className={`text-2xl font-bold ${colors.text}`}>{count}</p>
+                <p className={`text-sm ${colors.text}`}>{label}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Candidates List */}
+      <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-lg font-semibold text-gray-900">
+            Shortlisted Candidates ({sortedCandidates.length})
+          </h3>
+          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
+            <Plus size={16} />
+            <span>Add Candidate</span>
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          {sortedCandidates.map((candidate) => {
+            const stageColors = getInterviewStageColor(
+              candidate.interviewStage,
+            );
+            const nextInterviews = candidate.interviewHistory.filter(
+              (i) => i.status === "scheduled",
+            );
+
+            return (
+              <div
+                key={candidate.id}
+                className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                      <span className="text-lg font-bold text-blue-600">
+                        {candidate.avatar}
+                      </span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-3 mb-2">
+                        <h4 className="text-lg font-semibold text-gray-900">
+                          {candidate.name}
+                        </h4>
+                        <span
+                          className={`px-3 py-1 rounded-full text-sm font-medium border ${stageColors.bg} ${stageColors.text} ${stageColors.border}`}
+                        >
+                          {getInterviewStageLabel(candidate.interviewStage)}
+                        </span>
+                        <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                          {candidate.aiMatch}% match
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                          <p className="text-sm text-gray-600">
+                            <Mail className="w-4 h-4 inline mr-1" />
+                            {candidate.email}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            <MapPin className="w-4 h-4 inline mr-1" />
+                            {candidate.location}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            <Clock className="w-4 h-4 inline mr-1" />
+                            Applied: {candidate.applied}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-600">
+                            <Award className="w-4 h-4 inline mr-1" />
+                            {candidate.experience}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            <Globe className="w-4 h-4 inline mr-1" />
+                            Source: {candidate.source}
+                          </p>
+                          {nextInterviews.length > 0 && (
+                            <p className="text-sm text-orange-600 font-medium">
+                              <Calendar className="w-4 h-4 inline mr-1" />
+                              Next: {nextInterviews[0].type} on{" "}
+                              {nextInterviews[0].date}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {candidate.skills.slice(0, 4).map((skill, index) => (
+                          <span
+                            key={index}
+                            className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-sm"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                        {candidate.skills.length > 4 && (
+                          <span className="px-2 py-1 bg-gray-100 text-gray-500 rounded text-sm">
+                            +{candidate.skills.length - 4} more
+                          </span>
+                        )}
+                      </div>
+
+                      {candidate.notes && (
+                        <div className="bg-blue-50 border border-blue-200 rounded p-3 mb-4">
+                          <p className="text-sm text-blue-800">
+                            {candidate.notes}
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Interview History */}
+                      {candidate.interviewHistory.length > 0 && (
+                        <div className="mb-4">
+                          <h5 className="text-sm font-medium text-gray-900 mb-2">
+                            Interview History
+                          </h5>
+                          <div className="space-y-2">
+                            {candidate.interviewHistory.map((interview) => (
+                              <div
+                                key={interview.id}
+                                className="flex items-center justify-between text-sm"
+                              >
+                                <div className="flex items-center space-x-2">
+                                  <span
+                                    className={`w-2 h-2 rounded-full ${
+                                      interview.status === "completed"
+                                        ? "bg-green-500"
+                                        : interview.status === "scheduled"
+                                          ? "bg-yellow-500"
+                                          : "bg-gray-500"
+                                    }`}
+                                  ></span>
+                                  <span className="capitalize">
+                                    {interview.type}
+                                  </span>
+                                  <span className="text-gray-500">•</span>
+                                  <span className="text-gray-600">
+                                    {interview.date}
+                                  </span>
+                                  {interview.rating && (
+                                    <>
+                                      <span className="text-gray-500">•</span>
+                                      <span className="text-green-600">
+                                        {interview.rating}/10
+                                      </span>
+                                    </>
+                                  )}
+                                </div>
+                                <span
+                                  className={`capitalize ${
+                                    interview.status === "completed"
+                                      ? "text-green-600"
+                                      : interview.status === "scheduled"
+                                        ? "text-yellow-600"
+                                        : "text-gray-600"
+                                  }`}
+                                >
+                                  {interview.status}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col space-y-2 ml-4">
+                    <button
+                      onClick={() => onScheduleInterview(candidate)}
+                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm flex items-center space-x-2"
+                    >
+                      <Calendar size={16} />
+                      <span>Schedule Interview</span>
+                    </button>
+                    <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                      View Profile
+                    </button>
+                    <button className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm">
+                      Send Message
+                    </button>
+                    <div className="relative">
+                      <select
+                        value={candidate.interviewStage}
+                        onChange={(e) =>
+                          updateCandidateStage(candidate.id, e.target.value)
+                        }
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                      >
+                        <option value="shortlisted">Shortlisted</option>
+                        <option value="screening_scheduled">
+                          Schedule Screening
+                        </option>
+                        <option value="screening_completed">
+                          Screening Complete
+                        </option>
+                        <option value="technical_scheduled">
+                          Schedule Technical
+                        </option>
+                        <option value="technical_completed">
+                          Technical Complete
+                        </option>
+                        <option value="final_scheduled">Schedule Final</option>
+                        <option value="final_completed">Final Complete</option>
+                        <option value="offer_made">Make Offer</option>
+                        <option value="hired">Hired</option>
+                        <option value="rejected">Reject</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {sortedCandidates.length === 0 && (
+          <div className="text-center py-12">
+            <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              No candidates found
+            </h3>
+            <p className="text-gray-600">
+              {filterStage === "all"
+                ? "No candidates have been shortlisted for this role yet."
+                : `No candidates in "${stageOptions.find((s) => s.value === filterStage)?.label}" stage.`}
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // Market Intelligence Component
 const MarketIntelligence = () => {
   const [searchForm, setSearchForm] = useState({
