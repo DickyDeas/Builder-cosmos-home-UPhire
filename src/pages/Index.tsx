@@ -5894,11 +5894,12 @@ const UPhirePlatform = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-8">
-              <div className="flex items-center space-x-3">
+              {/* Logo - Always Visible */}
+              <div className="flex items-center space-x-3 flex-shrink-0">
                 <img
                   src="https://cdn.builder.io/api/v1/assets/e3ae173b79f74e84b0580a7f82f9aa6c/uphire-logo-no-background-pink-text-72849d?format=webp&width=800"
                   alt="UPhire Logo"
-                  className="h-10 w-auto"
+                  className="h-10 w-auto block"
                 />
               </div>
 
