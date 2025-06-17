@@ -1679,8 +1679,6 @@ const RolesTab = () => {
           </div>
         ))}
       </div>
-
-      {/* Modals would go here - simplified for brevity */}
     </div>
   );
 };
