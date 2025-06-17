@@ -1929,12 +1929,27 @@ const RolesTab = () => {
                   AI Prediction
                 </button>
               </div>
-              <button
-                onClick={() => startRecruitment(role.id)}
-                className="w-full px-3 py-2 bg-gradient-to-r from-orange-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all text-sm font-medium"
-              >
-                Start AI Recruitment
-              </button>
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => viewShortlist(role)}
+                  disabled={
+                    !role.shortlistedCandidates ||
+                    role.shortlistedCandidates.length === 0
+                  }
+                  className="flex-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors text-sm flex items-center justify-center space-x-1"
+                >
+                  <Users size={14} />
+                  <span>
+                    Shortlist ({role.shortlistedCandidates?.length || 0})
+                  </span>
+                </button>
+                <button
+                  onClick={() => startRecruitment(role.id)}
+                  className="flex-1 px-3 py-2 bg-gradient-to-r from-orange-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all text-sm font-medium"
+                >
+                  AI Recruit
+                </button>
+              </div>
             </div>
           </div>
         ))}
