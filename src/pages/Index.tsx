@@ -2593,10 +2593,12 @@ const AIRecruitmentModal = ({
   isOpen,
   onClose,
   roleId,
+  onViewCandidates,
 }: {
   isOpen: boolean;
   onClose: () => void;
   roleId: number | null;
+  onViewCandidates: (role: Role) => void;
 }) => {
   const [isRunning, setIsRunning] = useState(false);
   const [progress, setProgress] = useState(0);
