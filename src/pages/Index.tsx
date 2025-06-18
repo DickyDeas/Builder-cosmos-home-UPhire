@@ -4858,19 +4858,33 @@ const DocumentsTab = () => {
               </div>
 
               <div className="flex space-x-2 mt-4">
-                <button className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm flex items-center justify-center space-x-1">
+                <button
+                  onClick={() => alert(`Viewing document: ${doc.name}`)}
+                  className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm flex items-center justify-center space-x-1"
+                >
                   <Eye size={14} />
                   <span>View</span>
                 </button>
-                <button className="flex-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm flex items-center justify-center space-x-1">
+                <button
+                  onClick={() => alert(`Downloading: ${doc.name}`)}
+                  className="flex-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm flex items-center justify-center space-x-1"
+                >
                   <Download size={14} />
                   <span>Download</span>
                 </button>
-                <button className="flex-1 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm flex items-center justify-center space-x-1">
+                <button
+                  onClick={() => alert(`Opening editor for: ${doc.name}`)}
+                  className="flex-1 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm flex items-center justify-center space-x-1"
+                >
                   <Edit size={14} />
                   <span>Edit</span>
                 </button>
-                <button className="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm">
+                <button
+                  onClick={() =>
+                    confirm(`Delete ${doc.name}?`) && alert("Document deleted")
+                  }
+                  className="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm"
+                >
                   <Trash2 size={14} />
                 </button>
               </div>
