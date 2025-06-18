@@ -4170,10 +4170,20 @@ const CandidatesTab = () => {
                 </button>
               </div>
               <div className="flex space-x-2">
-                <button className="flex-1 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm">
+                <button
+                  onClick={() =>
+                    alert(`Opening message composer for ${candidate.name}`)
+                  }
+                  className="flex-1 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
+                >
                   Send Message
                 </button>
-                <button className="flex-1 px-3 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-sm">
+                <button
+                  onClick={() =>
+                    alert(`Preparing offer for ${candidate.name}...`)
+                  }
+                  className="flex-1 px-3 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-sm"
+                >
                   Make Offer
                 </button>
               </div>
