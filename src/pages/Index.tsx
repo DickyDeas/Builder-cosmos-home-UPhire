@@ -820,6 +820,571 @@ const businessProfile = {
 
 // Component Definitions
 
+// Employee Details Modal Component
+const EmployeeDetailsModal = ({
+  employee,
+  isOpen,
+  onClose,
+}: {
+  employee: Employee | null;
+  isOpen: boolean;
+  onClose: () => void;
+}) => {
+  const [activeTab, setActiveTab] = useState("overview");
+
+  if (!employee || !isOpen) return null;
+
+  // Calculate probation details
+  const startDate = new Date(employee.startDate);
+  const probationEndDate = new Date(startDate);
+  probationEndDate.setMonth(startDate.getMonth() + employee.probationMonths);
+  const today = new Date();
+  const daysInProbation = Math.ceil(
+    (today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
+  );
+  const probationDaysRemaining = employee.probationPeriod
+    ? Math.max(
+        0,
+        Math.ceil(
+          (probationEndDate.getTime() - today.getTime()) /
+            (1000 * 60 * 60 * 24),
+        ),
+      )
+    : 0;
+  const totalProbationDays = employee.probationMonths * 30;
+  const probationProgress = employee.probationPeriod
+    ? Math.min(100, (daysInProbation / totalProbationDays) * 100)
+    : 100;
+
+  const tabs = [
+    { id: "overview", label: "Overview", icon: User },
+    { id: "probation", label: "Probation & Reviews", icon: Clock },
+    { id: "documents", label: "Documents", icon: FileText },
+    { id: "performance", label: "Performance", icon: TrendingUp },
+    { id: "personal", label: "Personal Info", icon: Users },
+  ];
+
+  const formatSalary = (salary: string) => {
+    // Convert salary to number and format as sterling
+    const numericSalary = parseInt(salary.replace(/[£,]/g, ""));
+    return `£${numericSalary.toLocaleString()}`;
+  };
+
+  const formatDateForDisplay = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        {/* Header */}
+        <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50">
+          <div className="flex justify-between items-start">
+            <div className="flex items-center space-x-4">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                <span className="text-2xl font-bold text-blue-600">
+                  {employee.avatar ||
+                    employee.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                </span>
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  {employee.name}
+                </h2>
+                <p className="text-lg text-gray-600">{employee.position}</p>
+                <div className="flex items-center space-x-4 mt-2">
+                  <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                    {employee.employeeId}
+                  </span>
+                  <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+                    {employee.employmentType}
+                  </span>
+                  {employee.probationPeriod && (
+                    <span className="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-sm font-medium">
+                      Probation
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <X size={24} />
+            </button>
+          </div>
+        </div>
+
+        {/* Tab Navigation */}
+        <div className="border-b border-gray-200">
+          <nav className="flex space-x-0">
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center space-x-2 px-6 py-4 text-sm font-medium border-b-2 transition-colors ${
+                    activeTab === tab.id
+                      ? "border-blue-500 text-blue-600 bg-blue-50"
+                      : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                  }`}
+                >
+                  <Icon size={16} />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+        </div>
+
+        {/* Tab Content */}
+        <div className="p-6">
+          {activeTab === "overview" && (
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Basic Information */}
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Employment Details
+                  </h3>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium text-gray-600">
+                        Start Date:
+                      </span>
+                      <span className="text-sm text-gray-900">
+                        {formatDateForDisplay(employee.startDate)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium text-gray-600">
+                        Department:
+                      </span>
+                      <span className="text-sm text-gray-900">
+                        {employee.department}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium text-gray-600">
+                        Manager:
+                      </span>
+                      <span className="text-sm text-gray-900">
+                        {employee.manager}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium text-gray-600">
+                        Employment Type:
+                      </span>
+                      <span className="text-sm text-gray-900">
+                        {employee.employmentType}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium text-gray-600">
+                        Annual Salary:
+                      </span>
+                      <span className="text-sm font-bold text-green-600">
+                        {formatSalary(employee.salary)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Contact Information */}
+                <div className="bg-gray-50 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Contact Information
+                  </h3>
+                  <div className="space-y-3">
+                    {employee.email && (
+                      <div className="flex items-center space-x-3">
+                        <Mail className="w-4 h-4 text-gray-400" />
+                        <span className="text-sm text-gray-900">
+                          {employee.email}
+                        </span>
+                      </div>
+                    )}
+                    {employee.phoneNumber && (
+                      <div className="flex items-center space-x-3">
+                        <Phone className="w-4 h-4 text-gray-400" />
+                        <span className="text-sm text-gray-900">
+                          {employee.phoneNumber}
+                        </span>
+                      </div>
+                    )}
+                    <div className="flex items-center space-x-3">
+                      <Building className="w-4 h-4 text-gray-400" />
+                      <span className="text-sm text-gray-900">
+                        {employee.department} Department
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Time with Company */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Time with Company
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="text-center">
+                    <p className="text-2xl font-bold text-blue-600">
+                      {Math.ceil(
+                        (today.getTime() - startDate.getTime()) /
+                          (1000 * 60 * 60 * 24),
+                      )}
+                    </p>
+                    <p className="text-sm text-gray-600">Days with Company</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-2xl font-bold text-green-600">
+                      {Math.floor(
+                        (today.getTime() - startDate.getTime()) /
+                          (1000 * 60 * 60 * 24 * 30),
+                      )}
+                    </p>
+                    <p className="text-sm text-gray-600">Months Experience</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-2xl font-bold text-purple-600">
+                      {employee.probationPeriod ? "In Progress" : "Completed"}
+                    </p>
+                    <p className="text-sm text-gray-600">Probation Status</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "probation" && (
+            <div className="space-y-6">
+              <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Probation Period
+                </h3>
+                {employee.probationPeriod ? (
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium text-gray-600">
+                        Progress:
+                      </span>
+                      <span className="text-sm font-bold text-orange-600">
+                        {probationDaysRemaining} days remaining
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3">
+                      <div
+                        className="bg-orange-500 h-3 rounded-full transition-all"
+                        style={{ width: `${probationProgress}%` }}
+                      ></div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <p className="text-gray-600">Start Date:</p>
+                        <p className="font-medium">
+                          {formatDateForDisplay(employee.startDate)}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600">End Date:</p>
+                        <p className="font-medium">
+                          {formatDateForDisplay(
+                            probationEndDate.toISOString().split("T")[0],
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center py-4">
+                    <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-2" />
+                    <p className="text-green-600 font-medium">
+                      Probation Period Completed
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      Successfully completed on schedule
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Review Schedule */}
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Review Schedule
+                </h3>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 bg-white rounded border">
+                    <div className="flex items-center space-x-3">
+                      <Calendar className="w-5 h-5 text-blue-600" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">
+                          30-Day Review
+                        </p>
+                        <p className="text-xs text-gray-600">
+                          Initial performance assessment
+                        </p>
+                      </div>
+                    </div>
+                    <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">
+                      {daysInProbation >= 30 ? "Completed" : "Pending"}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-white rounded border">
+                    <div className="flex items-center space-x-3">
+                      <Calendar className="w-5 h-5 text-purple-600" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">
+                          60-Day Review
+                        </p>
+                        <p className="text-xs text-gray-600">
+                          Mid-probation evaluation
+                        </p>
+                      </div>
+                    </div>
+                    <span
+                      className={`px-2 py-1 rounded text-xs ${
+                        daysInProbation >= 60
+                          ? "bg-green-100 text-green-800"
+                          : "bg-gray-100 text-gray-600"
+                      }`}
+                    >
+                      {daysInProbation >= 60 ? "Completed" : "Pending"}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-white rounded border">
+                    <div className="flex items-center space-x-3">
+                      <Calendar className="w-5 h-5 text-orange-600" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">
+                          Final Review
+                        </p>
+                        <p className="text-xs text-gray-600">
+                          Probation completion assessment
+                        </p>
+                      </div>
+                    </div>
+                    <span
+                      className={`px-2 py-1 rounded text-xs ${
+                        !employee.probationPeriod
+                          ? "bg-green-100 text-green-800"
+                          : "bg-gray-100 text-gray-600"
+                      }`}
+                    >
+                      {!employee.probationPeriod ? "Completed" : "Pending"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "documents" && (
+            <div className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Employee Documents
+                </h3>
+                <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
+                  <Upload size={16} />
+                  <span>Upload Document</span>
+                </button>
+              </div>
+
+              {employee.documents.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {employee.documents.map((document) => (
+                    <div
+                      key={document.id}
+                      className="border border-gray-200 rounded-lg p-4"
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-start space-x-3">
+                          <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <FileText className="w-5 h-5 text-blue-600" />
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-semibold text-gray-900">
+                              {document.name}
+                            </h4>
+                            <p className="text-xs text-gray-600">
+                              {document.type} • {document.category}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              Modified: {document.lastModified}
+                            </p>
+                            {document.status && (
+                              <span className="mt-1 inline-block px-2 py-1 bg-green-100 text-green-800 rounded text-xs">
+                                {document.status}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex space-x-2 mt-3">
+                        <button className="flex-1 px-3 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-700">
+                          View
+                        </button>
+                        <button className="flex-1 px-3 py-1 bg-green-600 text-white rounded text-xs hover:bg-green-700">
+                          Download
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-600">No documents uploaded yet</p>
+                  <button className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    Upload First Document
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeTab === "performance" && (
+            <div className="space-y-6">
+              <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Performance Overview
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="text-center">
+                    <p className="text-3xl font-bold text-green-600">8.7</p>
+                    <p className="text-sm text-gray-600">Overall Rating</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-3xl font-bold text-blue-600">94%</p>
+                    <p className="text-sm text-gray-600">Goal Achievement</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-3xl font-bold text-purple-600">15</p>
+                    <p className="text-sm text-gray-600">Projects Completed</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h4 className="text-md font-semibold text-gray-900 mb-3">
+                  Key Achievements
+                </h4>
+                <ul className="space-y-2">
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-green-600" />
+                    <span className="text-sm text-gray-700">
+                      Successfully completed probation period
+                    </span>
+                  </li>
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-green-600" />
+                    <span className="text-sm text-gray-700">
+                      Led 3 major project deliveries
+                    </span>
+                  </li>
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-green-600" />
+                    <span className="text-sm text-gray-700">
+                      Exceeded quarterly targets by 15%
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "personal" && (
+            <div className="space-y-6">
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Personal Information
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-3">
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">
+                        Full Name
+                      </label>
+                      <p className="text-sm text-gray-900">{employee.name}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">
+                        Employee ID
+                      </label>
+                      <p className="text-sm text-gray-900">
+                        {employee.employeeId}
+                      </p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">
+                        Email Address
+                      </label>
+                      <p className="text-sm text-gray-900">
+                        {employee.email || "Not provided"}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">
+                        Phone Number
+                      </label>
+                      <p className="text-sm text-gray-900">
+                        {employee.phoneNumber || "Not provided"}
+                      </p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">
+                        Start Date
+                      </label>
+                      <p className="text-sm text-gray-900">
+                        {formatDateForDisplay(employee.startDate)}
+                      </p>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-600">
+                        Department
+                      </label>
+                      <p className="text-sm text-gray-900">
+                        {employee.department}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                <div className="flex items-center space-x-2 mb-2">
+                  <AlertTriangle className="w-5 h-5 text-yellow-600" />
+                  <h4 className="text-md font-semibold text-yellow-900">
+                    Privacy Notice
+                  </h4>
+                </div>
+                <p className="text-sm text-yellow-800">
+                  Personal information is protected under GDPR regulations.
+                  Access is restricted to authorized HR personnel only.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Market Intelligence Component with ITJobsWatch API Integration
 const MarketIntelligence = () => {
   const [searchTerm, setSearchTerm] = useState("");
