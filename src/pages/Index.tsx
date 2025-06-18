@@ -2297,10 +2297,20 @@ const RoleShortlistView = ({
                       <Calendar size={16} />
                       <span>Schedule Interview</span>
                     </button>
-                    <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                    <button
+                      onClick={() =>
+                        alert(`Viewing detailed profile for ${candidate.name}`)
+                      }
+                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                    >
                       View Profile
                     </button>
-                    <button className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm">
+                    <button
+                      onClick={() =>
+                        alert(`Opening message composer for ${candidate.name}`)
+                      }
+                      className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
+                    >
                       Send Message
                     </button>
                     <div className="relative">
