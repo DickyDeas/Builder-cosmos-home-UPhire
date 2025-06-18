@@ -4721,9 +4721,12 @@ const DocumentsTab = () => {
             <Upload size={20} />
             <span>Upload Document</span>
           </button>
-          <button className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all flex items-center space-x-2">
+          <button
+            onClick={() => alert("Opening template creator...")}
+            className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all flex items-center space-x-2"
+          >
             <Plus size={16} />
-            <span>Create Template</span>
+            <span>New Template</span>
           </button>
         </div>
       </div>
