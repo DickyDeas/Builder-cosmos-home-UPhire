@@ -3210,6 +3210,10 @@ const RolesTab = () => {
         isOpen={showRecruitModal}
         onClose={() => setShowRecruitModal(false)}
         roleId={recruitingRoleId}
+        onViewCandidates={(role) => {
+          setViewingShortlist(role);
+          setShowRecruitModal(false);
+        }}
       />
 
       <AIPredictionModal
