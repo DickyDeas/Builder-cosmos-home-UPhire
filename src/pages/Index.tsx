@@ -2589,16 +2589,33 @@ const JobDetailsView = ({
               Quick Actions
             </h3>
             <div className="space-y-3">
-              <button className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+              <button
+                onClick={() => alert("Opening job description editor...")}
+                className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
                 Edit Job Description
               </button>
-              <button className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+              <button
+                onClick={() =>
+                  alert("Viewing all applications for this role...")
+                }
+                className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              >
                 View Applications
               </button>
-              <button className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+              <button
+                onClick={() => alert("Job posting link copied to clipboard!")}
+                className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+              >
                 Share Job Posting
               </button>
-              <button className="w-full px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+              <button
+                onClick={() =>
+                  confirm("Are you sure you want to close this position?") &&
+                  alert("Position closed successfully")
+                }
+                className="w-full px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              >
                 Close Position
               </button>
             </div>
