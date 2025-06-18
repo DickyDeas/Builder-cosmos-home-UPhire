@@ -3260,6 +3260,15 @@ Company Highlights:
           </div>
         </form>
       </div>
+
+      {/* AI Prediction Modal */}
+      <AIPredictionModal
+        isOpen={showPredictionModal}
+        onClose={() => setShowPredictionModal(false)}
+        role={
+          formData.title && formData.department ? createRoleFromForm() : null
+        }
+      />
     </div>
   );
 };
