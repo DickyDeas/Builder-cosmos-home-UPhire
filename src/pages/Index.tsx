@@ -3131,9 +3131,20 @@ Company Highlights:
               </button>
               <button
                 type="submit"
-                className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all font-medium"
+                disabled={isSubmitting}
+                className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
               >
-                Create Role
+                {isSubmitting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b border-white"></div>
+                    <span>Publishing...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Create & Publish Role</span>
+                    <ExternalLink size={16} />
+                  </>
+                )}
               </button>
             </div>
           </div>
