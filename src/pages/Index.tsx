@@ -3985,7 +3985,10 @@ const CandidatesTab = () => {
               In Process
             </option>
           </select>
-          <button className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all flex items-center space-x-2">
+          <button
+            onClick={() => alert("Opening advanced candidate search...")}
+            className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all flex items-center space-x-2"
+          >
             <Search size={16} />
             <span>Search</span>
           </button>
