@@ -3120,8 +3120,28 @@ Company Highlights:
               </div>
             </div>
 
+            {/* Broadbean Integration Info */}
+            <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="flex items-center space-x-3">
+                <Globe className="w-6 h-6 text-blue-600 flex-shrink-0" />
+                <div className="flex-1">
+                  <h4 className="font-semibold text-blue-900 text-sm">
+                    Automated Job Board Publishing
+                  </h4>
+                  <p className="text-blue-700 text-xs mt-1">
+                    Role will be automatically published via Broadbean.com to:
+                    Indeed, LinkedIn, Monster, Totaljobs, Reed, CV-Library, and
+                    your company website
+                  </p>
+                </div>
+                <div className="text-blue-600 text-xs font-medium bg-blue-100 px-2 py-1 rounded">
+                  Broadbean API
+                </div>
+              </div>
+            </div>
+
             {/* Form Actions */}
-            <div className="flex space-x-3 mt-8 pt-6 border-t">
+            <div className="flex space-x-3 mt-6 pt-4">
               <button
                 type="button"
                 onClick={onClose}
