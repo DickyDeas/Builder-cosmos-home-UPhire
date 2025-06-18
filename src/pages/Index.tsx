@@ -4906,27 +4906,38 @@ const DocumentsTab = () => {
           Quick Actions
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <button className="p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors text-left">
+          <button
+            onClick={() => alert("Opening contract templates library...")}
+            className="p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors text-left"
+          >
             <FileText className="w-8 h-8 text-blue-600 mb-2" />
-            <h4 className="font-medium text-gray-900">Create Contract</h4>
-            <p className="text-sm text-gray-600">
-              Generate employment contract from template
+            <h4 className="font-semibold text-blue-900">Contract Templates</h4>
+            <p className="text-sm text-blue-700">
+              Employment contracts, NDAs, offer letters
             </p>
           </button>
 
-          <button className="p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors text-left">
+          <button
+            onClick={() => alert("Configuring auto-send document settings...")}
+            className="p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors text-left"
+          >
             <Send className="w-8 h-8 text-green-600 mb-2" />
-            <h4 className="font-medium text-gray-900">Send Handbook</h4>
-            <p className="text-sm text-gray-600">
-              Automatically send employee handbook
+            <h4 className="font-semibold text-green-900">
+              Auto-Send Documents
+            </h4>
+            <p className="text-sm text-green-700">
+              Automatically send docs to new hires
             </p>
           </button>
 
-          <button className="p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors text-left">
+          <button
+            onClick={() => alert("Opening template editor...")}
+            className="p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors text-left"
+          >
             <Edit className="w-8 h-8 text-purple-600 mb-2" />
-            <h4 className="font-medium text-gray-900">Customize Template</h4>
-            <p className="text-sm text-gray-600">
-              Modify existing document templates
+            <h4 className="font-semibold text-purple-900">Template Editor</h4>
+            <p className="text-sm text-purple-700">
+              Create and customize document templates
             </p>
           </button>
         </div>
