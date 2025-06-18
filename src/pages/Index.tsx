@@ -3002,19 +3002,238 @@ const AnalyticsTab = () => (
   </div>
 );
 
-const EmployeesTab = () => (
-  <div className="space-y-6">
-    <div>
-      <h1 className="text-3xl font-bold text-white">Employee Management</h1>
-      <p className="text-blue-100">
-        Comprehensive team management and HR records
-      </p>
+const EmployeesTab = () => {
+  const [showEmployeeModal, setShowEmployeeModal] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
+    null,
+  );
+
+  const openEmployeeDetails = (employee: Employee) => {
+    setSelectedEmployee(employee);
+    setShowEmployeeModal(true);
+  };
+
+  const employeesOnProbation = mockEmployees.filter(
+    (emp) => emp.probationPeriod,
+  );
+  const fullTimeEmployees = mockEmployees.filter(
+    (emp) => emp.employmentType === "Full-Time",
+  );
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Employee Management</h1>
+          <p className="text-blue-100">
+            Comprehensive team management and HR records
+          </p>
+        </div>
+        <button
+          onClick={() => setShowEmployeeModal(true)}
+          className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all flex items-center space-x-2 font-medium"
+        >
+          <Plus size={20} />
+          <span>Add Employee</span>
+        </button>
+      </div>
+
+      {/* Employee Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">
+                Total Employees
+              </p>
+              <p className="text-3xl font-bold text-gray-900">
+                {mockEmployees.length}
+              </p>
+            </div>
+            <Users className="w-8 h-8 text-blue-600" />
+          </div>
+        </div>
+
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">On Probation</p>
+              <p className="text-3xl font-bold text-gray-900">
+                {employeesOnProbation.length}
+              </p>
+            </div>
+            <Clock className="w-8 h-8 text-orange-600" />
+          </div>
+        </div>
+
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Full-Time</p>
+              <p className="text-3xl font-bold text-gray-900">
+                {fullTimeEmployees.length}
+              </p>
+            </div>
+            <UserCheck className="w-8 h-8 text-green-600" />
+          </div>
+        </div>
+
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Departments</p>
+              <p className="text-3xl font-bold text-gray-900">4</p>
+            </div>
+            <Building className="w-8 h-8 text-purple-600" />
+          </div>
+        </div>
+      </div>
+
+      {/* Probation Alerts */}
+      {employeesOnProbation.length > 0 && (
+        <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
+          <div className="flex items-center space-x-3 mb-4">
+            <AlertTriangle className="w-6 h-6 text-orange-600" />
+            <h3 className="text-lg font-semibold text-orange-900">
+              Probation Period Alerts
+            </h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {employeesOnProbation.map((employee) => {
+              const startDate = new Date(employee.startDate);
+              const probationEndDate = new Date(startDate);
+              probationEndDate.setMonth(
+                startDate.getMonth() + employee.probationMonths,
+              );
+              const today = new Date();
+              const daysRemaining = Math.ceil(
+                (probationEndDate.getTime() - today.getTime()) /
+                  (1000 * 60 * 60 * 24),
+              );
+
+              return (
+                <div
+                  key={employee.id}
+                  className="bg-white rounded-lg p-4 border border-orange-200"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium text-gray-900">
+                        {employee.name}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        {employee.position}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-bold text-orange-700">
+                        {daysRemaining} days
+                      </p>
+                      <p className="text-xs text-gray-600">remaining</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Employee Directory */}
+      <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-lg font-semibold text-gray-900">
+            Employee Directory
+          </h3>
+          <div className="flex space-x-3">
+            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
+              <Search size={16} />
+              <span>Search</span>
+            </button>
+            <button className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors flex items-center space-x-2">
+              <Filter size={16} />
+              <span>Filter</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {mockEmployees.map((employee) => (
+            <div
+              key={employee.id}
+              className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-lg font-bold text-blue-600">
+                      {employee.avatar ||
+                        employee.name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")}
+                    </span>
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-3 mb-2">
+                      <h4 className="text-lg font-semibold text-gray-900">
+                        {employee.name}
+                      </h4>
+                      {employee.probationPeriod && (
+                        <span className="px-2 py-1 bg-orange-100 text-orange-800 rounded-full text-xs font-medium">
+                          Probation
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-gray-600 mb-2">{employee.position}</p>
+
+                    <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
+                      <div>
+                        <p className="text-gray-600">
+                          <Building className="w-4 h-4 inline mr-1" />
+                          {employee.department}
+                        </p>
+                        <p className="text-gray-600">
+                          <Calendar className="w-4 h-4 inline mr-1" />
+                          Started: {employee.startDate}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600">
+                          <DollarSign className="w-4 h-4 inline mr-1" />
+                          {employee.salary}
+                        </p>
+                        <p className="text-gray-600">
+                          <User className="w-4 h-4 inline mr-1" />
+                          {employee.manager}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex space-x-2 mt-4">
+                <button
+                  onClick={() => openEmployeeDetails(employee)}
+                  className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                >
+                  View Profile
+                </button>
+                <button className="flex-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm">
+                  Documents
+                </button>
+                <button className="flex-1 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm">
+                  Performance
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
-    <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-      <p className="text-gray-600">Employee management coming soon...</p>
-    </div>
-  </div>
-);
+  );
+};
 
 const DocumentsTab = () => (
   <div className="space-y-6">
