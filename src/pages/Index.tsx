@@ -824,7 +824,7 @@ const businessProfile = {
 const EmployeeDetailsModal = ({
   employee,
   isOpen,
-  onClose
+  onClose,
 }: {
   employee: Employee | null;
   isOpen: boolean;
@@ -839,9 +839,17 @@ const EmployeeDetailsModal = ({
   const probationEndDate = new Date(startDate);
   probationEndDate.setMonth(startDate.getMonth() + employee.probationMonths);
   const today = new Date();
-  const daysInProbation = Math.ceil((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+  const daysInProbation = Math.ceil(
+    (today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
+  );
   const probationDaysRemaining = employee.probationPeriod
-    ? Math.max(0, Math.ceil((probationEndDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)))
+    ? Math.max(
+        0,
+        Math.ceil(
+          (probationEndDate.getTime() - today.getTime()) /
+            (1000 * 60 * 60 * 24),
+        ),
+      )
     : 0;
   const totalProbationDays = employee.probationMonths * 30;
   const probationProgress = employee.probationPeriod
@@ -853,20 +861,20 @@ const EmployeeDetailsModal = ({
     { id: "probation", label: "Probation & Reviews", icon: Clock },
     { id: "documents", label: "Documents", icon: FileText },
     { id: "performance", label: "Performance", icon: TrendingUp },
-    { id: "personal", label: "Personal Info", icon: Users }
+    { id: "personal", label: "Personal Info", icon: Users },
   ];
 
   const formatSalary = (salary: string) => {
     // Convert salary to number and format as sterling
-    const numericSalary = parseInt(salary.replace(/[£,]/g, ''));
+    const numericSalary = parseInt(salary.replace(/[£,]/g, ""));
     return `£${numericSalary.toLocaleString()}`;
   };
 
   const formatDateForDisplay = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-GB', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
+    return new Date(dateString).toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
     });
   };
 
@@ -879,11 +887,17 @@ const EmployeeDetailsModal = ({
             <div className="flex items-center space-x-4">
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
                 <span className="text-2xl font-bold text-blue-600">
-                  {employee.avatar || employee.name.split(' ').map(n => n[0]).join('')}
+                  {employee.avatar ||
+                    employee.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
                 </span>
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">{employee.name}</h2>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  {employee.name}
+                </h2>
                 <p className="text-lg text-gray-600">{employee.position}</p>
                 <div className="flex items-center space-x-4 mt-2">
                   <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
@@ -939,50 +953,80 @@ const EmployeeDetailsModal = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Basic Information */}
                 <div className="bg-gray-50 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Employment Details</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Employment Details
+                  </h3>
                   <div className="space-y-3">
                     <div className="flex justify-between">
-                      <span className="text-sm font-medium text-gray-600">Start Date:</span>
-                      <span className="text-sm text-gray-900">{formatDateForDisplay(employee.startDate)}</span>
+                      <span className="text-sm font-medium text-gray-600">
+                        Start Date:
+                      </span>
+                      <span className="text-sm text-gray-900">
+                        {formatDateForDisplay(employee.startDate)}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm font-medium text-gray-600">Department:</span>
-                      <span className="text-sm text-gray-900">{employee.department}</span>
+                      <span className="text-sm font-medium text-gray-600">
+                        Department:
+                      </span>
+                      <span className="text-sm text-gray-900">
+                        {employee.department}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm font-medium text-gray-600">Manager:</span>
-                      <span className="text-sm text-gray-900">{employee.manager}</span>
+                      <span className="text-sm font-medium text-gray-600">
+                        Manager:
+                      </span>
+                      <span className="text-sm text-gray-900">
+                        {employee.manager}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm font-medium text-gray-600">Employment Type:</span>
-                      <span className="text-sm text-gray-900">{employee.employmentType}</span>
+                      <span className="text-sm font-medium text-gray-600">
+                        Employment Type:
+                      </span>
+                      <span className="text-sm text-gray-900">
+                        {employee.employmentType}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm font-medium text-gray-600">Annual Salary:</span>
-                      <span className="text-sm font-bold text-green-600">{formatSalary(employee.salary)}</span>
+                      <span className="text-sm font-medium text-gray-600">
+                        Annual Salary:
+                      </span>
+                      <span className="text-sm font-bold text-green-600">
+                        {formatSalary(employee.salary)}
+                      </span>
                     </div>
                   </div>
                 </div>
 
                 {/* Contact Information */}
                 <div className="bg-gray-50 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Contact Information
+                  </h3>
                   <div className="space-y-3">
                     {employee.email && (
                       <div className="flex items-center space-x-3">
                         <Mail className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm text-gray-900">{employee.email}</span>
+                        <span className="text-sm text-gray-900">
+                          {employee.email}
+                        </span>
                       </div>
                     )}
                     {employee.phoneNumber && (
                       <div className="flex items-center space-x-3">
                         <Phone className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm text-gray-900">{employee.phoneNumber}</span>
+                        <span className="text-sm text-gray-900">
+                          {employee.phoneNumber}
+                        </span>
                       </div>
                     )}
                     <div className="flex items-center space-x-3">
                       <Building className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm text-gray-900">{employee.department} Department</span>
+                      <span className="text-sm text-gray-900">
+                        {employee.department} Department
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -990,17 +1034,25 @@ const EmployeeDetailsModal = ({
 
               {/* Time with Company */}
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Time with Company</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Time with Company
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="text-center">
                     <p className="text-2xl font-bold text-blue-600">
-                      {Math.ceil((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24))}
+                      {Math.ceil(
+                        (today.getTime() - startDate.getTime()) /
+                          (1000 * 60 * 60 * 24),
+                      )}
                     </p>
                     <p className="text-sm text-gray-600">Days with Company</p>
                   </div>
                   <div className="text-center">
                     <p className="text-2xl font-bold text-green-600">
-                      {Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24 * 30))}
+                      {Math.floor(
+                        (today.getTime() - startDate.getTime()) /
+                          (1000 * 60 * 60 * 24 * 30),
+                      )}
                     </p>
                     <p className="text-sm text-gray-600">Months Experience</p>
                   </div>
@@ -1018,11 +1070,15 @@ const EmployeeDetailsModal = ({
           {activeTab === "probation" && (
             <div className="space-y-6">
               <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Probation Period</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Probation Period
+                </h3>
                 {employee.probationPeriod ? (
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium text-gray-600">Progress:</span>
+                      <span className="text-sm font-medium text-gray-600">
+                        Progress:
+                      </span>
                       <span className="text-sm font-bold text-orange-600">
                         {probationDaysRemaining} days remaining
                       </span>
@@ -1036,33 +1092,49 @@ const EmployeeDetailsModal = ({
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
                         <p className="text-gray-600">Start Date:</p>
-                        <p className="font-medium">{formatDateForDisplay(employee.startDate)}</p>
+                        <p className="font-medium">
+                          {formatDateForDisplay(employee.startDate)}
+                        </p>
                       </div>
                       <div>
                         <p className="text-gray-600">End Date:</p>
-                        <p className="font-medium">{formatDateForDisplay(probationEndDate.toISOString().split('T')[0])}</p>
+                        <p className="font-medium">
+                          {formatDateForDisplay(
+                            probationEndDate.toISOString().split("T")[0],
+                          )}
+                        </p>
                       </div>
                     </div>
                   </div>
                 ) : (
                   <div className="text-center py-4">
                     <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-2" />
-                    <p className="text-green-600 font-medium">Probation Period Completed</p>
-                    <p className="text-sm text-gray-600">Successfully completed on schedule</p>
+                    <p className="text-green-600 font-medium">
+                      Probation Period Completed
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      Successfully completed on schedule
+                    </p>
                   </div>
                 )}
               </div>
 
               {/* Review Schedule */}
               <div className="bg-gray-50 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Review Schedule</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Review Schedule
+                </h3>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between p-3 bg-white rounded border">
                     <div className="flex items-center space-x-3">
                       <Calendar className="w-5 h-5 text-blue-600" />
                       <div>
-                        <p className="text-sm font-medium text-gray-900">30-Day Review</p>
-                        <p className="text-xs text-gray-600">Initial performance assessment</p>
+                        <p className="text-sm font-medium text-gray-900">
+                          30-Day Review
+                        </p>
+                        <p className="text-xs text-gray-600">
+                          Initial performance assessment
+                        </p>
                       </div>
                     </div>
                     <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">
@@ -1073,13 +1145,21 @@ const EmployeeDetailsModal = ({
                     <div className="flex items-center space-x-3">
                       <Calendar className="w-5 h-5 text-purple-600" />
                       <div>
-                        <p className="text-sm font-medium text-gray-900">60-Day Review</p>
-                        <p className="text-xs text-gray-600">Mid-probation evaluation</p>
+                        <p className="text-sm font-medium text-gray-900">
+                          60-Day Review
+                        </p>
+                        <p className="text-xs text-gray-600">
+                          Mid-probation evaluation
+                        </p>
                       </div>
                     </div>
-                    <span className={`px-2 py-1 rounded text-xs ${
-                      daysInProbation >= 60 ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-600"
-                    }`}>
+                    <span
+                      className={`px-2 py-1 rounded text-xs ${
+                        daysInProbation >= 60
+                          ? "bg-green-100 text-green-800"
+                          : "bg-gray-100 text-gray-600"
+                      }`}
+                    >
                       {daysInProbation >= 60 ? "Completed" : "Pending"}
                     </span>
                   </div>
@@ -1087,13 +1167,21 @@ const EmployeeDetailsModal = ({
                     <div className="flex items-center space-x-3">
                       <Calendar className="w-5 h-5 text-orange-600" />
                       <div>
-                        <p className="text-sm font-medium text-gray-900">Final Review</p>
-                        <p className="text-xs text-gray-600">Probation completion assessment</p>
+                        <p className="text-sm font-medium text-gray-900">
+                          Final Review
+                        </p>
+                        <p className="text-xs text-gray-600">
+                          Probation completion assessment
+                        </p>
                       </div>
                     </div>
-                    <span className={`px-2 py-1 rounded text-xs ${
-                      !employee.probationPeriod ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-600"
-                    }`}>
+                    <span
+                      className={`px-2 py-1 rounded text-xs ${
+                        !employee.probationPeriod
+                          ? "bg-green-100 text-green-800"
+                          : "bg-gray-100 text-gray-600"
+                      }`}
+                    >
                       {!employee.probationPeriod ? "Completed" : "Pending"}
                     </span>
                   </div>
@@ -1105,7 +1193,9 @@ const EmployeeDetailsModal = ({
           {activeTab === "documents" && (
             <div className="space-y-6">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold text-gray-900">Employee Documents</h3>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Employee Documents
+                </h3>
                 <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
                   <Upload size={16} />
                   <span>Upload Document</span>
@@ -1115,16 +1205,25 @@ const EmployeeDetailsModal = ({
               {employee.documents.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {employee.documents.map((document) => (
-                    <div key={document.id} className="border border-gray-200 rounded-lg p-4">
+                    <div
+                      key={document.id}
+                      className="border border-gray-200 rounded-lg p-4"
+                    >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start space-x-3">
                           <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                             <FileText className="w-5 h-5 text-blue-600" />
                           </div>
                           <div>
-                            <h4 className="text-sm font-semibold text-gray-900">{document.name}</h4>
-                            <p className="text-xs text-gray-600">{document.type} • {document.category}</p>
-                            <p className="text-xs text-gray-500">Modified: {document.lastModified}</p>
+                            <h4 className="text-sm font-semibold text-gray-900">
+                              {document.name}
+                            </h4>
+                            <p className="text-xs text-gray-600">
+                              {document.type} • {document.category}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              Modified: {document.lastModified}
+                            </p>
                             {document.status && (
                               <span className="mt-1 inline-block px-2 py-1 bg-green-100 text-green-800 rounded text-xs">
                                 {document.status}
@@ -1159,7 +1258,9 @@ const EmployeeDetailsModal = ({
           {activeTab === "performance" && (
             <div className="space-y-6">
               <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Performance Overview</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Performance Overview
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="text-center">
                     <p className="text-3xl font-bold text-green-600">8.7</p>
@@ -1177,19 +1278,27 @@ const EmployeeDetailsModal = ({
               </div>
 
               <div className="bg-gray-50 rounded-lg p-6">
-                <h4 className="text-md font-semibold text-gray-900 mb-3">Key Achievements</h4>
+                <h4 className="text-md font-semibold text-gray-900 mb-3">
+                  Key Achievements
+                </h4>
                 <ul className="space-y-2">
                   <li className="flex items-center space-x-2">
                     <CheckCircle className="w-4 h-4 text-green-600" />
-                    <span className="text-sm text-gray-700">Successfully completed probation period</span>
+                    <span className="text-sm text-gray-700">
+                      Successfully completed probation period
+                    </span>
                   </li>
                   <li className="flex items-center space-x-2">
                     <CheckCircle className="w-4 h-4 text-green-600" />
-                    <span className="text-sm text-gray-700">Led 3 major project deliveries</span>
+                    <span className="text-sm text-gray-700">
+                      Led 3 major project deliveries
+                    </span>
                   </li>
                   <li className="flex items-center space-x-2">
                     <CheckCircle className="w-4 h-4 text-green-600" />
-                    <span className="text-sm text-gray-700">Exceeded quarterly targets by 15%</span>
+                    <span className="text-sm text-gray-700">
+                      Exceeded quarterly targets by 15%
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -1199,34 +1308,58 @@ const EmployeeDetailsModal = ({
           {activeTab === "personal" && (
             <div className="space-y-6">
               <div className="bg-gray-50 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Personal Information</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Personal Information
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-3">
                     <div>
-                      <label className="text-sm font-medium text-gray-600">Full Name</label>
+                      <label className="text-sm font-medium text-gray-600">
+                        Full Name
+                      </label>
                       <p className="text-sm text-gray-900">{employee.name}</p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-600">Employee ID</label>
-                      <p className="text-sm text-gray-900">{employee.employeeId}</p>
+                      <label className="text-sm font-medium text-gray-600">
+                        Employee ID
+                      </label>
+                      <p className="text-sm text-gray-900">
+                        {employee.employeeId}
+                      </p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-600">Email Address</label>
-                      <p className="text-sm text-gray-900">{employee.email || "Not provided"}</p>
+                      <label className="text-sm font-medium text-gray-600">
+                        Email Address
+                      </label>
+                      <p className="text-sm text-gray-900">
+                        {employee.email || "Not provided"}
+                      </p>
                     </div>
                   </div>
                   <div className="space-y-3">
                     <div>
-                      <label className="text-sm font-medium text-gray-600">Phone Number</label>
-                      <p className="text-sm text-gray-900">{employee.phoneNumber || "Not provided"}</p>
+                      <label className="text-sm font-medium text-gray-600">
+                        Phone Number
+                      </label>
+                      <p className="text-sm text-gray-900">
+                        {employee.phoneNumber || "Not provided"}
+                      </p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-600">Start Date</label>
-                      <p className="text-sm text-gray-900">{formatDateForDisplay(employee.startDate)}</p>
+                      <label className="text-sm font-medium text-gray-600">
+                        Start Date
+                      </label>
+                      <p className="text-sm text-gray-900">
+                        {formatDateForDisplay(employee.startDate)}
+                      </p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-gray-600">Department</label>
-                      <p className="text-sm text-gray-900">{employee.department}</p>
+                      <label className="text-sm font-medium text-gray-600">
+                        Department
+                      </label>
+                      <p className="text-sm text-gray-900">
+                        {employee.department}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -1235,10 +1368,13 @@ const EmployeeDetailsModal = ({
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
                 <div className="flex items-center space-x-2 mb-2">
                   <AlertTriangle className="w-5 h-5 text-yellow-600" />
-                  <h4 className="text-md font-semibold text-yellow-900">Privacy Notice</h4>
+                  <h4 className="text-md font-semibold text-yellow-900">
+                    Privacy Notice
+                  </h4>
                 </div>
                 <p className="text-sm text-yellow-800">
-                  Personal information is protected under GDPR regulations. Access is restricted to authorized HR personnel only.
+                  Personal information is protected under GDPR regulations.
+                  Access is restricted to authorized HR personnel only.
                 </p>
               </div>
             </div>
@@ -1265,11 +1401,15 @@ const EmployeeDetailsModal = ({
 const MarketIntelligence = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
-  const [lastSearchResults, setLastSearchResults] = useState<MarketData | null>(null);
+  const [lastSearchResults, setLastSearchResults] = useState<MarketData | null>(
+    null,
+  );
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
 
   // Mock ITJobsWatch API responses (in production, these would be real API calls)
-  const mockSalaryData: { [key: string]: { min: number; max: number; median: number } } = {
+  const mockSalaryData: {
+    [key: string]: { min: number; max: number; median: number };
+  } = {
     "react developer": { min: 45000, max: 85000, median: 65000 },
     "senior react developer": { min: 60000, max: 95000, median: 77500 },
     "product manager": { min: 55000, max: 90000, median: 72500 },
@@ -1286,40 +1426,65 @@ const MarketIntelligence = () => {
     setIsSearching(true);
 
     // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
     const normalizedRole = role.toLowerCase();
-    const salaryData = mockSalaryData[normalizedRole] || mockSalaryData["software engineer"];
+    const salaryData =
+      mockSalaryData[normalizedRole] || mockSalaryData["software engineer"];
 
     // Mock market intelligence data from ITJobsWatch
     const marketData: MarketData = {
       salary: salaryData,
       demand: {
-        level: salaryData.median > 70000 ? "High" : salaryData.median > 55000 ? "Medium" : "Low",
+        level:
+          salaryData.median > 70000
+            ? "High"
+            : salaryData.median > 55000
+              ? "Medium"
+              : "Low",
         trend: Math.random() > 0.5 ? "Increasing" : "Stable",
         timeToFill: Math.floor(Math.random() * 20) + 15, // 15-35 days
-        competition: salaryData.median > 70000 ? "High" : "Medium"
+        competition: salaryData.median > 70000 ? "High" : "Medium",
       },
       skills: {
         required: normalizedRole.includes("react")
           ? ["React", "JavaScript", "HTML", "CSS", "Git"]
           : normalizedRole.includes("product")
-          ? ["Product Strategy", "Analytics", "Agile", "Stakeholder Management"]
-          : normalizedRole.includes("ux")
-          ? ["Figma", "User Research", "Prototyping", "Design Systems"]
-          : ["JavaScript", "Problem Solving", "Git", "Testing"],
+            ? [
+                "Product Strategy",
+                "Analytics",
+                "Agile",
+                "Stakeholder Management",
+              ]
+            : normalizedRole.includes("ux")
+              ? ["Figma", "User Research", "Prototyping", "Design Systems"]
+              : ["JavaScript", "Problem Solving", "Git", "Testing"],
         trending: normalizedRole.includes("react")
-          ? ["TypeScript", "Next.js", "GraphQL", "React Native", "Testing Library"]
+          ? [
+              "TypeScript",
+              "Next.js",
+              "GraphQL",
+              "React Native",
+              "Testing Library",
+            ]
           : normalizedRole.includes("product")
-          ? ["Data Analysis", "User Research", "A/B Testing", "Roadmapping"]
-          : normalizedRole.includes("ux")
-          ? ["Design Systems", "Accessibility", "User Research", "Prototyping"]
-          : ["TypeScript", "Cloud Platforms", "Docker", "Microservices"]
-      }
+            ? ["Data Analysis", "User Research", "A/B Testing", "Roadmapping"]
+            : normalizedRole.includes("ux")
+              ? [
+                  "Design Systems",
+                  "Accessibility",
+                  "User Research",
+                  "Prototyping",
+                ]
+              : ["TypeScript", "Cloud Platforms", "Docker", "Microservices"],
+      },
     };
 
     setLastSearchResults(marketData);
-    setSearchHistory(prev => [role, ...prev.filter(h => h !== role).slice(0, 4)]);
+    setSearchHistory((prev) => [
+      role,
+      ...prev.filter((h) => h !== role).slice(0, 4),
+    ]);
     setIsSearching(false);
   };
 
@@ -1327,7 +1492,9 @@ const MarketIntelligence = () => {
     <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">Market Intelligence</h3>
+          <h3 className="text-lg font-semibold text-gray-900">
+            Market Intelligence
+          </h3>
           <div className="flex items-center space-x-2">
             <span className="text-sm text-gray-600">Powered by</span>
             <img
@@ -1352,7 +1519,7 @@ const MarketIntelligence = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyPress={(e) => {
-                if (e.key === 'Enter' && searchTerm.trim()) {
+                if (e.key === "Enter" && searchTerm.trim()) {
                   searchMarketData(searchTerm.trim());
                 }
               }}
@@ -1361,7 +1528,9 @@ const MarketIntelligence = () => {
             />
           </div>
           <button
-            onClick={() => searchTerm.trim() && searchMarketData(searchTerm.trim())}
+            onClick={() =>
+              searchTerm.trim() && searchMarketData(searchTerm.trim())
+            }
             disabled={isSearching || !searchTerm.trim()}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
           >
@@ -1370,13 +1539,18 @@ const MarketIntelligence = () => {
             ) : (
               <Search className="w-4 h-4" />
             )}
-            <span>{isSearching ? 'Searching...' : 'Search'}</span>
+            <span>{isSearching ? "Searching..." : "Search"}</span>
           </button>
         </div>
 
         {/* Quick Search Buttons */}
         <div className="mt-3 flex flex-wrap gap-2">
-          {["React Developer", "Product Manager", "UX Designer", "DevOps Engineer"].map((role) => (
+          {[
+            "React Developer",
+            "Product Manager",
+            "UX Designer",
+            "DevOps Engineer",
+          ].map((role) => (
             <button
               key={role}
               onClick={() => {
@@ -1416,7 +1590,9 @@ const MarketIntelligence = () => {
       {isSearching && (
         <div className="text-center py-8">
           <RefreshCw className="w-8 h-8 text-blue-600 mx-auto mb-4 animate-spin" />
-          <p className="text-gray-600">Fetching latest market data from ITJobsWatch...</p>
+          <p className="text-gray-600">
+            Fetching latest market data from ITJobsWatch...
+          </p>
         </div>
       )}
 
@@ -1426,19 +1602,25 @@ const MarketIntelligence = () => {
           {/* Salary Information */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-blue-50 rounded-lg p-4 text-center">
-              <p className="text-sm text-blue-600 font-medium">Minimum Salary</p>
+              <p className="text-sm text-blue-600 font-medium">
+                Minimum Salary
+              </p>
               <p className="text-2xl font-bold text-blue-800">
                 £{lastSearchResults.salary.min.toLocaleString()}
               </p>
             </div>
             <div className="bg-green-50 rounded-lg p-4 text-center">
-              <p className="text-sm text-green-600 font-medium">Median Salary</p>
+              <p className="text-sm text-green-600 font-medium">
+                Median Salary
+              </p>
               <p className="text-2xl font-bold text-green-800">
                 £{lastSearchResults.salary.median.toLocaleString()}
               </p>
             </div>
             <div className="bg-purple-50 rounded-lg p-4 text-center">
-              <p className="text-sm text-purple-600 font-medium">Maximum Salary</p>
+              <p className="text-sm text-purple-600 font-medium">
+                Maximum Salary
+              </p>
               <p className="text-2xl font-bold text-purple-800">
                 £{lastSearchResults.salary.max.toLocaleString()}
               </p>
@@ -1452,41 +1634,61 @@ const MarketIntelligence = () => {
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-600">Demand Level:</span>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    lastSearchResults.demand.level === "High" ? "bg-red-100 text-red-800" :
-                    lastSearchResults.demand.level === "Medium" ? "bg-yellow-100 text-yellow-800" :
-                    "bg-green-100 text-green-800"
-                  }`}>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      lastSearchResults.demand.level === "High"
+                        ? "bg-red-100 text-red-800"
+                        : lastSearchResults.demand.level === "Medium"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : "bg-green-100 text-green-800"
+                    }`}
+                  >
                     {lastSearchResults.demand.level}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-600">Trend:</span>
-                  <span className="text-sm font-medium text-gray-900">{lastSearchResults.demand.trend}</span>
+                  <span className="text-sm font-medium text-gray-900">
+                    {lastSearchResults.demand.trend}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Avg. Time to Fill:</span>
-                  <span className="text-sm font-medium text-gray-900">{lastSearchResults.demand.timeToFill} days</span>
+                  <span className="text-sm text-gray-600">
+                    Avg. Time to Fill:
+                  </span>
+                  <span className="text-sm font-medium text-gray-900">
+                    {lastSearchResults.demand.timeToFill} days
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-600">Competition:</span>
-                  <span className="text-sm font-medium text-gray-900">{lastSearchResults.demand.competition}</span>
+                  <span className="text-sm font-medium text-gray-900">
+                    {lastSearchResults.demand.competition}
+                  </span>
                 </div>
               </div>
             </div>
 
             <div>
-              <h4 className="font-medium text-gray-900 mb-3">Salary Benchmarking</h4>
+              <h4 className="font-medium text-gray-900 mb-3">
+                Salary Benchmarking
+              </h4>
               <div className="relative pt-4">
                 <div className="w-full bg-gray-200 rounded-full h-3">
                   <div
                     className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full relative"
-                    style={{ width: '100%' }}
+                    style={{ width: "100%" }}
                   >
                     <div className="absolute inset-0 flex items-center justify-between px-2">
-                      <span className="text-xs text-white font-medium">£{lastSearchResults.salary.min/1000}k</span>
-                      <span className="text-xs text-white font-bold">£{lastSearchResults.salary.median/1000}k</span>
-                      <span className="text-xs text-white font-medium">£{lastSearchResults.salary.max/1000}k</span>
+                      <span className="text-xs text-white font-medium">
+                        £{lastSearchResults.salary.min / 1000}k
+                      </span>
+                      <span className="text-xs text-white font-bold">
+                        £{lastSearchResults.salary.median / 1000}k
+                      </span>
+                      <span className="text-xs text-white font-medium">
+                        £{lastSearchResults.salary.max / 1000}k
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -1497,7 +1699,8 @@ const MarketIntelligence = () => {
                 </div>
               </div>
               <p className="text-xs text-gray-500 mt-3">
-                Based on {Math.floor(Math.random() * 500) + 100} recent job postings in the UK market
+                Based on {Math.floor(Math.random() * 500) + 100} recent job
+                postings in the UK market
               </p>
             </div>
           </div>
@@ -1512,7 +1715,9 @@ const MarketIntelligence = () => {
                 Export Report
               </button>
               <button
-                onClick={() => alert("Redirecting to create role with market data...")}
+                onClick={() =>
+                  alert("Redirecting to create role with market data...")
+                }
                 className="text-sm bg-gray-100 text-gray-700 px-3 py-1 rounded hover:bg-gray-200 transition-colors"
               >
                 Create Role
@@ -1529,20 +1734,30 @@ const MarketIntelligence = () => {
           {/* Skills Analysis */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
-              <h5 className="font-medium text-gray-900 mb-3">Required Skills</h5>
+              <h5 className="font-medium text-gray-900 mb-3">
+                Required Skills
+              </h5>
               <div className="flex flex-wrap gap-2">
                 {lastSearchResults.skills.required.map((skill, index) => (
-                  <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                  <span
+                    key={index}
+                    className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
+                  >
                     {skill}
                   </span>
                 ))}
               </div>
             </div>
             <div>
-              <h5 className="font-medium text-gray-900 mb-3">Trending Skills</h5>
+              <h5 className="font-medium text-gray-900 mb-3">
+                Trending Skills
+              </h5>
               <div className="flex flex-wrap gap-2">
                 {lastSearchResults.skills.trending.map((skill, index) => (
-                  <span key={index} className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                  <span
+                    key={index}
+                    className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm"
+                  >
                     {skill}
                   </span>
                 ))}
@@ -1574,8 +1789,12 @@ const MarketIntelligence = () => {
               <div className="space-y-3">
                 <div className="flex justify-between items-center p-3 bg-green-50 border border-green-200 rounded-lg">
                   <div>
-                    <p className="text-sm font-medium text-gray-900">Senior React Developer</p>
-                    <p className="text-xs text-gray-600">+23% demand increase</p>
+                    <p className="text-sm font-medium text-gray-900">
+                      Senior React Developer
+                    </p>
+                    <p className="text-xs text-gray-600">
+                      +23% demand increase
+                    </p>
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-bold text-green-700">£77k</p>
@@ -1584,8 +1803,12 @@ const MarketIntelligence = () => {
                 </div>
                 <div className="flex justify-between items-center p-3 bg-blue-50 border border-blue-200 rounded-lg">
                   <div>
-                    <p className="text-sm font-medium text-gray-900">DevOps Engineer</p>
-                    <p className="text-xs text-gray-600">+18% demand increase</p>
+                    <p className="text-sm font-medium text-gray-900">
+                      DevOps Engineer
+                    </p>
+                    <p className="text-xs text-gray-600">
+                      +18% demand increase
+                    </p>
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-bold text-blue-700">£80k</p>
@@ -1594,8 +1817,12 @@ const MarketIntelligence = () => {
                 </div>
                 <div className="flex justify-between items-center p-3 bg-purple-50 border border-purple-200 rounded-lg">
                   <div>
-                    <p className="text-sm font-medium text-gray-900">Data Scientist</p>
-                    <p className="text-xs text-gray-600">+15% demand increase</p>
+                    <p className="text-sm font-medium text-gray-900">
+                      Data Scientist
+                    </p>
+                    <p className="text-xs text-gray-600">
+                      +15% demand increase
+                    </p>
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-bold text-purple-700">£75k</p>
@@ -1614,30 +1841,46 @@ const MarketIntelligence = () => {
                 <div className="flex items-center justify-between p-3 bg-orange-50 border border-orange-200 rounded-lg">
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
-                    <span className="text-sm font-medium text-gray-900">TypeScript</span>
+                    <span className="text-sm font-medium text-gray-900">
+                      TypeScript
+                    </span>
                   </div>
-                  <span className="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full">+31%</span>
+                  <span className="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full">
+                    +31%
+                  </span>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-cyan-50 border border-cyan-200 rounded-lg">
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-cyan-500 rounded-full animate-pulse"></div>
-                    <span className="text-sm font-medium text-gray-900">AWS</span>
+                    <span className="text-sm font-medium text-gray-900">
+                      AWS
+                    </span>
                   </div>
-                  <span className="text-xs bg-cyan-100 text-cyan-800 px-2 py-1 rounded-full">+27%</span>
+                  <span className="text-xs bg-cyan-100 text-cyan-800 px-2 py-1 rounded-full">
+                    +27%
+                  </span>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-pink-50 border border-pink-200 rounded-lg">
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-pink-500 rounded-full animate-pulse"></div>
-                    <span className="text-sm font-medium text-gray-900">Kubernetes</span>
+                    <span className="text-sm font-medium text-gray-900">
+                      Kubernetes
+                    </span>
                   </div>
-                  <span className="text-xs bg-pink-100 text-pink-800 px-2 py-1 rounded-full">+24%</span>
+                  <span className="text-xs bg-pink-100 text-pink-800 px-2 py-1 rounded-full">
+                    +24%
+                  </span>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></div>
-                    <span className="text-sm font-medium text-gray-900">Machine Learning</span>
+                    <span className="text-sm font-medium text-gray-900">
+                      Machine Learning
+                    </span>
                   </div>
-                  <span className="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">+22%</span>
+                  <span className="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">
+                    +22%
+                  </span>
                 </div>
               </div>
             </div>
@@ -1650,29 +1893,38 @@ const MarketIntelligence = () => {
               <div className="text-center">
                 <p className="text-2xl font-bold text-blue-600">89%</p>
                 <p className="text-sm text-gray-600">Market Activity</p>
-                <p className="text-xs text-green-600 mt-1">↑ 5% vs last month</p>
+                <p className="text-xs text-green-600 mt-1">
+                  ↑ 5% vs last month
+                </p>
               </div>
               <div className="text-center">
                 <p className="text-2xl font-bold text-green-600">21d</p>
                 <p className="text-sm text-gray-600">Avg. Time to Hire</p>
-                <p className="text-xs text-green-600 mt-1">↓ 2 days vs last month</p>
+                <p className="text-xs text-green-600 mt-1">
+                  ↓ 2 days vs last month
+                </p>
               </div>
               <div className="text-center">
                 <p className="text-2xl font-bold text-purple-600">£68k</p>
                 <p className="text-sm text-gray-600">Avg. Tech Salary</p>
-                <p className="text-xs text-green-600 mt-1">↑ 3% vs last quarter</p>
+                <p className="text-xs text-green-600 mt-1">
+                  ↑ 3% vs last quarter
+                </p>
               </div>
               <div className="text-center">
                 <p className="text-2xl font-bold text-orange-600">1,247</p>
                 <p className="text-sm text-gray-600">Active Job Postings</p>
-                <p className="text-xs text-green-600 mt-1">↑ 12% vs last week</p>
+                <p className="text-xs text-green-600 mt-1">
+                  ↑ 12% vs last week
+                </p>
               </div>
             </div>
           </div>
 
           <div className="text-center pt-4 border-t border-gray-200">
             <p className="text-sm text-gray-600 mb-3">
-              Search for a specific role above to get detailed market intelligence and salary benchmarking
+              Search for a specific role above to get detailed market
+              intelligence and salary benchmarking
             </p>
             <div className="flex items-center justify-center space-x-2 text-xs text-gray-500">
               <span>Powered by</span>
@@ -2046,13 +2298,17 @@ const RoleShortlistView = ({
                       <span>Schedule Interview</span>
                     </button>
                     <button
-                      onClick={() => alert(`Viewing detailed profile for ${candidate.name}`)}
+                      onClick={() =>
+                        alert(`Viewing detailed profile for ${candidate.name}`)
+                      }
                       className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
                     >
                       View Profile
                     </button>
                     <button
-                      onClick={() => alert(`Opening message composer for ${candidate.name}`)}
+                      onClick={() =>
+                        alert(`Opening message composer for ${candidate.name}`)
+                      }
                       className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
                     >
                       Send Message
@@ -2340,7 +2596,9 @@ const JobDetailsView = ({
                 Edit Job Description
               </button>
               <button
-                onClick={() => alert("Viewing all applications for this role...")}
+                onClick={() =>
+                  alert("Viewing all applications for this role...")
+                }
                 className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
               >
                 View Applications
@@ -2352,7 +2610,10 @@ const JobDetailsView = ({
                 Share Job Posting
               </button>
               <button
-                onClick={() => confirm("Are you sure you want to close this position?") && alert("Position closed successfully")}
+                onClick={() =>
+                  confirm("Are you sure you want to close this position?") &&
+                  alert("Position closed successfully")
+                }
                 className="w-full px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
               >
                 Close Position
@@ -2368,7 +2629,7 @@ const JobDetailsView = ({
 // Create New Role Modal Component
 const CreateNewRoleModal = ({
   isOpen,
-  onClose
+  onClose,
 }: {
   isOpen: boolean;
   onClose: () => void;
@@ -2381,33 +2642,35 @@ const CreateNewRoleModal = ({
     priority: "Medium",
     description: "",
     requirements: [""],
-    benefits: [""]
+    benefits: [""],
   });
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleArrayChange = (field: string, index: number, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [field]: prev[field as keyof typeof prev].map((item: string, i: number) =>
-        i === index ? value : item
-      )
+      [field]: prev[field as keyof typeof prev].map(
+        (item: string, i: number) => (i === index ? value : item),
+      ),
     }));
   };
 
   const addArrayItem = (field: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [field]: [...prev[field as keyof typeof prev], ""]
+      [field]: [...prev[field as keyof typeof prev], ""],
     }));
   };
 
   const removeArrayItem = (field: string, index: number) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [field]: prev[field as keyof typeof prev].filter((_: string, i: number) => i !== index)
+      [field]: prev[field as keyof typeof prev].filter(
+        (_: string, i: number) => i !== index,
+      ),
     }));
   };
 
@@ -2424,14 +2687,14 @@ const CreateNewRoleModal = ({
       candidates: 0,
       shortlisted: 0,
       interviewed: 0,
-      created: new Date().toISOString().split('T')[0],
+      created: new Date().toISOString().split("T")[0],
       salary: formData.salary,
       priority: formData.priority,
       deiScore: Math.floor(Math.random() * 20) + 80, // Random score 80-100
       description: formData.description,
-      requirements: formData.requirements.filter(req => req.trim() !== ""),
-      benefits: formData.benefits.filter(benefit => benefit.trim() !== ""),
-      shortlistedCandidates: []
+      requirements: formData.requirements.filter((req) => req.trim() !== ""),
+      benefits: formData.benefits.filter((benefit) => benefit.trim() !== ""),
+      shortlistedCandidates: [],
     };
 
     // In a real app, this would save to backend
@@ -2446,7 +2709,7 @@ const CreateNewRoleModal = ({
       priority: "Medium",
       description: "",
       requirements: [""],
-      benefits: [""]
+      benefits: [""],
     });
 
     onClose();
@@ -2463,7 +2726,9 @@ const CreateNewRoleModal = ({
         <form onSubmit={handleSubmit}>
           <div className="p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">Create New Role</h2>
+              <h2 className="text-2xl font-bold text-gray-900">
+                Create New Role
+              </h2>
               <button
                 type="button"
                 onClick={onClose}
@@ -2497,7 +2762,9 @@ const CreateNewRoleModal = ({
                   <select
                     required
                     value={formData.department}
-                    onChange={(e) => handleInputChange("department", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("department", e.target.value)
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     <option value="">Select Department</option>
@@ -2520,7 +2787,9 @@ const CreateNewRoleModal = ({
                     type="text"
                     required
                     value={formData.location}
-                    onChange={(e) => handleInputChange("location", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("location", e.target.value)
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="e.g. London, UK or Remote"
                   />
@@ -2534,7 +2803,9 @@ const CreateNewRoleModal = ({
                     type="text"
                     required
                     value={formData.salary}
-                    onChange={(e) => handleInputChange("salary", e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("salary", e.target.value)
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="e.g. £60,000 - £85,000"
                   />
@@ -2548,7 +2819,9 @@ const CreateNewRoleModal = ({
                 </label>
                 <select
                   value={formData.priority}
-                  onChange={(e) => handleInputChange("priority", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("priority", e.target.value)
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="Low">Low</option>
@@ -2564,7 +2837,9 @@ const CreateNewRoleModal = ({
                 </label>
                 <textarea
                   value={formData.description}
-                  onChange={(e) => handleInputChange("description", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("description", e.target.value)
+                  }
                   rows={4}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Describe the role, responsibilities, and what you're looking for..."
@@ -2581,7 +2856,9 @@ const CreateNewRoleModal = ({
                     <input
                       type="text"
                       value={req}
-                      onChange={(e) => handleArrayChange("requirements", index, e.target.value)}
+                      onChange={(e) =>
+                        handleArrayChange("requirements", index, e.target.value)
+                      }
                       className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="e.g. 5+ years of React development experience"
                     />
@@ -2616,7 +2893,9 @@ const CreateNewRoleModal = ({
                     <input
                       type="text"
                       value={benefit}
-                      onChange={(e) => handleArrayChange("benefits", index, e.target.value)}
+                      onChange={(e) =>
+                        handleArrayChange("benefits", index, e.target.value)
+                      }
                       className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       placeholder="e.g. Competitive salary and equity package"
                     />
@@ -2670,7 +2949,7 @@ const AIRecruitmentModal = ({
   isOpen,
   onClose,
   roleId,
-  onViewCandidates
+  onViewCandidates,
 }: {
   isOpen: boolean;
   onClose: () => void;
@@ -2682,7 +2961,7 @@ const AIRecruitmentModal = ({
   const [currentStep, setCurrentStep] = useState("");
   const [completed, setCompleted] = useState(false);
 
-  const role = mockRoles.find(r => r.id === roleId);
+  const role = mockRoles.find((r) => r.id === roleId);
 
   const startRecruitment = async () => {
     setIsRunning(true);
@@ -2696,12 +2975,12 @@ const AIRecruitmentModal = ({
       { label: "Processing GitHub profiles...", duration: 1000 },
       { label: "Running UPhireIQ AI matching...", duration: 2000 },
       { label: "Generating candidate reports...", duration: 800 },
-      { label: "Finalizing recruitment pipeline...", duration: 500 }
+      { label: "Finalizing recruitment pipeline...", duration: 500 },
     ];
 
     for (let i = 0; i < steps.length; i++) {
       setCurrentStep(steps[i].label);
-      await new Promise(resolve => setTimeout(resolve, steps[i].duration));
+      await new Promise((resolve) => setTimeout(resolve, steps[i].duration));
       setProgress(((i + 1) / steps.length) * 100);
     }
 
@@ -2717,7 +2996,9 @@ const AIRecruitmentModal = ({
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-900">UPhireIQ AI Recruitment</h2>
+            <h2 className="text-xl font-bold text-gray-900">
+              UPhireIQ AI Recruitment
+            </h2>
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -2728,8 +3009,12 @@ const AIRecruitmentModal = ({
 
           {role && (
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">{role.title}</h3>
-              <p className="text-gray-600">{role.department} • {role.location}</p>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                {role.title}
+              </h3>
+              <p className="text-gray-600">
+                {role.department} • {role.location}
+              </p>
             </div>
           )}
 
@@ -2743,8 +3028,12 @@ const AIRecruitmentModal = ({
                     className="h-8 w-auto"
                   />
                   <div>
-                    <h4 className="font-semibold text-blue-900">AI-Powered Candidate Search</h4>
-                    <p className="text-blue-700 text-sm">Intelligent sourcing across multiple platforms</p>
+                    <h4 className="font-semibold text-blue-900">
+                      AI-Powered Candidate Search
+                    </h4>
+                    <p className="text-blue-700 text-sm">
+                      Intelligent sourcing across multiple platforms
+                    </p>
                   </div>
                 </div>
               </div>
@@ -2752,19 +3041,27 @@ const AIRecruitmentModal = ({
               <div className="space-y-3">
                 <div className="flex items-center space-x-2">
                   <CheckCircle className="w-5 h-5 text-green-600" />
-                  <span className="text-sm text-gray-700">LinkedIn Professional Network</span>
+                  <span className="text-sm text-gray-700">
+                    LinkedIn Professional Network
+                  </span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <CheckCircle className="w-5 h-5 text-green-600" />
-                  <span className="text-sm text-gray-700">Indeed Job Portal</span>
+                  <span className="text-sm text-gray-700">
+                    Indeed Job Portal
+                  </span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <CheckCircle className="w-5 h-5 text-green-600" />
-                  <span className="text-sm text-gray-700">GitHub Developer Profiles</span>
+                  <span className="text-sm text-gray-700">
+                    GitHub Developer Profiles
+                  </span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <CheckCircle className="w-5 h-5 text-green-600" />
-                  <span className="text-sm text-gray-700">Stack Overflow Community</span>
+                  <span className="text-sm text-gray-700">
+                    Stack Overflow Community
+                  </span>
                 </div>
               </div>
 
@@ -2791,7 +3088,9 @@ const AIRecruitmentModal = ({
                   style={{ width: `${progress}%` }}
                 ></div>
               </div>
-              <p className="text-center text-sm text-gray-600">{Math.round(progress)}% Complete</p>
+              <p className="text-center text-sm text-gray-600">
+                {Math.round(progress)}% Complete
+              </p>
             </div>
           )}
 
@@ -2799,7 +3098,9 @@ const AIRecruitmentModal = ({
             <div className="space-y-4 text-center">
               <div className="bg-green-50 p-4 rounded-lg">
                 <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-2" />
-                <h3 className="text-lg font-semibold text-green-800">Recruitment Complete!</h3>
+                <h3 className="text-lg font-semibold text-green-800">
+                  Recruitment Complete!
+                </h3>
                 <p className="text-green-700">Found 28 potential candidates</p>
               </div>
 
@@ -2809,7 +3110,9 @@ const AIRecruitmentModal = ({
                   <p className="text-blue-600">8 candidates (85%+ match)</p>
                 </div>
                 <div className="bg-purple-50 p-3 rounded">
-                  <p className="font-semibold text-purple-800">Auto-Shortlisted</p>
+                  <p className="font-semibold text-purple-800">
+                    Auto-Shortlisted
+                  </p>
                   <p className="text-purple-600">5 top candidates</p>
                 </div>
               </div>
@@ -2837,7 +3140,7 @@ const AIRecruitmentModal = ({
 const AIPredictionModal = ({
   isOpen,
   onClose,
-  role
+  role,
 }: {
   isOpen: boolean;
   onClose: () => void;
@@ -2851,7 +3154,7 @@ const AIPredictionModal = ({
     setPrediction(null);
 
     // Simulate AI analysis
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const mockPrediction: PredictionData = {
       successRate: Math.floor(Math.random() * 20) + 75, // 75-95%
@@ -2862,20 +3165,20 @@ const AIPredictionModal = ({
           "Competitive salary range",
           "Attractive benefits package",
           "Growing company reputation",
-          "Flexible working arrangements"
+          "Flexible working arrangements",
         ],
         risks: [
           "High competition from other companies",
           "Limited candidate pool in current market",
-          "Skill requirements may be too specific"
-        ]
+          "Skill requirements may be too specific",
+        ],
       },
       recommendations: [
         "Consider expanding location requirements",
         "Highlight career growth opportunities",
         "Emphasize company culture and values",
-        "Optimize job posting for better visibility"
-      ]
+        "Optimize job posting for better visibility",
+      ],
     };
 
     setPrediction(mockPrediction);
@@ -2889,7 +3192,9 @@ const AIPredictionModal = ({
       <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-900">UPhireIQ AI Success Prediction</h2>
+            <h2 className="text-xl font-bold text-gray-900">
+              UPhireIQ AI Success Prediction
+            </h2>
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -2900,8 +3205,12 @@ const AIPredictionModal = ({
 
           {role && (
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">{role.title}</h3>
-              <p className="text-gray-600">{role.department} • {role.location}</p>
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                {role.title}
+              </h3>
+              <p className="text-gray-600">
+                {role.department} • {role.location}
+              </p>
             </div>
           )}
 
@@ -2915,8 +3224,12 @@ const AIPredictionModal = ({
                     className="h-8 w-auto"
                   />
                   <div>
-                    <h4 className="font-semibold text-purple-900">AI Success Prediction</h4>
-                    <p className="text-purple-700 text-sm">Advanced analytics for hiring success</p>
+                    <h4 className="font-semibold text-purple-900">
+                      AI Success Prediction
+                    </h4>
+                    <p className="text-purple-700 text-sm">
+                      Advanced analytics for hiring success
+                    </p>
                   </div>
                 </div>
               </div>
@@ -2924,19 +3237,27 @@ const AIPredictionModal = ({
               <div className="space-y-3">
                 <div className="flex items-center space-x-2">
                   <CheckCircle className="w-5 h-5 text-green-600" />
-                  <span className="text-sm text-gray-700">Market demand analysis</span>
+                  <span className="text-sm text-gray-700">
+                    Market demand analysis
+                  </span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <CheckCircle className="w-5 h-5 text-green-600" />
-                  <span className="text-sm text-gray-700">Salary competitiveness assessment</span>
+                  <span className="text-sm text-gray-700">
+                    Salary competitiveness assessment
+                  </span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <CheckCircle className="w-5 h-5 text-green-600" />
-                  <span className="text-sm text-gray-700">Role attractiveness scoring</span>
+                  <span className="text-sm text-gray-700">
+                    Role attractiveness scoring
+                  </span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <CheckCircle className="w-5 h-5 text-green-600" />
-                  <span className="text-sm text-gray-700">Success probability calculation</span>
+                  <span className="text-sm text-gray-700">
+                    Success probability calculation
+                  </span>
                 </div>
               </div>
 
@@ -2953,8 +3274,12 @@ const AIPredictionModal = ({
           {isAnalyzing && (
             <div className="space-y-4 text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
-              <p className="text-gray-700 font-medium">Analyzing role success factors...</p>
-              <p className="text-sm text-gray-600">Processing market data and historical performance</p>
+              <p className="text-gray-700 font-medium">
+                Analyzing role success factors...
+              </p>
+              <p className="text-sm text-gray-600">
+                Processing market data and historical performance
+              </p>
             </div>
           )}
 
@@ -2962,11 +3287,15 @@ const AIPredictionModal = ({
             <div className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-green-50 p-4 rounded-lg text-center">
-                  <p className="text-2xl font-bold text-green-600">{prediction.successRate}%</p>
+                  <p className="text-2xl font-bold text-green-600">
+                    {prediction.successRate}%
+                  </p>
                   <p className="text-green-800 font-medium">Success Rate</p>
                 </div>
                 <div className="bg-blue-50 p-4 rounded-lg text-center">
-                  <p className="text-2xl font-bold text-blue-600">{prediction.confidence}%</p>
+                  <p className="text-2xl font-bold text-blue-600">
+                    {prediction.confidence}%
+                  </p>
                   <p className="text-blue-800 font-medium">AI Confidence</p>
                 </div>
               </div>
@@ -2979,7 +3308,9 @@ const AIPredictionModal = ({
                   </h4>
                   <ul className="space-y-1">
                     {prediction.factors.positive.map((factor, index) => (
-                      <li key={index} className="text-sm text-gray-700 pl-4">• {factor}</li>
+                      <li key={index} className="text-sm text-gray-700 pl-4">
+                        • {factor}
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -2991,7 +3322,9 @@ const AIPredictionModal = ({
                   </h4>
                   <ul className="space-y-1">
                     {prediction.factors.risks.map((risk, index) => (
-                      <li key={index} className="text-sm text-gray-700 pl-4">• {risk}</li>
+                      <li key={index} className="text-sm text-gray-700 pl-4">
+                        • {risk}
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -3003,7 +3336,9 @@ const AIPredictionModal = ({
                   </h4>
                   <ul className="space-y-1">
                     {prediction.recommendations.map((rec, index) => (
-                      <li key={index} className="text-sm text-gray-700 pl-4">• {rec}</li>
+                      <li key={index} className="text-sm text-gray-700 pl-4">
+                        • {rec}
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -3253,7 +3588,9 @@ const RolesTab = () => {
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold text-gray-900">Schedule Interview</h2>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Schedule Interview
+                </h2>
                 <button
                   onClick={() => setShowCalendlyModal(false)}
                   className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -3263,11 +3600,13 @@ const RolesTab = () => {
               </div>
               <div className="space-y-4">
                 <p className="text-gray-700">
-                  Schedule an interview with <strong>{schedulingCandidate.name}</strong>
+                  Schedule an interview with{" "}
+                  <strong>{schedulingCandidate.name}</strong>
                 </p>
                 <div className="bg-blue-50 p-4 rounded-lg">
                   <p className="text-sm text-blue-800">
-                    🎯 UPhireIQ AI Match: <strong>{schedulingCandidate.aiMatch}%</strong>
+                    🎯 UPhireIQ AI Match:{" "}
+                    <strong>{schedulingCandidate.aiMatch}%</strong>
                   </p>
                   <p className="text-sm text-blue-700 mt-1">
                     Skills: {schedulingCandidate.skills.join(", ")}
@@ -3296,7 +3635,6 @@ const RolesTab = () => {
           </div>
         </div>
       )}
-
     </div>
   );
 };
@@ -3833,13 +4171,17 @@ const CandidatesTab = () => {
               </div>
               <div className="flex space-x-2">
                 <button
-                  onClick={() => alert(`Opening message composer for ${candidate.name}`)}
+                  onClick={() =>
+                    alert(`Opening message composer for ${candidate.name}`)
+                  }
                   className="flex-1 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
                 >
                   Send Message
                 </button>
                 <button
-                  onClick={() => alert(`Preparing offer for ${candidate.name}...`)}
+                  onClick={() =>
+                    alert(`Preparing offer for ${candidate.name}...`)
+                  }
                   className="flex-1 px-3 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-sm"
                 >
                   Make Offer
@@ -3865,9 +4207,15 @@ const AnalyticsTab = () => (
       </div>
       <div className="flex space-x-3">
         <select className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg backdrop-blur-sm border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50">
-          <option value="last30days" className="text-gray-900">Last 30 Days</option>
-          <option value="last90days" className="text-gray-900">Last 90 Days</option>
-          <option value="lastyear" className="text-gray-900">Last Year</option>
+          <option value="last30days" className="text-gray-900">
+            Last 30 Days
+          </option>
+          <option value="last90days" className="text-gray-900">
+            Last 90 Days
+          </option>
+          <option value="lastyear" className="text-gray-900">
+            Last Year
+          </option>
         </select>
         <button className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all flex items-center space-x-2">
           <Download size={16} />
@@ -3923,7 +4271,9 @@ const AnalyticsTab = () => (
       <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-gray-600">Source Effectiveness</p>
+            <p className="text-sm font-medium text-gray-600">
+              Source Effectiveness
+            </p>
             <p className="text-3xl font-bold text-gray-900">73%</p>
             <p className="text-sm text-blue-600 flex items-center">
               <TrendingUp className="w-4 h-4 mr-1" />
@@ -3938,14 +4288,21 @@ const AnalyticsTab = () => (
     {/* Hiring Funnel Analysis */}
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Hiring Funnel Analysis</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Hiring Funnel Analysis
+        </h3>
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-gray-700">Applications</span>
+            <span className="text-sm font-medium text-gray-700">
+              Applications
+            </span>
             <span className="text-sm font-bold text-gray-900">1,247</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3">
-            <div className="bg-blue-500 h-3 rounded-full" style={{ width: '100%' }}></div>
+            <div
+              className="bg-blue-500 h-3 rounded-full"
+              style={{ width: "100%" }}
+            ></div>
           </div>
 
           <div className="flex items-center justify-between">
@@ -3953,15 +4310,23 @@ const AnalyticsTab = () => (
             <span className="text-sm font-bold text-gray-900">423 (34%)</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3">
-            <div className="bg-green-500 h-3 rounded-full" style={{ width: '34%' }}></div>
+            <div
+              className="bg-green-500 h-3 rounded-full"
+              style={{ width: "34%" }}
+            ></div>
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-gray-700">Interviewed</span>
+            <span className="text-sm font-medium text-gray-700">
+              Interviewed
+            </span>
             <span className="text-sm font-bold text-gray-900">284 (67%)</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3">
-            <div className="bg-purple-500 h-3 rounded-full" style={{ width: '67%' }}></div>
+            <div
+              className="bg-purple-500 h-3 rounded-full"
+              style={{ width: "67%" }}
+            ></div>
           </div>
 
           <div className="flex items-center justify-between">
@@ -3969,7 +4334,10 @@ const AnalyticsTab = () => (
             <span className="text-sm font-bold text-gray-900">89 (31%)</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3">
-            <div className="bg-orange-500 h-3 rounded-full" style={{ width: '31%' }}></div>
+            <div
+              className="bg-orange-500 h-3 rounded-full"
+              style={{ width: "31%" }}
+            ></div>
           </div>
 
           <div className="flex items-center justify-between">
@@ -3977,18 +4345,25 @@ const AnalyticsTab = () => (
             <span className="text-sm font-bold text-gray-900">47 (53%)</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3">
-            <div className="bg-green-600 h-3 rounded-full" style={{ width: '53%' }}></div>
+            <div
+              className="bg-green-600 h-3 rounded-full"
+              style={{ width: "53%" }}
+            ></div>
           </div>
         </div>
       </div>
 
       <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Source Performance</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Source Performance
+        </h3>
         <div className="space-y-4">
           <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
             <div className="flex items-center space-x-3">
               <Linkedin className="w-5 h-5 text-blue-600" />
-              <span className="text-sm font-medium text-gray-900">LinkedIn</span>
+              <span className="text-sm font-medium text-gray-900">
+                LinkedIn
+              </span>
             </div>
             <div className="text-right">
               <p className="text-sm font-bold text-gray-900">342 hires</p>
@@ -4021,7 +4396,9 @@ const AnalyticsTab = () => (
           <div className="flex items-center justify-between p-3 bg-orange-50 rounded-lg">
             <div className="flex items-center space-x-3">
               <Globe className="w-5 h-5 text-orange-600" />
-              <span className="text-sm font-medium text-gray-900">Referrals</span>
+              <span className="text-sm font-medium text-gray-900">
+                Referrals
+              </span>
             </div>
             <div className="text-right">
               <p className="text-sm font-bold text-gray-900">67 hires</p>
@@ -4034,9 +4411,11 @@ const AnalyticsTab = () => (
 
     {/* Time-based Analytics */}
     <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Monthly Hiring Trends</h3>
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        Monthly Hiring Trends
+      </h3>
       <div className="grid grid-cols-6 gap-4">
-        {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'].map((month, index) => {
+        {["Jan", "Feb", "Mar", "Apr", "May", "Jun"].map((month, index) => {
           const heights = [60, 75, 45, 90, 80, 70];
           return (
             <div key={month} className="text-center">
@@ -4047,7 +4426,9 @@ const AnalyticsTab = () => (
                 ></div>
               </div>
               <p className="text-xs text-gray-600">{month}</p>
-              <p className="text-sm font-bold text-gray-900">{Math.floor(heights[index]/2)}</p>
+              <p className="text-sm font-bold text-gray-900">
+                {Math.floor(heights[index] / 2)}
+              </p>
             </div>
           );
         })}
@@ -4058,15 +4439,21 @@ const AnalyticsTab = () => (
 
 const EmployeesTab = () => {
   const [showEmployeeModal, setShowEmployeeModal] = useState(false);
-  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
+    null,
+  );
 
   const openEmployeeDetails = (employee: Employee) => {
     setSelectedEmployee(employee);
     setShowEmployeeModal(true);
   };
 
-  const employeesOnProbation = mockEmployees.filter(emp => emp.probationPeriod);
-  const fullTimeEmployees = mockEmployees.filter(emp => emp.employmentType === "Full-Time");
+  const employeesOnProbation = mockEmployees.filter(
+    (emp) => emp.probationPeriod,
+  );
+  const fullTimeEmployees = mockEmployees.filter(
+    (emp) => emp.employmentType === "Full-Time",
+  );
 
   return (
     <div className="space-y-6">
@@ -4091,8 +4478,12 @@ const EmployeesTab = () => {
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Total Employees</p>
-              <p className="text-3xl font-bold text-gray-900">{mockEmployees.length}</p>
+              <p className="text-sm font-medium text-gray-600">
+                Total Employees
+              </p>
+              <p className="text-3xl font-bold text-gray-900">
+                {mockEmployees.length}
+              </p>
             </div>
             <Users className="w-8 h-8 text-blue-600" />
           </div>
@@ -4102,7 +4493,9 @@ const EmployeesTab = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">On Probation</p>
-              <p className="text-3xl font-bold text-gray-900">{employeesOnProbation.length}</p>
+              <p className="text-3xl font-bold text-gray-900">
+                {employeesOnProbation.length}
+              </p>
             </div>
             <Clock className="w-8 h-8 text-orange-600" />
           </div>
@@ -4112,7 +4505,9 @@ const EmployeesTab = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">Full-Time</p>
-              <p className="text-3xl font-bold text-gray-900">{fullTimeEmployees.length}</p>
+              <p className="text-3xl font-bold text-gray-900">
+                {fullTimeEmployees.length}
+              </p>
             </div>
             <UserCheck className="w-8 h-8 text-green-600" />
           </div>
@@ -4134,25 +4529,41 @@ const EmployeesTab = () => {
         <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
           <div className="flex items-center space-x-3 mb-4">
             <AlertTriangle className="w-6 h-6 text-orange-600" />
-            <h3 className="text-lg font-semibold text-orange-900">Probation Period Alerts</h3>
+            <h3 className="text-lg font-semibold text-orange-900">
+              Probation Period Alerts
+            </h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {employeesOnProbation.map((employee) => {
               const startDate = new Date(employee.startDate);
               const probationEndDate = new Date(startDate);
-              probationEndDate.setMonth(startDate.getMonth() + employee.probationMonths);
+              probationEndDate.setMonth(
+                startDate.getMonth() + employee.probationMonths,
+              );
               const today = new Date();
-              const daysRemaining = Math.ceil((probationEndDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+              const daysRemaining = Math.ceil(
+                (probationEndDate.getTime() - today.getTime()) /
+                  (1000 * 60 * 60 * 24),
+              );
 
               return (
-                <div key={employee.id} className="bg-white rounded-lg p-4 border border-orange-200">
+                <div
+                  key={employee.id}
+                  className="bg-white rounded-lg p-4 border border-orange-200"
+                >
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium text-gray-900">{employee.name}</p>
-                      <p className="text-sm text-gray-600">{employee.position}</p>
+                      <p className="font-medium text-gray-900">
+                        {employee.name}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        {employee.position}
+                      </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm font-bold text-orange-700">{daysRemaining} days</p>
+                      <p className="text-sm font-bold text-orange-700">
+                        {daysRemaining} days
+                      </p>
                       <p className="text-xs text-gray-600">remaining</p>
                     </div>
                   </div>
@@ -4166,7 +4577,9 @@ const EmployeesTab = () => {
       {/* Employee Directory */}
       <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-lg font-semibold text-gray-900">Employee Directory</h3>
+          <h3 className="text-lg font-semibold text-gray-900">
+            Employee Directory
+          </h3>
           <div className="flex space-x-3">
             <button
               onClick={() => alert("Opening employee search...")}
@@ -4187,17 +4600,26 @@ const EmployeesTab = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {mockEmployees.map((employee) => (
-            <div key={employee.id} className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+            <div
+              key={employee.id}
+              className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
+            >
               <div className="flex items-start justify-between">
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
                     <span className="text-lg font-bold text-blue-600">
-                      {employee.avatar || employee.name.split(' ').map(n => n[0]).join('')}
+                      {employee.avatar ||
+                        employee.name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")}
                     </span>
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center space-x-3 mb-2">
-                      <h4 className="text-lg font-semibold text-gray-900">{employee.name}</h4>
+                      <h4 className="text-lg font-semibold text-gray-900">
+                        {employee.name}
+                      </h4>
                       {employee.probationPeriod && (
                         <span className="px-2 py-1 bg-orange-100 text-orange-800 rounded-full text-xs font-medium">
                           Probation
@@ -4240,13 +4662,17 @@ const EmployeesTab = () => {
                   View Profile
                 </button>
                 <button
-                  onClick={() => alert(`Opening documents for ${employee.name}...`)}
+                  onClick={() =>
+                    alert(`Opening documents for ${employee.name}...`)
+                  }
                   className="flex-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
                 >
                   Documents
                 </button>
                 <button
-                  onClick={() => alert(`Opening performance review for ${employee.name}...`)}
+                  onClick={() =>
+                    alert(`Opening performance review for ${employee.name}...`)
+                  }
                   className="flex-1 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
                 >
                   Performance
@@ -4264,11 +4690,19 @@ const DocumentsTab = () => {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const documentCategories = ["All", "Contracts", "Handbooks", "Legal", "Templates", "Policies"];
+  const documentCategories = [
+    "All",
+    "Contracts",
+    "Handbooks",
+    "Legal",
+    "Templates",
+    "Policies",
+  ];
 
-  const filteredDocuments = selectedCategory === "All"
-    ? mockDocuments
-    : mockDocuments.filter(doc => doc.category === selectedCategory);
+  const filteredDocuments =
+    selectedCategory === "All"
+      ? mockDocuments
+      : mockDocuments.filter((doc) => doc.category === selectedCategory);
 
   return (
     <div className="space-y-6">
@@ -4302,8 +4736,12 @@ const DocumentsTab = () => {
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Total Documents</p>
-              <p className="text-3xl font-bold text-gray-900">{mockDocuments.length}</p>
+              <p className="text-sm font-medium text-gray-600">
+                Total Documents
+              </p>
+              <p className="text-3xl font-bold text-gray-900">
+                {mockDocuments.length}
+              </p>
             </div>
             <FileText className="w-8 h-8 text-blue-600" />
           </div>
@@ -4312,9 +4750,11 @@ const DocumentsTab = () => {
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Auto-Send Enabled</p>
+              <p className="text-sm font-medium text-gray-600">
+                Auto-Send Enabled
+              </p>
               <p className="text-3xl font-bold text-gray-900">
-                {mockDocuments.filter(doc => doc.autoSend).length}
+                {mockDocuments.filter((doc) => doc.autoSend).length}
               </p>
             </div>
             <Send className="w-8 h-8 text-green-600" />
@@ -4326,7 +4766,7 @@ const DocumentsTab = () => {
             <div>
               <p className="text-sm font-medium text-gray-600">Templates</p>
               <p className="text-3xl font-bold text-gray-900">
-                {mockDocuments.filter(doc => doc.type === "Template").length}
+                {mockDocuments.filter((doc) => doc.type === "Template").length}
               </p>
             </div>
             <Edit className="w-8 h-8 text-purple-600" />
@@ -4336,9 +4776,11 @@ const DocumentsTab = () => {
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Legal Documents</p>
+              <p className="text-sm font-medium text-gray-600">
+                Legal Documents
+              </p>
               <p className="text-3xl font-bold text-gray-900">
-                {mockDocuments.filter(doc => doc.category === "Legal").length}
+                {mockDocuments.filter((doc) => doc.category === "Legal").length}
               </p>
             </div>
             <AlertTriangle className="w-8 h-8 text-orange-600" />
@@ -4349,7 +4791,9 @@ const DocumentsTab = () => {
       {/* Category Filter */}
       <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">Document Library</h3>
+          <h3 className="text-lg font-semibold text-gray-900">
+            Document Library
+          </h3>
           <div className="flex space-x-2">
             {documentCategories.map((category) => (
               <button
@@ -4357,8 +4801,8 @@ const DocumentsTab = () => {
                 onClick={() => setSelectedCategory(category)}
                 className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                   selectedCategory === category
-                    ? 'bg-blue-100 text-blue-800'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ? "bg-blue-100 text-blue-800"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
                 {category}
@@ -4369,31 +4813,46 @@ const DocumentsTab = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {filteredDocuments.map((document) => (
-            <div key={document.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <div
+              key={document.id}
+              className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+            >
               <div className="flex items-start justify-between">
                 <div className="flex items-start space-x-3">
                   <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                     <FileText className="w-5 h-5 text-blue-600" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="text-lg font-semibold text-gray-900">{document.name}</h4>
+                    <h4 className="text-lg font-semibold text-gray-900">
+                      {document.name}
+                    </h4>
                     <div className="flex items-center space-x-3 mb-2">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        document.category === 'Legal' ? 'bg-red-100 text-red-800' :
-                        document.category === 'HR' ? 'bg-blue-100 text-blue-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          document.category === "Legal"
+                            ? "bg-red-100 text-red-800"
+                            : document.category === "HR"
+                              ? "bg-blue-100 text-blue-800"
+                              : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
                         {document.category}
                       </span>
-                      <span className="text-xs text-gray-600">{document.type}</span>
+                      <span className="text-xs text-gray-600">
+                        {document.type}
+                      </span>
                       {document.autoSend && (
                         <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
                           Auto-Send
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-gray-600 mb-2">Template: {document.template}</p>
-                    <p className="text-xs text-gray-500">Last modified: {document.lastModified}</p>
+                    <p className="text-sm text-gray-600 mb-2">
+                      Template: {document.template}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Last modified: {document.lastModified}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -4421,7 +4880,9 @@ const DocumentsTab = () => {
                   <span>Edit</span>
                 </button>
                 <button
-                  onClick={() => confirm(`Delete ${doc.name}?`) && alert("Document deleted")}
+                  onClick={() =>
+                    confirm(`Delete ${doc.name}?`) && alert("Document deleted")
+                  }
                   className="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm"
                 >
                   <Trash2 size={14} />
@@ -4441,7 +4902,9 @@ const DocumentsTab = () => {
 
       {/* Quick Actions */}
       <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Quick Actions
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <button
             onClick={() => alert("Opening contract templates library...")}
@@ -4449,7 +4912,9 @@ const DocumentsTab = () => {
           >
             <FileText className="w-8 h-8 text-blue-600 mb-2" />
             <h4 className="font-semibold text-blue-900">Contract Templates</h4>
-            <p className="text-sm text-blue-700">Employment contracts, NDAs, offer letters</p>
+            <p className="text-sm text-blue-700">
+              Employment contracts, NDAs, offer letters
+            </p>
           </button>
 
           <button
@@ -4457,8 +4922,12 @@ const DocumentsTab = () => {
             className="p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors text-left"
           >
             <Send className="w-8 h-8 text-green-600 mb-2" />
-            <h4 className="font-semibold text-green-900">Auto-Send Documents</h4>
-            <p className="text-sm text-green-700">Automatically send docs to new hires</p>
+            <h4 className="font-semibold text-green-900">
+              Auto-Send Documents
+            </h4>
+            <p className="text-sm text-green-700">
+              Automatically send docs to new hires
+            </p>
           </button>
 
           <button
@@ -4467,7 +4936,9 @@ const DocumentsTab = () => {
           >
             <Edit className="w-8 h-8 text-purple-600 mb-2" />
             <h4 className="font-semibold text-purple-900">Template Editor</h4>
-            <p className="text-sm text-purple-700">Create and customize document templates</p>
+            <p className="text-sm text-purple-700">
+              Create and customize document templates
+            </p>
           </button>
         </div>
       </div>
@@ -4487,7 +4958,7 @@ const SavingsTab = () => {
     efficiencyGain: 44, // percentage
     automationSavings: 89000,
     sourcingSavings: 67500,
-    processSavings: 91000
+    processSavings: 91000,
   };
 
   return (
@@ -4495,7 +4966,9 @@ const SavingsTab = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white">Cost Savings & ROI</h1>
-          <p className="text-blue-100">Track recruitment cost efficiency and return on investment</p>
+          <p className="text-blue-100">
+            Track recruitment cost efficiency and return on investment
+          </p>
         </div>
         <div className="flex space-x-3">
           <select
@@ -4503,20 +4976,25 @@ const SavingsTab = () => {
             onChange={(e) => setSelectedPeriod(e.target.value)}
             className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg backdrop-blur-sm border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
           >
-            <option value="last3months" className="text-gray-900">Last 3 Months</option>
-            <option value="last6months" className="text-gray-900">Last 6 Months</option>
-            <option value="last12months" className="text-gray-900">Last 12 Months</option>
+            <option value="last3months" className="text-gray-900">
+              Last 3 Months
+            </option>
+            <option value="last6months" className="text-gray-900">
+              Last 6 Months
+            </option>
+            <option value="last12months" className="text-gray-900">
+              Last 12 Months
+            </option>
           </select>
-        <button
-          onClick={() => alert("Analytics report exported successfully!")}
           <button
-            onClick={() => alert("ROI and savings report exported successfully!")}
+            onClick={() =>
+              alert("ROI and savings report exported successfully!")
+            }
             className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all flex items-center space-x-2"
           >
             <Download size={16} />
             <span>Export Report</span>
           </button>
-        </button>
         </div>
       </div>
 
@@ -4526,7 +5004,9 @@ const SavingsTab = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">Total Savings</p>
-              <p className="text-3xl font-bold text-green-600">£{savingsData.totalSavings.toLocaleString()}</p>
+              <p className="text-3xl font-bold text-green-600">
+                £{savingsData.totalSavings.toLocaleString()}
+              </p>
               <p className="text-sm text-green-600 flex items-center">
                 <ArrowUp className="w-4 h-4 mr-1" />
                 vs traditional methods
@@ -4540,7 +5020,9 @@ const SavingsTab = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">Cost per Hire</p>
-              <p className="text-3xl font-bold text-blue-600">£{savingsData.avgCostPerHire.toLocaleString()}</p>
+              <p className="text-3xl font-bold text-blue-600">
+                £{savingsData.avgCostPerHire.toLocaleString()}
+              </p>
               <p className="text-sm text-green-600 flex items-center">
                 <ArrowDown className="w-4 h-4 mr-1" />
                 -44% vs industry avg
@@ -4554,7 +5036,9 @@ const SavingsTab = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">Time Saved</p>
-              <p className="text-3xl font-bold text-purple-600">{savingsData.timeSaved}h</p>
+              <p className="text-3xl font-bold text-purple-600">
+                {savingsData.timeSaved}h
+              </p>
               <p className="text-sm text-green-600 flex items-center">
                 <Clock className="w-4 h-4 mr-1" />
                 per hire
@@ -4567,8 +5051,12 @@ const SavingsTab = () => {
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Efficiency Gain</p>
-              <p className="text-3xl font-bold text-orange-600">{savingsData.efficiencyGain}%</p>
+              <p className="text-sm font-medium text-gray-600">
+                Efficiency Gain
+              </p>
+              <p className="text-3xl font-bold text-orange-600">
+                {savingsData.efficiencyGain}%
+              </p>
               <p className="text-sm text-green-600 flex items-center">
                 <TrendingUp className="w-4 h-4 mr-1" />
                 improvement
@@ -4582,7 +5070,9 @@ const SavingsTab = () => {
       {/* Savings Breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Savings Breakdown</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Savings Breakdown
+          </h3>
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
               <div className="flex items-center space-x-3">
@@ -4590,12 +5080,18 @@ const SavingsTab = () => {
                   <Zap className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900">UPhireIQ AI Automation</p>
-                  <p className="text-sm text-gray-600">Automated screening & matching</p>
+                  <p className="font-medium text-gray-900">
+                    UPhireIQ AI Automation
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Automated screening & matching
+                  </p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-lg font-bold text-blue-600">£{savingsData.automationSavings.toLocaleString()}</p>
+                <p className="text-lg font-bold text-blue-600">
+                  £{savingsData.automationSavings.toLocaleString()}
+                </p>
                 <p className="text-xs text-gray-600">36% of total</p>
               </div>
             </div>
@@ -4606,12 +5102,18 @@ const SavingsTab = () => {
                   <Users className="w-5 h-5 text-green-600" />
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900">Sourcing Efficiency</p>
-                  <p className="text-sm text-gray-600">Multi-platform integration</p>
+                  <p className="font-medium text-gray-900">
+                    Sourcing Efficiency
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Multi-platform integration
+                  </p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-lg font-bold text-green-600">£{savingsData.sourcingSavings.toLocaleString()}</p>
+                <p className="text-lg font-bold text-green-600">
+                  £{savingsData.sourcingSavings.toLocaleString()}
+                </p>
                 <p className="text-xs text-gray-600">27% of total</p>
               </div>
             </div>
@@ -4622,12 +5124,16 @@ const SavingsTab = () => {
                   <BarChart3 className="w-5 h-5 text-purple-600" />
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900">Process Optimization</p>
+                  <p className="font-medium text-gray-900">
+                    Process Optimization
+                  </p>
                   <p className="text-sm text-gray-600">Streamlined workflows</p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-lg font-bold text-purple-600">£{savingsData.processSavings.toLocaleString()}</p>
+                <p className="text-lg font-bold text-purple-600">
+                  £{savingsData.processSavings.toLocaleString()}
+                </p>
                 <p className="text-xs text-gray-600">37% of total</p>
               </div>
             </div>
@@ -4635,37 +5141,62 @@ const SavingsTab = () => {
         </div>
 
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">ROI Comparison</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            ROI Comparison
+          </h3>
           <div className="space-y-6">
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium text-gray-700">Before UPhire</span>
-                <span className="text-lg font-bold text-red-600">£{savingsData.previousAvgCost.toLocaleString()}</span>
+                <span className="text-sm font-medium text-gray-700">
+                  Before UPhire
+                </span>
+                <span className="text-lg font-bold text-red-600">
+                  £{savingsData.previousAvgCost.toLocaleString()}
+                </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3">
-                <div className="bg-red-500 h-3 rounded-full" style={{ width: '100%' }}></div>
+                <div
+                  className="bg-red-500 h-3 rounded-full"
+                  style={{ width: "100%" }}
+                ></div>
               </div>
-              <p className="text-xs text-gray-600 mt-1">Average cost per hire</p>
+              <p className="text-xs text-gray-600 mt-1">
+                Average cost per hire
+              </p>
             </div>
 
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm font-medium text-gray-700">With UPhire</span>
-                <span className="text-lg font-bold text-green-600">£{savingsData.avgCostPerHire.toLocaleString()}</span>
+                <span className="text-sm font-medium text-gray-700">
+                  With UPhire
+                </span>
+                <span className="text-lg font-bold text-green-600">
+                  £{savingsData.avgCostPerHire.toLocaleString()}
+                </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3">
-                <div className="bg-green-500 h-3 rounded-full" style={{ width: '56%' }}></div>
+                <div
+                  className="bg-green-500 h-3 rounded-full"
+                  style={{ width: "56%" }}
+                ></div>
               </div>
-              <p className="text-xs text-gray-600 mt-1">Current cost per hire</p>
+              <p className="text-xs text-gray-600 mt-1">
+                Current cost per hire
+              </p>
             </div>
 
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
               <div className="flex items-center space-x-2 mb-2">
                 <CheckCircle className="w-5 h-5 text-green-600" />
-                <span className="font-medium text-green-900">Cost Reduction</span>
+                <span className="font-medium text-green-900">
+                  Cost Reduction
+                </span>
               </div>
               <p className="text-2xl font-bold text-green-600">
-                £{(savingsData.previousAvgCost - savingsData.avgCostPerHire).toLocaleString()}
+                £
+                {(
+                  savingsData.previousAvgCost - savingsData.avgCostPerHire
+                ).toLocaleString()}
               </p>
               <p className="text-sm text-green-700">savings per hire</p>
             </div>
@@ -4675,9 +5206,11 @@ const SavingsTab = () => {
 
       {/* Monthly Savings Trend */}
       <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Monthly Savings Trend</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Monthly Savings Trend
+        </h3>
         <div className="grid grid-cols-6 gap-4">
-          {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'].map((month, index) => {
+          {["Jan", "Feb", "Mar", "Apr", "May", "Jun"].map((month, index) => {
             const savings = [15000, 18500, 22000, 19500, 24000, 21500];
             const height = (savings[index] / 24000) * 100;
             return (
@@ -4687,7 +5220,9 @@ const SavingsTab = () => {
                     className="w-12 bg-gradient-to-t from-green-500 to-emerald-500 rounded-t flex items-end justify-center pb-2"
                     style={{ height: `${height}%` }}
                   >
-                    <span className="text-xs text-white font-medium">£{(savings[index]/1000).toFixed(0)}k</span>
+                    <span className="text-xs text-white font-medium">
+                      £{(savings[index] / 1000).toFixed(0)}k
+                    </span>
                   </div>
                 </div>
                 <p className="text-sm text-gray-600">{month}</p>
@@ -4697,14 +5232,23 @@ const SavingsTab = () => {
         </div>
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-600">
-            Average monthly savings: <span className="font-bold text-green-600">£{((15000+18500+22000+19500+24000+21500)/6).toLocaleString()}</span>
+            Average monthly savings:{" "}
+            <span className="font-bold text-green-600">
+              £
+              {(
+                (15000 + 18500 + 22000 + 19500 + 24000 + 21500) /
+                6
+              ).toLocaleString()}
+            </span>
           </p>
         </div>
       </div>
 
       {/* ROI Calculator */}
       <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Return on Investment</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Return on Investment
+        </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center p-6 bg-blue-50 rounded-lg">
             <DollarSign className="w-12 h-12 text-blue-600 mx-auto mb-3" />
