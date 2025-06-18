@@ -2588,6 +2588,324 @@ const JobDetailsView = ({
   );
 };
 
+// Create New Role Modal Component
+const CreateNewRoleModal = ({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) => {
+  const [formData, setFormData] = useState({
+    title: "",
+    department: "",
+    location: "",
+    salary: "",
+    priority: "Medium",
+    description: "",
+    requirements: [""],
+    benefits: [""],
+  });
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleArrayChange = (field: string, index: number, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: prev[field as keyof typeof prev].map(
+        (item: string, i: number) => (i === index ? value : item),
+      ),
+    }));
+  };
+
+  const addArrayItem = (field: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: [...prev[field as keyof typeof prev], ""],
+    }));
+  };
+
+  const removeArrayItem = (field: string, index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: prev[field as keyof typeof prev].filter(
+        (_: string, i: number) => i !== index,
+      ),
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Create new role object
+    const newRole: Role = {
+      id: mockRoles.length + 1,
+      title: formData.title,
+      department: formData.department,
+      location: formData.location,
+      status: "Active",
+      candidates: 0,
+      shortlisted: 0,
+      interviewed: 0,
+      created: new Date().toISOString().split("T")[0],
+      salary: formData.salary,
+      priority: formData.priority,
+      deiScore: Math.floor(Math.random() * 20) + 80, // Random score 80-100
+      description: formData.description,
+      requirements: formData.requirements.filter((req) => req.trim() !== ""),
+      benefits: formData.benefits.filter((benefit) => benefit.trim() !== ""),
+      shortlistedCandidates: [],
+    };
+
+    // In a real app, this would save to backend
+    mockRoles.push(newRole);
+
+    // Reset form and close modal
+    setFormData({
+      title: "",
+      department: "",
+      location: "",
+      salary: "",
+      priority: "Medium",
+      description: "",
+      requirements: [""],
+      benefits: [""],
+    });
+
+    onClose();
+
+    // Show success message
+    alert(`Role "${newRole.title}" created successfully!`);
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <form onSubmit={handleSubmit}>
+          <div className="p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-900">
+                Create New Role
+              </h2>
+              <button
+                type="button"
+                onClick={onClose}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="space-y-6">
+              {/* Basic Information */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Job Title *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.title}
+                    onChange={(e) => handleInputChange("title", e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="e.g. Senior React Developer"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Department *
+                  </label>
+                  <select
+                    required
+                    value={formData.department}
+                    onChange={(e) =>
+                      handleInputChange("department", e.target.value)
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="">Select Department</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Product">Product</option>
+                    <option value="Design">Design</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Sales">Sales</option>
+                    <option value="HR">HR</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Operations">Operations</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Location *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.location}
+                    onChange={(e) =>
+                      handleInputChange("location", e.target.value)
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="e.g. London, UK or Remote"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Salary Range *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.salary}
+                    onChange={(e) =>
+                      handleInputChange("salary", e.target.value)
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="e.g. £60,000 - £85,000"
+                  />
+                </div>
+              </div>
+
+              {/* Priority */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Priority
+                </label>
+                <select
+                  value={formData.priority}
+                  onChange={(e) =>
+                    handleInputChange("priority", e.target.value)
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+
+              {/* Description */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Job Description
+                </label>
+                <textarea
+                  value={formData.description}
+                  onChange={(e) =>
+                    handleInputChange("description", e.target.value)
+                  }
+                  rows={4}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Describe the role, responsibilities, and what you're looking for..."
+                />
+              </div>
+
+              {/* Requirements */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Requirements
+                </label>
+                {formData.requirements.map((req, index) => (
+                  <div key={index} className="flex items-center space-x-2 mb-2">
+                    <input
+                      type="text"
+                      value={req}
+                      onChange={(e) =>
+                        handleArrayChange("requirements", index, e.target.value)
+                      }
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="e.g. 5+ years of React development experience"
+                    />
+                    {formData.requirements.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeArrayItem("requirements", index)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    )}
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => addArrayItem("requirements")}
+                  className="text-blue-600 hover:text-blue-800 flex items-center space-x-1 text-sm"
+                >
+                  <Plus size={16} />
+                  <span>Add Requirement</span>
+                </button>
+              </div>
+
+              {/* Benefits */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Benefits & Perks
+                </label>
+                {formData.benefits.map((benefit, index) => (
+                  <div key={index} className="flex items-center space-x-2 mb-2">
+                    <input
+                      type="text"
+                      value={benefit}
+                      onChange={(e) =>
+                        handleArrayChange("benefits", index, e.target.value)
+                      }
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="e.g. Competitive salary and equity package"
+                    />
+                    {formData.benefits.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeArrayItem("benefits", index)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    )}
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => addArrayItem("benefits")}
+                  className="text-blue-600 hover:text-blue-800 flex items-center space-x-1 text-sm"
+                >
+                  <Plus size={16} />
+                  <span>Add Benefit</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Form Actions */}
+            <div className="flex space-x-3 mt-8 pt-6 border-t">
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all font-medium"
+              >
+                Create Role
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 // AI Recruitment Modal Component
 const AIRecruitmentModal = ({
   isOpen,
