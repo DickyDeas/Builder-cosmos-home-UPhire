@@ -2762,7 +2762,12 @@ const AIRecruitmentModal = ({
               </div>
 
               <button
-                onClick={onClose}
+                onClick={() => {
+                  if (role) {
+                    onViewCandidates(role);
+                  }
+                  onClose();
+                }}
                 className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-medium"
               >
                 View Candidates
