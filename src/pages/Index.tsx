@@ -3524,6 +3524,11 @@ const RolesTab = () => {
       </div>
 
       {/* Modals */}
+      <CreateNewRoleModal
+        isOpen={showNewRoleModal}
+        onClose={() => setShowNewRoleModal(false)}
+      />
+
       <AIRecruitmentModal
         isOpen={showRecruitModal}
         onClose={() => setShowRecruitModal(false)}
