@@ -4581,11 +4581,17 @@ const EmployeesTab = () => {
             Employee Directory
           </h3>
           <div className="flex space-x-3">
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
+            <button
+              onClick={() => alert("Opening employee search...")}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+            >
               <Search size={16} />
               <span>Search</span>
             </button>
-            <button className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors flex items-center space-x-2">
+            <button
+              onClick={() => alert("Opening employee filters...")}
+              className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors flex items-center space-x-2"
+            >
               <Filter size={16} />
               <span>Filter</span>
             </button>
