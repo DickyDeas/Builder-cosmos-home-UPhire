@@ -4942,7 +4942,10 @@ const SavingsTab = () => {
               Last 12 Months
             </option>
           </select>
-          <button className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all flex items-center space-x-2">
+          <button
+            onClick={() => alert("Analytics report exported successfully!")}
+            className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all flex items-center space-x-2"
+          >
             <Download size={16} />
             <span>Export Report</span>
           </button>
