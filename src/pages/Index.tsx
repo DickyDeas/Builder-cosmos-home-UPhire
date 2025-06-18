@@ -3235,19 +3235,237 @@ const EmployeesTab = () => {
   );
 };
 
-const DocumentsTab = () => (
-  <div className="space-y-6">
-    <div>
-      <h1 className="text-3xl font-bold text-white">Document Management</h1>
-      <p className="text-blue-100">
-        Manage contracts, handbooks, and HR documents
-      </p>
+const DocumentsTab = () => {
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  const documentCategories = [
+    "All",
+    "Contracts",
+    "Handbooks",
+    "Legal",
+    "Templates",
+    "Policies",
+  ];
+
+  const filteredDocuments =
+    selectedCategory === "All"
+      ? mockDocuments
+      : mockDocuments.filter((doc) => doc.category === selectedCategory);
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Document Management</h1>
+          <p className="text-blue-100">
+            Manage contracts, handbooks, and HR documents
+          </p>
+        </div>
+        <div className="flex space-x-3">
+          <button
+            onClick={() => setShowUploadModal(true)}
+            className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all flex items-center space-x-2 font-medium"
+          >
+            <Upload size={20} />
+            <span>Upload Document</span>
+          </button>
+          <button className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all flex items-center space-x-2">
+            <Plus size={16} />
+            <span>Create Template</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Document Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">
+                Total Documents
+              </p>
+              <p className="text-3xl font-bold text-gray-900">
+                {mockDocuments.length}
+              </p>
+            </div>
+            <FileText className="w-8 h-8 text-blue-600" />
+          </div>
+        </div>
+
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">
+                Auto-Send Enabled
+              </p>
+              <p className="text-3xl font-bold text-gray-900">
+                {mockDocuments.filter((doc) => doc.autoSend).length}
+              </p>
+            </div>
+            <Send className="w-8 h-8 text-green-600" />
+          </div>
+        </div>
+
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Templates</p>
+              <p className="text-3xl font-bold text-gray-900">
+                {mockDocuments.filter((doc) => doc.type === "Template").length}
+              </p>
+            </div>
+            <Edit className="w-8 h-8 text-purple-600" />
+          </div>
+        </div>
+
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">
+                Legal Documents
+              </p>
+              <p className="text-3xl font-bold text-gray-900">
+                {mockDocuments.filter((doc) => doc.category === "Legal").length}
+              </p>
+            </div>
+            <AlertTriangle className="w-8 h-8 text-orange-600" />
+          </div>
+        </div>
+      </div>
+
+      {/* Category Filter */}
+      <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-gray-900">
+            Document Library
+          </h3>
+          <div className="flex space-x-2">
+            {documentCategories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+                  selectedCategory === category
+                    ? "bg-blue-100 text-blue-800"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {filteredDocuments.map((document) => (
+            <div
+              key={document.id}
+              className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex items-start space-x-3">
+                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <FileText className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-lg font-semibold text-gray-900">
+                      {document.name}
+                    </h4>
+                    <div className="flex items-center space-x-3 mb-2">
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          document.category === "Legal"
+                            ? "bg-red-100 text-red-800"
+                            : document.category === "HR"
+                              ? "bg-blue-100 text-blue-800"
+                              : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {document.category}
+                      </span>
+                      <span className="text-xs text-gray-600">
+                        {document.type}
+                      </span>
+                      {document.autoSend && (
+                        <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+                          Auto-Send
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-600 mb-2">
+                      Template: {document.template}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Last modified: {document.lastModified}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex space-x-2 mt-4">
+                <button className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm flex items-center justify-center space-x-1">
+                  <Eye size={14} />
+                  <span>View</span>
+                </button>
+                <button className="flex-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm flex items-center justify-center space-x-1">
+                  <Download size={14} />
+                  <span>Download</span>
+                </button>
+                <button className="flex-1 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm flex items-center justify-center space-x-1">
+                  <Edit size={14} />
+                  <span>Edit</span>
+                </button>
+                <button className="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm">
+                  <Trash2 size={14} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {filteredDocuments.length === 0 && (
+          <div className="text-center py-8">
+            <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <p className="text-gray-600">No documents found in this category</p>
+          </div>
+        )}
+      </div>
+
+      {/* Quick Actions */}
+      <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Quick Actions
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <button className="p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors text-left">
+            <FileText className="w-8 h-8 text-blue-600 mb-2" />
+            <h4 className="font-medium text-gray-900">Create Contract</h4>
+            <p className="text-sm text-gray-600">
+              Generate employment contract from template
+            </p>
+          </button>
+
+          <button className="p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors text-left">
+            <Send className="w-8 h-8 text-green-600 mb-2" />
+            <h4 className="font-medium text-gray-900">Send Handbook</h4>
+            <p className="text-sm text-gray-600">
+              Automatically send employee handbook
+            </p>
+          </button>
+
+          <button className="p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors text-left">
+            <Edit className="w-8 h-8 text-purple-600 mb-2" />
+            <h4 className="font-medium text-gray-900">Customize Template</h4>
+            <p className="text-sm text-gray-600">
+              Modify existing document templates
+            </p>
+          </button>
+        </div>
+      </div>
     </div>
-    <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-      <p className="text-gray-600">Document management coming soon...</p>
-    </div>
-  </div>
-);
+  );
+};
 
 const SavingsTab = () => (
   <div className="space-y-6">
