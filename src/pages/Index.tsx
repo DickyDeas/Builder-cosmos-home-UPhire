@@ -2588,6 +2588,413 @@ const JobDetailsView = ({
   );
 };
 
+// AI Recruitment Modal Component
+const AIRecruitmentModal = ({
+  isOpen,
+  onClose,
+  roleId,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  roleId: number | null;
+}) => {
+  const [isRunning, setIsRunning] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [currentStep, setCurrentStep] = useState("");
+  const [completed, setCompleted] = useState(false);
+
+  const role = mockRoles.find((r) => r.id === roleId);
+
+  const startRecruitment = async () => {
+    setIsRunning(true);
+    setProgress(0);
+    setCompleted(false);
+
+    const steps = [
+      { label: "Analyzing job requirements...", duration: 1000 },
+      { label: "Searching LinkedIn for candidates...", duration: 1500 },
+      { label: "Scanning Indeed profiles...", duration: 1200 },
+      { label: "Processing GitHub profiles...", duration: 1000 },
+      { label: "Running UPhireIQ AI matching...", duration: 2000 },
+      { label: "Generating candidate reports...", duration: 800 },
+      { label: "Finalizing recruitment pipeline...", duration: 500 },
+    ];
+
+    for (let i = 0; i < steps.length; i++) {
+      setCurrentStep(steps[i].label);
+      await new Promise((resolve) => setTimeout(resolve, steps[i].duration));
+      setProgress(((i + 1) / steps.length) * 100);
+    }
+
+    setCurrentStep("Recruitment completed!");
+    setCompleted(true);
+    setIsRunning(false);
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-gray-900">
+              UPhireIQ AI Recruitment
+            </h2>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          {role && (
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                {role.title}
+              </h3>
+              <p className="text-gray-600">
+                {role.department} • {role.location}
+              </p>
+            </div>
+          )}
+
+          {!isRunning && !completed && (
+            <div className="space-y-4">
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <div className="flex items-center space-x-3">
+                  <img
+                    src="https://cdn.builder.io/api/v1/assets/e3ae173b79f74e84b0580a7f82f9aa6c/uphire-iq-logo-no-background-a3ed8d?format=webp&width=800"
+                    alt="UPhireIQ AI"
+                    className="h-8 w-auto"
+                  />
+                  <div>
+                    <h4 className="font-semibold text-blue-900">
+                      AI-Powered Candidate Search
+                    </h4>
+                    <p className="text-blue-700 text-sm">
+                      Intelligent sourcing across multiple platforms
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="text-sm text-gray-700">
+                    LinkedIn Professional Network
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="text-sm text-gray-700">
+                    Indeed Job Portal
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="text-sm text-gray-700">
+                    GitHub Developer Profiles
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="text-sm text-gray-700">
+                    Stack Overflow Community
+                  </span>
+                </div>
+              </div>
+
+              <button
+                onClick={startRecruitment}
+                className="w-full bg-gradient-to-r from-orange-500 to-pink-500 text-white py-3 rounded-lg hover:shadow-lg transition-all font-medium flex items-center justify-center space-x-2"
+              >
+                <Play size={20} />
+                <span>Start AI Recruitment</span>
+              </button>
+            </div>
+          )}
+
+          {isRunning && (
+            <div className="space-y-4">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
+                <p className="text-gray-700 font-medium">{currentStep}</p>
+              </div>
+
+              <div className="w-full bg-gray-200 rounded-full h-3">
+                <div
+                  className="bg-gradient-to-r from-orange-500 to-pink-500 h-3 rounded-full transition-all duration-300"
+                  style={{ width: `${progress}%` }}
+                ></div>
+              </div>
+              <p className="text-center text-sm text-gray-600">
+                {Math.round(progress)}% Complete
+              </p>
+            </div>
+          )}
+
+          {completed && (
+            <div className="space-y-4 text-center">
+              <div className="bg-green-50 p-4 rounded-lg">
+                <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-2" />
+                <h3 className="text-lg font-semibold text-green-800">
+                  Recruitment Complete!
+                </h3>
+                <p className="text-green-700">Found 28 potential candidates</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="bg-blue-50 p-3 rounded">
+                  <p className="font-semibold text-blue-800">AI Matches</p>
+                  <p className="text-blue-600">8 candidates (85%+ match)</p>
+                </div>
+                <div className="bg-purple-50 p-3 rounded">
+                  <p className="font-semibold text-purple-800">
+                    Auto-Shortlisted
+                  </p>
+                  <p className="text-purple-600">5 top candidates</p>
+                </div>
+              </div>
+
+              <button
+                onClick={onClose}
+                className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-medium"
+              >
+                View Candidates
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// AI Prediction Modal Component
+const AIPredictionModal = ({
+  isOpen,
+  onClose,
+  role,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  role: Role | null;
+}) => {
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [prediction, setPrediction] = useState<PredictionData | null>(null);
+
+  const generatePrediction = async () => {
+    setIsAnalyzing(true);
+    setPrediction(null);
+
+    // Simulate AI analysis
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    const mockPrediction: PredictionData = {
+      successRate: Math.floor(Math.random() * 20) + 75, // 75-95%
+      confidence: Math.floor(Math.random() * 15) + 85, // 85-99%
+      factors: {
+        positive: [
+          "Strong market demand for this role",
+          "Competitive salary range",
+          "Attractive benefits package",
+          "Growing company reputation",
+          "Flexible working arrangements",
+        ],
+        risks: [
+          "High competition from other companies",
+          "Limited candidate pool in current market",
+          "Skill requirements may be too specific",
+        ],
+      },
+      recommendations: [
+        "Consider expanding location requirements",
+        "Highlight career growth opportunities",
+        "Emphasize company culture and values",
+        "Optimize job posting for better visibility",
+      ],
+    };
+
+    setPrediction(mockPrediction);
+    setIsAnalyzing(false);
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-gray-900">
+              UPhireIQ AI Success Prediction
+            </h2>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          {role && (
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                {role.title}
+              </h3>
+              <p className="text-gray-600">
+                {role.department} • {role.location}
+              </p>
+            </div>
+          )}
+
+          {!isAnalyzing && !prediction && (
+            <div className="space-y-4">
+              <div className="bg-purple-50 p-4 rounded-lg">
+                <div className="flex items-center space-x-3">
+                  <img
+                    src="https://cdn.builder.io/api/v1/assets/e3ae173b79f74e84b0580a7f82f9aa6c/uphire-iq-logo-no-background-a3ed8d?format=webp&width=800"
+                    alt="UPhireIQ AI"
+                    className="h-8 w-auto"
+                  />
+                  <div>
+                    <h4 className="font-semibold text-purple-900">
+                      AI Success Prediction
+                    </h4>
+                    <p className="text-purple-700 text-sm">
+                      Advanced analytics for hiring success
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="text-sm text-gray-700">
+                    Market demand analysis
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="text-sm text-gray-700">
+                    Salary competitiveness assessment
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="text-sm text-gray-700">
+                    Role attractiveness scoring
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="text-sm text-gray-700">
+                    Success probability calculation
+                  </span>
+                </div>
+              </div>
+
+              <button
+                onClick={generatePrediction}
+                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-lg hover:shadow-lg transition-all font-medium flex items-center justify-center space-x-2"
+              >
+                <Brain size={20} />
+                <span>Generate AI Prediction</span>
+              </button>
+            </div>
+          )}
+
+          {isAnalyzing && (
+            <div className="space-y-4 text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
+              <p className="text-gray-700 font-medium">
+                Analyzing role success factors...
+              </p>
+              <p className="text-sm text-gray-600">
+                Processing market data and historical performance
+              </p>
+            </div>
+          )}
+
+          {prediction && (
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-green-50 p-4 rounded-lg text-center">
+                  <p className="text-2xl font-bold text-green-600">
+                    {prediction.successRate}%
+                  </p>
+                  <p className="text-green-800 font-medium">Success Rate</p>
+                </div>
+                <div className="bg-blue-50 p-4 rounded-lg text-center">
+                  <p className="text-2xl font-bold text-blue-600">
+                    {prediction.confidence}%
+                  </p>
+                  <p className="text-blue-800 font-medium">AI Confidence</p>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <h4 className="font-semibold text-gray-800 mb-2 flex items-center space-x-2">
+                    <CheckCircle className="w-5 h-5 text-green-600" />
+                    <span>Positive Factors</span>
+                  </h4>
+                  <ul className="space-y-1">
+                    {prediction.factors.positive.map((factor, index) => (
+                      <li key={index} className="text-sm text-gray-700 pl-4">
+                        • {factor}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold text-gray-800 mb-2 flex items-center space-x-2">
+                    <AlertTriangle className="w-5 h-5 text-orange-600" />
+                    <span>Risk Factors</span>
+                  </h4>
+                  <ul className="space-y-1">
+                    {prediction.factors.risks.map((risk, index) => (
+                      <li key={index} className="text-sm text-gray-700 pl-4">
+                        • {risk}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold text-gray-800 mb-2 flex items-center space-x-2">
+                    <Lightbulb className="w-5 h-5 text-yellow-600" />
+                    <span>AI Recommendations</span>
+                  </h4>
+                  <ul className="space-y-1">
+                    {prediction.recommendations.map((rec, index) => (
+                      <li key={index} className="text-sm text-gray-700 pl-4">
+                        • {rec}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <button
+                onClick={onClose}
+                className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors font-medium"
+              >
+                Apply Recommendations
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Roles Tab Component
 const RolesTab = () => {
   const [showNewRoleModal, setShowNewRoleModal] = useState(false);
