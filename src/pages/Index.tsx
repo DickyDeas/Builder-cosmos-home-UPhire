@@ -1708,13 +1708,24 @@ const MarketIntelligence = () => {
           {/* Action Buttons */}
           <div className="flex justify-between items-center pt-4 border-t border-gray-200">
             <div className="flex space-x-2">
-              <button className="text-sm bg-gray-100 text-gray-700 px-3 py-1 rounded hover:bg-gray-200 transition-colors">
+              <button
+                onClick={() => alert("Market report exported successfully!")}
+                className="text-sm bg-gray-100 text-gray-700 px-3 py-1 rounded hover:bg-gray-200 transition-colors"
+              >
                 Export Report
               </button>
-              <button className="text-sm bg-gray-100 text-gray-700 px-3 py-1 rounded hover:bg-gray-200 transition-colors">
+              <button
+                onClick={() =>
+                  alert("Redirecting to create role with market data...")
+                }
+                className="text-sm bg-gray-100 text-gray-700 px-3 py-1 rounded hover:bg-gray-200 transition-colors"
+              >
                 Create Role
               </button>
-              <button className="text-sm bg-gray-100 text-gray-700 px-3 py-1 rounded hover:bg-gray-200 transition-colors ml-2">
+              <button
+                onClick={() => alert("Market data exported to CSV!")}
+                className="text-sm bg-gray-100 text-gray-700 px-3 py-1 rounded hover:bg-gray-200 transition-colors ml-2"
+              >
                 Export
               </button>
             </div>
