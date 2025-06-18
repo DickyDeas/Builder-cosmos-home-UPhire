@@ -1381,6 +1381,18 @@ const EmployeeDetailsModal = ({
           )}
         </div>
       </div>
+
+      {/* Employee Details Modal */}
+      {showEmployeeModal && selectedEmployee && (
+        <EmployeeDetailsModal
+          employee={selectedEmployee}
+          isOpen={showEmployeeModal}
+          onClose={() => {
+            setShowEmployeeModal(false);
+            setSelectedEmployee(null);
+          }}
+        />
+      )}
     </div>
   );
 };
