@@ -2812,39 +2812,34 @@ Company Highlights:
       return;
     }
 
-    // Create new role object
-    const newRole: Role = {
-      id: mockRoles.length + 1,
-      title: formData.title,
-      department: formData.department,
-      location: formData.location,
-      status: "Active",
-      candidates: 0,
-      shortlisted: 0,
-      interviewed: 0,
-      created: new Date().toISOString().split("T")[0],
-      salary: formData.salary,
-      priority: formData.priority,
-      deiScore: Math.floor(Math.random() * 20) + 80, // Random score 80-100
-      description: formData.description,
-      requirements: formData.requirements.filter((req) => req.trim() !== ""),
-      benefits: formData.benefits.filter((benefit) => benefit.trim() !== ""),
-      shortlistedCandidates: [],
-    };
+    setIsSubmitting(true);
 
     try {
-      // Show creating message
-      const creatingAlert = setTimeout(() => {
-        alert("Creating role and publishing to job boards...");
-      }, 100);
+      // Create new role object
+      const newRole: Role = {
+        id: mockRoles.length + 1,
+        title: formData.title,
+        department: formData.department,
+        location: formData.location,
+        status: "Active",
+        candidates: 0,
+        shortlisted: 0,
+        interviewed: 0,
+        created: new Date().toISOString().split("T")[0],
+        salary: formData.salary,
+        priority: formData.priority,
+        deiScore: Math.floor(Math.random() * 20) + 80, // Random score 80-100
+        description: formData.description,
+        requirements: formData.requirements.filter((req) => req.trim() !== ""),
+        benefits: formData.benefits.filter((benefit) => benefit.trim() !== ""),
+        shortlistedCandidates: [],
+      };
 
       // Add to local roles list
       mockRoles.push(newRole);
 
       // Publish to Broadbean (job boards + company website)
       const publishResult = await publishToBroadbean(newRole);
-
-      clearTimeout(creatingAlert);
 
       // Reset form state
       setFormData({
@@ -2861,6 +2856,7 @@ Company Highlights:
       // Reset generator state
       setShowDescriptionGenerator(false);
       setGeneratingDescription(false);
+      setIsSubmitting(false);
 
       // Close modal
       onClose();
@@ -2870,6 +2866,7 @@ Company Highlights:
 
       alert(successMessage);
     } catch (error) {
+      setIsSubmitting(false);
       alert("Error creating role. Please try again.");
       console.error("Role creation error:", error);
     }
