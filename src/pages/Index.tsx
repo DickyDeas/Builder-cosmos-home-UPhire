@@ -2893,7 +2893,17 @@ Company Highlights:
       onClose();
 
       // Show detailed success message
-      const successMessage = `✅ Role "${newRole.title}" created successfully!\n\n📢 Published to Job Boards:\n${publishResult.publishedTo.join(", ")}\n\n🌐 Company Website:\n${publishResult.companyWebsiteUrl}\n\n📊 Broadbean Job ID: ${publishResult.jobPostId}`;
+      let successMessage = `✅ Role "${newRole.title}" created successfully!\n\n📢 Published to Job Boards:\n${publishResult.publishedTo.join(", ")}\n\n🌐 Company Website:\n${publishResult.companyWebsiteUrl}\n\n📊 Broadbean Job ID: ${publishResult.jobPostId}`;
+
+      // Run AI prediction if requested
+      if (runPredictionOnCreate) {
+        // Add a small delay to show the role was created first
+        setTimeout(() => {
+          setShowPredictionModal(true);
+        }, 500);
+        successMessage +=
+          "\n\n🧠 UPhireIQ AI prediction will open automatically...";
+      }
 
       alert(successMessage);
     } catch (error) {
