@@ -2753,6 +2753,35 @@ Company Highlights:
     setGeneratingDescription(false);
   };
 
+  const runAIPrediction = () => {
+    if (!formData.title || !formData.department) {
+      alert("Please enter job title and department first to run AI prediction");
+      return;
+    }
+    setShowPredictionModal(true);
+  };
+
+  const createRoleFromForm = (): Role => {
+    return {
+      id: mockRoles.length + 1,
+      title: formData.title,
+      department: formData.department,
+      location: formData.location,
+      status: "Active",
+      candidates: 0,
+      shortlisted: 0,
+      interviewed: 0,
+      created: new Date().toISOString().split("T")[0],
+      salary: formData.salary,
+      priority: formData.priority,
+      deiScore: Math.floor(Math.random() * 20) + 80,
+      description: formData.description,
+      requirements: formData.requirements.filter((req) => req.trim() !== ""),
+      benefits: formData.benefits.filter((benefit) => benefit.trim() !== ""),
+      shortlistedCandidates: [],
+    };
+  };
+
   const publishToBroadbean = async (role: Role) => {
     // Simulate Broadbean API integration
     const broadbeanPayload = {
