@@ -2750,8 +2750,66 @@ Company Highlights:
     setGeneratingDescription(false);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const publishToBroadbean = async (role: Role) => {
+    // Simulate Broadbean API integration
+    const broadbeanPayload = {
+      apiKey: "UPHIRE_BROADBEAN_KEY_2024",
+      clientId: businessProfile.companyName.replace(/\s+/g, "_").toUpperCase(),
+      role: {
+        title: role.title,
+        description: role.description,
+        requirements: role.requirements,
+        benefits: role.benefits,
+        salary: role.salary,
+        location: role.location,
+        department: role.department,
+        companyName: businessProfile.companyName,
+        companyDescription: businessProfile.description,
+        companyWebsite: businessProfile.website,
+        industry: businessProfile.industry,
+        companySize: businessProfile.employees,
+        postToJobBoards: [
+          "Indeed",
+          "LinkedIn",
+          "Monster",
+          "Totaljobs",
+          "Reed",
+          "CV-Library",
+          "JobSite",
+          "Glassdoor",
+        ],
+        postToCompanyWebsite: true,
+        autoRepost: true,
+        targetAudience: "professional",
+      },
+    };
+
+    // Simulate API call delay
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    return {
+      success: true,
+      jobPostId: `BB_${Date.now()}`,
+      publishedTo: broadbeanPayload.role.postToJobBoards,
+      companyWebsiteUrl: `${businessProfile.website}/careers/${role.title.toLowerCase().replace(/\s+/g, "-")}`,
+    };
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate required fields
+    if (
+      !formData.title ||
+      !formData.department ||
+      !formData.location ||
+      !formData.salary
+    ) {
+      alert(
+        "Please fill in all required fields (Title, Department, Location, Salary)",
+      );
+      return;
+    }
 
     // Create new role object
     const newRole: Role = {
@@ -2773,25 +2831,47 @@ Company Highlights:
       shortlistedCandidates: [],
     };
 
-    // In a real app, this would save to backend
-    mockRoles.push(newRole);
+    try {
+      // Show creating message
+      const creatingAlert = setTimeout(() => {
+        alert("Creating role and publishing to job boards...");
+      }, 100);
 
-    // Reset form and close modal
-    setFormData({
-      title: "",
-      department: "",
-      location: "",
-      salary: "",
-      priority: "Medium",
-      description: "",
-      requirements: [""],
-      benefits: [""],
-    });
+      // Add to local roles list
+      mockRoles.push(newRole);
 
-    onClose();
+      // Publish to Broadbean (job boards + company website)
+      const publishResult = await publishToBroadbean(newRole);
 
-    // Show success message
-    alert(`Role "${newRole.title}" created successfully!`);
+      clearTimeout(creatingAlert);
+
+      // Reset form state
+      setFormData({
+        title: "",
+        department: "",
+        location: "",
+        salary: "",
+        priority: "Medium",
+        description: "",
+        requirements: [""],
+        benefits: [""],
+      });
+
+      // Reset generator state
+      setShowDescriptionGenerator(false);
+      setGeneratingDescription(false);
+
+      // Close modal
+      onClose();
+
+      // Show detailed success message
+      const successMessage = `✅ Role "${newRole.title}" created successfully!\n\n📢 Published to Job Boards:\n${publishResult.publishedTo.join(", ")}\n\n🌐 Company Website:\n${publishResult.companyWebsiteUrl}\n\n📊 Broadbean Job ID: ${publishResult.jobPostId}`;
+
+      alert(successMessage);
+    } catch (error) {
+      alert("Error creating role. Please try again.");
+      console.error("Role creation error:", error);
+    }
   };
 
   if (!isOpen) return null;
