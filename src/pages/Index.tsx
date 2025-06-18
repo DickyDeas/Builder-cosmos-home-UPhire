@@ -3467,17 +3467,327 @@ const DocumentsTab = () => {
   );
 };
 
-const SavingsTab = () => (
-  <div className="space-y-6">
-    <div>
-      <h1 className="text-3xl font-bold text-white">Cost Savings</h1>
-      <p className="text-blue-100">Track recruitment ROI and cost efficiency</p>
+const SavingsTab = () => {
+  const [selectedPeriod, setSelectedPeriod] = useState("last12months");
+
+  // Mock savings data
+  const savingsData = {
+    totalSavings: 247500,
+    avgCostPerHire: 2340,
+    previousAvgCost: 4200,
+    timeSaved: 156, // hours
+    efficiencyGain: 44, // percentage
+    automationSavings: 89000,
+    sourcingSavings: 67500,
+    processSavings: 91000,
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Cost Savings & ROI</h1>
+          <p className="text-blue-100">
+            Track recruitment cost efficiency and return on investment
+          </p>
+        </div>
+        <div className="flex space-x-3">
+          <select
+            value={selectedPeriod}
+            onChange={(e) => setSelectedPeriod(e.target.value)}
+            className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg backdrop-blur-sm border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50"
+          >
+            <option value="last3months" className="text-gray-900">
+              Last 3 Months
+            </option>
+            <option value="last6months" className="text-gray-900">
+              Last 6 Months
+            </option>
+            <option value="last12months" className="text-gray-900">
+              Last 12 Months
+            </option>
+          </select>
+          <button className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all flex items-center space-x-2">
+            <Download size={16} />
+            <span>Export Report</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Key Savings Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Total Savings</p>
+              <p className="text-3xl font-bold text-green-600">
+                £{savingsData.totalSavings.toLocaleString()}
+              </p>
+              <p className="text-sm text-green-600 flex items-center">
+                <ArrowUp className="w-4 h-4 mr-1" />
+                vs traditional methods
+              </p>
+            </div>
+            <DollarSign className="w-8 h-8 text-green-600" />
+          </div>
+        </div>
+
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Cost per Hire</p>
+              <p className="text-3xl font-bold text-blue-600">
+                £{savingsData.avgCostPerHire.toLocaleString()}
+              </p>
+              <p className="text-sm text-green-600 flex items-center">
+                <ArrowDown className="w-4 h-4 mr-1" />
+                -44% vs industry avg
+              </p>
+            </div>
+            <Target className="w-8 h-8 text-blue-600" />
+          </div>
+        </div>
+
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Time Saved</p>
+              <p className="text-3xl font-bold text-purple-600">
+                {savingsData.timeSaved}h
+              </p>
+              <p className="text-sm text-green-600 flex items-center">
+                <Clock className="w-4 h-4 mr-1" />
+                per hire
+              </p>
+            </div>
+            <Timer className="w-8 h-8 text-purple-600" />
+          </div>
+        </div>
+
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">
+                Efficiency Gain
+              </p>
+              <p className="text-3xl font-bold text-orange-600">
+                {savingsData.efficiencyGain}%
+              </p>
+              <p className="text-sm text-green-600 flex items-center">
+                <TrendingUp className="w-4 h-4 mr-1" />
+                improvement
+              </p>
+            </div>
+            <Zap className="w-8 h-8 text-orange-600" />
+          </div>
+        </div>
+      </div>
+
+      {/* Savings Breakdown */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Savings Breakdown
+          </h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                  <Zap className="w-5 h-5 text-blue-600" />
+                </div>
+                <div>
+                  <p className="font-medium text-gray-900">
+                    UPhireIQ AI Automation
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Automated screening & matching
+                  </p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-lg font-bold text-blue-600">
+                  £{savingsData.automationSavings.toLocaleString()}
+                </p>
+                <p className="text-xs text-gray-600">36% of total</p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                  <Users className="w-5 h-5 text-green-600" />
+                </div>
+                <div>
+                  <p className="font-medium text-gray-900">
+                    Sourcing Efficiency
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Multi-platform integration
+                  </p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-lg font-bold text-green-600">
+                  £{savingsData.sourcingSavings.toLocaleString()}
+                </p>
+                <p className="text-xs text-gray-600">27% of total</p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between p-4 bg-purple-50 rounded-lg">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                  <BarChart3 className="w-5 h-5 text-purple-600" />
+                </div>
+                <div>
+                  <p className="font-medium text-gray-900">
+                    Process Optimization
+                  </p>
+                  <p className="text-sm text-gray-600">Streamlined workflows</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-lg font-bold text-purple-600">
+                  £{savingsData.processSavings.toLocaleString()}
+                </p>
+                <p className="text-xs text-gray-600">37% of total</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            ROI Comparison
+          </h3>
+          <div className="space-y-6">
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm font-medium text-gray-700">
+                  Before UPhire
+                </span>
+                <span className="text-lg font-bold text-red-600">
+                  £{savingsData.previousAvgCost.toLocaleString()}
+                </span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-3">
+                <div
+                  className="bg-red-500 h-3 rounded-full"
+                  style={{ width: "100%" }}
+                ></div>
+              </div>
+              <p className="text-xs text-gray-600 mt-1">
+                Average cost per hire
+              </p>
+            </div>
+
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm font-medium text-gray-700">
+                  With UPhire
+                </span>
+                <span className="text-lg font-bold text-green-600">
+                  £{savingsData.avgCostPerHire.toLocaleString()}
+                </span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-3">
+                <div
+                  className="bg-green-500 h-3 rounded-full"
+                  style={{ width: "56%" }}
+                ></div>
+              </div>
+              <p className="text-xs text-gray-600 mt-1">
+                Current cost per hire
+              </p>
+            </div>
+
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <div className="flex items-center space-x-2 mb-2">
+                <CheckCircle className="w-5 h-5 text-green-600" />
+                <span className="font-medium text-green-900">
+                  Cost Reduction
+                </span>
+              </div>
+              <p className="text-2xl font-bold text-green-600">
+                £
+                {(
+                  savingsData.previousAvgCost - savingsData.avgCostPerHire
+                ).toLocaleString()}
+              </p>
+              <p className="text-sm text-green-700">savings per hire</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Monthly Savings Trend */}
+      <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Monthly Savings Trend
+        </h3>
+        <div className="grid grid-cols-6 gap-4">
+          {["Jan", "Feb", "Mar", "Apr", "May", "Jun"].map((month, index) => {
+            const savings = [15000, 18500, 22000, 19500, 24000, 21500];
+            const height = (savings[index] / 24000) * 100;
+            return (
+              <div key={month} className="text-center">
+                <div className="h-32 flex items-end justify-center mb-2">
+                  <div
+                    className="w-12 bg-gradient-to-t from-green-500 to-emerald-500 rounded-t flex items-end justify-center pb-2"
+                    style={{ height: `${height}%` }}
+                  >
+                    <span className="text-xs text-white font-medium">
+                      £{(savings[index] / 1000).toFixed(0)}k
+                    </span>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-600">{month}</p>
+              </div>
+            );
+          })}
+        </div>
+        <div className="mt-4 text-center">
+          <p className="text-sm text-gray-600">
+            Average monthly savings:{" "}
+            <span className="font-bold text-green-600">
+              £
+              {(
+                (15000 + 18500 + 22000 + 19500 + 24000 + 21500) /
+                6
+              ).toLocaleString()}
+            </span>
+          </p>
+        </div>
+      </div>
+
+      {/* ROI Calculator */}
+      <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Return on Investment
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="text-center p-6 bg-blue-50 rounded-lg">
+            <DollarSign className="w-12 h-12 text-blue-600 mx-auto mb-3" />
+            <p className="text-2xl font-bold text-blue-600">347%</p>
+            <p className="text-sm text-gray-600">ROI in Year 1</p>
+          </div>
+
+          <div className="text-center p-6 bg-green-50 rounded-lg">
+            <TrendingUp className="w-12 h-12 text-green-600 mx-auto mb-3" />
+            <p className="text-2xl font-bold text-green-600">8.2 months</p>
+            <p className="text-sm text-gray-600">Payback Period</p>
+          </div>
+
+          <div className="text-center p-6 bg-purple-50 rounded-lg">
+            <Target className="w-12 h-12 text-purple-600 mx-auto mb-3" />
+            <p className="text-2xl font-bold text-purple-600">£428k</p>
+            <p className="text-sm text-gray-600">Projected Annual Savings</p>
+          </div>
+        </div>
+      </div>
     </div>
-    <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-      <p className="text-gray-600">Cost savings analytics coming soon...</p>
-    </div>
-  </div>
-);
+  );
+};
 
 const MyBusinessTab = () => (
   <div className="space-y-6">
