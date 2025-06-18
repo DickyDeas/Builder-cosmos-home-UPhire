@@ -3151,8 +3151,57 @@ Company Highlights:
               </div>
             </div>
 
+            {/* AI Prediction Panel */}
+            <div className="mt-6 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <img
+                    src="https://cdn.builder.io/api/v1/assets/e3ae173b79f74e84b0580a7f82f9aa6c/uphire-iq-logo-no-background-a3ed8d?format=webp&width=800"
+                    alt="UPhireIQ AI"
+                    className="h-6 w-auto flex-shrink-0"
+                  />
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-purple-900 text-sm">
+                      UPhireIQ AI Success Prediction
+                    </h4>
+                    <p className="text-purple-700 text-xs mt-1">
+                      Get AI-powered insights on hiring success probability,
+                      market competitiveness, and optimization recommendations
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <button
+                    type="button"
+                    onClick={runAIPrediction}
+                    disabled={!formData.title || !formData.department}
+                    className="px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-1"
+                  >
+                    <Brain size={12} />
+                    <span>Preview</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="mt-3 flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="runPrediction"
+                  checked={runPredictionOnCreate}
+                  onChange={(e) => setRunPredictionOnCreate(e.target.checked)}
+                  className="rounded border-purple-300 text-purple-600 focus:ring-purple-500"
+                />
+                <label
+                  htmlFor="runPrediction"
+                  className="text-xs text-purple-700"
+                >
+                  Run AI prediction automatically after creating role
+                </label>
+              </div>
+            </div>
+
             {/* Broadbean Integration Info */}
-            <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
               <div className="flex items-center space-x-3">
                 <Globe className="w-6 h-6 text-blue-600 flex-shrink-0" />
                 <div className="flex-1">
