@@ -2648,6 +2648,7 @@ const CreateNewRoleModal = ({
   const [showDescriptionGenerator, setShowDescriptionGenerator] =
     useState(false);
   const [generatingDescription, setGeneratingDescription] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
