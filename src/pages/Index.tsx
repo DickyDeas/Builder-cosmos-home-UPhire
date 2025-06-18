@@ -2678,6 +2678,78 @@ const CreateNewRoleModal = ({
     }));
   };
 
+  const generateJobDescription = async () => {
+    if (!formData.title || !formData.department) {
+      alert("Please enter job title and department first");
+      return;
+    }
+
+    setGeneratingDescription(true);
+    setShowDescriptionGenerator(true);
+
+    // Simulate AI generation with realistic delay
+    await new Promise((resolve) => setTimeout(resolve, 2500));
+
+    // Generate job description using company profile data
+    const generatedDescription = `Join ${businessProfile.companyName}, a leading ${businessProfile.industry.toLowerCase()} company founded in ${businessProfile.founded}, as a ${formData.title}.
+
+About Us:
+${businessProfile.description}
+
+Our Mission: ${businessProfile.mission}
+
+Role Overview:
+We are seeking a talented ${formData.title} to join our ${formData.department} team. In this role, you will contribute to our continued growth and innovation while working with cutting-edge technologies including ${businessProfile.technologies.slice(0, 5).join(", ")}, and more.
+
+What You'll Do:
+• Drive impactful projects for our diverse client base including ${businessProfile.clients.slice(0, 3).join(", ")}
+• Collaborate with our team of ${businessProfile.employees} professionals
+• Work on ${businessProfile.services.slice(0, 3).join(", ")}
+• Contribute to our award-winning culture (${businessProfile.awards.slice(0, 2).join(", ")})
+
+Why Join Us:
+At ${businessProfile.companyName}, we foster a culture built on our core values: ${businessProfile.values.join(", ")}. We're committed to providing an inclusive environment where innovation thrives and every team member can grow their career.
+
+Company Highlights:
+• Industry certifications: ${businessProfile.certifications.join(", ")}
+• Recognized as ${businessProfile.awards[0]}
+• Headquarters in ${businessProfile.headquarters}
+• Serving clients across multiple industries including healthcare, finance, and government sectors`;
+
+    const suggestedRequirements = [
+      `Bachelor's degree in ${formData.department === "Engineering" ? "Computer Science, Engineering, or related field" : formData.department === "Design" ? "Design, HCI, or related field" : formData.department === "Product" ? "Business, Product Management, or related field" : "relevant field"}`,
+      formData.department === "Engineering"
+        ? "Experience with modern development frameworks and cloud technologies"
+        : formData.department === "Design"
+          ? "Proficiency in design tools and user research methodologies"
+          : "Strong analytical and problem-solving skills",
+      "Excellent communication and collaboration abilities",
+      "Passion for innovation and continuous learning",
+      `Experience working in ${businessProfile.industry.toLowerCase()} or similar industries preferred`,
+    ];
+
+    const suggestedBenefits = [
+      "Competitive salary with performance-based bonuses",
+      "Comprehensive health and dental coverage",
+      "Flexible working arrangements and remote options",
+      "Professional development budget and conference attendance",
+      "Stock options and equity participation",
+      "25 days annual leave plus bank holidays",
+      "State-of-the-art office facilities in London",
+      "Team building activities and company events",
+      "Mentorship programs and career advancement opportunities",
+    ];
+
+    setFormData((prev) => ({
+      ...prev,
+      description: generatedDescription,
+      requirements: suggestedRequirements,
+      benefits: suggestedBenefits,
+    }));
+
+    setGeneratingDescription(false);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
