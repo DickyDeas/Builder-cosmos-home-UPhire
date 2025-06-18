@@ -2908,17 +2908,62 @@ Company Highlights:
 
               {/* Description */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Job Description
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Job Description
+                  </label>
+                  <button
+                    type="button"
+                    onClick={generateJobDescription}
+                    disabled={
+                      !formData.title ||
+                      !formData.department ||
+                      generatingDescription
+                    }
+                    className="px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-1"
+                  >
+                    {generatingDescription ? (
+                      <>
+                        <div className="animate-spin rounded-full h-3 w-3 border-b border-white"></div>
+                        <span>Generating...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Brain size={12} />
+                        <span>AI Generate</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {showDescriptionGenerator && (
+                  <div className="mb-3 p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <img
+                        src="https://cdn.builder.io/api/v1/assets/e3ae173b79f74e84b0580a7f82f9aa6c/uphire-iq-logo-no-background-a3ed8d?format=webp&width=800"
+                        alt="UPhireIQ AI"
+                        className="h-4 w-auto"
+                      />
+                      <span className="text-xs font-medium text-purple-800">
+                        UPhireIQ AI Job Description Generator
+                      </span>
+                    </div>
+                    <p className="text-xs text-purple-700">
+                      Using company profile from {businessProfile.companyName} •{" "}
+                      {businessProfile.industry} • Founded{" "}
+                      {businessProfile.founded}
+                    </p>
+                  </div>
+                )}
+
                 <textarea
                   value={formData.description}
                   onChange={(e) =>
                     handleInputChange("description", e.target.value)
                   }
-                  rows={4}
+                  rows={8}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Describe the role, responsibilities, and what you're looking for..."
+                  placeholder="Describe the role, responsibilities, and what you're looking for... or click 'AI Generate' to create from company profile"
                 />
               </div>
 
