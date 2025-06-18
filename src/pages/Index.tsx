@@ -4661,10 +4661,20 @@ const EmployeesTab = () => {
                 >
                   View Profile
                 </button>
-                <button className="flex-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm">
+                <button
+                  onClick={() =>
+                    alert(`Opening documents for ${employee.name}...`)
+                  }
+                  className="flex-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
+                >
                   Documents
                 </button>
-                <button className="flex-1 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm">
+                <button
+                  onClick={() =>
+                    alert(`Opening performance review for ${employee.name}...`)
+                  }
+                  className="flex-1 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
+                >
                   Performance
                 </button>
               </div>
