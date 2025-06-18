@@ -3197,6 +3197,72 @@ const RolesTab = () => {
           </div>
         ))}
       </div>
+
+      {/* Modals */}
+      <AIRecruitmentModal
+        isOpen={showRecruitModal}
+        onClose={() => setShowRecruitModal(false)}
+        roleId={recruitingRoleId}
+      />
+
+      <AIPredictionModal
+        isOpen={showPredictionModal}
+        onClose={() => setShowPredictionModal(false)}
+        role={selectedRole}
+      />
+
+      {showCalendlyModal && schedulingCandidate && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-bold text-gray-900">
+                  Schedule Interview
+                </h2>
+                <button
+                  onClick={() => setShowCalendlyModal(false)}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+              <div className="space-y-4">
+                <p className="text-gray-700">
+                  Schedule an interview with{" "}
+                  <strong>{schedulingCandidate.name}</strong>
+                </p>
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <p className="text-sm text-blue-800">
+                    🎯 UPhireIQ AI Match:{" "}
+                    <strong>{schedulingCandidate.aiMatch}%</strong>
+                  </p>
+                  <p className="text-sm text-blue-700 mt-1">
+                    Skills: {schedulingCandidate.skills.join(", ")}
+                  </p>
+                </div>
+                <div className="flex space-x-3">
+                  <button
+                    onClick={() => {
+                      setShowCalendlyModal(false);
+                      // In a real app, this would open Calendly or similar
+                      alert("Interview scheduled successfully!");
+                    }}
+                    className="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors"
+                  >
+                    Confirm Schedule
+                  </button>
+                  <button
+                    onClick={() => setShowCalendlyModal(false)}
+                    className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
