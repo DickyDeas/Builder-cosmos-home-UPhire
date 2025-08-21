@@ -5884,7 +5884,7 @@ const UPhirePlatform = () => {
           <div className="text-center space-y-8">
             <div className="space-y-4">
               <h2 className="text-4xl font-bold text-white">
-                Welcome to UPhire
+                <p>Welcome to UPhire - MVP</p>
               </h2>
               <p className="text-xl text-blue-100 max-w-2xl mx-auto">
                 The UPhireIQ AI-powered recruitment platform that revolutionizes
