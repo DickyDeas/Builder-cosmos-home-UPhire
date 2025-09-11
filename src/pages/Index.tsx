@@ -804,6 +804,140 @@ const mockDocuments: Document[] = [
   },
 ];
 
+// VR Scenarios Data
+const vrScenarios: VRScenario[] = [
+  {
+    id: "customer-service-01",
+    name: "Customer Support Centre",
+    department: "Customer Service",
+    description: "Handle multiple customer inquiries in a virtual call centre environment with simulated clients expressing various concerns and emotions.",
+    duration: 15,
+    environment: "Call Centre Desk",
+    skills: ["Communication", "Empathy", "Problem Solving", "Multi-tasking"],
+    metrics: ["Response Time", "Customer Satisfaction", "Issue Resolution", "Emotional Intelligence"]
+  },
+  {
+    id: "logistics-warehouse-01",
+    name: "Warehouse Operations",
+    department: "Logistics",
+    description: "Navigate a 3D warehouse environment, optimize routing, manage inventory, and coordinate with team members under time pressure.",
+    duration: 20,
+    environment: "Virtual Warehouse",
+    skills: ["Spatial Awareness", "Time Management", "Decision Making", "Process Optimization"],
+    metrics: ["Efficiency Score", "Safety Compliance", "Team Coordination", "Problem Resolution"]
+  },
+  {
+    id: "tech-debugging-01",
+    name: "Code Debugging Challenge",
+    department: "Engineering",
+    description: "Debug complex code issues in a virtual development environment with multiple systems and realistic production scenarios.",
+    duration: 25,
+    environment: "Virtual Terminal",
+    skills: ["Technical Problem Solving", "Analytical Thinking", "Code Quality", "System Understanding"],
+    metrics: ["Bug Detection Rate", "Solution Quality", "Code Efficiency", "Documentation Skills"]
+  },
+  {
+    id: "leadership-boardroom-01",
+    name: "Executive Decision Making",
+    department: "Management",
+    description: "Lead a virtual boardroom meeting, manage conflicting stakeholders, and make strategic decisions under pressure.",
+    duration: 30,
+    environment: "Executive Boardroom",
+    skills: ["Leadership", "Negotiation", "Strategic Thinking", "Conflict Resolution"],
+    metrics: ["Team Engagement", "Decision Quality", "Stakeholder Management", "Crisis Handling"]
+  },
+  {
+    id: "sales-presentation-01",
+    name: "Client Pitch Simulation",
+    department: "Sales",
+    description: "Present to virtual clients in various scenarios, handle objections, and close deals in realistic business environments.",
+    duration: 18,
+    environment: "Corporate Meeting Room",
+    skills: ["Presentation", "Persuasion", "Relationship Building", "Adaptability"],
+    metrics: ["Presentation Quality", "Objection Handling", "Client Engagement", "Closing Rate"]
+  },
+  {
+    id: "healthcare-emergency-01",
+    name: "Medical Emergency Response",
+    department: "Healthcare",
+    description: "Respond to medical emergencies in a virtual hospital environment, coordinate with medical team, and make critical decisions.",
+    duration: 22,
+    environment: "Virtual Hospital",
+    skills: ["Medical Knowledge", "Quick Decision Making", "Team Coordination", "Stress Management"],
+    metrics: ["Response Time", "Medical Accuracy", "Team Communication", "Patient Care Quality"]
+  }
+];
+
+// Mock VR Performance Data
+const mockVRPerformances: VRPerformance[] = [
+  {
+    candidateId: 1, // Alice Johnson
+    scenarioId: "tech-debugging-01",
+    completedAt: "2024-01-22",
+    duration: 22,
+    overallScore: 87,
+    competencyScores: {
+      problemSolving: 92,
+      communication: 78,
+      leadership: 65,
+      decisionMaking: 88,
+      emotionalIntelligence: 75,
+      technicalSkills: 95
+    },
+    behavioralMetrics: {
+      stressLevel: 25, // Lower is better
+      confidenceLevel: 88,
+      adaptability: 82,
+      teamwork: 70
+    },
+    keyMoments: [
+      { timestamp: 5, event: "Identified critical bug", score: 95, note: "Excellent pattern recognition" },
+      { timestamp: 12, event: "Implemented solution", score: 90, note: "Clean, efficient code" },
+      { timestamp: 18, event: "Documented findings", score: 85, note: "Thorough documentation" }
+    ],
+    npcsInteracted: 3,
+    errorsCommitted: 2,
+    decisionsCount: 8,
+    replay: {
+      available: true,
+      highlights: ["Bug identification at 5:23", "Solution implementation at 12:45", "Code review at 18:30"]
+    }
+  },
+  {
+    candidateId: 6, // Michael Chen
+    scenarioId: "leadership-boardroom-01",
+    completedAt: "2024-01-15",
+    duration: 28,
+    overallScore: 91,
+    competencyScores: {
+      problemSolving: 85,
+      communication: 94,
+      leadership: 96,
+      decisionMaking: 89,
+      emotionalIntelligence: 93,
+      technicalSkills: 72
+    },
+    behavioralMetrics: {
+      stressLevel: 18,
+      confidenceLevel: 95,
+      adaptability: 90,
+      teamwork: 97
+    },
+    keyMoments: [
+      { timestamp: 8, event: "Managed stakeholder conflict", score: 96, note: "Excellent mediation skills" },
+      { timestamp: 15, event: "Strategic decision made", score: 92, note: "Data-driven approach" },
+      { timestamp: 25, event: "Team consensus achieved", score: 94, note: "Strong leadership presence" }
+    ],
+    npcsInteracted: 7,
+    errorsCommitted: 1,
+    decisionsCount: 12,
+    replay: {
+      available: true,
+      highlights: ["Conflict resolution at 8:15", "Strategic decision at 15:20", "Team alignment at 25:10"]
+    }
+  }
+];
+
 // Business Profile Data
 const businessProfile = {
   companyName: "TechVision Solutions",
