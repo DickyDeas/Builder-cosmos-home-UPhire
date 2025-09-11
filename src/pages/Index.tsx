@@ -3183,6 +3183,7 @@ const CreateNewRoleModal = ({
     description: "",
     requirements: [""],
     benefits: [""],
+    vrScenario: ""
   });
 
   const [showDescriptionGenerator, setShowDescriptionGenerator] =
