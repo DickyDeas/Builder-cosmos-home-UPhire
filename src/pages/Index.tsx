@@ -2437,7 +2437,7 @@ const RoleShortlistView = ({
                                   <span className="capitalize">
                                     {interview.type}
                                   </span>
-                                  <span className="text-gray-500">•</span>
+                                  <span className="text-gray-500">��</span>
                                   <span className="text-gray-600">
                                     {interview.date}
                                   </span>
@@ -3744,6 +3744,293 @@ Company Highlights:
           formData.title && formData.department ? createRoleFromForm() : null
         }
       />
+    </div>
+  );
+};
+
+// VR Performance Dashboard Component
+const VRPerformanceDashboard = ({
+  isOpen,
+  onClose,
+  candidate,
+  performance
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  candidate: ShortlistedCandidate;
+  performance: VRPerformance | null;
+}) => {
+  const [activeTab, setActiveTab] = useState<'overview' | 'competencies' | 'behavioral' | 'timeline' | 'replay'>('overview');
+
+  const scenario = vrScenarios.find(s => s.id === performance?.scenarioId);
+
+  if (!isOpen || !performance || !scenario) return null;
+
+  const getScoreColor = (score: number) => {
+    if (score >= 85) return "text-green-600";
+    if (score >= 70) return "text-yellow-600";
+    return "text-red-600";
+  };
+
+  const getScoreBg = (score: number) => {
+    if (score >= 85) return "bg-green-100";
+    if (score >= 70) return "bg-yellow-100";
+    return "bg-red-100";
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                <span className="text-lg font-bold text-blue-600">{candidate.avatar}</span>
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">{candidate.name} - VR Performance</h2>
+                <p className="text-gray-600">{scenario.name} • Completed {performance.completedAt}</p>
+              </div>
+              <div className={`px-4 py-2 rounded-lg ${getScoreBg(performance.overallScore)}`}>
+                <div className="text-center">
+                  <div className={`text-2xl font-bold ${getScoreColor(performance.overallScore)}`}>
+                    {performance.overallScore}
+                  </div>
+                  <div className="text-xs text-gray-600">Overall Score</div>
+                </div>
+              </div>
+            </div>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          {/* Tabs */}
+          <div className="border-b border-gray-200 mb-6">
+            <nav className="flex space-x-8">
+              {[
+                { id: 'overview', label: 'Overview', icon: BarChart3 },
+                { id: 'competencies', label: 'Competencies', icon: Target },
+                { id: 'behavioral', label: 'Behavioral', icon: Users },
+                { id: 'timeline', label: 'Timeline', icon: Clock },
+                { id: 'replay', label: 'Replay', icon: Play }
+              ].map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id as any)}
+                    className={`flex items-center space-x-2 py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
+                      activeTab === tab.id
+                        ? 'border-purple-500 text-purple-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    <Icon size={16} />
+                    <span>{tab.label}</span>
+                  </button>
+                );
+              })}
+            </nav>
+          </div>
+
+          {/* Tab Content */}
+          {activeTab === 'overview' && (
+            <div className="space-y-6">
+              {/* Quick Stats */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="bg-blue-50 p-4 rounded-lg text-center">
+                  <Clock className="w-6 h-6 text-blue-600 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-blue-600">{performance.duration}m</div>
+                  <div className="text-sm text-blue-700">Duration</div>
+                </div>
+                <div className="bg-green-50 p-4 rounded-lg text-center">
+                  <Users className="w-6 h-6 text-green-600 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-green-600">{performance.npcsInteracted}</div>
+                  <div className="text-sm text-green-700">NPCs Interacted</div>
+                </div>
+                <div className="bg-purple-50 p-4 rounded-lg text-center">
+                  <Target className="w-6 h-6 text-purple-600 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-purple-600">{performance.decisionsCount}</div>
+                  <div className="text-sm text-purple-700">Decisions Made</div>
+                </div>
+                <div className="bg-orange-50 p-4 rounded-lg text-center">
+                  <AlertTriangle className="w-6 h-6 text-orange-600 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-orange-600">{performance.errorsCommitted}</div>
+                  <div className="text-sm text-orange-700">Errors</div>
+                </div>
+              </div>
+
+              {/* Performance Heatmap */}
+              <div className="bg-gray-50 p-6 rounded-lg">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Competency Heatmap</h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {Object.entries(performance.competencyScores).map(([key, score]) => (
+                    <div key={key} className="bg-white p-3 rounded border">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium text-gray-700 capitalize">
+                          {key.replace(/([A-Z])/g, ' $1').trim()}
+                        </span>
+                        <span className={`text-sm font-bold ${getScoreColor(score)}`}>{score}</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div
+                          className={`h-2 rounded-full ${score >= 85 ? 'bg-green-500' : score >= 70 ? 'bg-yellow-500' : 'bg-red-500'}`}
+                          style={{ width: `${score}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'competencies' && (
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {Object.entries(performance.competencyScores).map(([key, score]) => (
+                  <div key={key} className="bg-white border rounded-lg p-4">
+                    <div className="flex justify-between items-center mb-3">
+                      <h4 className="font-semibold text-gray-900 capitalize">
+                        {key.replace(/([A-Z])/g, ' $1').trim()}
+                      </h4>
+                      <span className={`text-xl font-bold ${getScoreColor(score)}`}>{score}/100</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3 mb-3">
+                      <div
+                        className={`h-3 rounded-full ${score >= 85 ? 'bg-green-500' : score >= 70 ? 'bg-yellow-500' : 'bg-red-500'}`}
+                        style={{ width: `${score}%` }}
+                      ></div>
+                    </div>
+                    <p className="text-sm text-gray-600">
+                      {score >= 85 ? 'Excellent performance with strong capabilities demonstrated' :
+                       score >= 70 ? 'Good performance with room for development' :
+                       'Needs improvement with additional training recommended'}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'behavioral' && (
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {Object.entries(performance.behavioralMetrics).map(([key, value]) => (
+                  <div key={key} className="bg-white border rounded-lg p-4">
+                    <div className="flex justify-between items-center mb-3">
+                      <h4 className="font-semibold text-gray-900 capitalize">
+                        {key.replace(/([A-Z])/g, ' $1').trim()}
+                      </h4>
+                      <span className={`text-xl font-bold ${
+                        key === 'stressLevel'
+                          ? value <= 30 ? 'text-green-600' : value <= 50 ? 'text-yellow-600' : 'text-red-600'
+                          : value >= 80 ? 'text-green-600' : value >= 60 ? 'text-yellow-600' : 'text-red-600'
+                      }`}>
+                        {value}{key === 'stressLevel' ? '' : '/100'}
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3 mb-3">
+                      <div
+                        className={`h-3 rounded-full ${
+                          key === 'stressLevel'
+                            ? value <= 30 ? 'bg-green-500' : value <= 50 ? 'bg-yellow-500' : 'bg-red-500'
+                            : value >= 80 ? 'bg-green-500' : value >= 60 ? 'bg-yellow-500' : 'bg-red-500'
+                        }`}
+                        style={{ width: `${key === 'stressLevel' ? 100 - value : value}%` }}
+                      ></div>
+                    </div>
+                    <p className="text-sm text-gray-600">
+                      {key === 'stressLevel'
+                        ? value <= 30 ? 'Low stress levels - excellent composure' :
+                          value <= 50 ? 'Moderate stress - manageable under pressure' :
+                          'High stress levels - may need stress management training'
+                        : value >= 80 ? 'Strong demonstration of this behavioral trait' :
+                          value >= 60 ? 'Adequate demonstration with room for growth' :
+                          'Needs development in this behavioral area'
+                      }
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'timeline' && (
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-gray-900">Key Performance Moments</h3>
+              <div className="space-y-4">
+                {performance.keyMoments.map((moment, index) => (
+                  <div key={index} className="flex items-start space-x-4 bg-gray-50 p-4 rounded-lg">
+                    <div className="flex-shrink-0 w-16 text-center">
+                      <div className="text-sm font-medium text-gray-600">{moment.timestamp}min</div>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex justify-between items-start mb-1">
+                        <h4 className="font-medium text-gray-900">{moment.event}</h4>
+                        <span className={`text-sm font-bold ${getScoreColor(moment.score)}`}>
+                          {moment.score}/100
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-600">{moment.note}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'replay' && (
+            <div className="space-y-6">
+              <div className="bg-blue-50 p-6 rounded-lg text-center">
+                <VideoIcon className="w-12 h-12 text-blue-600 mx-auto mb-3" />
+                <h3 className="text-lg font-semibold text-blue-900 mb-2">VR Session Replay</h3>
+                <p className="text-blue-700 mb-4">Review key moments from the candidate's VR simulation</p>
+                <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                  Launch VR Replay Viewer
+                </button>
+              </div>
+
+              <div>
+                <h4 className="font-semibold text-gray-900 mb-3">Highlight Moments</h4>
+                <div className="space-y-3">
+                  {performance.replay.highlights.map((highlight, index) => (
+                    <div key={index} className="flex items-center justify-between bg-white border rounded-lg p-3">
+                      <span className="text-gray-700">{highlight}</span>
+                      <button className="text-purple-600 hover:text-purple-800 text-sm font-medium">
+                        View Clip
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Footer Actions */}
+          <div className="mt-8 pt-6 border-t flex justify-between">
+            <button
+              onClick={onClose}
+              className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              Close
+            </button>
+            <div className="flex space-x-3">
+              <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                Export Report
+              </button>
+              <button className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                Schedule Follow-up
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -5193,7 +5480,7 @@ const AnalyticsTab = () => (
             </div>
             <div className="text-right">
               <p className="text-sm font-bold text-gray-900">89 hires</p>
-              <p className="text-xs text-gray-600">��2,800 avg cost</p>
+              <p className="text-xs text-gray-600">£2,800 avg cost</p>
             </div>
           </div>
 
