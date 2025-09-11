@@ -6804,6 +6804,18 @@ const UPhirePlatform = () => {
                   document management, and Calendly interview scheduling.
                 </p>
               </div>
+
+              <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6 text-center">
+                <VideoIcon className="w-12 h-12 text-pink-600 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  VR Simulation Interviews
+                </h3>
+                <p className="text-gray-600">
+                  Immersive VR interview scenarios to evaluate real-world skills —
+                  invite candidates to simulations and view detailed VR performance
+                  analytics directly within UPhireIQ.
+                </p>
+              </div>
             </div>
 
             <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-8 max-w-4xl mx-auto">
