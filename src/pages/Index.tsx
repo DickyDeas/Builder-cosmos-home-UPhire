@@ -6844,6 +6844,13 @@ const UPhirePlatform = () => {
                   </p>
                 </div>
                 <div className="text-center">
+                  <Users className="w-8 h-8 text-purple-600 mx-auto mb-2" />
+                  <p className="font-medium text-gray-900">Complete HR Suite</p>
+                  <p className="text-sm text-gray-600">
+                    Comprehensive employee management, probation tracking, document management, and Calendly interview scheduling.
+                  </p>
+                </div>
+                <div className="text-center">
                   <DollarSign className="w-8 h-8 text-green-600 mx-auto mb-2" />
                   <p className="font-medium text-gray-900">Cost Savings</p>
                   <p className="text-sm text-gray-600">
