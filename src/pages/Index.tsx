@@ -2806,6 +2806,301 @@ const JobDetailsView = ({
   );
 };
 
+// VR Simulation Portal Component
+const VRSimulationPortal = ({
+  isOpen,
+  onClose,
+  candidate,
+  scenario
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  candidate: ShortlistedCandidate;
+  scenario: VRScenario;
+}) => {
+  const [simulationStage, setSimulationStage] = useState<'invite' | 'preparation' | 'running' | 'completed'>('invite');
+  const [progress, setProgress] = useState(0);
+  const [currentTask, setCurrentTask] = useState("");
+  const [isVRSupported, setIsVRSupported] = useState(false);
+  const [useVRHeadset, setUseVRHeadset] = useState(false);
+
+  useEffect(() => {
+    // Check for WebXR VR support
+    if (navigator.xr) {
+      navigator.xr.isSessionSupported('immersive-vr').then(setIsVRSupported);
+    }
+  }, []);
+
+  const startSimulation = async () => {
+    setSimulationStage('preparation');
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    setSimulationStage('running');
+
+    // Simulate VR scenario progression
+    const tasks = [
+      "Initializing virtual environment...",
+      "Loading scenario assets...",
+      "Calibrating user interactions...",
+      "Starting NPC interactions...",
+      "Recording performance metrics...",
+      "Processing behavioral analysis..."
+    ];
+
+    for (let i = 0; i < tasks.length; i++) {
+      setCurrentTask(tasks[i]);
+      setProgress((i / tasks.length) * 100);
+      await new Promise(resolve => setTimeout(resolve, 3000));
+    }
+
+    setProgress(100);
+    setCurrentTask("Simulation completed!");
+
+    // Save performance data (in real app, this would be actual VR data)
+    const newPerformance: VRPerformance = {
+      candidateId: candidate.id,
+      scenarioId: scenario.id,
+      completedAt: new Date().toISOString().split('T')[0],
+      duration: scenario.duration - Math.floor(Math.random() * 5),
+      overallScore: Math.floor(Math.random() * 20) + 75,
+      competencyScores: {
+        problemSolving: Math.floor(Math.random() * 25) + 75,
+        communication: Math.floor(Math.random() * 25) + 70,
+        leadership: Math.floor(Math.random() * 30) + 65,
+        decisionMaking: Math.floor(Math.random() * 25) + 75,
+        emotionalIntelligence: Math.floor(Math.random() * 25) + 70,
+        technicalSkills: Math.floor(Math.random() * 25) + 75
+      },
+      behavioralMetrics: {
+        stressLevel: Math.floor(Math.random() * 30) + 15,
+        confidenceLevel: Math.floor(Math.random() * 25) + 70,
+        adaptability: Math.floor(Math.random() * 25) + 70,
+        teamwork: Math.floor(Math.random() * 25) + 75
+      },
+      keyMoments: [
+        { timestamp: 5, event: "Initial task engagement", score: Math.floor(Math.random() * 20) + 80, note: "Strong initial approach" },
+        { timestamp: 12, event: "Problem solving phase", score: Math.floor(Math.random() * 20) + 75, note: "Effective methodology" },
+        { timestamp: 18, event: "Final completion", score: Math.floor(Math.random() * 20) + 85, note: "Successful task completion" }
+      ],
+      npcsInteracted: Math.floor(Math.random() * 5) + 2,
+      errorsCommitted: Math.floor(Math.random() * 3),
+      decisionsCount: Math.floor(Math.random() * 10) + 5,
+      replay: {
+        available: true,
+        highlights: ["Key decision point", "Problem resolution", "Final outcome"]
+      }
+    };
+
+    mockVRPerformances.push(newPerformance);
+
+    setTimeout(() => {
+      setSimulationStage('completed');
+    }, 1000);
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-3">
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                <VideoIcon className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">VR Interview Simulation</h2>
+                <p className="text-gray-600">{scenario.name} • {scenario.duration} minutes</p>
+              </div>
+            </div>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          {simulationStage === 'invite' && (
+            <div className="space-y-6">
+              {/* Candidate Info */}
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h3 className="font-semibold text-blue-900 mb-2">Welcome, {candidate.name}!</h3>
+                <p className="text-blue-700 text-sm">
+                  You've been invited to participate in a VR simulation to demonstrate your skills in a realistic work environment.
+                </p>
+              </div>
+
+              {/* Scenario Details */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-900">Simulation Overview</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">Environment</p>
+                      <p className="text-gray-900">{scenario.environment}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">Duration</p>
+                      <p className="text-gray-900">{scenario.duration} minutes</p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">Department</p>
+                      <p className="text-gray-900">{scenario.department}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 mb-2">Skills Assessed</p>
+                    <div className="flex flex-wrap gap-2">
+                      {scenario.skills.map((skill, index) => (
+                        <span key={index} className="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded">
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-600 mb-2">Description</p>
+                  <p className="text-gray-700">{scenario.description}</p>
+                </div>
+              </div>
+
+              {/* VR Setup Options */}
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <h4 className="font-semibold text-gray-900 mb-3">VR Setup Options</h4>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3">
+                    <input
+                      type="radio"
+                      id="browser"
+                      name="vrMode"
+                      checked={!useVRHeadset}
+                      onChange={() => setUseVRHeadset(false)}
+                      className="text-purple-600 focus:ring-purple-500"
+                    />
+                    <label htmlFor="browser" className="flex-1">
+                      <div className="font-medium text-gray-900">Browser Mode (Recommended)</div>
+                      <div className="text-sm text-gray-600">Use your mouse and keyboard for navigation</div>
+                    </label>
+                  </div>
+
+                  {isVRSupported && (
+                    <div className="flex items-center space-x-3">
+                      <input
+                        type="radio"
+                        id="vr"
+                        name="vrMode"
+                        checked={useVRHeadset}
+                        onChange={() => setUseVRHeadset(true)}
+                        className="text-purple-600 focus:ring-purple-500"
+                      />
+                      <label htmlFor="vr" className="flex-1">
+                        <div className="font-medium text-gray-900">VR Headset Mode</div>
+                        <div className="text-sm text-gray-600">Immersive experience with VR headset</div>
+                      </label>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Start Button */}
+              <div className="flex space-x-3">
+                <button
+                  onClick={onClose}
+                  className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={startSimulation}
+                  className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-3 rounded-lg hover:shadow-lg transition-all font-medium flex items-center justify-center space-x-2"
+                >
+                  <Play size={20} />
+                  <span>Start VR Simulation</span>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {simulationStage === 'preparation' && (
+            <div className="text-center space-y-6">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto">
+                <VideoIcon className="w-8 h-8 text-white" />
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Preparing Your VR Environment</h3>
+                <p className="text-gray-600">Setting up the simulation workspace...</p>
+              </div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500 mx-auto"></div>
+            </div>
+          )}
+
+          {simulationStage === 'running' && (
+            <div className="space-y-6">
+              <div className="text-center">
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Simulation in Progress</h3>
+                <p className="text-gray-600">{currentTask}</p>
+              </div>
+
+              <div className="w-full bg-gray-200 rounded-full h-3">
+                <div
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full transition-all duration-500"
+                  style={{ width: `${progress}%` }}
+                ></div>
+              </div>
+
+              <div className="bg-black rounded-lg p-6 text-green-400 font-mono text-sm">
+                <div className="flex items-center space-x-2 mb-2">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                  <span>VR SIMULATION ACTIVE</span>
+                </div>
+                <div className="space-y-1">
+                  <p>→ Environment: {scenario.environment}</p>
+                  <p>→ Tracking: Behavioral metrics, decision patterns</p>
+                  <p>→ NPCs: Active and responsive</p>
+                  <p>→ Progress: {Math.round(progress)}% complete</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {simulationStage === 'completed' && (
+            <div className="text-center space-y-6">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                <CheckCircle className="w-8 h-8 text-green-600" />
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Simulation Completed!</h3>
+                <p className="text-gray-600">Your performance has been recorded and analyzed</p>
+              </div>
+
+              <div className="bg-green-50 p-4 rounded-lg">
+                <h4 className="font-semibold text-green-900 mb-2">What Happens Next?</h4>
+                <div className="text-sm text-green-700 space-y-1">
+                  <p>✓ Your VR performance data has been sent to the hiring team</p>
+                  <p>✓ AI analysis of your decision-making patterns is complete</p>
+                  <p>✓ Behavioral metrics and competency scores have been recorded</p>
+                  <p>✓ The recruitment team will review your results shortly</p>
+                </div>
+              </div>
+
+              <button
+                onClick={onClose}
+                className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-medium"
+              >
+                Complete Simulation
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Create New Role Modal Component
 const CreateNewRoleModal = ({
   isOpen,
@@ -4898,7 +5193,7 @@ const AnalyticsTab = () => (
             </div>
             <div className="text-right">
               <p className="text-sm font-bold text-gray-900">89 hires</p>
-              <p className="text-xs text-gray-600">£2,800 avg cost</p>
+              <p className="text-xs text-gray-600">��2,800 avg cost</p>
             </div>
           </div>
 
