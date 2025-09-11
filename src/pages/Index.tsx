@@ -2508,6 +2508,25 @@ const RoleShortlistView = ({
                       <Calendar size={16} />
                       <span>Schedule Interview</span>
                     </button>
+
+                    {hasVRPerformance(candidate.id) ? (
+                      <button
+                        onClick={() => viewVRPerformance(candidate)}
+                        className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:shadow-lg transition-all text-sm flex items-center space-x-2"
+                      >
+                        <VideoIcon size={16} />
+                        <span>View VR Results</span>
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => sendVRInvite(candidate)}
+                        className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all text-sm flex items-center space-x-2"
+                      >
+                        <VideoIcon size={16} />
+                        <span>VR Simulation Invite</span>
+                      </button>
+                    )}
+
                     <button
                       onClick={() =>
                         alert(`Viewing detailed profile for ${candidate.name}`)
