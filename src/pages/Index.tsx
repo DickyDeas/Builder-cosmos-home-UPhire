@@ -6077,13 +6077,26 @@ const DocumentsTab = () => {
                   <Eye size={14} />
                   <span>View</span>
                 </button>
-                <button
-                  onClick={() => alert(`Downloading: ${document.name}`)}
-                  className="flex-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm flex items-center justify-center space-x-1"
-                >
-                  <Download size={14} />
-                  <span>Download</span>
-                </button>
+
+                {document.url ? (
+                  <a
+                    href={document.url}
+                    download
+                    className="flex-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm flex items-center justify-center space-x-1"
+                  >
+                    <Download size={14} />
+                    <span>Download</span>
+                  </a>
+                ) : (
+                  <button
+                    onClick={() => alert(`Downloading: ${document.name}`)}
+                    className="flex-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm flex items-center justify-center space-x-1"
+                  >
+                    <Download size={14} />
+                    <span>Download</span>
+                  </button>
+                )}
+
                 <button
                   onClick={() => alert(`Opening editor for: ${document.name}`)}
                   className="flex-1 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm flex items-center justify-center space-x-1"
