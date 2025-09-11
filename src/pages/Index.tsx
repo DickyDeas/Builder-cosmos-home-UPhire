@@ -2578,6 +2578,21 @@ const RoleShortlistView = ({
           })}
         </div>
       </div>
+
+      {/* VR Simulation Modals */}
+      <VRSimulationPortal
+        isOpen={showVRSimulation}
+        onClose={() => setShowVRSimulation(false)}
+        candidate={selectedVRCandidate!}
+        scenario={selectedVRScenario!}
+      />
+
+      <VRPerformanceDashboard
+        isOpen={showVRPerformance}
+        onClose={() => setShowVRPerformance(false)}
+        candidate={selectedVRCandidate!}
+        performance={selectedVRPerformance}
+      />
     </div>
   );
 };
