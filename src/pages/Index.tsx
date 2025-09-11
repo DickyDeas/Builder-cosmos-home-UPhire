@@ -6836,7 +6836,7 @@ const UPhirePlatform = () => {
                   <Target className="w-8 h-8 text-indigo-600 mx-auto mb-2" />
                   <p className="font-medium text-gray-900">3 Touch-Point Hire System</p>
                   <p className="text-sm text-gray-600">
-                    A structured 3-stage evaluation (screening, VR simulation, final interview) to improve hire quality and reduce time-to-fill.
+                    Requires only three user interactions — Job Briefing, Interview, and Hire Decision — while the system automates sourcing, screening, scheduling and follow-up.
                   </p>
                 </div>
                 <div className="text-center">
