@@ -528,7 +528,7 @@ const mockRoles: Role[] = [
     shortlisted: 4,
     interviewed: 2,
     created: "2024-01-10",
-    salary: "£70,000 - ��95,000",
+    salary: "£70,000 - £95,000",
     priority: "Medium",
     deiScore: 88,
     description:
@@ -2159,6 +2159,32 @@ const RoleShortlistView = ({
   const updateCandidateStage = (candidateId: number, newStage: string) => {
     // In a real app, this would update the backend
     console.log(`Updating candidate ${candidateId} to stage ${newStage}`);
+  };
+
+  const sendVRInvite = (candidate: ShortlistedCandidate) => {
+    // Find appropriate VR scenario for the role
+    const scenario = vrScenarios.find(s =>
+      s.department.toLowerCase() === role.department.toLowerCase()
+    ) || vrScenarios[0]; // Default to first scenario if no match
+
+    setSelectedVRCandidate(candidate);
+    setSelectedVRScenario(scenario);
+    setShowVRSimulation(true);
+  };
+
+  const viewVRPerformance = (candidate: ShortlistedCandidate) => {
+    const performance = mockVRPerformances.find(p => p.candidateId === candidate.id);
+    if (performance) {
+      setSelectedVRCandidate(candidate);
+      setSelectedVRPerformance(performance);
+      setShowVRPerformance(true);
+    } else {
+      alert("No VR performance data available for this candidate");
+    }
+  };
+
+  const hasVRPerformance = (candidateId: number) => {
+    return mockVRPerformances.some(p => p.candidateId === candidateId);
   };
 
   const stageOptions = [
