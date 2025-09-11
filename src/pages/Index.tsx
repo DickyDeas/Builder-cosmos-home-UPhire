@@ -3700,6 +3700,45 @@ Company Highlights:
                   <span>Add Benefit</span>
                 </button>
               </div>
+
+              {/* VR Scenario Selection */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  VR Interview Scenario (Optional)
+                </label>
+                <select
+                  value={formData.vrScenario}
+                  onChange={(e) => handleInputChange("vrScenario", e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                >
+                  <option value="">No VR Scenario</option>
+                  {vrScenarios.map((scenario) => (
+                    <option key={scenario.id} value={scenario.id}>
+                      {scenario.name} ({scenario.department} • {scenario.duration}min)
+                    </option>
+                  ))}
+                </select>
+                {formData.vrScenario && (
+                  <div className="mt-2 p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                    {(() => {
+                      const selectedScenario = vrScenarios.find(s => s.id === formData.vrScenario);
+                      return selectedScenario ? (
+                        <div>
+                          <h4 className="font-medium text-purple-900 mb-1">{selectedScenario.name}</h4>
+                          <p className="text-sm text-purple-700 mb-2">{selectedScenario.description}</p>
+                          <div className="flex flex-wrap gap-1">
+                            {selectedScenario.skills.map((skill, index) => (
+                              <span key={index} className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">
+                                {skill}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      ) : null;
+                    })()}
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* AI Prediction Panel */}
