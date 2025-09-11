@@ -196,6 +196,52 @@ interface PredictionData {
   recommendations: string[];
 }
 
+interface VRScenario {
+  id: string;
+  name: string;
+  department: string;
+  description: string;
+  duration: number; // minutes
+  environment: string;
+  skills: string[];
+  metrics: string[];
+}
+
+interface VRPerformance {
+  candidateId: number;
+  scenarioId: string;
+  completedAt: string;
+  duration: number; // actual time taken
+  overallScore: number; // 0-100
+  competencyScores: {
+    problemSolving: number;
+    communication: number;
+    leadership: number;
+    decisionMaking: number;
+    emotionalIntelligence: number;
+    technicalSkills: number;
+  };
+  behavioralMetrics: {
+    stressLevel: number;
+    confidenceLevel: number;
+    adaptability: number;
+    teamwork: number;
+  };
+  keyMoments: {
+    timestamp: number;
+    event: string;
+    score: number;
+    note: string;
+  }[];
+  npcsInteracted: number;
+  errorsCommitted: number;
+  decisionsCount: number;
+  replay: {
+    available: boolean;
+    highlights: string[];
+  };
+}
+
 // Utility Functions
 const getInterviewStageColor = (stage: string) => {
   const stageColors: {
