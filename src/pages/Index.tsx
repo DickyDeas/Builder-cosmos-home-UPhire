@@ -528,7 +528,7 @@ const mockRoles: Role[] = [
     shortlisted: 4,
     interviewed: 2,
     created: "2024-01-10",
-    salary: "£70,000 - £95,000",
+    salary: "£70,000 - ��95,000",
     priority: "Medium",
     deiScore: 88,
     description:
@@ -2134,6 +2134,11 @@ const RoleShortlistView = ({
 }) => {
   const [filterStage, setFilterStage] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("aiMatch");
+  const [showVRSimulation, setShowVRSimulation] = useState(false);
+  const [selectedVRCandidate, setSelectedVRCandidate] = useState<ShortlistedCandidate | null>(null);
+  const [selectedVRScenario, setSelectedVRScenario] = useState<VRScenario | null>(null);
+  const [showVRPerformance, setShowVRPerformance] = useState(false);
+  const [selectedVRPerformance, setSelectedVRPerformance] = useState<VRPerformance | null>(null);
 
   const filteredCandidates =
     role.shortlistedCandidates?.filter(
@@ -2437,7 +2442,7 @@ const RoleShortlistView = ({
                                   <span className="capitalize">
                                     {interview.type}
                                   </span>
-                                  <span className="text-gray-500">��</span>
+                                  <span className="text-gray-500">•</span>
                                   <span className="text-gray-600">
                                     {interview.date}
                                   </span>
