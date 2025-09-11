@@ -6784,22 +6784,6 @@ const UPhirePlatform = () => {
               </div>
 
               <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6 text-center">
-                <TrendingUp className="w-12 h-12 text-green-600 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Market Intelligence
-                </h3>
-                <p className="text-gray-600">
-                  Real-time salary data, market demand analysis, and competitive
-                  insights with ITJobsWatch API integration.
-                </p>
-              </div>
-
-
-
-
-            </div>
-
-              <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6 text-center">
                 <VideoIcon className="w-12 h-12 text-pink-600 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   VR Simulation Interviews
@@ -6810,6 +6794,19 @@ const UPhirePlatform = () => {
                   analytics directly within UPhireIQ.
                 </p>
               </div>
+
+              <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6 text-center">
+                <TrendingUp className="w-12 h-12 text-green-600 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Market Intelligence
+                </h3>
+                <p className="text-gray-600">
+                  Real-time salary data, market demand analysis, and competitive
+                  insights with ITJobsWatch API integration.
+                </p>
+              </div>
+
+            </div>
 
             <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-8 max-w-4xl mx-auto">
               <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
