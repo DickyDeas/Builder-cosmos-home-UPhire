@@ -802,6 +802,16 @@ const mockDocuments: Document[] = [
     autoSend: false,
     template: "NDA Standard",
   },
+  {
+    id: 3,
+    name: "VR Feature Bundle",
+    type: "Bundle",
+    category: "Resources",
+    lastModified: "2025-09-11",
+    autoSend: false,
+    template: "VR Bundle",
+    url: "/downloads/vr-feature-bundle.tsx",
+  },
 ];
 
 // VR Scenarios Data
