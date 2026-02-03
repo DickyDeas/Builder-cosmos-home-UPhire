@@ -1,5 +1,5 @@
 [build]
-  base = "uphire"
+ 
   publish = "uphire/dist"
   command = "npm --prefix uphire run build"
 
