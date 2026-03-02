@@ -1,0 +1,800 @@
+﻿UPhire IQ - Complete System Process Flow Guide
+Version:
+ 1.0
+Last Updated:
+ January 2026
+Document Purpose:
+ Comprehensive guide to all system functions, processes, and workflows
+Table of Contents
+• [System Overview &amp; Architecture](#1-system-overview--architecture)
+• [User Authentication &amp; Onboarding](#2-user-authentication--onboarding)
+• [Job Role Management](#3-job-role-management)
+• [AI-Powered Recruitment &amp; Candidate Sourcing](#4-ai-powered-recruitment--candidate-sourcing)
+• [Outreach System](#5-outreach-system)
+• [Automated Vetting &amp; Screening](#6-automated-vetting--screening)
+• [VR Simulation Interviews](#7-vr-simulation-interviews)
+• [Interview Scheduling &amp; Management](#8-interview-scheduling--management)
+• [Candidate Management &amp; Shortlisting](#9-candidate-management--shortlisting)
+• [Analytics &amp; Reporting](#10-analytics--reporting)
+• [Market Intelligence](#11-market-intelligence)
+• [Document Management](#12-document-management)
+• [Team &amp; User Management](#13-team--user-management)
+• [Support &amp; Admin Functions](#14-support--admin-functions)
+• [Integration &amp; API Access](#15-integration--api-access)
+1. System Overview &amp; Architecture
+1.1 Platform Architecture
+Multi-Tenant SaaS Architecture
+Technology Stack
+Data Flow Architecture
+1.2 Core System Components
+1. Session Management
+2. Tenant Context
+3. Service Layer
+• Each organization (tenant) has isolated data and configuration
+• Tenant-based access control and permissions
+• Scalable infrastructure supporting unlimited tenants
+• **Frontend:** React 18 with TypeScript, Vite build system
+• **Backend:** Supabase (PostgreSQL database, Authentication, Storage)
+• **AI Services:** Grok AI (xAI) for natural language processing
+• **Payment Processing:** Stripe integration
+• **Email Services:** Enhanced email service with multiple provider support
+• **VR Engine:** Three.js with WebXR support
+• Secure session handling via `sessionManager`
+• Session expiration and activity tracking
+• Multi-device session support
+• Impersonation support for admin/support staff
+• Tenant isolation via `TenantContext`
+• Tenant-specific data access
+• Multi-tenant billing and subscription management
+• Modular service architecture
+• Independent services for each feature domain
+• Centralized error handling and logging
+2. User Authentication &amp; Onboarding
+2.1 User Registration Process
+Step 1: Initial Registration
+Step 2: Email Verification
+Step 3: Account Creation
+2.2 User Login Process
+Step 1: Authentication
+Step 2: Session Initialization
+Step 3: Session Management
+2.3 User Onboarding Flow
+Step 1: Welcome Tour
+Step 2: Initial Setup
+Step 3: First Job Role Creation
+2.4 Password Management
+Password Reset Flow
+Password Strength Requirements
+• User navigates to sign-up page
+• Enters email address and password
+• System validates email format and password strength
+• Password strength indicator shows real-time feedback
+• User accepts terms of service and privacy policy
+• System sends verification email via `emailServiceEnhanced`
+• User clicks verification link
+• System verifies token and activates account
+• User redirected to onboarding flow
+• System creates user record in Supabase `profiles` table
+• Default tenant created or user assigned to existing tenant
+• Initial subscription tier assigned (default: Starter or Freemium)
+• Welcome email sent with platform introduction
+• User enters email and password on login page
+• System validates credentials via Supabase Auth
+• Session created and stored in localStorage
+• Session data includes: user ID, tenant ID, expiration time, last activity
+• System loads tenant context
+• User preferences and settings loaded
+• Dashboard data pre-fetched
+• User redirected to main dashboard
+• Session expires after inactivity (configurable timeout)
+• Activity tracking updates `lastActivity` timestamp
+• Automatic logout on expiration
+• Session refresh on user activity
+• First-time users see product tour overlay
+• Tour highlights key features: Dashboard, Roles, Candidates, Outreach
+• Interactive walkthrough with tooltips
+• User can skip or complete tour
+• Tour progress saved to prevent re-showing
+• **Company Information**
+• Company name, industry, size
+• Location and timezone
+• Company logo upload (optional)
+• **Team Setup**
+• Add team members (if applicable)
+• Assign roles and permissions
+• Configure notification preferences
+• **Integration Setup**
+• Connect email service (if not using default)
+• Configure Calendly (optional)
+• Set up LinkedIn integration (optional)
+• Guided job role creation wizard
+• AI-powered job description generation
+• Role saved and displayed in dashboard
+• User shown how to start recruitment
+• User clicks &quot;Forgot Password&quot; on login page
+• Enters email address
+• System sends password reset email with secure token
+• User clicks link and enters new password
+• Password validated for strength
+• Password updated and user logged in automatically
+• Minimum 8 characters
+• At least one uppercase letter
+• At least one lowercase letter
+• At least one number
+• At least one special character
+• Real-time strength indicator shows requirements
+3. Job Role Management
+3.1 Creating a New Job Role
+Step 1: Role Creation Form
+Step 2: Job Description
+Step 3: Additional Details
+Step 4: AI Enhancement
+Step 5: Save &amp; Publish
+3.2 Editing Job Roles
+Process:
+Bulk Editing:
+3.3 Role Status Management
+Status Types:
+Status Change Workflow:
+3.4 Role Analytics
+Metrics Tracked:
+Analytics Dashboard:
+• User clicks &quot;Create New Role&quot; button
+• Modal opens with role creation form
+• Required fields:
+• **Job Title:** Text input
+• **Department:** Dropdown or text input
+• **Location:** Text input with location suggestions
+• **Salary Range:** Min/Max inputs or single value
+• **Priority:** Low, Medium, High, Urgent
+• **Status:** Draft, Active, On Hold, Closed
+• **Manual Entry:** User types job description
+• **AI Generation:** User clicks &quot;Generate with AI&quot;
+• System uses `aiContentService` with Grok AI
+• AI analyzes job title, department, requirements
+• Generates comprehensive job description
+• User can edit generated description
+• **Requirements Section:**
+• Add required qualifications
+• Add required skills (with autocomplete)
+• Add minimum years of experience
+• Add education requirements
+• **Benefits:** List of benefits offered
+• **Key Skills:** Core competencies required
+• **Core Competencies:** Behavioral competencies
+• **VR Scenario:** Select VR scenario for this role (optional)
+• **Remuneration Type:** Salary, Day Rate, Hourly Rate
+• **Role Type:** Permanent, Contract, Part Time, FTC, Temporary
+• **IR35 Status:** Inside IR35, Outside IR35 (for UK contracts)
+• System analyzes job description
+• Suggests improvements for:
+• Clarity and readability
+• Required vs. preferred qualifications
+• Salary competitiveness
+• Skills alignment
+• User reviews and accepts/rejects suggestions
+• Form validation checks all required fields
+• Role saved to Supabase `roles` table
+• Role appears in dashboard immediately
+• User can start recruitment process
+• User clicks &quot;Edit&quot; on role card
+• Edit modal opens with pre-filled form
+• User modifies fields as needed
+• Changes saved to database
+• All associated candidates updated (if relevant fields changed)
+• Select multiple roles
+• Apply bulk actions: change status, department, priority
+• Bulk updates processed asynchronously
+• **Draft:** Role not yet published
+• **Active:** Role open for applications
+• **On Hold:** Temporarily paused
+• **Closed:** Role filled or cancelled
+• User changes role status
+• System checks for active candidates
+• If closing role:
+• All active candidates notified
+• Outstanding interviews cancelled
+• Analytics updated
+• Status change logged in audit trail
+• Number of candidates applied
+• Average AI match score
+• Time to fill
+• Source of candidates
+• Interview conversion rate
+• Offer acceptance rate
+• Visual charts showing role performance
+• Comparison with other roles
+• Trend analysis over time
+• Export capabilities
+4. AI-Powered Recruitment &amp; Candidate Sourcing
+4.1 Starting AI Recruitment
+Step 1: Initiate Recruitment
+Step 2: Recruitment Configuration
+Step 3: AI Recruitment Process
+• User selects a job role
+• Clicks &quot;Start AI Recruitment&quot; button
+• `AIRecruitmentModal` opens
+• **Outreach Campaign Type Selection:**
+• **Standard:** 5 touchpoints over 3 weeks
+• **Aggressive:** 5 touchpoints over 2 weeks
+• **Gentle:** 5 touchpoints over 6 weeks
+• **Custom Touchpoint Count:** 1-10 contacts
+• User confirms configuration
+The system executes the following steps automatically:
+Step 3a: Analyzing Job Requirements
+Step 3b: Searching Job Boards
+Step 3c: Searching LinkedIn
+Step 3d: Scanning Indeed Profiles
+Step 3e: Processing GitHub Profiles
+Step 3f: Running UPhireIQ AI Matching
+Step 3g: Generating Candidate Reports
+Step 3h: Finalizing Recruitment Pipeline
+Step 4: Candidate Selection &amp; Outreach
+4.2 Candidate Sourcing Sources
+1. Job Boards
+2. LinkedIn
+3. Indeed
+4. GitHub (Technical Roles)
+5. Internal Database
+4.3 AI Matching Algorithm
+Match Score Calculation Process:
+1. Skills Matching (`skillMatchingService`)
+2. Experience Matching
+3. Qualifications Matching
+4. Location Compatibility
+5. Salary Alignment
+6. Overall Match Score
+4.4 Candidate Profile Generation
+Profile Components:
+• System analyzes job description
+• Extracts key requirements, skills, qualifications
+• Identifies role priorities and preferences
+• Duration: ~1 second
+• Searches all associated job boards for CVs
+• Parses CV data and extracts candidate information
+• Filters by location, experience, skills
+• Duration: ~1.8 seconds
+• Searches LinkedIn for matching profiles
+• Analyzes profile completeness and relevance
+• Extracts skills, experience, education
+• Duration: ~1.5 seconds
+• Searches Indeed for candidate profiles
+• Extracts profile data and application history
+• Duration: ~1.2 seconds
+• Searches GitHub for technical candidates (if applicable)
+• Analyzes code repositories and contributions
+• Assesses technical skills from code
+• Duration: ~1 second
+• **AI Match Score Calculation:**
+• Skills matching (exact, partial, weighted)
+• Experience relevance assessment
+• Qualifications matching
+• Location compatibility
+• Salary alignment
+• Cultural fit prediction
+• **Scoring Algorithm:**
+• Skills match: 40% weight
+• Experience: 30% weight
+• Qualifications: 20% weight
+• Other factors: 10% weight
+• Duration: ~2 seconds
+• Creates detailed candidate profiles
+• Generates match analysis reports
+• Calculates suitability scores
+• Duration: ~0.8 seconds
+• Saves all candidates to database
+• Creates candidate-role associations
+• Prepares outreach sequences
+• Duration: ~0.5 seconds
+• System displays found candidates with AI match scores
+• User can review candidates before outreach
+• System filters candidates (default: AI match &gt; 70%)
+• Top 10 candidates selected automatically
+• Outreach sequences created for selected candidates
+• **Integration:** Via `jobDistributionService`
+• **Sources:** Multiple job board APIs
+• **Process:**
+• System queries job boards with role criteria
+• Receives candidate CVs and profiles
+• Parses and normalizes data
+• Stores in candidate database
+• **Integration:** LinkedIn API (when configured)
+• **Process:**
+• Searches LinkedIn profiles by keywords
+• Filters by location, industry, experience
+• Extracts profile data
+• Analyzes profile completeness
+• **Integration:** Indeed API
+• **Process:**
+• Searches Indeed candidate database
+• Extracts profile information
+• Gets application history
+• **Integration:** GitHub API
+• **Process:**
+• Searches for developers with relevant skills
+• Analyzes code repositories
+• Assesses technical competency
+• Searches existing candidate database
+• Matches previous applicants to new roles
+• Re-engages passive candidates
+• **Basic Information:**
+• Name, email, phone
+• Location, current role, company
+• LinkedIn profile, GitHub (if applicable)
+• **Skills &amp; Experience:**
+• Skills list (extracted from CV/profile)
+• Years of experience
+• Current and previous roles
+• Education background
+• **AI Analysis:**
+• AI match score
+• Match breakdown (skills, experience, etc.)
+• Strengths and weaknesses
+• Recommendation (proceed/review/reject)
+• **Availability:**
+• Active job seeker
+• Passive candidate
+• Not available
+• **Response Probability:**
+• Calculated based on:
+• Profile completeness
+• Activity level
+• Response history
+• Engagement signals
+5. Outreach System
+5.1 Outreach Sequence Creation
+Step 1: Manual Sequence Creation
+Step 2: Candidate Selection
+Step 3: Job Role Selection
+Step 4: Sequence Configuration
+Step 5: Sequence Generation
+5.2 Automated Outreach from Recruitment
+Process Flow:
+Integration Points:
+5.3 Message Generation
+Step 1: Message Type Determination
+Step 2: AI Message Generation
+Step 3: Message Review (Optional)
+Step 4: Message Sending
+5.4 Follow-Up Sequence Management
+Automatic Progression:
+Response Handling:
+Positive Response:
+Negative Response:
+Neutral Response:
+5.5 Response Classification
+AI-Powered Classification:
+Classification Process:
+Manual Override:
+5.6 Outreach Analytics
+Metrics Tracked:
+Analytics Dashboard:
+• User navigates to Outreach Dashboard
+• Clicks &quot;Start New Outreach&quot;
+• `CreateOutreachSequenceModal` opens
+• User searches/selects candidate from list
+• Candidate details displayed:
+• Name, current role, company
+• Location, availability status
+• AI match score
+• Skills and experience
+• User selects job role for outreach
+• Role details displayed:
+• Job title, department, location
+• Key requirements
+• Salary range
+• **Sequence Type:**
+• **Standard:** 5 touchpoints over 3 weeks
+• **Aggressive:** 5 touchpoints over 2 weeks
+• **Gentle:** 5 touchpoints over 6 weeks
+• **Custom Touchpoint Count:** 1-10 contacts
+• User confirms configuration
+• System generates touchpoint schedule:
+• **Touchpoint 1:** Initial Contact (LinkedIn) - Immediate
+• **Touchpoint 2:** Value Proposition (Email) - 3 days
+• **Touchpoint 3:** Social Proof (LinkedIn) - 1 week
+• **Touchpoint 4:** Urgency (Email) - 2 weeks
+• **Touchpoint 5:** Final Attempt (Phone) - 3 weeks
+• Touchpoints saved to database
+• First touchpoint executed immediately
+• AI Recruitment completes candidate discovery
+• System filters candidates (AI match &gt; 70%)
+• Top candidates selected (default: 10)
+• `outreachService.createSequencesForCandidates()` called
+• Outreach sequences created for each candidate
+• Sequences linked to job role
+• First touchpoint sent immediately
+• Sequences automatically linked to originating job role
+• Candidates associated with role in database
+• Analytics track recruitment → outreach → interview pipeline
+• System determines message type based on touchpoint:
+• Initial Contact: Introduction message
+• Value Proposition: Role benefits message
+• Social Proof: Company/team highlights
+• Urgency: Time-sensitive message
+• Final Attempt: Last chance message
+• System calls `outreachService.generateMessage()`
+• Uses Grok AI with detailed prompt:
+• AI generates personalized message
+• Message includes:
+• Personalized greeting
+• Role relevance explanation
+• Key benefits
+• Clear call-to-action
+• User can review messages before sending
+• Edit capability available
+• Approval workflow (if configured)
+• Message sent via appropriate channel:
+• **LinkedIn:** Via LinkedIn API or manual copy
+• **Email:** Via `emailServiceEnhanced`
+• **Phone:** Scheduled call reminder
+• Message status updated: &quot;Sent&quot;
+• Timestamp recorded
+• Tracking enabled (for email)
+• System checks for responses daily
+• If no response after timeout period:
+• Next touchpoint automatically scheduled
+• Message generated and sent
+• Sequence continues
+• System detects positive response via:
+• Email reply analysis
+• LinkedIn message analysis
+• Manual classification
+• `outreachService.handleResponse()` called
+• Sequence paused automatically
+• Vetting call scheduled (see Section 6)
+• Candidate moved to &quot;Interested&quot; status
+• System detects negative response
+• Sequence terminated automatically
+• Candidate marked as &quot;Not Interested&quot;
+• No further outreach attempted
+• Analytics updated
+• System detects neutral/ambiguous response
+• Follow-up message sent
+• Sequence continues with adjusted timing
+• Response tracked for analytics
+• System uses Grok AI to analyze response
+• Classification categories:
+• **Positive:** Interested, wants to proceed
+• **Negative:** Not interested, decline
+• **Neutral:** Needs more information, questions
+• **Unclear:** Ambiguous response
+• User can manually classify responses
+• Override saved for learning
+• System learns from manual corrections
+• **Total Outreach:** Number of sequences started
+• **Active Sequences:** Currently running sequences
+• **Response Rate:** Percentage of responses received
+• **Positive Responses:** Number of positive responses
+• **Channel Performance:** LinkedIn vs Email vs Phone
+• **Average Response Time:** Time to first response
+• **Conversion Rate:** Outreach → Interview conversion
+• Real-time metrics display
+• Channel performance comparison
+• Response rate trends
+• Conversion funnel visualization
+• Export capabilities
+6. Automated Vetting &amp; Screening
+6.1 Vetting Call Scheduling
+Automatic Scheduling (Positive Outreach Response):
+Manual Scheduling:
+6.2 Vetting Call Confirmation Email
+Email Content:
+6.3 Automated Webchat Screening Process
+Step 1: Candidate Access
+Step 2: Question Flow
+• System detects positive outreach response
+• `vettingService.scheduleVettingCall()` called automatically
+• Call type determined: &quot;webchat&quot; (automated)
+• Call scheduled immediately
+• Confirmation email sent to candidate
+• User selects candidate
+• Clicks &quot;Schedule Vetting Call&quot;
+• `VettingCallModal` opens
+• User selects:
+• Call type: Webchat, Phone, Video
+• Date and time
+• Duration
+• Call scheduled
+• Confirmation email sent
+• Clear subject line: &quot;UPhire IQ Initial Screening - [Role Title]&quot;
+• Welcome message explaining process
+• **Key Messaging:**
+• This is an automated AI initial screening
+• Duration: 5-10 minutes
+• Next stage will be with hiring company (if successful)
+• Webchat link provided
+• Calendar invite (if applicable)
+• Support contact information
+• Candidate clicks webchat link from email
+• `AutomatedVettingChat` component loads
+• Welcome message displayed:
+The system asks questions in this order:
+Question 1: Attraction
+Question 2: Skills &amp; Experience
+Question 3: Current Salary
+Question 4: Salary Expectations
+Question 5: Notice Period
+Question 6: Availability
+Question 7: Location &amp; Commute
+Question 8: Interest Level (Optional)
+Step 3: Real-Time Response Analysis
+Step 4: Assessment Completion
+Step 5: Completion Message
+6.4 Assessment Scoring Algorithm
+Suitability Score Calculation:
+1. Qualifications Match (Boolean)
+2. Skills Match (Boolean)
+3. Experience Relevance (Boolean)
+4. Communication Skills (1-5 scale)
+5. Professionalism (1-5 scale)
+6. Enthusiasm (1-5 scale)
+7. Interest Level (1-5 scale)
+8. Cultural Fit Score (1-5 scale)
+9. Availability Confirmed (Boolean)
+10. Salary Alignment (Boolean)
+Overall Suitability Score:
+Recommendation Logic:
+6.5 AI Analysis Integration
+Grok AI Analysis:
+AI Insights Included:
+6.6 Post-Assessment Actions
+If Recommendation = &quot;Proceed&quot;:
+If Recommendation = &quot;Reject&quot;:
+If Recommendation = &quot;Needs More Info&quot;:
+6.7 Assessment Data Storage
+Database Schema (`vetting_calls` table):
+• **Question:** &quot;What is it about this particular role and opportunity that caught your attention?&quot;
+• **Purpose:** Assess genuine interest and motivation
+• **Analysis:** AI analyzes response for enthusiasm, role understanding, alignment
+• **Question:** &quot;What relevant skills and experience do you bring to this role, particularly concerning [key skill 1] and [key skill 2]?&quot;
+• **Purpose:** Validate skills match and experience relevance
+• **Analysis:**
+• Skills matching (exact/partial)
+• Experience relevance
+• Technical competency
+• **Question:** &quot;What is your current salary or package?&quot;
+• **Purpose:** Understand current compensation
+• **Analysis:** Salary alignment with role range
+• **Question:** &quot;Do you have a financial figure in mind you are looking for in your next role?&quot;
+• **Purpose:** Assess salary expectations alignment
+• **Analysis:** Compare expectations with role range
+• **Question:** &quot;What is your notice period with your current employer?&quot;
+• **Purpose:** Understand availability timeline
+• **Analysis:** Notice period length, flexibility
+• **Question:** &quot;Regarding availability, when would you be able to start if offered the role?&quot;
+• **Purpose:** Confirm start date availability
+• **Analysis:** Availability confirmed (yes/no)
+• **Question:** &quot;If this role is office-based, are you able to commute to [location]?&quot;
+• **Purpose:** Assess location compatibility
+• **Analysis:** Commute feasibility, location alignment
+• **Question:** Asked if interest level still unclear
+• **Purpose:** Final interest assessment
+• **Analysis:** Overall enthusiasm and motivation
+• Candidate submits response
+• `vettingChatService.processResponse()` called
+• Response validated (not empty)
+• AI analysis performed:
+• `vettingChatService.analyzeResponse()` uses Grok AI
+• Analyzes response for:
+• Skills mentioned
+• Experience relevance
+• Enthusiasm level
+• Communication quality
+• Red flags or concerns
+• Assessment updated in real-time
+• Next question generated
+• System determines completion when:
+• All 7 core questions answered
+• Minimum data requirements met
+• Sufficient information gathered
+• `vettingChatService.completeAssessment()` called
+• Final assessment calculated:
+• **Suitability Score:** 0-100
+• **Recommendation:** Proceed / Reject / Needs More Info
+• **Assessment Notes:** Summary of findings
+• System displays completion message based on recommendation:
+• **Proceed:** &quot;Thank you for completing the initial screening. Your application will be reviewed, and if successful, you&apos;ll be contacted to schedule an interview with members of the hiring company.&quot;
+• **Reject:** &quot;Thank you for your time. After careful consideration, we&apos;ve decided to move forward with other candidates.&quot;
+• **Needs More Info:** &quot;We may need additional information. Our team will review and may reach out for follow-up.&quot;
+• Email sent with next steps
+• Assessment saved to database
+• Required qualifications present: 100%
+• Missing qualifications: 0%
+• Required skills present: 100%
+• Partial skills match: 50%
+• Missing skills: 0%
+• Relevant experience: 100%
+• Some relevance: 50%
+• No relevance: 0%
+• Assessed from response quality:
+• Clear, articulate: 5
+• Good communication: 4
+• Adequate: 3
+• Poor: 2
+• Very poor: 1
+• Assessed from tone and demeanor:
+• Highly professional: 5
+• Professional: 4
+• Adequate: 3
+• Unprofessional: 2
+• Very unprofessional: 1
+• Assessed from interest level:
+• Very enthusiastic: 5
+• Enthusiastic: 4
+• Moderate interest: 3
+• Low interest: 2
+• No interest: 1
+• Overall interest assessment:
+• Very interested: 5
+• Interested: 4
+• Neutral: 3
+• Not interested: 2
+• Very uninterested: 1
+• Assessed from values alignment:
+• Excellent fit: 5
+• Good fit: 4
+• Adequate: 3
+• Poor fit: 2
+• Very poor fit: 1
+• Available: 100%
+• Not available: 0%
+• Within range: 100%
+• Slightly above: 80%
+• Significantly above: 50%
+• Below range: 100% (advantageous)
+• **Score ≥ 80:** Proceed (auto-shortlist)
+• **Score 70-79:** Needs More Info (manual review)
+• **Score &lt; 70:** Reject
+• If call notes/transcript available:
+• `vettingService.analyzeCallNotesWithAI()` called
+• Grok AI analyzes full conversation
+• Generates insights:
+• Overall assessment
+• Strengths identified
+• Concerns raised
+• Recommendations
+• Reasoning
+• AI score incorporated (30% weight)
+• Manual score weighted (70%)
+• Final score calculated
+• Communication style analysis
+• Problem-solving approach
+• Cultural fit indicators
+• Red flags or concerns
+• Unique strengths
+• Improvement areas
+• Candidate automatically shortlisted
+• Added to role&apos;s shortlist
+• Next steps email sent:
+• Thank you message
+• Interview scheduling information
+• Timeline expectations
+• Interview scheduling initiated (see Section 8)
+• Candidate marked as &quot;Rejected&quot;
+• Rejection email sent:
+• Polite decline message
+• Thank you for time
+• Future opportunities mention
+• No further action
+• Candidate flagged for follow-up
+• Information request email sent:
+• Specific information needed
+• Next steps
+• Manual review scheduled
+• Follow-up call may be scheduled
+• Call ID, Candidate ID, Job ID, Tenant ID
+• Call type, scheduled time, duration
+• Status (scheduled, in-progress, completed, cancelled)
+• Suitability score, recommendation
+• Assessment notes, call notes/transcript
+• All assessment metrics (qualifications, skills, etc.)
+• AI insights (JSON)
+• Next steps, follow-up requirements
+• Created/updated timestamps
+7. VR Simulation Interviews
+7.1 VR Scenario Selection
+Step 1: Scenario Assignment
+Step 2: Scenario Configuration
+7.2 VR Interview Invitation
+Process:
+7.3 VR Interview Execution
+Step 1: VR Portal Access
+Step 2: Scenario Initialization
+Step 3: Interview Conduct
+Step 4: Real-Time Assessment
+Step 5: Interview Completion
+7.4 VR Performance Analysis
+Metrics Assessed:
+1. Competency Scores (1-5 scale):
+2. Behavioral Metrics:
+3. Answer Quality:
+4. Professional Demeanor:
+5. Time to Decision:
+7.5 VR Results Processing
+Step 1: Results Calculation
+Step 2: Results Storage
+Step 3: Results Review
+Step 4: Integration with Assessment
+• User assigns VR scenario to job role during role creation
+• Available scenarios:
+• Boardroom Panel Interview
+• 1:1 Office Interview
+• Factory Floor Site Test
+• Customer Service Scenario
+• Technical Assessment Scenario
+• Custom Scenarios (Enterprise)
+• User configures scenario parameters:
+• Interview duration
+• Number of interviewers
+• Question set
+• Difficulty level
+• Custom instructions
+• Candidate shortlisted for role with VR scenario
+• VR interview invitation sent via email
+• Email includes:
+• VR interview link
+• Instructions for access
+• Technical requirements
+• Preparation tips
+• Candidate clicks link to access VR portal
+• Candidate navigates to VR portal URL
+• `VRSimulationPortal` component loads
+• System checks:
+• Browser compatibility (WebXR support)
+• VR headset availability (optional)
+• Network connection
+• Loading screen displayed
+• Three.js scene loads
+• VR environment rendered:
+• 3D room/space
+• Interviewer avatars
+• Props and environment
+• Candidate avatar created
+• Controls explained
+• Interviewer asks questions
+• Candidate responds (voice or text)
+• System records:
+• Response audio/text
+• Response time
+• Body language (if VR headset)
+• Eye contact (if VR headset)
+• Movement and positioning
+• System analyzes responses:
+• Answer quality
+• STAR technique usage
+• Communication clarity
+• Professionalism
+• Behavioral metrics tracked:
+• Stress level
+• Confidence
+• Adaptability
+• Teamwork indicators
+• Scores updated in real-time
+• All questions answered
+• Interview concludes
+• Performance summary displayed
+• Results saved to database
+• Communication
+• Problem Solving
+• Leadership
+• Decision Making
+• Technical Skills (if applicable)
+• Stress Level (measured via voice analysis, movement)
+• Confidence (measured via posture, voice tone)
+• Adaptability (measured via response to unexpected questions)
+• Teamwork (measured via collaborative scenarios)
+• Clarity and structure
+• Relevance to question
+• STAR technique usage
+• Examples provided
+• Depth of response
+• Composure under pressure
+• Professional appearance (avatar)
+• Appropriate body language
+• Engagement level
+• Response time for questions
+• Decision-making speed
+• Processing time
+• All metrics aggregated
+• Weighted scoring applied

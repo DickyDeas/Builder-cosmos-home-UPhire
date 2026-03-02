@@ -1,0 +1,1638 @@
+﻿UPhire IQ - Complete System Process Flow Guide
+Version:
+ 1.0
+Last Updated:
+ January 2026
+Document Purpose:
+ Comprehensive guide to all system functions, processes, and workflows
+Table of Contents
+â€¢ [System Overview &amp; Architecture](#1-system-overview--architecture)
+â€¢ [User Authentication &amp; Onboarding](#2-user-authentication--onboarding)
+â€¢ [Job Role Management](#3-job-role-management)
+â€¢ [AI-Powered Recruitment &amp; Candidate Sourcing](#4-ai-powered-recruitment--candidate-sourcing)
+â€¢ [Outreach System](#5-outreach-system)
+â€¢ [Automated Vetting &amp; Screening](#6-automated-vetting--screening)
+â€¢ [VR Simulation Interviews](#7-vr-simulation-interviews)
+â€¢ [Interview Scheduling &amp; Management](#8-interview-scheduling--management)
+â€¢ [Candidate Management &amp; Shortlisting](#9-candidate-management--shortlisting)
+â€¢ [Analytics &amp; Reporting](#10-analytics--reporting)
+â€¢ [Market Intelligence](#11-market-intelligence)
+â€¢ [Document Management](#12-document-management)
+â€¢ [Team &amp; User Management](#13-team--user-management)
+â€¢ [Support &amp; Admin Functions](#14-support--admin-functions)
+â€¢ [Integration &amp; API Access](#15-integration--api-access)
+1. System Overview &amp; Architecture
+1.1 Platform Architecture
+Multi-Tenant SaaS Architecture
+Technology Stack
+Data Flow Architecture
+User Interface (React)
+â†“
+Application Services Layer
+â†“
+Database Layer (Supabase PostgreSQL)
+â†“
+External APIs (Grok AI, Stripe, Email Providers)
+1.2 Core System Components
+1. Session Management
+2. Tenant Context
+3. Service Layer
+â€¢ Each organization (tenant) has isolated data and configuration
+â€¢ Tenant-based access control and permissions
+â€¢ Scalable infrastructure supporting unlimited tenants
+â€¢ **Frontend:** React 18 with TypeScript, Vite build system
+â€¢ **Backend:** Supabase (PostgreSQL database, Authentication, Storage)
+â€¢ **AI Services:** Grok AI (xAI) for natural language processing
+â€¢ **Payment Processing:** Stripe integration
+â€¢ **Email Services:** Enhanced email service with multiple provider support
+â€¢ **VR Engine:** Three.js with WebXR support
+â€¢ Secure session handling via `sessionManager`
+â€¢ Session expiration and activity tracking
+â€¢ Multi-device session support
+â€¢ Impersonation support for admin/support staff
+â€¢ Tenant isolation via `TenantContext`
+â€¢ Tenant-specific data access
+â€¢ Multi-tenant billing and subscription management
+â€¢ Modular service architecture
+â€¢ Independent services for each feature domain
+â€¢ Centralized error handling and logging
+2. User Authentication &amp; Onboarding
+2.1 User Registration Process
+Step 1: Initial Registration
+Step 2: Email Verification
+Step 3: Account Creation
+2.2 User Login Process
+Step 1: Authentication
+Step 2: Session Initialization
+Step 3: Session Management
+2.3 User Onboarding Flow
+Step 1: Welcome Tour
+Step 2: Initial Setup
+Step 3: First Job Role Creation
+2.4 Password Management
+Password Reset Flow
+Password Strength Requirements
+â€¢ User navigates to sign-up page
+â€¢ Enters email address and password
+â€¢ System validates email format and password strength
+â€¢ Password strength indicator shows real-time feedback
+â€¢ User accepts terms of service and privacy policy
+â€¢ System sends verification email via `emailServiceEnhanced`
+â€¢ User clicks verification link
+â€¢ System verifies token and activates account
+â€¢ User redirected to onboarding flow
+â€¢ System creates user record in Supabase `profiles` table
+â€¢ Default tenant created or user assigned to existing tenant
+â€¢ Initial subscription tier assigned (default: Starter or Freemium)
+â€¢ Welcome email sent with platform introduction
+â€¢ User enters email and password on login page
+â€¢ System validates credentials via Supabase Auth
+â€¢ Session created and stored in localStorage
+â€¢ Session data includes: user ID, tenant ID, expiration time, last activity
+â€¢ System loads tenant context
+â€¢ User preferences and settings loaded
+â€¢ Dashboard data pre-fetched
+â€¢ User redirected to main dashboard
+â€¢ Session expires after inactivity (configurable timeout)
+â€¢ Activity tracking updates `lastActivity` timestamp
+â€¢ Automatic logout on expiration
+â€¢ Session refresh on user activity
+â€¢ First-time users see product tour overlay
+â€¢ Tour highlights key features: Dashboard, Roles, Candidates, Outreach
+â€¢ Interactive walkthrough with tooltips
+â€¢ User can skip or complete tour
+â€¢ Tour progress saved to prevent re-showing
+â€¢ **Company Information**
+â€¢ Company name, industry, size
+â€¢ Location and timezone
+â€¢ Company logo upload (optional)
+â€¢ **Team Setup**
+â€¢ Add team members (if applicable)
+â€¢ Assign roles and permissions
+â€¢ Configure notification preferences
+â€¢ **Integration Setup**
+â€¢ Connect email service (if not using default)
+â€¢ Configure Calendly (optional)
+â€¢ Set up LinkedIn integration (optional)
+â€¢ Guided job role creation wizard
+â€¢ AI-powered job description generation
+â€¢ Role saved and displayed in dashboard
+â€¢ User shown how to start recruitment
+â€¢ User clicks &quot;Forgot Password&quot; on login page
+â€¢ Enters email address
+â€¢ System sends password reset email with secure token
+â€¢ User clicks link and enters new password
+â€¢ Password validated for strength
+â€¢ Password updated and user logged in automatically
+â€¢ Minimum 8 characters
+â€¢ At least one uppercase letter
+â€¢ At least one lowercase letter
+â€¢ At least one number
+â€¢ At least one special character
+â€¢ Real-time strength indicator shows requirements
+3. Job Role Management
+3.1 Creating a New Job Role
+Step 1: Role Creation Form
+Step 2: Job Description
+Step 3: Additional Details
+Step 4: AI Enhancement
+Step 5: Save &amp; Publish
+3.2 Editing Job Roles
+Process:
+Bulk Editing:
+3.3 Role Status Management
+Status Types:
+Status Change Workflow:
+3.4 Role Analytics
+Metrics Tracked:
+Analytics Dashboard:
+â€¢ User clicks &quot;Create New Role&quot; button
+â€¢ Modal opens with role creation form
+â€¢ Required fields:
+â€¢ **Job Title:** Text input
+â€¢ **Department:** Dropdown or text input
+â€¢ **Location:** Text input with location suggestions
+â€¢ **Salary Range:** Min/Max inputs or single value
+â€¢ **Priority:** Low, Medium, High, Urgent
+â€¢ **Status:** Draft, Active, On Hold, Closed
+â€¢ **Manual Entry:** User types job description
+â€¢ **AI Generation:** User clicks &quot;Generate with AI&quot;
+â€¢ System uses `aiContentService` with Grok AI
+â€¢ AI analyzes job title, department, requirements
+â€¢ Generates comprehensive job description
+â€¢ User can edit generated description
+â€¢ **Requirements Section:**
+â€¢ Add required qualifications
+â€¢ Add required skills (with autocomplete)
+â€¢ Add minimum years of experience
+â€¢ Add education requirements
+â€¢ **Benefits:** List of benefits offered
+â€¢ **Key Skills:** Core competencies required
+â€¢ **Core Competencies:** Behavioral competencies
+â€¢ **VR Scenario:** Select VR scenario for this role (optional)
+â€¢ **Remuneration Type:** Salary, Day Rate, Hourly Rate
+â€¢ **Role Type:** Permanent, Contract, Part Time, FTC, Temporary
+â€¢ **IR35 Status:** Inside IR35, Outside IR35 (for UK contracts)
+â€¢ System analyzes job description
+â€¢ Suggests improvements for:
+â€¢ Clarity and readability
+â€¢ Required vs. preferred qualifications
+â€¢ Salary competitiveness
+â€¢ Skills alignment
+â€¢ User reviews and accepts/rejects suggestions
+â€¢ Form validation checks all required fields
+â€¢ Role saved to Supabase `roles` table
+â€¢ Role appears in dashboard immediately
+â€¢ User can start recruitment process
+â€¢ User clicks &quot;Edit&quot; on role card
+â€¢ Edit modal opens with pre-filled form
+â€¢ User modifies fields as needed
+â€¢ Changes saved to database
+â€¢ All associated candidates updated (if relevant fields changed)
+â€¢ Select multiple roles
+â€¢ Apply bulk actions: change status, department, priority
+â€¢ Bulk updates processed asynchronously
+â€¢ **Draft:** Role not yet published
+â€¢ **Active:** Role open for applications
+â€¢ **On Hold:** Temporarily paused
+â€¢ **Closed:** Role filled or cancelled
+â€¢ User changes role status
+â€¢ System checks for active candidates
+â€¢ If closing role:
+â€¢ All active candidates notified
+â€¢ Outstanding interviews cancelled
+â€¢ Analytics updated
+â€¢ Status change logged in audit trail
+â€¢ Number of candidates applied
+â€¢ Average AI match score
+â€¢ Time to fill
+â€¢ Source of candidates
+â€¢ Interview conversion rate
+â€¢ Offer acceptance rate
+â€¢ Visual charts showing role performance
+â€¢ Comparison with other roles
+â€¢ Trend analysis over time
+â€¢ Export capabilities
+4. AI-Powered Recruitment &amp; Candidate Sourcing
+4.1 Starting AI Recruitment
+Step 1: Initiate Recruitment
+Step 2: Recruitment Configuration
+Step 3: AI Recruitment Process
+â€¢ User selects a job role
+â€¢ Clicks &quot;Start AI Recruitment&quot; button
+â€¢ `AIRecruitmentModal` opens
+â€¢ **Outreach Campaign Type Selection:**
+â€¢ **Standard:** 5 touchpoints over 3 weeks
+â€¢ **Aggressive:** 5 touchpoints over 2 weeks
+â€¢ **Gentle:** 5 touchpoints over 6 weeks
+â€¢ **Custom Touchpoint Count:** 1-10 contacts
+â€¢ User confirms configuration
+The system executes the following steps automatically:
+Step 3a: Analyzing Job Requirements
+Step 3b: Searching Job Boards
+Step 3c: Searching LinkedIn
+Step 3d: Scanning Indeed Profiles
+Step 3e: Processing GitHub Profiles
+Step 3f: Running UPhireIQ AI Matching
+Step 3g: Generating Candidate Reports
+Step 3h: Finalizing Recruitment Pipeline
+Step 4: Candidate Selection &amp; Outreach
+4.2 Candidate Sourcing Sources
+1. Job Boards
+2. LinkedIn
+3. Indeed
+4. GitHub (Technical Roles)
+5. Internal Database
+4.3 AI Matching Algorithm
+Match Score Calculation Process:
+1. Skills Matching (`skillMatchingService`)
+For each required skill:
+- Check for exact match (100% weight)
+- Check for partial match (50% weight)
+- Check for related skill (25% weight)
+
+Skills Match Score = (Matched Skills Ã— 1.0 + Partial Matches Ã— 0.5) / Total Required Skills Ã— 100
+2. Experience Matching
+Experience Score = min(100, (Candidate Years / Required Years) Ã— 100)
+If candidate exceeds requirement: 100%
+If candidate below requirement: Proportional score
+3. Qualifications Matching
+Check required qualifications against candidate:
+- Exact match: 100%
+- Equivalent qualification: 80%
+- Related qualification: 60%
+- Missing: 0%
+4. Location Compatibility
+If same location: 100%
+If commutable distance: 80%
+If remote-friendly role: 100%
+If location mismatch: 0%
+5. Salary Alignment
+If candidate expectation within range: 100%
+If slightly above range: 80%
+If significantly above: 50%
+If below range: 100% (advantageous)
+6. Overall Match Score
+Overall Score =
+(Skills Match Ã— 0.4) +
+(Experience Match Ã— 0.3) +
+(Qualifications Match Ã— 0.2) +
+(Location Ã— 0.05) +
+(Salary Alignment Ã— 0.05)
+4.4 Candidate Profile Generation
+Profile Components:
+â€¢ System analyzes job description
+â€¢ Extracts key requirements, skills, qualifications
+â€¢ Identifies role priorities and preferences
+â€¢ Duration: ~1 second
+â€¢ Searches all associated job boards for CVs
+â€¢ Parses CV data and extracts candidate information
+â€¢ Filters by location, experience, skills
+â€¢ Duration: ~1.8 seconds
+â€¢ Searches LinkedIn for matching profiles
+â€¢ Analyzes profile completeness and relevance
+â€¢ Extracts skills, experience, education
+â€¢ Duration: ~1.5 seconds
+â€¢ Searches Indeed for candidate profiles
+â€¢ Extracts profile data and application history
+â€¢ Duration: ~1.2 seconds
+â€¢ Searches GitHub for technical candidates (if applicable)
+â€¢ Analyzes code repositories and contributions
+â€¢ Assesses technical skills from code
+â€¢ Duration: ~1 second
+â€¢ **AI Match Score Calculation:**
+â€¢ Skills matching (exact, partial, weighted)
+â€¢ Experience relevance assessment
+â€¢ Qualifications matching
+â€¢ Location compatibility
+â€¢ Salary alignment
+â€¢ Cultural fit prediction
+â€¢ **Scoring Algorithm:**
+â€¢ Skills match: 40% weight
+â€¢ Experience: 30% weight
+â€¢ Qualifications: 20% weight
+â€¢ Other factors: 10% weight
+â€¢ Duration: ~2 seconds
+â€¢ Creates detailed candidate profiles
+â€¢ Generates match analysis reports
+â€¢ Calculates suitability scores
+â€¢ Duration: ~0.8 seconds
+â€¢ Saves all candidates to database
+â€¢ Creates candidate-role associations
+â€¢ Prepares outreach sequences
+â€¢ Duration: ~0.5 seconds
+â€¢ System displays found candidates with AI match scores
+â€¢ User can review candidates before outreach
+â€¢ System filters candidates (default: AI match &gt; 70%)
+â€¢ Top 10 candidates selected automatically
+â€¢ Outreach sequences created for selected candidates
+â€¢ **Integration:** Via `jobDistributionService`
+â€¢ **Sources:** Multiple job board APIs
+â€¢ **Process:**
+â€¢ System queries job boards with role criteria
+â€¢ Receives candidate CVs and profiles
+â€¢ Parses and normalizes data
+â€¢ Stores in candidate database
+â€¢ **Integration:** LinkedIn API (when configured)
+â€¢ **Process:**
+â€¢ Searches LinkedIn profiles by keywords
+â€¢ Filters by location, industry, experience
+â€¢ Extracts profile data
+â€¢ Analyzes profile completeness
+â€¢ **Integration:** Indeed API
+â€¢ **Process:**
+â€¢ Searches Indeed candidate database
+â€¢ Extracts profile information
+â€¢ Gets application history
+â€¢ **Integration:** GitHub API
+â€¢ **Process:**
+â€¢ Searches for developers with relevant skills
+â€¢ Analyzes code repositories
+â€¢ Assesses technical competency
+â€¢ Searches existing candidate database
+â€¢ Matches previous applicants to new roles
+â€¢ Re-engages passive candidates
+â€¢ **Basic Information:**
+â€¢ Name, email, phone
+â€¢ Location, current role, company
+â€¢ LinkedIn profile, GitHub (if applicable)
+â€¢ **Skills &amp; Experience:**
+â€¢ Skills list (extracted from CV/profile)
+â€¢ Years of experience
+â€¢ Current and previous roles
+â€¢ Education background
+â€¢ **AI Analysis:**
+â€¢ AI match score
+â€¢ Match breakdown (skills, experience, etc.)
+â€¢ Strengths and weaknesses
+â€¢ Recommendation (proceed/review/reject)
+â€¢ **Availability:**
+â€¢ Active job seeker
+â€¢ Passive candidate
+â€¢ Not available
+â€¢ **Response Probability:**
+â€¢ Calculated based on:
+â€¢ Profile completeness
+â€¢ Activity level
+â€¢ Response history
+â€¢ Engagement signals
+5. Outreach System
+5.1 Outreach Sequence Creation
+Step 1: Manual Sequence Creation
+Step 2: Candidate Selection
+Step 3: Job Role Selection
+Step 4: Sequence Configuration
+Step 5: Sequence Generation
+5.2 Automated Outreach from Recruitment
+Process Flow:
+Integration Points:
+5.3 Message Generation
+Step 1: Message Type Determination
+Step 2: AI Message Generation
+Generate a [message type] for:
+- Candidate: [name, current role, company, location]
+- Role: [job title, department, key requirements]
+- Tone: [professional/casual/technical]
+- Channel: [LinkedIn/Email/Phone]
+Step 3: Message Review (Optional)
+Step 4: Message Sending
+5.4 Follow-Up Sequence Management
+Automatic Progression:
+Response Handling:
+Positive Response:
+Negative Response:
+Neutral Response:
+5.5 Response Classification
+AI-Powered Classification:
+Classification Process:
+1. Response text analyzed by Grok AI
+2. Sentiment analysis performed
+3. Intent detection
+4. Classification confidence score calculated
+5. If confidence &gt; 80%: Auto-classify
+6. If confidence &lt; 80%: Flag for manual review
+Manual Override:
+5.6 Outreach Analytics
+Metrics Tracked:
+Analytics Dashboard:
+â€¢ User navigates to Outreach Dashboard
+â€¢ Clicks &quot;Start New Outreach&quot;
+â€¢ `CreateOutreachSequenceModal` opens
+â€¢ User searches/selects candidate from list
+â€¢ Candidate details displayed:
+â€¢ Name, current role, company
+â€¢ Location, availability status
+â€¢ AI match score
+â€¢ Skills and experience
+â€¢ User selects job role for outreach
+â€¢ Role details displayed:
+â€¢ Job title, department, location
+â€¢ Key requirements
+â€¢ Salary range
+â€¢ **Sequence Type:**
+â€¢ **Standard:** 5 touchpoints over 3 weeks
+â€¢ **Aggressive:** 5 touchpoints over 2 weeks
+â€¢ **Gentle:** 5 touchpoints over 6 weeks
+â€¢ **Custom Touchpoint Count:** 1-10 contacts
+â€¢ User confirms configuration
+â€¢ System generates touchpoint schedule:
+â€¢ **Touchpoint 1:** Initial Contact (LinkedIn) - Immediate
+â€¢ **Touchpoint 2:** Value Proposition (Email) - 3 days
+â€¢ **Touchpoint 3:** Social Proof (LinkedIn) - 1 week
+â€¢ **Touchpoint 4:** Urgency (Email) - 2 weeks
+â€¢ **Touchpoint 5:** Final Attempt (Phone) - 3 weeks
+â€¢ Touchpoints saved to database
+â€¢ First touchpoint executed immediately
+â€¢ AI Recruitment completes candidate discovery
+â€¢ System filters candidates (AI match &gt; 70%)
+â€¢ Top candidates selected (default: 10)
+â€¢ `outreachService.createSequencesForCandidates()` called
+â€¢ Outreach sequences created for each candidate
+â€¢ Sequences linked to job role
+â€¢ First touchpoint sent immediately
+â€¢ Sequences automatically linked to originating job role
+â€¢ Candidates associated with role in database
+â€¢ Analytics track recruitment â†’ outreach â†’ interview pipeline
+â€¢ System determines message type based on touchpoint:
+â€¢ Initial Contact: Introduction message
+â€¢ Value Proposition: Role benefits message
+â€¢ Social Proof: Company/team highlights
+â€¢ Urgency: Time-sensitive message
+â€¢ Final Attempt: Last chance message
+â€¢ System calls `outreachService.generateMessage()`
+â€¢ Uses Grok AI with detailed prompt:
+â€¢ AI generates personalized message
+â€¢ Message includes:
+â€¢ Personalized greeting
+â€¢ Role relevance explanation
+â€¢ Key benefits
+â€¢ Clear call-to-action
+â€¢ User can review messages before sending
+â€¢ Edit capability available
+â€¢ Approval workflow (if configured)
+â€¢ Message sent via appropriate channel:
+â€¢ **LinkedIn:** Via LinkedIn API or manual copy
+â€¢ **Email:** Via `emailServiceEnhanced`
+â€¢ **Phone:** Scheduled call reminder
+â€¢ Message status updated: &quot;Sent&quot;
+â€¢ Timestamp recorded
+â€¢ Tracking enabled (for email)
+â€¢ System checks for responses daily
+â€¢ If no response after timeout period:
+â€¢ Next touchpoint automatically scheduled
+â€¢ Message generated and sent
+â€¢ Sequence continues
+â€¢ System detects positive response via:
+â€¢ Email reply analysis
+â€¢ LinkedIn message analysis
+â€¢ Manual classification
+â€¢ `outreachService.handleResponse()` called
+â€¢ Sequence paused automatically
+â€¢ Vetting call scheduled (see Section 6)
+â€¢ Candidate moved to &quot;Interested&quot; status
+â€¢ System detects negative response
+â€¢ Sequence terminated automatically
+â€¢ Candidate marked as &quot;Not Interested&quot;
+â€¢ No further outreach attempted
+â€¢ Analytics updated
+â€¢ System detects neutral/ambiguous response
+â€¢ Follow-up message sent
+â€¢ Sequence continues with adjusted timing
+â€¢ Response tracked for analytics
+â€¢ System uses Grok AI to analyze response
+â€¢ Classification categories:
+â€¢ **Positive:** Interested, wants to proceed
+â€¢ **Negative:** Not interested, decline
+â€¢ **Neutral:** Needs more information, questions
+â€¢ **Unclear:** Ambiguous response
+â€¢ User can manually classify responses
+â€¢ Override saved for learning
+â€¢ System learns from manual corrections
+â€¢ **Total Outreach:** Number of sequences started
+â€¢ **Active Sequences:** Currently running sequences
+â€¢ **Response Rate:** Percentage of responses received
+â€¢ **Positive Responses:** Number of positive responses
+â€¢ **Channel Performance:** LinkedIn vs Email vs Phone
+â€¢ **Average Response Time:** Time to first response
+â€¢ **Conversion Rate:** Outreach â†’ Interview conversion
+â€¢ Real-time metrics display
+â€¢ Channel performance comparison
+â€¢ Response rate trends
+â€¢ Conversion funnel visualization
+â€¢ Export capabilities
+6. Automated Vetting &amp; Screening
+6.1 Vetting Call Scheduling
+Automatic Scheduling (Positive Outreach Response):
+Manual Scheduling:
+6.2 Vetting Call Confirmation Email
+Email Content:
+6.3 Automated Webchat Screening Process
+Step 1: Candidate Access
+&quot;Hello! I&apos;m UPhire IQ, your AI assistant for this initial screening interview.
+
+This is an automated screening designed to understand your qualifications
+and interest in the role. Your responses will be reviewed by our team, and
+if your application is successful, you&apos;ll be selected to proceed to interview
+with members of the hiring company.
+
+This typically takes 5-10 minutes. Let&apos;s begin!&quot;
+Step 2: Question Flow
+â€¢ System detects positive outreach response
+â€¢ `vettingService.scheduleVettingCall()` called automatically
+â€¢ Call type determined: &quot;webchat&quot; (automated)
+â€¢ Call scheduled immediately
+â€¢ Confirmation email sent to candidate
+â€¢ User selects candidate
+â€¢ Clicks &quot;Schedule Vetting Call&quot;
+â€¢ `VettingCallModal` opens
+â€¢ User selects:
+â€¢ Call type: Webchat, Phone, Video
+â€¢ Date and time
+â€¢ Duration
+â€¢ Call scheduled
+â€¢ Confirmation email sent
+â€¢ Clear subject line: &quot;UPhire IQ Initial Screening - [Role Title]&quot;
+â€¢ Welcome message explaining process
+â€¢ **Key Messaging:**
+â€¢ This is an automated AI initial screening
+â€¢ Duration: 5-10 minutes
+â€¢ Next stage will be with hiring company (if successful)
+â€¢ Webchat link provided
+â€¢ Calendar invite (if applicable)
+â€¢ Support contact information
+â€¢ Candidate clicks webchat link from email
+â€¢ `AutomatedVettingChat` component loads
+â€¢ Welcome message displayed:
+The system asks questions in this order:
+Question 1: Attraction
+Question 2: Skills &amp; Experience
+Question 3: Current Salary
+Question 4: Salary Expectations
+Question 5: Notice Period
+Question 6: Availability
+Question 7: Location &amp; Commute
+Question 8: Interest Level (Optional)
+Step 3: Real-Time Response Analysis
+Step 4: Assessment Completion
+Step 5: Completion Message
+6.4 Assessment Scoring Algorithm
+Suitability Score Calculation:
+1. Qualifications Match (Boolean)
+2. Skills Match (Boolean)
+3. Experience Relevance (Boolean)
+4. Communication Skills (1-5 scale)
+5. Professionalism (1-5 scale)
+6. Enthusiasm (1-5 scale)
+7. Interest Level (1-5 scale)
+8. Cultural Fit Score (1-5 scale)
+9. Availability Confirmed (Boolean)
+10. Salary Alignment (Boolean)
+Overall Suitability Score:
+Score =
+(Qualifications Match Ã— 0.15) +
+(Skills Match Ã— 0.20) +
+(Experience Relevance Ã— 0.15) +
+(Communication Skills / 5 Ã— 0.10) +
+(Professionalism / 5 Ã— 0.10) +
+(Enthusiasm / 5 Ã— 0.10) +
+(Interest Level / 5 Ã— 0.10) +
+(Cultural Fit / 5 Ã— 0.05) +
+(Availability Ã— 0.03) +
+(Salary Alignment Ã— 0.02)
+Recommendation Logic:
+6.5 AI Analysis Integration
+Grok AI Analysis:
+AI Insights Included:
+6.6 Post-Assessment Actions
+If Recommendation = &quot;Proceed&quot;:
+If Recommendation = &quot;Reject&quot;:
+If Recommendation = &quot;Needs More Info&quot;:
+6.7 Assessment Data Storage
+Database Schema (`vetting_calls` table):
+â€¢ **Question:** &quot;What is it about this particular role and opportunity that caught your attention?&quot;
+â€¢ **Purpose:** Assess genuine interest and motivation
+â€¢ **Analysis:** AI analyzes response for enthusiasm, role understanding, alignment
+â€¢ **Question:** &quot;What relevant skills and experience do you bring to this role, particularly concerning [key skill 1] and [key skill 2]?&quot;
+â€¢ **Purpose:** Validate skills match and experience relevance
+â€¢ **Analysis:**
+â€¢ Skills matching (exact/partial)
+â€¢ Experience relevance
+â€¢ Technical competency
+â€¢ **Question:** &quot;What is your current salary or package?&quot;
+â€¢ **Purpose:** Understand current compensation
+â€¢ **Analysis:** Salary alignment with role range
+â€¢ **Question:** &quot;Do you have a financial figure in mind you are looking for in your next role?&quot;
+â€¢ **Purpose:** Assess salary expectations alignment
+â€¢ **Analysis:** Compare expectations with role range
+â€¢ **Question:** &quot;What is your notice period with your current employer?&quot;
+â€¢ **Purpose:** Understand availability timeline
+â€¢ **Analysis:** Notice period length, flexibility
+â€¢ **Question:** &quot;Regarding availability, when would you be able to start if offered the role?&quot;
+â€¢ **Purpose:** Confirm start date availability
+â€¢ **Analysis:** Availability confirmed (yes/no)
+â€¢ **Question:** &quot;If this role is office-based, are you able to commute to [location]?&quot;
+â€¢ **Purpose:** Assess location compatibility
+â€¢ **Analysis:** Commute feasibility, location alignment
+â€¢ **Question:** Asked if interest level still unclear
+â€¢ **Purpose:** Final interest assessment
+â€¢ **Analysis:** Overall enthusiasm and motivation
+â€¢ Candidate submits response
+â€¢ `vettingChatService.processResponse()` called
+â€¢ Response validated (not empty)
+â€¢ AI analysis performed:
+â€¢ `vettingChatService.analyzeResponse()` uses Grok AI
+â€¢ Analyzes response for:
+â€¢ Skills mentioned
+â€¢ Experience relevance
+â€¢ Enthusiasm level
+â€¢ Communication quality
+â€¢ Red flags or concerns
+â€¢ Assessment updated in real-time
+â€¢ Next question generated
+â€¢ System determines completion when:
+â€¢ All 7 core questions answered
+â€¢ Minimum data requirements met
+â€¢ Sufficient information gathered
+â€¢ `vettingChatService.completeAssessment()` called
+â€¢ Final assessment calculated:
+â€¢ **Suitability Score:** 0-100
+â€¢ **Recommendation:** Proceed / Reject / Needs More Info
+â€¢ **Assessment Notes:** Summary of findings
+â€¢ System displays completion message based on recommendation:
+â€¢ **Proceed:** &quot;Thank you for completing the initial screening. Your application will be reviewed, and if successful, you&apos;ll be contacted to schedule an interview with members of the hiring company.&quot;
+â€¢ **Reject:** &quot;Thank you for your time. After careful consideration, we&apos;ve decided to move forward with other candidates.&quot;
+â€¢ **Needs More Info:** &quot;We may need additional information. Our team will review and may reach out for follow-up.&quot;
+â€¢ Email sent with next steps
+â€¢ Assessment saved to database
+â€¢ Required qualifications present: 100%
+â€¢ Missing qualifications: 0%
+â€¢ Required skills present: 100%
+â€¢ Partial skills match: 50%
+â€¢ Missing skills: 0%
+â€¢ Relevant experience: 100%
+â€¢ Some relevance: 50%
+â€¢ No relevance: 0%
+â€¢ Assessed from response quality:
+â€¢ Clear, articulate: 5
+â€¢ Good communication: 4
+â€¢ Adequate: 3
+â€¢ Poor: 2
+â€¢ Very poor: 1
+â€¢ Assessed from tone and demeanor:
+â€¢ Highly professional: 5
+â€¢ Professional: 4
+â€¢ Adequate: 3
+â€¢ Unprofessional: 2
+â€¢ Very unprofessional: 1
+â€¢ Assessed from interest level:
+â€¢ Very enthusiastic: 5
+â€¢ Enthusiastic: 4
+â€¢ Moderate interest: 3
+â€¢ Low interest: 2
+â€¢ No interest: 1
+â€¢ Overall interest assessment:
+â€¢ Very interested: 5
+â€¢ Interested: 4
+â€¢ Neutral: 3
+â€¢ Not interested: 2
+â€¢ Very uninterested: 1
+â€¢ Assessed from values alignment:
+â€¢ Excellent fit: 5
+â€¢ Good fit: 4
+â€¢ Adequate: 3
+â€¢ Poor fit: 2
+â€¢ Very poor fit: 1
+â€¢ Available: 100%
+â€¢ Not available: 0%
+â€¢ Within range: 100%
+â€¢ Slightly above: 80%
+â€¢ Significantly above: 50%
+â€¢ Below range: 100% (advantageous)
+â€¢ **Score â‰¥ 80:** Proceed (auto-shortlist)
+â€¢ **Score 70-79:** Needs More Info (manual review)
+â€¢ **Score &lt; 70:** Reject
+â€¢ If call notes/transcript available:
+â€¢ `vettingService.analyzeCallNotesWithAI()` called
+â€¢ Grok AI analyzes full conversation
+â€¢ Generates insights:
+â€¢ Overall assessment
+â€¢ Strengths identified
+â€¢ Concerns raised
+â€¢ Recommendations
+â€¢ Reasoning
+â€¢ AI score incorporated (30% weight)
+â€¢ Manual score weighted (70%)
+â€¢ Final score calculated
+â€¢ Communication style analysis
+â€¢ Problem-solving approach
+â€¢ Cultural fit indicators
+â€¢ Red flags or concerns
+â€¢ Unique strengths
+â€¢ Improvement areas
+â€¢ Candidate automatically shortlisted
+â€¢ Added to role&apos;s shortlist
+â€¢ Next steps email sent:
+â€¢ Thank you message
+â€¢ Interview scheduling information
+â€¢ Timeline expectations
+â€¢ Interview scheduling initiated (see Section 8)
+â€¢ Candidate marked as &quot;Rejected&quot;
+â€¢ Rejection email sent:
+â€¢ Polite decline message
+â€¢ Thank you for time
+â€¢ Future opportunities mention
+â€¢ No further action
+â€¢ Candidate flagged for follow-up
+â€¢ Information request email sent:
+â€¢ Specific information needed
+â€¢ Next steps
+â€¢ Manual review scheduled
+â€¢ Follow-up call may be scheduled
+â€¢ Call ID, Candidate ID, Job ID, Tenant ID
+â€¢ Call type, scheduled time, duration
+â€¢ Status (scheduled, in-progress, completed, cancelled)
+â€¢ Suitability score, recommendation
+â€¢ Assessment notes, call notes/transcript
+â€¢ All assessment metrics (qualifications, skills, etc.)
+â€¢ AI insights (JSON)
+â€¢ Next steps, follow-up requirements
+â€¢ Created/updated timestamps
+7. VR Simulation Interviews
+7.1 VR Scenario Selection
+Step 1: Scenario Assignment
+Step 2: Scenario Configuration
+7.2 VR Interview Invitation
+Process:
+7.3 VR Interview Execution
+Step 1: VR Portal Access
+Step 2: Scenario Initialization
+Step 3: Interview Conduct
+Step 4: Real-Time Assessment
+Step 5: Interview Completion
+7.4 VR Performance Analysis
+Metrics Assessed:
+1. Competency Scores (1-5 scale):
+2. Behavioral Metrics:
+3. Answer Quality:
+4. Professional Demeanor:
+5. Time to Decision:
+7.5 VR Results Processing
+Step 1: Results Calculation
+Step 2: Results Storage
+Step 3: Results Review
+Step 4: Integration with Assessment
+â€¢ User assigns VR scenario to job role during role creation
+â€¢ Available scenarios:
+â€¢ Boardroom Panel Interview
+â€¢ 1:1 Office Interview
+â€¢ Factory Floor Site Test
+â€¢ Customer Service Scenario
+â€¢ Technical Assessment Scenario
+â€¢ Custom Scenarios (Enterprise)
+â€¢ User configures scenario parameters:
+â€¢ Interview duration
+â€¢ Number of interviewers
+â€¢ Question set
+â€¢ Difficulty level
+â€¢ Custom instructions
+â€¢ Candidate shortlisted for role with VR scenario
+â€¢ VR interview invitation sent via email
+â€¢ Email includes:
+â€¢ VR interview link
+â€¢ Instructions for access
+â€¢ Technical requirements
+â€¢ Preparation tips
+â€¢ Candidate clicks link to access VR portal
+â€¢ Candidate navigates to VR portal URL
+â€¢ `VRSimulationPortal` component loads
+â€¢ System checks:
+â€¢ Browser compatibility (WebXR support)
+â€¢ VR headset availability (optional)
+â€¢ Network connection
+â€¢ Loading screen displayed
+â€¢ Three.js scene loads
+â€¢ VR environment rendered:
+â€¢ 3D room/space
+â€¢ Interviewer avatars
+â€¢ Props and environment
+â€¢ Candidate avatar created
+â€¢ Controls explained
+â€¢ Interviewer asks questions
+â€¢ Candidate responds (voice or text)
+â€¢ System records:
+â€¢ Response audio/text
+â€¢ Response time
+â€¢ Body language (if VR headset)
+â€¢ Eye contact (if VR headset)
+â€¢ Movement and positioning
+â€¢ System analyzes responses:
+â€¢ Answer quality
+â€¢ STAR technique usage
+â€¢ Communication clarity
+â€¢ Professionalism
+â€¢ Behavioral metrics tracked:
+â€¢ Stress level
+â€¢ Confidence
+â€¢ Adaptability
+â€¢ Teamwork indicators
+â€¢ Scores updated in real-time
+â€¢ All questions answered
+â€¢ Interview concludes
+â€¢ Performance summary displayed
+â€¢ Results saved to database
+â€¢ Communication
+â€¢ Problem Solving
+â€¢ Leadership
+â€¢ Decision Making
+â€¢ Technical Skills (if applicable)
+â€¢ Stress Level (measured via voice analysis, movement)
+â€¢ Confidence (measured via posture, voice tone)
+â€¢ Adaptability (measured via response to unexpected questions)
+â€¢ Teamwork (measured via collaborative scenarios)
+â€¢ Clarity and structure
+â€¢ Relevance to question
+â€¢ STAR technique usage
+â€¢ Examples provided
+â€¢ Depth of response
+â€¢ Composure under pressure
+â€¢ Professional appearance (avatar)
+â€¢ Appropriate body language
+â€¢ Engagement level
+â€¢ Response time for questions
+â€¢ Decision-making speed
+â€¢ Processing time
+â€¢ All metrics aggregated
+â€¢ Weighted scoring applied
+â€¢ Overall performance score calculated
+â€¢ Strengths and weaknesses identified
+â€¢ Results saved to `vr_results` table
+â€¢ Performance data stored:
+â€¢ All competency scores
+â€¢ Behavioral metrics
+â€¢ Answer transcripts
+â€¢ Performance video (if recorded)
+â€¢ Timestamps
+â€¢ Results available in candidate profile
+â€¢ User can review:
+â€¢ Performance breakdown
+â€¢ Video replay (if available)
+â€¢ Detailed metrics
+â€¢ Comparison with other candidates
+â€¢ VR results incorporated into overall assessment
+â€¢ VR performance weighted in final decision
+â€¢ Combined score calculated
+â€¢ Recommendation updated if needed
+8. Interview Scheduling &amp; Management
+8.1 Interview Scheduling Process
+Step 1: Schedule Initiation
+Step 2: Interview Type Selection
+Step 3: Date &amp; Time Selection
+Step 4: Interview Details
+Step 5: Confirmation &amp; Reminders
+8.2 Interview Management
+Interview Statuses:
+Status Updates:
+8.3 Interview Rescheduling
+Process:
+8.4 Interview Notes &amp; Feedback
+Step 1: Interview Completion
+Step 2: Feedback Entry
+Step 3: Feedback Storage
+8.5 Interview Analytics
+Metrics Tracked:
+Analytics Dashboard:
+â€¢ Candidate shortlisted (from vetting or VR)
+â€¢ User clicks &quot;Schedule Interview&quot;
+â€¢ Interview scheduling modal opens
+â€¢ **Phone Interview:** Traditional phone call
+â€¢ **Video Interview:** Video call (Zoom, Teams, etc.)
+â€¢ **In-Person Interview:** Physical meeting
+â€¢ **Webchat Interview:** Text-based interview
+â€¢ **Calendly Integration (if configured):**
+â€¢ Candidate receives Calendly link
+â€¢ Candidate selects available time slot
+â€¢ Interview automatically scheduled
+â€¢ **Manual Scheduling:**
+â€¢ User selects date and time
+â€¢ System checks availability
+â€¢ Interview scheduled
+â€¢ User enters:
+â€¢ Interview duration
+â€¢ Interviewer(s) names
+â€¢ Interview location (if in-person)
+â€¢ Video call link (if video)
+â€¢ Additional instructions
+â€¢ Details saved
+â€¢ Confirmation email sent to candidate:
+â€¢ Interview details
+â€¢ Date, time, duration
+â€¢ Interview type
+â€¢ Location/link
+â€¢ Interviewer names
+â€¢ Preparation tips
+â€¢ Calendar invite sent (if applicable)
+â€¢ Reminder emails scheduled:
+â€¢ 24 hours before
+â€¢ 2 hours before
+â€¢ **Scheduled:** Interview booked
+â€¢ **Confirmed:** Candidate confirmed attendance
+â€¢ **In Progress:** Interview happening now
+â€¢ **Completed:** Interview finished
+â€¢ **Cancelled:** Interview cancelled
+â€¢ **Rescheduled:** Interview moved
+â€¢ System tracks interview status
+â€¢ Automatic updates:
+â€¢ &quot;In Progress&quot; when interview time arrives
+â€¢ &quot;Completed&quot; after duration elapsed
+â€¢ Manual updates available
+â€¢ User or candidate requests reschedule
+â€¢ Reschedule modal opens
+â€¢ New date/time selected
+â€¢ Availability checked
+â€¢ Interview updated
+â€¢ Confirmation emails sent to all parties
+â€¢ Calendar invites updated
+â€¢ Interview ends
+â€¢ User clicks &quot;Add Interview Notes&quot;
+â€¢ Feedback form opens
+â€¢ **Overall Assessment:**
+â€¢ Suitability rating (1-5)
+â€¢ Recommendation (Proceed/Reject/Hold)
+â€¢ Overall comments
+â€¢ **Specific Metrics:**
+â€¢ Communication skills
+â€¢ Technical competency
+â€¢ Cultural fit
+â€¢ Enthusiasm
+â€¢ Professionalism
+â€¢ **Interview Notes:**
+â€¢ Key discussion points
+â€¢ Questions asked
+â€¢ Candidate responses
+â€¢ Red flags or concerns
+â€¢ Strengths identified
+â€¢ Notes saved to database
+â€¢ Associated with candidate and role
+â€¢ Available in candidate profile
+â€¢ Used for final decision
+â€¢ Interview completion rate
+â€¢ Average interview duration
+â€¢ Time to schedule interview
+â€¢ Reschedule rate
+â€¢ Interviewer feedback scores
+â€¢ Interview â†’ Offer conversion rate
+â€¢ Visual charts showing interview metrics
+â€¢ Trend analysis
+â€¢ Comparison across roles
+â€¢ Export capabilities
+9. Candidate Management &amp; Shortlisting
+9.1 Candidate Database
+Candidate Profile Structure:
+9.2 Candidate Import
+CSV Import Process:
+Import Template:
+9.3 Candidate Search &amp; Filtering
+Search Functionality:
+Filtering Options:
+9.4 Shortlisting Process
+Automatic Shortlisting:
+Manual Shortlisting:
+Shortlist Management:
+9.5 Candidate Profile Viewing
+Profile Modal Components:
+1. Basic Information Section:
+2. Skills Match Section:
+3. CV Display:
+4. Outreach Screening Results:
+5. Interview History:
+6. Application Timeline:
+7. Actions:
+9.6 Candidate Status Management
+Status Workflow:
+Applied â†’ Shortlisted â†’ Interviewed â†’ Offered â†’ Hired
+â†“
+Rejected
+Status Transitions:
+Status Change Process:
+9.7 Candidate Notes &amp; Communication
+Notes Management:
+Communication History:
+â€¢ **Basic Information:**
+â€¢ Name, email, phone
+â€¢ Location, current role, company
+â€¢ LinkedIn, GitHub profiles
+â€¢ Avatar/profile picture
+â€¢ **Skills &amp; Experience:**
+â€¢ Skills list
+â€¢ Years of experience
+â€¢ Current and previous roles
+â€¢ Education background
+â€¢ Certifications
+â€¢ **Application Data:**
+â€¢ Applied roles
+â€¢ Application dates
+â€¢ Application status
+â€¢ Source (job board, LinkedIn, referral, etc.)
+â€¢ **Assessment Data:**
+â€¢ AI match scores (per role)
+â€¢ Vetting assessment results
+â€¢ VR performance scores
+â€¢ Interview feedback
+â€¢ Overall suitability
+â€¢ **Pipeline Status:**
+â€¢ Current stage
+â€¢ Status (Applied, Shortlisted, Interviewed, Offered, Hired, Rejected)
+â€¢ Last updated timestamp
+â€¢ User clicks &quot;Import Candidates&quot;
+â€¢ `ImportButton` component opens
+â€¢ User uploads CSV file
+â€¢ System validates file format
+â€¢ Data parsed and normalized
+â€¢ Field mapping:
+â€¢ Name â†’ name
+â€¢ Email â†’ email
+â€¢ Phone â†’ phone
+â€¢ Location â†’ location
+â€¢ Skills â†’ skills (comma-separated)
+â€¢ Experience â†’ experience
+â€¢ Current Role â†’ current_role
+â€¢ Company â†’ company
+â€¢ Validation performed:
+â€¢ Required fields checked
+â€¢ Email format validated
+â€¢ Duplicate detection
+â€¢ Candidates imported to database
+â€¢ Success/error report displayed
+â€¢ Imported candidates appear in dashboard
+â€¢ CSV template available for download
+â€¢ Includes all fields and examples
+â€¢ Instructions provided
+â€¢ User enters search query
+â€¢ System searches across:
+â€¢ Name
+â€¢ Email
+â€¢ Skills
+â€¢ Current role
+â€¢ Company
+â€¢ Location
+â€¢ Results displayed instantly
+â€¢ Advanced search available:
+â€¢ Filter by skills
+â€¢ Filter by experience
+â€¢ Filter by location
+â€¢ Filter by status
+â€¢ Filter by AI match score
+â€¢ Filter by role
+â€¢ **Status:** Applied, Shortlisted, Interviewed, Offered, Hired, Rejected
+â€¢ **Source:** Job Board, LinkedIn, Referral, Import, etc.
+â€¢ **Skills:** Select specific skills
+â€¢ **Experience:** Min/max years
+â€¢ **Location:** City, region, country
+â€¢ **AI Match Score:** Min score threshold
+â€¢ **Date Range:** Applied date, updated date
+â€¢ Candidate completes vetting assessment
+â€¢ If suitability score â‰¥ 80:
+â€¢ Candidate automatically shortlisted
+â€¢ Added to role&apos;s shortlist
+â€¢ Status updated to &quot;Shortlisted&quot;
+â€¢ Notification sent to user
+â€¢ User reviews candidate profile
+â€¢ Clicks &quot;Shortlist&quot; button
+â€¢ Candidate added to shortlist
+â€¢ Status updated
+â€¢ Shortlist notification sent
+â€¢ User views role shortlist
+â€¢ Candidates displayed with:
+â€¢ AI match score
+â€¢ Vetting assessment score
+â€¢ Skills match breakdown
+â€¢ Assessment summary
+â€¢ User can:
+â€¢ View full profile
+â€¢ Schedule interview
+â€¢ Remove from shortlist
+â€¢ Add notes
+â€¢ Name, contact details
+â€¢ Current role and company
+â€¢ Location
+â€¢ Profile picture/avatar
+â€¢ Overall match percentage
+â€¢ Skills breakdown:
+â€¢ Exact matches (green)
+â€¢ Partial matches (yellow)
+â€¢ Missing skills (red)
+â€¢ Match highlights
+â€¢ Experience match indicator
+â€¢ Generated CV (for demo candidates)
+â€¢ Real CV (for imported candidates)
+â€¢ CV download option
+â€¢ CV parsing information
+â€¢ Vetting call history
+â€¢ Assessment scores
+â€¢ Recommendation status
+â€¢ Assessment notes
+â€¢ Screening transcript (if available)
+â€¢ Expandable details for each assessment
+â€¢ All interviews scheduled/completed
+â€¢ Interview feedback
+â€¢ Interviewer notes
+â€¢ Performance scores
+â€¢ Application date
+â€¢ Vetting completion date
+â€¢ Interview dates
+â€¢ Status changes
+â€¢ Last updated
+â€¢ Schedule interview
+â€¢ Send message
+â€¢ Add to shortlist
+â€¢ Reject candidate
+â€¢ Add notes
+â€¢ Export profile
+â€¢ **Applied:** Initial application received
+â€¢ **Shortlisted:** Candidate selected for interview
+â€¢ **Interviewed:** Interview completed
+â€¢ **Offered:** Job offer extended
+â€¢ **Hired:** Offer accepted, candidate hired
+â€¢ **Rejected:** Candidate rejected at any stage
+â€¢ User changes candidate status
+â€¢ System updates database
+â€¢ Appropriate email sent:
+â€¢ Offer email (if Offered)
+â€¢ Rejection email (if Rejected)
+â€¢ Welcome email (if Hired)
+â€¢ Analytics updated
+â€¢ Status change logged
+â€¢ User adds notes to candidate profile
+â€¢ Notes saved with timestamp
+â€¢ Notes visible in profile
+â€¢ Notes searchable
+â€¢ Notes exportable
+â€¢ All emails sent/received
+â€¢ LinkedIn messages
+â€¢ Phone call logs
+â€¢ Interview communications
+â€¢ Centralized communication timeline
+10. Analytics &amp; Reporting
+10.1 Dashboard Analytics
+Main Dashboard Metrics:
+1. Total Candidates:
+2. Interviews This Week:
+3. Active Roles:
+4. AI Match Scores:
+5. Pipeline Overview:
+10.2 Recruitment Analytics
+Role Performance Metrics:
+Pipeline Analytics:
+Source Analytics:
+10.3 Outreach Analytics
+Outreach Dashboard Metrics:
+Sequence Performance:
+10.4 Vetting Analytics
+Screening Metrics:
+Assessment Breakdown:
+10.5 VR Performance Analytics
+VR Metrics:
+Performance Comparison:
+10.6 Custom Reports
+Report Builder:
+Pre-built Reports:
+10.7 Export Capabilities
+Data Export Options:
+Export Formats:
+â€¢ Count of all candidates in system
+â€¢ Filtered by date range
+â€¢ Trend indicator (up/down)
+â€¢ Count of interviews scheduled/completed this week
+â€¢ Comparison with previous week
+â€¢ Trend visualization
+â€¢ Number of active job roles
+â€¢ Roles by status breakdown
+â€¢ Roles by department
+â€¢ Average AI match score
+â€¢ Score distribution
+â€¢ Top performing roles
+â€¢ Candidates by stage
+â€¢ Conversion rates between stages
+â€¢ Bottleneck identification
+â€¢ Time to fill
+â€¢ Number of applicants
+â€¢ Average AI match score
+â€¢ Interview conversion rate
+â€¢ Offer acceptance rate
+â€¢ Source effectiveness
+â€¢ Stage-by-stage conversion rates
+â€¢ Time in each stage
+â€¢ Drop-off points
+â€¢ Success factors
+â€¢ Candidate sources breakdown
+â€¢ Source quality (match scores by source)
+â€¢ Source conversion rates
+â€¢ Cost per hire by source
+â€¢ Total outreach sequences
+â€¢ Active sequences
+â€¢ Response rate
+â€¢ Positive response rate
+â€¢ Channel performance (LinkedIn vs Email vs Phone)
+â€¢ Average response time
+â€¢ Conversion rate (outreach â†’ interview)
+â€¢ Sequence type effectiveness
+â€¢ Touchpoint performance
+â€¢ Best performing messages
+â€¢ Optimal timing analysis
+â€¢ Total vetting calls completed
+â€¢ Average suitability score
+â€¢ Recommendation distribution (Proceed/Reject/Needs Info)
+â€¢ Average screening duration
+â€¢ Completion rate
+â€¢ Average scores by category:
+â€¢ Qualifications match
+â€¢ Skills match
+â€¢ Communication skills
+â€¢ Professionalism
+â€¢ Enthusiasm
+â€¢ Cultural fit
+â€¢ Score trends over time
+â€¢ Total VR interviews completed
+â€¢ Average performance scores
+â€¢ Competency breakdown
+â€¢ Behavioral metrics analysis
+â€¢ VR â†’ Hire conversion rate
+â€¢ VR performance vs traditional interviews
+â€¢ Candidate performance by scenario type
+â€¢ Improvement trends
+â€¢ User selects metrics to include
+â€¢ Applies filters (date range, role, status, etc.)
+â€¢ Chooses visualization type (chart, table, etc.)
+â€¢ Generates report
+â€¢ Exports to PDF, Excel, or CSV
+â€¢ Monthly recruitment summary
+â€¢ Role performance report
+â€¢ Source effectiveness report
+â€¢ Time-to-hire analysis
+â€¢ Candidate quality report
+â€¢ **Candidates:** Export candidate list with all fields
+â€¢ **Roles:** Export role details and metrics
+â€¢ **Interviews:** Export interview schedule and feedback
+â€¢ **Analytics:** Export charts and data tables
+â€¢ **Reports:** Export custom reports
+â€¢ CSV (for data analysis)
+â€¢ Excel (formatted spreadsheets)
+â€¢ PDF (for sharing and printing)
+11. Market Intelligence
+11.1 Salary Benchmarking
+Process:
+Market Intelligence Display:
+11.2 Market Rate Analysis
+Analysis Components:
+11.3 Competitive Intelligence
+Competitor Analysis:
+Market Positioning:
+11.4 Market Insights Integration
+AI-Powered Insights:
+Insights Used For:
+â€¢ User views role details
+â€¢ System calls `marketIntelligenceService.getSalaryData()`
+â€¢ Service queries market data providers:
+â€¢ ITJobsWatch API
+â€¢ Adzuna API
+â€¢ Other market data sources
+â€¢ Real-time salary data retrieved:
+â€¢ Average salary for role
+â€¢ Salary range (min/max)
+â€¢ Percentile breakdown (25th, 50th, 75th, 90th)
+â€¢ Location-specific data
+â€¢ Data displayed in role dashboard
+â€¢ Comparison with role&apos;s salary range
+â€¢ Current market rate
+â€¢ Role salary vs market comparison
+â€¢ Competitiveness indicator
+â€¢ Recommendations for salary adjustment
+â€¢ **Role Demand:**
+â€¢ Number of similar roles available
+â€¢ Demand trend (increasing/decreasing)
+â€¢ Competition level
+â€¢ **Salary Trends:**
+â€¢ Historical salary trends
+â€¢ Projected salary changes
+â€¢ Market movement indicators
+â€¢ **Location Analysis:**
+â€¢ Salary by location
+â€¢ Cost of living adjustment
+â€¢ Regional differences
+â€¢ **Skills Premium:**
+â€¢ Salary impact of specific skills
+â€¢ In-demand skills premium
+â€¢ Skill combination value
+â€¢ Similar roles at competitors
+â€¢ Competitor salary ranges
+â€¢ Benefits comparison
+â€¢ Market positioning
+â€¢ Where role sits in market
+â€¢ Above/below market indicators
+â€¢ Recommendations for competitiveness
+â€¢ System analyzes market data
+â€¢ Grok AI generates insights:
+â€¢ Market trends
+â€¢ Salary recommendations
+â€¢ Competitive positioning
+â€¢ Demand forecasting
+â€¢ Insights displayed in dashboard
+â€¢ Actionable recommendations provided
+â€¢ Salary range setting
+â€¢ Role attractiveness assessment
+â€¢ Candidate expectation management
+â€¢ Competitive positioning
+12. Document Management
+12.1 Document Upload
+Process:
+12.2 Document Organization
+Document Categories:
+Organization Features:
+12.3 Document Access Control
+Permissions:
+Access Management:
+12.4 Document Search
+Search Functionality:
+12.5 Document Versioning
+Version Control:
+â€¢ User navigates to Documents section
+â€¢ Clicks &quot;Upload Document&quot;
+â€¢ File picker opens
+â€¢ User selects file(s)
+â€¢ Files uploaded to Supabase Storage
+â€¢ Documents saved to `documents` table
+â€¢ Metadata stored:
+â€¢ File name
+â€¢ File type
+â€¢ File size
+â€¢ Upload date
+â€¢ Associated role/candidate (if applicable)
+â€¢ User who uploaded
+â€¢ **CVs/Resumes:** Candidate CVs
+â€¢ **Contracts:** Employment contracts
+â€¢ **Job Descriptions:** Role descriptions
+â€¢ **Templates:** Email templates, forms
+â€¢ **Reports:** Analytics reports
+â€¢ **Other:** Miscellaneous documents
+â€¢ Folder structure
+â€¢ Tagging system
+â€¢ Search functionality
+â€¢ Filter by type, date, associated entity
+â€¢ Role-based access control
+â€¢ User-level permissions
+â€¢ Document-level sharing
+â€¢ View/edit/download permissions
+â€¢ User sets document permissions
+â€¢ Permissions saved to database
+â€¢ Access checked on document access
+â€¢ Audit log maintained
+â€¢ Full-text search across documents
+â€¢ Search by filename
+â€¢ Search by content (if OCR enabled)
+â€¢ Search by tags
+â€¢ Search by associated entity
+â€¢ Multiple versions of same document
+â€¢ Version history tracking
+â€¢ Previous version access
+â€¢ Version comparison
+13. Team &amp; User Management
+13.1 User Management
+User Roles:
+User Creation:
+13.2 Permission Management
+Permission Levels:
+Permission Assignment:
+13.3 Team Collaboration
+Features:
+13.4 Employee Management
+Employee Directory:
+Probation Tracking:
+Performance Management:
+â€¢ **Admin:** Full system access
+â€¢ **Recruiter:** Recruitment and candidate management
+â€¢ **Hiring Manager:** Interview and hiring decisions
+â€¢ **Viewer:** Read-only access
+â€¢ **Support:** Support staff with impersonation access
+â€¢ Admin navigates to Users section
+â€¢ Clicks &quot;Add User&quot;
+â€¢ Enters user details:
+â€¢ Name, email
+â€¢ Role assignment
+â€¢ Department
+â€¢ Permissions
+â€¢ Invitation email sent
+â€¢ User accepts invitation and sets password
+â€¢ User added to tenant
+â€¢ **Full Access:** All features
+â€¢ **Recruitment Access:** Roles, candidates, outreach
+â€¢ **Interview Access:** Scheduling, feedback
+â€¢ **Analytics Access:** View-only analytics
+â€¢ **Admin Access:** User management, settings
+â€¢ Admin assigns permissions to user
+â€¢ Permissions saved to database
+â€¢ Access control enforced throughout system
+â€¢ Permission changes logged
+â€¢ Shared candidate notes
+â€¢ Team activity feed
+â€¢ Assignment of candidates to team members
+â€¢ Collaborative interview scheduling
+â€¢ Team performance metrics
+â€¢ Employee profiles
+â€¢ Role and department
+â€¢ Contact information
+â€¢ Employment details
+â€¢ Probation start/end dates
+â€¢ Probation review dates
+â€¢ Probation status
+â€¢ Review notes
+â€¢ Performance reviews
+â€¢ Goals and objectives
+â€¢ Performance metrics
+â€¢ Review history
+14. Support &amp; Admin Functions
+14.1 Support Impersonation
+Process:
+Audit Logging:
+14.2 Admin Dashboard
+Admin Functions:
+14.3 System Configuration
+Configuration Options:
+14.4 Help Center
+Help Resources:
+Support Tickets:
+â€¢ Support staff logs into admin dashboard
+â€¢ Views user list
+â€¢ Clicks &quot;Login As User&quot; on specific user
+â€¢ System prompts for reason
+â€¢ Support staff enters reason
+â€¢ System creates impersonation session:
+â€¢ Original session stored
+â€¢ New session created for target user
+â€¢ Impersonation flag set
+â€¢ Audit log entry created
+â€¢ Support staff sees user&apos;s view
+â€¢ Yellow banner displays: &quot;Impersonating [user email]&quot;
+â€¢ All actions logged with impersonation context
+â€¢ Support staff clicks &quot;Exit Impersonation&quot;
+â€¢ Original session restored
+â€¢ Exit logged
+â€¢ All impersonation actions logged
+â€¢ Includes: support user, target user, reason, actions taken, timestamp
+â€¢ Logs stored in `audit_logs` table
+â€¢ Logs reviewable by admins
+â€¢ **User Management:**
+â€¢ View all users
+â€¢ Create/edit users
+â€¢ Deactivate users
+â€¢ Assign roles and permissions
+â€¢ **System Health:**
+â€¢ System status monitoring
+â€¢ API status checks
+â€¢ Error log viewing
+â€¢ Performance metrics
+â€¢ **Error Logs:**
+â€¢ View system errors
+â€¢ Filter by severity, date, user
+â€¢ Error details and stack traces
+â€¢ Resolution tracking
+â€¢ **Activity Monitoring:**
+â€¢ User activity logs
+â€¢ System usage metrics
+â€¢ Feature usage statistics
+â€¢ Performance monitoring
+â€¢ Email service settings
+â€¢ API key management
+â€¢ Feature flags
+â€¢ System limits
+â€¢ Notification settings
+â€¢ Documentation
+â€¢ Video tutorials
+â€¢ FAQ section
+â€¢ Support ticket system
+â€¢ Live chat (if configured)
+â€¢ User creates support ticket
+â€¢ Ticket assigned to support staff
+â€¢ Support staff responds
+â€¢ Ticket status tracked
+â€¢ Resolution documented
+15. Integration &amp; API Access
+15.1 Email Service Integration
+Supported Providers:
+Configuration:
+Email Sending Process:
+15.2 Calendly Integration
+Setup:
+Usage:
+15.3 LinkedIn Integration
+Setup:
+Usage:
+15.4 Stripe Integration
+Payment Processing:
+Subscription Management:
+15.5 API Access (Enterprise)
+REST API Endpoints:
+API Authentication:
+Webhook Support:
+â€¢ SendGrid
+â€¢ Mailgun
+â€¢ AWS SES
+â€¢ SMTP (generic)
+â€¢ User navigates to Settings â†’ Email
+â€¢ Selects email provider
+â€¢ Enters API credentials
+â€¢ Tests connection
+â€¢ Saves configuration
+â€¢ System calls `emailServiceEnhanced.sendEmail()`
+â€¢ Service determines provider
+â€¢ Formats email according to provider requirements
+â€¢ Sends via provider API
+â€¢ Tracks delivery status
+â€¢ Logs email activity
+â€¢ User connects Calendly account
+â€¢ OAuth authentication
+â€¢ Calendly webhook configured
+â€¢ Integration active
+â€¢ System generates Calendly link for interview
+â€¢ Candidate selects time slot
+â€¢ Calendly webhook notifies system
+â€¢ Interview automatically scheduled
+â€¢ Confirmation emails sent
+â€¢ User connects LinkedIn account
+â€¢ OAuth authentication
+â€¢ Permissions granted
+â€¢ Integration active
+â€¢ System uses LinkedIn API for:
+â€¢ Profile searches
+â€¢ Message sending
+â€¢ Connection requests
+â€¢ Profile data retrieval
+â€¢ User selects subscription plan
+â€¢ System creates Stripe checkout session
+â€¢ User completes payment
+â€¢ Stripe webhook confirms payment
+â€¢ Subscription activated
+â€¢ User access updated
+â€¢ Plan upgrades/downgrades
+â€¢ Payment method updates
+â€¢ Invoice generation
+â€¢ Usage tracking
+â€¢ Candidate management
+â€¢ Role management
+â€¢ Interview scheduling
+â€¢ Analytics data
+â€¢ Webhook support
+â€¢ API key-based authentication
+â€¢ OAuth 2.0 support
+â€¢ Rate limiting
+â€¢ Request logging
+â€¢ Event notifications
+â€¢ Real-time updates
+â€¢ Custom webhook URLs
+â€¢ Retry logic
+Appendix A: System Data Flow Diagrams
+A.1 Complete Recruitment Flow
+Job Creation â†’ AI Recruitment â†’ Candidate Discovery â†’
+AI Matching â†’ Outreach â†’ Response â†’ Vetting â†’
+Assessment â†’ Shortlisting â†’ Interview â†’ Offer â†’ Hire
+A.2 Outreach Flow
+Candidate Selection â†’ Sequence Creation â†’ Message Generation â†’
+Message Sending â†’ Response Monitoring â†’ Classification â†’
+Action (Vetting/Continue/Terminate)
+A.3 Vetting Flow
+Vetting Scheduled â†’ Email Sent â†’ Candidate Accesses Webchat â†’
+Questions Asked â†’ Responses Analyzed â†’ Assessment Completed â†’
+Recommendation Generated â†’ Next Steps Triggered
+Appendix B: Database Schema Overview
+Key Tables:
+â€¢ **profiles:** User accounts
+â€¢ **tenants:** Organization accounts
+â€¢ **roles:** Job roles
+â€¢ **candidates:** Candidate profiles
+â€¢ **outreach_sequences:** Outreach campaigns
+â€¢ **outreach_touchpoints:** Individual outreach messages
+â€¢ **outreach_responses:** Candidate responses
+â€¢ **vetting_calls:** Vetting assessments
+â€¢ **interviews:** Interview scheduling
+â€¢ **vr_results:** VR performance data
+â€¢ **documents:** Document storage metadata
+â€¢ **audit_logs:** System audit trail
+Appendix C: Error Handling &amp; Recovery
+Error Types:
+Recovery Mechanisms:
+â€¢ **API Errors:** External API failures
+â€¢ **Database Errors:** Database connection/query issues
+â€¢ **Validation Errors:** Input validation failures
+â€¢ **Authentication Errors:** Session/auth failures
+â€¢ Automatic retries for transient errors
+â€¢ Fallback to cached data when available
+â€¢ User-friendly error messages
+â€¢ Error logging for debugging
+â€¢ Support ticket creation for critical errors
+Document End
+This document provides a comprehensive guide to all UPhire IQ system functions and processes. For specific technical implementation details, refer to the source code documentation.
+Last Updated:
+ January 2026
+Version:
+ 1.0
+Maintained By:
+ UPhire Development Team
