@@ -133,11 +133,14 @@
       // Touch controls
       let touchX = 0,
         touchY = 0;
+      let touchActive = false;
+      let tapPending = false;
+      let frameCounter = 0;
+      let sharedAudioCtx = null;
       canvas.addEventListener("touchstart", handleTouch);
       canvas.addEventListener("touchmove", handleTouch);
       canvas.addEventListener("touchend", () => {
-        touchX = 0;
-        touchY = 0;
+        touchActive = false;
       });
       canvas.addEventListener("click", handleClick); // fallback
 
@@ -146,13 +149,18 @@
         const rect = canvas.getBoundingClientRect();
         touchX = e.touches[0].clientX - rect.left;
         touchY = e.touches[0].clientY - rect.top;
+        touchActive = true;
+        if (e.type === "touchstart") {
+          tapPending = true;
+        }
       }
 
       function handleClick(e) {
         const rect = canvas.getBoundingClientRect();
         touchX = e.clientX - rect.left;
         touchY = e.clientY - rect.top;
-        checkTap();
+        touchActive = true;
+        tapPending = true;
       }
 
       function startGame() {
@@ -168,8 +176,8 @@
         difficulty = 1;
         flowers = [];
         butterflies = [];
+        frameCounter = 0;
         lastBreathTime = Date.now();
-        loop();
       }
 
       function restartGame() {
@@ -179,15 +187,17 @@
 
       function update() {
         if (gameState === "playing") {
-          // Player follows touch slowly
-          const dx = touchX - player.x;
-          const dy = touchY - player.y;
-          player.vx = dx * 0.1;
-          player.vy = dy * 0.1;
-          player.x += player.vx;
-          player.y += player.vy;
-          player.x = Math.max(player.size, Math.min(canvas.width - player.size, player.x));
-          player.y = Math.max(player.size, Math.min(canvas.height - 50, player.y));
+          // Player follows touch slowly (only when active)
+          if (touchActive) {
+            const dx = touchX - player.x;
+            const dy = touchY - player.y;
+            player.vx = dx * 0.1;
+            player.vy = dy * 0.1;
+            player.x += player.vx;
+            player.y += player.vy;
+            player.x = Math.max(player.size, Math.min(canvas.width - player.size, player.x));
+            player.y = Math.max(player.size, Math.min(canvas.height - 50, player.y));
+          }
 
           // Spawn
           if (Math.random() < 0.02 * difficulty) {
@@ -224,8 +234,12 @@
             if (b.y > canvas.height + 50) butterflies.splice(i, 1);
           }
 
-          // Timer
-          timeLeft--;
+          // Timer (decrement once per second, ~60 frames)
+          frameCounter++;
+          if (frameCounter >= 60) {
+            frameCounter = 0;
+            timeLeft--;
+          }
           if (timeLeft <= 0) {
             endSession();
             return;
@@ -239,8 +253,11 @@
             lastBreathTime = Date.now();
           }
 
-          // Check collisions on tap
-          if (touchX && touchY) checkTap();
+          // Check collisions on tap (only when a new tap is pending)
+          if (tapPending) {
+            tapPending = false;
+            checkTap();
+          }
         } else if (gameState === "breathing") {
           breathTimer++;
           if (touchX && touchY) {
@@ -358,8 +375,10 @@
         ctx.ellipse(player.x, player.y, player.size, player.size * 0.8, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = "#FF69B4"; // ears
+        ctx.beginPath();
         ctx.ellipse(player.x - 15, player.y - 30, 10, 25, 0, 0, Math.PI * 2);
         ctx.ellipse(player.x + 15, player.y - 30, 10, 25, 0, 0, Math.PI * 2);
+        ctx.fill();
         ctx.fillStyle = "#8B4513"; // eyes
         ctx.beginPath();
         ctx.arc(player.x - 8, player.y - 10, 4, 0, Math.PI * 2);
@@ -463,17 +482,19 @@
       }
 
       function playSound(freq, duration) {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
+        if (!sharedAudioCtx) {
+          sharedAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        const oscillator = sharedAudioCtx.createOscillator();
+        const gainNode = sharedAudioCtx.createGain();
         oscillator.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
+        gainNode.connect(sharedAudioCtx.destination);
         oscillator.frequency.value = freq;
         oscillator.type = "sine";
-        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
-        oscillator.start(audioCtx.currentTime);
-        oscillator.stop(audioCtx.currentTime + duration);
+        gainNode.gain.setValueAtTime(0.3, sharedAudioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, sharedAudioCtx.currentTime + duration);
+        oscillator.start(sharedAudioCtx.currentTime);
+        oscillator.stop(sharedAudioCtx.currentTime + duration);
       }
 
       function loop() {
