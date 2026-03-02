@@ -1,25 +1,504 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UPhire - AI Recruitment Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>Happy Meadow Friends - ADHD Focus Game for Kids 5-10</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: linear-gradient(to bottom, #87ceeb, #98fb98);
+        font-family: "Comic Sans MS", cursive;
+      }
 
-    <!-- Calendly widget script -->
-    <link
-      href="https://assets.calendly.com/assets/external/widget.css"
-      rel="stylesheet"
-    />
-    <script
-      src="https://assets.calendly.com/assets/external/widget.js"
-      type="text/javascript"
-      async
-    ></script>
+      canvas {
+        display: block;
+        cursor: pointer;
+      }
+
+      #ui {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      #progress {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.8);
+        padding: 10px;
+        border-radius: 20px;
+        font-size: 24px;
+      }
+
+      #timer {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 32px;
+        color: #4b0082;
+      }
+
+      #instructions {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        font-size: 20px;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      #startBtn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px 40px;
+        font-size: 28px;
+        background: #ffd700;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        display: none;
+      }
+
+      #endScreen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: white;
+        font-size: 32px;
+        text-align: center;
+      }
+    </style>
   </head>
-
   <body>
-    <div id="root"></div>
+    <canvas id="canvas"></canvas>
+    <div id="ui">
+      <div id="progress">Stars: <span id="stars">0</span>/10</div>
+      <div id="timer">5:00</div>
+      <div id="instructions">Tap flowers 🌸 to collect! Ignore butterflies 🦋!</div>
+    </div>
+    <button id="startBtn" onclick="startGame()">Start Adventure! 🐰</button>
+    <div id="endScreen">
+      <h1>Great Job! ⭐</h1>
+      <p id="finalStars"></p>
+      <button
+        onclick="restartGame()"
+        style="padding: 15px 30px; font-size: 24px; background: #ffd700; border: none; border-radius: 20px; cursor: pointer"
+      >
+        Play Again
+      </button>
+    </div>
+    <script>
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
 
-    <script type="module" src="/src/main.tsx"></script>
+      let gameState = "menu"; // menu, playing, breathing, ended
+      let sessionTime = 300; // 5 min
+      let timeLeft = sessionTime;
+      let stars = 0;
+      let accuracy = 0;
+      let totalTaps = 0;
+      let correctTaps = 0;
+      let difficulty = 1; // increases spawn rate
+      let player = { x: canvas.width / 2, y: canvas.height - 100, vx: 0, vy: 0, size: 40 };
+      let flowers = [];
+      let butterflies = [];
+      let particles = [];
+      let breathingPhase = 0; // 0: inhale, 1: hold, 2: exhale
+      let breathTimer = 0;
+      let breathMax = 120; // frames ~2 sec
+      let lastBreathTime = 0;
+      let streak = localStorage.getItem("streak") || 0;
+
+      // Touch controls
+      let touchX = 0,
+        touchY = 0;
+      canvas.addEventListener("touchstart", handleTouch);
+      canvas.addEventListener("touchmove", handleTouch);
+      canvas.addEventListener("touchend", () => {
+        touchX = 0;
+        touchY = 0;
+      });
+      canvas.addEventListener("click", handleClick); // fallback
+
+      function handleTouch(e) {
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        touchX = e.touches[0].clientX - rect.left;
+        touchY = e.touches[0].clientY - rect.top;
+      }
+
+      function handleClick(e) {
+        const rect = canvas.getBoundingClientRect();
+        touchX = e.clientX - rect.left;
+        touchY = e.clientY - rect.top;
+        checkTap();
+      }
+
+      function startGame() {
+        gameState = "playing";
+        document.getElementById("startBtn").style.display = "none";
+        document.getElementById("instructions").textContent =
+          "Tap flowers 🌸 to collect! Ignore butterflies 🦋!";
+        timeLeft = sessionTime;
+        stars = 0;
+        accuracy = 0;
+        totalTaps = 0;
+        correctTaps = 0;
+        difficulty = 1;
+        flowers = [];
+        butterflies = [];
+        lastBreathTime = Date.now();
+        loop();
+      }
+
+      function restartGame() {
+        document.getElementById("endScreen").style.display = "none";
+        startGame();
+      }
+
+      function update() {
+        if (gameState === "playing") {
+          // Player follows touch slowly
+          const dx = touchX - player.x;
+          const dy = touchY - player.y;
+          player.vx = dx * 0.1;
+          player.vy = dy * 0.1;
+          player.x += player.vx;
+          player.y += player.vy;
+          player.x = Math.max(player.size, Math.min(canvas.width - player.size, player.x));
+          player.y = Math.max(player.size, Math.min(canvas.height - 50, player.y));
+
+          // Spawn
+          if (Math.random() < 0.02 * difficulty) {
+            flowers.push({
+              x: Math.random() * canvas.width,
+              y: -30,
+              vy: 1 + Math.random() * 2,
+              size: 15 + Math.random() * 10,
+            });
+          }
+          if (Math.random() < 0.015 * difficulty) {
+            butterflies.push({
+              x: Math.random() * canvas.width,
+              y: -30,
+              vy: 0.8 + Math.random() * 1.5,
+              size: 20,
+              wiggle: 0,
+            });
+          }
+
+          // Update flowers
+          for (let i = flowers.length - 1; i >= 0; i--) {
+            const f = flowers[i];
+            f.y += f.vy;
+            if (f.y > canvas.height + 50) flowers.splice(i, 1);
+          }
+
+          // Update butterflies
+          for (let i = butterflies.length - 1; i >= 0; i--) {
+            const b = butterflies[i];
+            b.y += b.vy;
+            b.wiggle += 0.2;
+            b.x += Math.sin(b.wiggle) * 2;
+            if (b.y > canvas.height + 50) butterflies.splice(i, 1);
+          }
+
+          // Timer
+          timeLeft--;
+          if (timeLeft <= 0) {
+            endSession();
+            return;
+          }
+
+          // Breathing break every 60 sec
+          if (Date.now() - lastBreathTime > 60000) {
+            gameState = "breathing";
+            breathTimer = 0;
+            breathingPhase = 0;
+            lastBreathTime = Date.now();
+          }
+
+          // Check collisions on tap
+          if (touchX && touchY) checkTap();
+        } else if (gameState === "breathing") {
+          breathTimer++;
+          if (touchX && touchY) {
+            // Tap to breathe
+            if (breathingPhase === 0 && breathTimer > 30) {
+              breathingPhase = 1;
+              breathTimer = 0;
+            } else if (breathingPhase === 1 && breathTimer > 60) {
+              breathingPhase = 2;
+              breathTimer = 0;
+            } else if (breathingPhase === 2 && breathTimer > 30) {
+              gameState = "playing";
+            }
+          }
+          if (breathTimer > breathMax * 3) gameState = "playing"; // Skip if no tap
+        }
+      }
+
+      function checkTap() {
+        totalTaps++;
+        // Check flower hit
+        for (let i = flowers.length - 1; i >= 0; i--) {
+          const f = flowers[i];
+          const dist = Math.hypot(touchX - f.x, touchY - f.y);
+          if (dist < f.size + 20) {
+            flowers.splice(i, 1);
+            correctTaps++;
+            stars = Math.min(10, stars + 1);
+            createParticles(f.x, f.y, "#FFD700");
+            playSound(800, 0.1);
+            return;
+          }
+        }
+        // Wrong tap penalty? No, just ignore for inhibition training
+        touchX = 0;
+        touchY = 0;
+      }
+
+      function createParticles(x, y, color) {
+        for (let i = 0; i < 10; i++) {
+          particles.push({
+            x,
+            y,
+            vx: (Math.random() - 0.5) * 10,
+            vy: (Math.random() - 0.5) * 10 - 2,
+            life: 30,
+            color,
+          });
+        }
+      }
+
+      function updateParticles() {
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.1;
+          p.life--;
+          if (p.life <= 0) particles.splice(i, 1);
+        }
+      }
+
+      function adaptiveDifficulty() {
+        accuracy = totalTaps > 0 ? correctTaps / totalTaps : 0;
+        if (accuracy > 0.8) difficulty = Math.min(3, difficulty + 0.01);
+        else if (accuracy < 0.5) difficulty = Math.max(1, difficulty - 0.01);
+      }
+
+      function endSession() {
+        gameState = "ended";
+        adaptiveDifficulty();
+        const finalStars = Math.floor(accuracy * 10);
+        document.getElementById("finalStars").textContent = `You earned ${finalStars} stars! Keep it up!`;
+        document.getElementById("endScreen").style.display = "flex";
+        if (finalStars >= 7) streak++;
+        else streak = 0;
+        localStorage.setItem("streak", streak);
+      }
+
+      function draw() {
+        // Clear
+        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        gradient.addColorStop(0, "#87CEEB");
+        gradient.addColorStop(1, "#90EE90");
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Clouds
+        ctx.fillStyle = "rgba(255,255,255,0.8)";
+        ctx.beginPath();
+        ctx.arc(canvas.width * 0.2 + Math.sin(Date.now() * 0.001) * 20, 100, 30, 0, Math.PI * 2);
+        ctx.arc(
+          canvas.width * 0.2 + 20 + Math.sin(Date.now() * 0.001) * 20,
+          100,
+          40,
+          0,
+          Math.PI * 2,
+        );
+        ctx.arc(
+          canvas.width * 0.2 + 50 + Math.sin(Date.now() * 0.001) * 20,
+          100,
+          30,
+          0,
+          Math.PI * 2,
+        );
+        ctx.fill();
+
+        // Grass
+        ctx.fillStyle = "#228B22";
+        ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
+
+        // Player bunny
+        ctx.fillStyle = "#F0DC82"; // body
+        ctx.beginPath();
+        ctx.ellipse(player.x, player.y, player.size, player.size * 0.8, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#FF69B4"; // ears
+        ctx.ellipse(player.x - 15, player.y - 30, 10, 25, 0, 0, Math.PI * 2);
+        ctx.ellipse(player.x + 15, player.y - 30, 10, 25, 0, 0, Math.PI * 2);
+        ctx.fillStyle = "#8B4513"; // eyes
+        ctx.beginPath();
+        ctx.arc(player.x - 8, player.y - 10, 4, 0, Math.PI * 2);
+        ctx.arc(player.x + 8, player.y - 10, 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Flowers
+        flowers.forEach((f) => {
+          ctx.fillStyle = "#FF69B4";
+          ctx.beginPath();
+          ctx.arc(f.x, f.y, f.size, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "#FFFF00";
+          ctx.beginPath();
+          ctx.arc(f.x, f.y - 5, 8, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        // Butterflies
+        butterflies.forEach((b) => {
+          ctx.fillStyle = "#00BFFF";
+          ctx.beginPath();
+          ctx.ellipse(b.x, b.y, b.size, b.size * 0.6, b.wiggle * 0.1, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "#FF1493";
+          ctx.beginPath();
+          ctx.arc(b.x - 10, b.y, 6, 0, Math.PI * 2);
+          ctx.arc(b.x + 10, b.y, 6, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        // Particles
+        particles.forEach((p) => {
+          ctx.save();
+          ctx.globalAlpha = p.life / 30;
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        });
+
+        // Breathing screen
+        if (gameState === "breathing") {
+          ctx.fillStyle = "rgba(173, 216, 230, 0.9)";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = "#32CD32";
+          ctx.font = "bold 48px Comic Sans MS";
+          ctx.textAlign = "center";
+          ctx.fillText("Breathe with the flower! 🌸", canvas.width / 2, canvas.height / 2 - 50);
+          // Flower bloom
+          const scale =
+            breathingPhase === 0
+              ? breathTimer / 60
+              : breathingPhase === 1
+                ? 1
+                : 1 - breathTimer / 60;
+          ctx.save();
+          ctx.translate(canvas.width / 2, canvas.height / 2 + 50);
+          ctx.scale(scale, scale);
+          ctx.fillStyle = "#FF69B4";
+          for (let i = 0; i < 8; i++) {
+            ctx.rotate(Math.PI / 4);
+            ctx.beginPath();
+            ctx.ellipse(0, -40, 15, 40, 0, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.fillStyle = "#FFFF00";
+          ctx.beginPath();
+          ctx.arc(0, -50, 12, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+          ctx.font = "32px Comic Sans MS";
+          ctx.fillStyle = breathingPhase === 0 ? "#00F" : breathingPhase === 1 ? "#FFA500" : "#F00";
+          ctx.fillText(
+            breathingPhase === 0
+              ? "Inhale... 👃"
+              : breathingPhase === 1
+                ? "Hold... 💨"
+                : "Exhale... 😮‍💨",
+            canvas.width / 2,
+            canvas.height / 2 + 150,
+          );
+        }
+
+        // Menu
+        if (gameState === "menu") {
+          ctx.fillStyle = "rgba(255,255,255,0.9)";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = "#4B0082";
+          ctx.font = "bold 64px Comic Sans MS";
+          ctx.textAlign = "center";
+          ctx.fillText("Happy Meadow Friends", canvas.width / 2, canvas.height / 2 - 100);
+          ctx.font = "bold 36px Comic Sans MS";
+          ctx.fillText("Help the bunny collect flowers!", canvas.width / 2, canvas.height / 2 - 20);
+          ctx.fillText("Ignore the butterflies!", canvas.width / 2, canvas.height / 2 + 30);
+          ctx.font = "28px Comic Sans MS";
+          ctx.fillText(`Streak: ${streak} days`, canvas.width / 2, canvas.height / 2 + 80);
+          document.getElementById("startBtn").style.display = "block";
+        }
+      }
+
+      function playSound(freq, duration) {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        oscillator.frequency.value = freq;
+        oscillator.type = "sine";
+        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+        oscillator.start(audioCtx.currentTime);
+        oscillator.stop(audioCtx.currentTime + duration);
+      }
+
+      function loop() {
+        update();
+        updateParticles();
+        adaptiveDifficulty();
+        document.getElementById("stars").textContent = stars;
+        const mins = Math.floor(timeLeft / 60);
+        const secs = timeLeft % 60;
+        document.getElementById("timer").textContent = `${mins}:${secs.toString().padStart(2, "0")}`;
+        draw();
+        if (gameState !== "ended") requestAnimationFrame(loop);
+      }
+
+      // Resize
+      window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      });
+
+      // Auto start loop on load
+      window.onload = () => {
+        gameState = "menu";
+        loop();
+      };
+    </script>
   </body>
 </html>
