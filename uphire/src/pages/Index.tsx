@@ -9482,12 +9482,12 @@ const UPhirePlatformComponent = () => {
               </div>
 
               <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6 text-center">
-                <VideoIcon className="w-12 h-12 text-slate-600 mx-auto mb-4" />
+                <Users className="w-12 h-12 text-slate-600 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  VR Simulation Interviews
+                  3 Touch Point Hire System
                 </h3>
                 <p className="text-gray-600">
-                  Real-world skill assessment with detailed VR performance analytics.
+                  Job-board posting, screening, shortlisting, and follow-up in one streamlined workflow.
                 </p>
               </div>
 
