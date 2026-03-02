@@ -116,7 +116,7 @@ const LoginPage = () => {
               className="h-10 w-auto"
             />
           </Link>
-          <p className="mt-4 max-w-xl text-white/90 text-sm leading-relaxed">
+          <p className="mt-4 max-w-xl text-sm leading-relaxed bg-uphire-hero-text bg-clip-text text-transparent">
             AI-powered recruitment infrastructure for modern teams.
           </p>
         </div>

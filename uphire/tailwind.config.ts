@@ -90,6 +90,8 @@ export default {
           "linear-gradient(135deg, #475569 0%, #334155 40%, #0d9488 100%)",
         "uphire-cta-pink":
           "linear-gradient(135deg, #475569 0%, #334155 50%, #db2777 100%)",
+        "uphire-hero-text":
+          "linear-gradient(to right, #f472b6 0%, #ec4899 15%, #a855f7 45%, #6366f1 70%, #14b8a6 100%)",
       },
       backdropBlur: {
         xs: "2px",

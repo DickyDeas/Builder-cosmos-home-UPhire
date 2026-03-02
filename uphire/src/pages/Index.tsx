@@ -9461,10 +9461,10 @@ const UPhirePlatformComponent = () => {
         ) : (
           <div className="text-center space-y-8">
             <div className="space-y-4">
-              <h2 className="text-4xl font-bold text-white">
+              <h2 className="text-4xl font-bold text-[#E51F6F]">
                 Welcome to UPhire
               </h2>
-              <p className="text-xl text-slate-200 max-w-2xl mx-auto">
+              <p className="text-xl max-w-2xl mx-auto bg-uphire-hero-text bg-clip-text text-transparent">
                 AI-powered recruitment infrastructure for modern teams.
               </p>
             </div>
