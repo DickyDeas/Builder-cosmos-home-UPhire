@@ -73,7 +73,7 @@ npm run pre-deploy
 
 ## Phase 4: Post-Launch
 
-1. Smoke test: sign up, log in (or use admin bypass: demo@google / 123), create role, add candidate
+1. Smoke test: sign up, log in (or use admin login: demo@google / 123456), create role, add candidate
 2. Enable Supabase backups (Settings → Database)
 3. Optional: UptimeRobot for monitoring
 

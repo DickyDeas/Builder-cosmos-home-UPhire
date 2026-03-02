@@ -115,10 +115,6 @@ const faqs = [
     a: "Market Intelligence provides real-time salary data, market demand analysis, and competitive insights for job roles. It helps you set competitive salaries, understand market trends, and optimize your hiring strategy. Data is updated daily from multiple sources.",
   },
   {
-    q: "How do I use the CV Tailoring feature?",
-    a: "The CV Tailoring feature uses AI to optimize candidate CVs for specific job descriptions. Upload a candidate's CV, select the target job posting, and our AI will suggest improvements to increase their chances of being shortlisted. This helps candidates present their skills more effectively.",
-  },
-  {
     q: "Can I export candidate data?",
     a: "Yes! You can export candidate lists, job postings, and analytics reports. Go to the relevant section (Candidates, Roles, or Analytics) and click the 'Export' button. Data is exported as CSV files that can be opened in Excel or Google Sheets.",
   },
@@ -132,7 +128,7 @@ const HelpCenter = () => {
       <div className="max-w-4xl mx-auto px-4 py-8">
         <Link
           to="/"
-          className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 mb-6"
+          className="inline-flex items-center text-sm text-slate-600 hover:text-slate-800 mb-6"
         >
           ← Back to Dashboard
         </Link>
@@ -153,7 +149,7 @@ const HelpCenter = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search for help articles, FAQs..."
-                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
               />
             </div>
           </div>
@@ -166,7 +162,7 @@ const HelpCenter = () => {
               <Link
                 key={cat.id}
                 to="/"
-                className="block p-6 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all"
+                className="block p-6 bg-white rounded-lg border border-gray-200 hover:border-slate-300 hover:shadow-md transition-all"
               >
                 <Icon className="w-8 h-8 text-blue-600 mb-3" />
                 <h3 className="font-semibold text-gray-900">{cat.title}</h3>

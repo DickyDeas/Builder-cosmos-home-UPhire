@@ -13,7 +13,7 @@ const getPasswordStrength = (pwd: string): { score: number; label: string; color
   if (pwd.length >= 12) score++;
   const levels = [
     { label: "Weak", color: "bg-red-500" },
-    { label: "Fair", color: "bg-orange-500" },
+    { label: "Fair", color: "bg-amber-500" },
     { label: "Good", color: "bg-yellow-500" },
     { label: "Strong", color: "bg-green-500" },
     { label: "Very strong", color: "bg-green-600" },
@@ -43,7 +43,7 @@ const LoginPage = () => {
     const isDemo =
       !isSignUp &&
       (emailNorm === "demo@google" || emailNorm === "demo@google.com") &&
-      password === "123";
+      password === "123456";
 
     if (isDemo) {
       sessionStorage.setItem("uphire_demo", "true");
@@ -92,7 +92,7 @@ const LoginPage = () => {
     setMessage(null);
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-        redirectTo: `${window.location.origin}/login`,
+        redirectTo: `${window.location.origin}/app/login`,
       });
       if (error) throw error;
       setMessage({ type: "success", text: "Check your email for the password reset link." });
@@ -105,7 +105,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-900 via-purple-800 to-pink-800">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       {/* UPhire logo central - no burger menu */}
       <header className="pt-8 pb-4">
         <div className="flex flex-col items-center text-center px-4">
@@ -146,7 +146,7 @@ const LoginPage = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@company.com"
                     required
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
                   />
                 </div>
               </div>
@@ -162,7 +162,7 @@ const LoginPage = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-slate-600 to-teal-500 text-white rounded-lg hover:from-slate-600 hover:to-teal-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium shadow-md"
               >
                 {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : null}
                 {loading ? "Sending..." : "Send reset link"}
@@ -187,7 +187,7 @@ const LoginPage = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@company.com"
                   required
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
                 />
               </div>
             </div>
@@ -203,7 +203,7 @@ const LoginPage = () => {
                   placeholder="••••••••"
                   required
                   minLength={isSignUp ? 8 : 6}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
                 />
               </div>
               {isSignUp && password && (
@@ -230,7 +230,7 @@ const LoginPage = () => {
               <button
                 type="button"
                 onClick={() => setShowForgotPassword(true)}
-                className="mt-1 text-sm text-purple-600 hover:underline"
+                className="mt-1 text-sm text-teal-600 hover:underline"
               >
                 Forgot password?
               </button>
@@ -249,7 +249,7 @@ const LoginPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+              className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-slate-600 to-teal-500 text-white rounded-lg hover:from-slate-600 hover:to-teal-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium shadow-md"
             >
               {loading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
@@ -259,24 +259,6 @@ const LoginPage = () => {
               {loading ? "Please wait..." : isSignUp ? "Sign up" : "Sign in"}
             </button>
           </form>
-          )}
-
-          {!showForgotPassword && (
-          <>
-            <button
-              type="button"
-              onClick={() => {
-                sessionStorage.setItem("uphire_demo", "true");
-                navigate(from, { replace: true });
-              }}
-              className="w-full mt-4 py-2 px-4 border-2 border-purple-600 text-purple-600 rounded-lg hover:bg-purple-50 font-medium text-sm transition-colors"
-            >
-              Admin bypass: demo@google / 123
-            </button>
-            <p className="mt-3 text-center text-xs text-gray-500">
-              Or enter demo@google and password 123
-            </p>
-          </>
           )}
 
           {!showForgotPassword && (

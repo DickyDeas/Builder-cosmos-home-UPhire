@@ -36,7 +36,7 @@ Add these (copy values from your local `.env`):
 | VITE_BILLING_EMAIL | Yes |
 | VITE_FROM_EMAIL | Yes |
 | VITE_APPLY_BASE_URL | Yes |
-| VITE_APP_URL | Yes |
+| VITE_APP_URL | Yes (use `https://uphireiq.com/app` for subpath) |
 | VITE_EMAIL_SERVICE_API_KEY | No (Brevo) |
 | VITE_EMAIL_SERVICE_URL | No |
 | VITE_CALENDLY_URL | No |

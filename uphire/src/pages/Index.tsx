@@ -67,6 +67,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { contactConfig } from "@/config/contact";
 import { openCalendlyScheduling } from "@/config/calendly";
 import {
@@ -165,11 +175,11 @@ const EmployeeDetailsModal = ({
     <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-slate-50 to-slate-100">
           <div className="flex justify-between items-start">
             <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-                <span className="text-2xl font-bold text-blue-600">
+              <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center">
+                <span className="text-2xl font-bold text-slate-600">
                   {employee.avatar ||
                     employee.name
                       .split(" ")
@@ -183,14 +193,14 @@ const EmployeeDetailsModal = ({
                 </h2>
                 <p className="text-lg text-gray-600">{employee.position}</p>
                 <div className="flex items-center space-x-4 mt-2">
-                  <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                  <span className="px-3 py-1 bg-slate-100 text-slate-800 rounded-full text-sm font-medium">
                     {employee.employeeId}
                   </span>
                   <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
                     {employee.employmentType}
                   </span>
                   {employee.probationPeriod && (
-                    <span className="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-sm font-medium">
+                    <span className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm font-medium">
                       Probation
                     </span>
                   )}
@@ -217,7 +227,7 @@ const EmployeeDetailsModal = ({
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center space-x-2 px-6 py-4 text-sm font-medium border-b-2 transition-colors ${
                     activeTab === tab.id
-                      ? "border-blue-500 text-blue-600 bg-blue-50"
+                      ? "border-slate-500 text-slate-600 bg-slate-50"
                       : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50"
                   }`}
                 >
@@ -316,13 +326,13 @@ const EmployeeDetailsModal = ({
               </div>
 
               {/* Time with Company */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+              <div className="bg-slate-50 border border-slate-200 rounded-lg p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
                   Time with Company
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="text-center">
-                    <p className="text-2xl font-bold text-blue-600">
+                    <p className="text-2xl font-bold text-slate-600">
                       {Math.ceil(
                         (today.getTime() - startDate.getTime()) /
                           (1000 * 60 * 60 * 24),
@@ -340,7 +350,7 @@ const EmployeeDetailsModal = ({
                     <p className="text-sm text-gray-600">Months Experience</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-2xl font-bold text-purple-600">
+                    <p className="text-2xl font-bold text-slate-600">
                       {employee.probationPeriod ? "In Progress" : "Completed"}
                     </p>
                     <p className="text-sm text-gray-600">Probation Status</p>
@@ -352,7 +362,7 @@ const EmployeeDetailsModal = ({
 
           {activeTab === "probation" && (
             <div className="space-y-6">
-              <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
                   Probation Period
                 </h3>
@@ -362,13 +372,13 @@ const EmployeeDetailsModal = ({
                       <span className="text-sm font-medium text-gray-600">
                         Progress:
                       </span>
-                      <span className="text-sm font-bold text-orange-600">
+                      <span className="text-sm font-bold text-amber-600">
                         {probationDaysRemaining} days remaining
                       </span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-3">
                       <div
-                        className="bg-orange-500 h-3 rounded-full transition-all"
+                        className="bg-amber-500 h-3 rounded-full transition-all"
                         style={{ width: `${probationProgress}%` }}
                       ></div>
                     </div>
@@ -410,7 +420,7 @@ const EmployeeDetailsModal = ({
                 <div className="space-y-3">
                   <div className="flex items-center justify-between p-3 bg-white rounded border">
                     <div className="flex items-center space-x-3">
-                      <Calendar className="w-5 h-5 text-blue-600" />
+                      <Calendar className="w-5 h-5 text-slate-600" />
                       <div>
                         <p className="text-sm font-medium text-gray-900">
                           30-Day Review
@@ -426,7 +436,7 @@ const EmployeeDetailsModal = ({
                   </div>
                   <div className="flex items-center justify-between p-3 bg-white rounded border">
                     <div className="flex items-center space-x-3">
-                      <Calendar className="w-5 h-5 text-purple-600" />
+                      <Calendar className="w-5 h-5 text-slate-600" />
                       <div>
                         <p className="text-sm font-medium text-gray-900">
                           60-Day Review
@@ -448,7 +458,7 @@ const EmployeeDetailsModal = ({
                   </div>
                   <div className="flex items-center justify-between p-3 bg-white rounded border">
                     <div className="flex items-center space-x-3">
-                      <Calendar className="w-5 h-5 text-orange-600" />
+                      <Calendar className="w-5 h-5 text-amber-600" />
                       <div>
                         <p className="text-sm font-medium text-gray-900">
                           Final Review
@@ -481,7 +491,7 @@ const EmployeeDetailsModal = ({
                 </h3>
                 <button
                   onClick={() => alert("Document upload â€“ connect to Supabase storage when ready")}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+                  className="px-4 py-2 bg-gradient-to-r from-slate-600 to-teal-500 text-white rounded-lg hover:from-slate-600 hover:to-teal-600 transition-colors flex items-center space-x-2 shadow-md"
                 >
                   <Upload size={16} />
                   <span>Upload Document</span>
@@ -497,8 +507,8 @@ const EmployeeDetailsModal = ({
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start space-x-3">
-                          <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                            <FileText className="w-5 h-5 text-blue-600" />
+                          <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
+                            <FileText className="w-5 h-5 text-slate-600" />
                           </div>
                           <div>
                             <h4 className="text-sm font-semibold text-gray-900">
@@ -521,13 +531,13 @@ const EmployeeDetailsModal = ({
                       <div className="flex space-x-2 mt-3">
                         <button
                           onClick={() => alert(`View: ${document.name}`)}
-                          className="flex-1 px-3 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-700"
+                          className="flex-1 px-3 py-1 bg-slate-700 text-white rounded text-xs hover:bg-slate-800"
                         >
                           View
                         </button>
                         <button
                           onClick={() => alert(`Download: ${document.name}`)}
-                          className="flex-1 px-3 py-1 bg-green-600 text-white rounded text-xs hover:bg-green-700"
+                          className="flex-1 px-3 py-1 bg-slate-600 text-white rounded text-xs hover:bg-slate-700"
                         >
                           Download
                         </button>
@@ -541,7 +551,7 @@ const EmployeeDetailsModal = ({
                   <p className="text-gray-600">No documents uploaded yet</p>
                   <button
                     onClick={() => alert("Document upload â€“ connect to Supabase storage when ready")}
-                    className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="mt-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors"
                   >
                     Upload First Document
                   </button>
@@ -552,7 +562,7 @@ const EmployeeDetailsModal = ({
 
           {activeTab === "performance" && (
             <div className="space-y-6">
-              <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6">
+              <div className="bg-gradient-to-r from-slate-50 to-slate-100 rounded-lg p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
                   Performance Overview
                 </h3>
@@ -562,11 +572,11 @@ const EmployeeDetailsModal = ({
                     <p className="text-sm text-gray-600">Overall Rating</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-3xl font-bold text-blue-600">94%</p>
+                    <p className="text-3xl font-bold text-slate-600">94%</p>
                     <p className="text-sm text-gray-600">Goal Achievement</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-3xl font-bold text-purple-600">15</p>
+                    <p className="text-3xl font-bold text-slate-600">15</p>
                     <p className="text-sm text-gray-600">Projects Completed</p>
                   </div>
                 </div>
@@ -784,7 +794,7 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
                 }
               }}
               placeholder="e.g. Senior React Developer"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
             />
           </div>
           <button
@@ -792,7 +802,7 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
               searchTerm.trim() && searchMarketData(searchTerm.trim())
             }
             disabled={isSearching || !searchTerm.trim()}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
+            className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 disabled:bg-slate-400 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
           >
             {isSearching ? (
               <RefreshCw className="w-4 h-4 animate-spin" />
@@ -815,7 +825,7 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
                     setSearchTerm(role);
                     searchMarketData(role);
                   }}
-                  className="px-3 py-1 text-xs bg-blue-50 text-blue-700 rounded-full hover:bg-blue-100 transition-colors"
+                  className="px-3 py-1 text-xs bg-slate-50 text-slate-700 rounded-full hover:bg-slate-100 transition-colors"
                 >
                   {role}
                 </button>
@@ -856,7 +866,7 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
                     setSearchTerm(term);
                     searchMarketData(term);
                   }}
-                  className="px-2 py-1 text-xs bg-blue-50 text-blue-700 rounded hover:bg-blue-100 transition-colors"
+                  className="px-2 py-1 text-xs bg-slate-50 text-slate-700 rounded hover:bg-slate-100 transition-colors"
                 >
                   {term}
                 </button>
@@ -869,7 +879,7 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
       {/* Loading State */}
       {isSearching && (
         <div className="text-center py-8">
-          <RefreshCw className="w-8 h-8 text-blue-600 mx-auto mb-4 animate-spin" />
+          <RefreshCw className="w-8 h-8 text-slate-600 mx-auto mb-4 animate-spin" />
           <p className="text-gray-600">
             Fetching market data (Adzuna, ITJobsWatch, Grok)...
           </p>
@@ -881,11 +891,11 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
         <div className="space-y-6">
           {/* Salary Information */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-blue-50 rounded-lg p-4 text-center">
-              <p className="text-sm text-blue-600 font-medium">
+            <div className="bg-slate-50 rounded-lg p-4 text-center">
+              <p className="text-sm text-slate-600 font-medium">
                 Minimum Salary
               </p>
-              <p className="text-2xl font-bold text-blue-800">
+              <p className="text-2xl font-bold text-slate-800">
                 Â£{lastSearchResults.salary.min.toLocaleString()}
               </p>
             </div>
@@ -897,11 +907,11 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
                 Â£{lastSearchResults.salary.median.toLocaleString()}
               </p>
             </div>
-            <div className="bg-purple-50 rounded-lg p-4 text-center">
-              <p className="text-sm text-purple-600 font-medium">
+            <div className="bg-slate-50 rounded-lg p-4 text-center">
+              <p className="text-sm text-slate-600 font-medium">
                 Maximum Salary
               </p>
-              <p className="text-2xl font-bold text-purple-800">
+              <p className="text-2xl font-bold text-slate-800">
                 Â£{lastSearchResults.salary.max.toLocaleString()}
               </p>
             </div>
@@ -956,7 +966,7 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
               <div className="relative pt-4">
                 <div className="w-full bg-gray-200 rounded-full h-3">
                   <div
-                    className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full relative"
+                    className="bg-gradient-to-r from-violet-500 via-purple-500 to-pink-500 h-3 rounded-full relative"
                     style={{ width: "100%" }}
                   >
                     <div className="absolute inset-0 flex items-center justify-between px-2">
@@ -1024,7 +1034,7 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
                 {lastSearchResults.skills.required.map((skill, index) => (
                   <span
                     key={index}
-                    className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
+                    className="px-3 py-1 bg-slate-100 text-slate-800 rounded-full text-sm"
                   >
                     {skill}
                   </span>
@@ -1084,7 +1094,7 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
                     <p className="text-xs text-gray-600">median</p>
                   </div>
                 </div>
-                <div className="flex justify-between items-center p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="flex justify-between items-center p-3 bg-slate-50 border border-slate-200 rounded-lg">
                   <div>
                     <p className="text-sm font-medium text-gray-900">
                       DevOps Engineer
@@ -1094,11 +1104,11 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-blue-700">Â£80k</p>
+                    <p className="text-sm font-bold text-slate-700">Â£80k</p>
                     <p className="text-xs text-gray-600">median</p>
                   </div>
                 </div>
-                <div className="flex justify-between items-center p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                <div className="flex justify-between items-center p-3 bg-slate-50 border border-slate-200 rounded-lg">
                   <div>
                     <p className="text-sm font-medium text-gray-900">
                       Data Scientist
@@ -1108,7 +1118,7 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-purple-700">Â£75k</p>
+                    <p className="text-sm font-bold text-slate-700">Â£75k</p>
                     <p className="text-xs text-gray-600">median</p>
                   </div>
                 </div>
@@ -1117,18 +1127,18 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
 
             <div>
               <h5 className="font-medium text-gray-900 mb-4 flex items-center">
-                <Zap className="w-5 h-5 text-orange-600 mr-2" />
+                <Zap className="w-5 h-5 text-amber-600 mr-2" />
                 Trending Skills
               </h5>
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                <div className="flex items-center justify-between p-3 bg-amber-50 border border-amber-200 rounded-lg">
                   <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+                    <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
                     <span className="text-sm font-medium text-gray-900">
                       TypeScript
                     </span>
                   </div>
-                  <span className="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full">
+                  <span className="text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded-full">
                     +31%
                   </span>
                 </div>
@@ -1143,14 +1153,14 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
                     +27%
                   </span>
                 </div>
-                <div className="flex items-center justify-between p-3 bg-pink-50 border border-pink-200 rounded-lg">
+                <div className="flex items-center justify-between p-3 bg-slate-50 border border-slate-200 rounded-lg">
                   <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-pink-500 rounded-full animate-pulse"></div>
+                    <div className="w-2 h-2 bg-slate-500 rounded-full animate-pulse"></div>
                     <span className="text-sm font-medium text-gray-900">
                       Kubernetes
                     </span>
                   </div>
-                  <span className="text-xs bg-pink-100 text-pink-800 px-2 py-1 rounded-full">
+                  <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded-full">
                     +24%
                   </span>
                 </div>
@@ -1170,11 +1180,11 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
           </div>
 
           {/* Market Overview */}
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-6">
+          <div className="bg-gradient-to-r from-slate-50 to-slate-100 border border-slate-200 rounded-lg p-6">
             <h5 className="font-medium text-gray-900 mb-4">Market Overview</h5>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div className="text-center">
-                <p className="text-2xl font-bold text-blue-600">89%</p>
+                <p className="text-2xl font-bold text-slate-600">89%</p>
                 <p className="text-sm text-gray-600">Market Activity</p>
                 <p className="text-xs text-green-600 mt-1">
                   â†‘ 5% vs last month
@@ -1188,14 +1198,14 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
                 </p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-bold text-purple-600">Â£68k</p>
+                <p className="text-2xl font-bold text-slate-600">Â£68k</p>
                 <p className="text-sm text-gray-600">Avg. Tech Salary</p>
                 <p className="text-xs text-green-600 mt-1">
                   â†‘ 3% vs last quarter
                 </p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-bold text-orange-600">1,247</p>
+                <p className="text-2xl font-bold text-amber-600">1,247</p>
                 <p className="text-sm text-gray-600">Active Job Postings</p>
                 <p className="text-xs text-green-600 mt-1">
                   â†‘ 12% vs last week
@@ -1254,8 +1264,8 @@ const ProfileViewModal = ({
     <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full my-8 p-6">
       <div className="flex justify-between items-start mb-6">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center border-2 border-gray-200">
-            <span className="text-xl font-bold text-blue-600">{candidate.avatar}</span>
+          <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center border-2 border-gray-200">
+            <span className="text-xl font-bold text-slate-600">{candidate.avatar}</span>
           </div>
           <div>
             <h2 className="text-xl font-bold text-gray-900">{candidate.name}</h2>
@@ -1306,7 +1316,7 @@ const ProfileViewModal = ({
           </div>
           <div>
             <span className="text-gray-500">AI Match</span>
-            <p className="font-medium text-blue-600">{candidate.aiMatch}%</p>
+            <p className="font-medium text-slate-600">{candidate.aiMatch}%</p>
           </div>
         </div>
         {(candidate.linkedinProfile || candidate.githubProfile || candidate.portfolio) && (
@@ -1316,7 +1326,7 @@ const ProfileViewModal = ({
                 href={candidate.linkedinProfile}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 text-blue-600 hover:underline text-sm"
+                className="flex items-center gap-1 text-slate-600 hover:underline text-sm"
               >
                 <Linkedin size={16} />
                 LinkedIn
@@ -1357,7 +1367,7 @@ const ProfileViewModal = ({
           {candidate.skills?.map((skill, i) => (
             <span
               key={i}
-              className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-sm"
+              className="px-2 py-1 bg-slate-50 text-slate-700 rounded text-sm"
             >
               {skill}
             </span>
@@ -1386,14 +1396,14 @@ const ProfileViewModal = ({
           <button
             onClick={generateProfile}
             disabled={generatingProfile}
-            className="text-sm px-3 py-1.5 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 disabled:opacity-50 flex items-center gap-2"
+            className="text-sm px-3 py-1.5 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 disabled:opacity-50 flex items-center gap-2"
           >
             <Brain size={14} />
             {generatingProfile ? "Generating..." : "Generate profile"}
           </button>
         </div>
         {aiProfile && (
-          <p className="text-sm text-gray-700 bg-purple-50 border border-purple-200 p-3 rounded-lg">
+          <p className="text-sm text-gray-700 bg-slate-50 border border-slate-200 p-3 rounded-lg">
             {aiProfile}
           </p>
         )}
@@ -1428,7 +1438,7 @@ const ProfileViewModal = ({
               onScheduleInterview();
               onClose();
             }}
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm"
+            className="px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 text-sm"
           >
             Schedule Interview
           </button>
@@ -1439,7 +1449,7 @@ const ProfileViewModal = ({
               onSendMessage();
               onClose();
             }}
-            className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm"
+            className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 text-sm"
           >
             Send Message
           </button>
@@ -1454,6 +1464,7 @@ const ProfileViewModal = ({
     </div>
   </div>
 );
+};
 
 // Screening Message Modal - screening questions exchange for candidates in screening stage
 const ScreeningModal = ({
@@ -1716,7 +1727,7 @@ const ScreeningModal = ({
               <div
                 key={i}
                 className={`p-3 rounded-lg ${
-                  m.direction === "outbound" ? "bg-blue-50 ml-4" : "bg-green-50 mr-4"
+                  m.direction === "outbound" ? "bg-slate-50 ml-4" : "bg-green-50 mr-4"
                 }`}
               >
                 <p className="text-xs text-gray-500 mb-1">
@@ -1747,7 +1758,7 @@ const ScreeningModal = ({
         <div className="flex gap-2 mt-6 pt-4 border-t">
           <button
             onClick={handlePass}
-            className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+            className="flex-1 px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700"
           >
             Pass â†’ Shortlist
           </button>
@@ -1831,7 +1842,7 @@ const SendMessageModal = ({
             type="button"
             onClick={generateAIMessage}
             disabled={generating}
-            className="text-sm px-3 py-1.5 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 disabled:opacity-50 flex items-center gap-2"
+            className="text-sm px-3 py-1.5 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 disabled:opacity-50 flex items-center gap-2"
           >
             <Brain size={14} />
             {generating ? "Generating..." : "Generate with AI"}
@@ -1842,7 +1853,7 @@ const SendMessageModal = ({
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Type your message or click Generate with AI..."
           rows={6}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
         />
         {sent && (
           <p className="text-sm text-green-600 mb-2">Message sent successfully.</p>
@@ -1851,7 +1862,7 @@ const SendMessageModal = ({
           <button
             onClick={handleSend}
             disabled={sending || !message.trim()}
-            className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
+            className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 disabled:bg-gray-400"
           >
             {sending ? "Sending..." : "Send"}
           </button>
@@ -2009,7 +2020,7 @@ const RoleShortlistView = ({
         <div className="flex items-center space-x-4">
           <button
             onClick={onBack}
-            className="flex items-center space-x-2 text-white hover:text-blue-100 transition-colors"
+            className="flex items-center space-x-2 text-white hover:text-slate-200 transition-colors"
           >
             <ChevronDown className="w-5 h-5 rotate-90" />
             <span>Back to Roles</span>
@@ -2018,7 +2029,7 @@ const RoleShortlistView = ({
             <h1 className="text-3xl font-bold text-white">
               {role.title} - Shortlist
             </h1>
-            <p className="text-blue-100">
+            <p className="text-slate-200">
               {role.shortlistedCandidates?.length || 0} candidates shortlisted â€¢{" "}
               {role.department}
             </p>
@@ -2072,25 +2083,25 @@ const RoleShortlistView = ({
             onClick={() => setFilterStage("all")}
             className={`border rounded-lg p-4 text-center transition-all hover:shadow-md ${
               filterStage === "all"
-                ? "bg-blue-100 border-blue-300 ring-2 ring-blue-500 ring-opacity-50"
+                ? "bg-slate-100 border-slate-300 ring-2 ring-slate-500 ring-opacity-50"
                 : "bg-gray-50 border-gray-200 hover:bg-gray-100"
             }`}
           >
             <Users
               className={`w-6 h-6 mx-auto mb-2 ${
-                filterStage === "all" ? "text-blue-600" : "text-gray-600"
+                filterStage === "all" ? "text-slate-600" : "text-gray-600"
               }`}
             />
             <p
               className={`text-2xl font-bold ${
-                filterStage === "all" ? "text-blue-600" : "text-gray-900"
+                filterStage === "all" ? "text-slate-600" : "text-gray-900"
               }`}
             >
               {role.shortlistedCandidates?.length || 0}
             </p>
             <p
               className={`text-sm ${
-                filterStage === "all" ? "text-blue-600" : "text-gray-600"
+                filterStage === "all" ? "text-slate-600" : "text-gray-600"
               }`}
             >
               All
@@ -2147,7 +2158,7 @@ const RoleShortlistView = ({
           </h3>
           <button
             onClick={() => setShowAddToShortlistModal(true)}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+            className="px-4 py-2 bg-gradient-to-r from-slate-600 to-teal-500 text-white rounded-lg hover:from-slate-600 hover:to-teal-600 transition-colors flex items-center space-x-2 shadow-md"
           >
             <Plus size={16} />
             <span>Add Candidate</span>
@@ -2170,8 +2181,8 @@ const RoleShortlistView = ({
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                      <span className="text-lg font-bold text-blue-600">
+                    <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center">
+                      <span className="text-lg font-bold text-slate-600">
                         {candidate.avatar}
                       </span>
                     </div>
@@ -2215,7 +2226,7 @@ const RoleShortlistView = ({
                             Source: {candidate.source}
                           </p>
                           {nextInterviews.length > 0 && (
-                            <p className="text-sm text-orange-600 font-medium">
+                            <p className="text-sm text-amber-600 font-medium">
                               <Calendar className="w-4 h-4 inline mr-1" />
                               Next: {nextInterviews[0].type} on{" "}
                               {nextInterviews[0].date}
@@ -2241,8 +2252,8 @@ const RoleShortlistView = ({
                       </div>
 
                       {candidate.notes && (
-                        <div className="bg-blue-50 border border-blue-200 rounded p-3 mb-4">
-                          <p className="text-sm text-blue-800">
+                        <div className="bg-slate-50 border border-slate-200 rounded p-3 mb-4">
+                          <p className="text-sm text-slate-800">
                             {candidate.notes}
                           </p>
                         </div>
@@ -2315,7 +2326,7 @@ const RoleShortlistView = ({
                             candidate
                           )
                         }
-                        className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm flex items-center space-x-2"
+                        className="px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors text-sm flex items-center space-x-2"
                       >
                         <Zap size={16} />
                         <span>Move to next stage</span>
@@ -2323,7 +2334,7 @@ const RoleShortlistView = ({
                     )}
                     <button
                       onClick={() => onScheduleInterview(candidate)}
-                      className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm flex items-center space-x-2"
+                      className="px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors text-sm flex items-center space-x-2"
                     >
                       <Calendar size={16} />
                       <span>Schedule Interview</span>
@@ -2333,7 +2344,7 @@ const RoleShortlistView = ({
                         setProfileCandidate(candidate);
                         setShowProfileView(true);
                       }}
-                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                      className="px-4 py-2 bg-gradient-to-r from-slate-600 to-teal-500 text-white rounded-lg hover:from-slate-600 hover:to-teal-600 transition-colors text-sm shadow-md"
                     >
                       View Profile
                     </button>
@@ -2342,7 +2353,7 @@ const RoleShortlistView = ({
                         setMessageCandidate(candidate);
                         setShowSendMessage(true);
                       }}
-                      className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
+                      className="px-4 py-2 bg-gradient-to-r from-slate-600 to-teal-500 text-white rounded-lg hover:from-slate-600 hover:to-teal-600 transition-colors text-sm shadow-md"
                     >
                       Send Message
                     </button>
@@ -2368,7 +2379,7 @@ const RoleShortlistView = ({
                             candidate
                           )
                         }
-                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500 bg-white"
                       >
                         <option value="shortlisted">Shortlisted</option>
                         <option value="screening_scheduled">
@@ -2455,7 +2466,7 @@ const RoleShortlistView = ({
                 availableToAdd.map((c) => (
                   <label
                     key={c.id}
-                    className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-blue-50 has-[:checked]:border-blue-300"
+                    className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:bg-slate-50 has-[:checked]:border-slate-300"
                   >
                     <input
                       type="checkbox"
@@ -2494,7 +2505,7 @@ const RoleShortlistView = ({
                     setSelectedToAdd(new Set());
                   } else setShowAddToShortlistModal(false);
                 }}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                className="px-4 py-2 bg-gradient-to-r from-slate-600 to-pink-500 text-white rounded-lg hover:from-slate-600 hover:to-pink-600 shadow-md"
               >
                 Add selected
               </button>
@@ -2521,14 +2532,14 @@ const JobDetailsView = ({
         <div className="flex items-center space-x-4">
           <button
             onClick={onBack}
-            className="flex items-center space-x-2 text-white hover:text-blue-100 transition-colors"
+            className="flex items-center space-x-2 text-white hover:text-slate-200 transition-colors"
           >
             <ChevronDown className="w-5 h-5 rotate-90" />
             <span>Back to Roles</span>
           </button>
           <div>
             <h1 className="text-3xl font-bold text-white">{role.title}</h1>
-            <p className="text-blue-100">
+            <p className="text-slate-200">
               {role.department} â€¢ {role.location} â€¢ Posted: {role.created}
             </p>
           </div>
@@ -2549,7 +2560,7 @@ const JobDetailsView = ({
                 ? "bg-red-100 text-red-800"
                 : role.priority === "Medium"
                   ? "bg-yellow-100 text-yellow-800"
-                  : "bg-blue-100 text-blue-800"
+                  : "bg-slate-100 text-slate-800"
             }`}
           >
             {role.priority} Priority
@@ -2560,7 +2571,7 @@ const JobDetailsView = ({
       {/* Job Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6 text-center">
-          <Users className="w-8 h-8 text-blue-600 mx-auto mb-3" />
+          <Users className="w-8 h-8 text-slate-600 mx-auto mb-3" />
           <p className="text-2xl font-bold text-gray-900">{role.candidates}</p>
           <p className="text-sm text-gray-600">Total Candidates</p>
         </div>
@@ -2570,7 +2581,7 @@ const JobDetailsView = ({
           <p className="text-sm text-gray-600">Shortlisted</p>
         </div>
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6 text-center">
-          <Calendar className="w-8 h-8 text-purple-600 mx-auto mb-3" />
+          <Calendar className="w-8 h-8 text-slate-600 mx-auto mb-3" />
           <p className="text-2xl font-bold text-gray-900">{role.interviewed}</p>
           <p className="text-sm text-gray-600">Interviewed</p>
         </div>
@@ -2596,21 +2607,21 @@ const JobDetailsView = ({
                 <span className="font-semibold">{role.candidates}</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-blue-500 h-2 rounded-full" style={{ width: "100%" }} />
+                <div className="bg-gradient-to-r from-violet-500 to-purple-600 h-2 rounded-full" style={{ width: "100%" }} />
               </div>
               <div className="flex justify-between text-sm">
                 <span>Shortlisted</span>
                 <span className="font-semibold">{role.shortlisted}</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-orange-500 h-2 rounded-full" style={{ width: `${role.candidates ? (role.shortlisted / role.candidates) * 100 : 0}%` }} />
+                <div className="bg-amber-500 h-2 rounded-full" style={{ width: `${role.candidates ? (role.shortlisted / role.candidates) * 100 : 0}%` }} />
               </div>
               <div className="flex justify-between text-sm">
                 <span>Interviewed</span>
                 <span className="font-semibold">{role.interviewed}</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div className="bg-purple-500 h-2 rounded-full" style={{ width: `${role.shortlisted ? (role.interviewed / role.shortlisted) * 100 : 0}%` }} />
+                <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full" style={{ width: `${role.shortlisted ? (role.interviewed / role.shortlisted) * 100 : 0}%` }} />
               </div>
             </div>
           </div>
@@ -2712,32 +2723,32 @@ const JobDetailsView = ({
               {role.benefits ? (
                 role.benefits.map((benefit, index) => (
                   <li key={index} className="flex items-start space-x-2">
-                    <Award className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <Award className="w-5 h-5 text-slate-600 mt-0.5 flex-shrink-0" />
                     <span className="text-gray-700">{benefit}</span>
                   </li>
                 ))
               ) : (
                 <>
                   <li className="flex items-start space-x-2">
-                    <Award className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <Award className="w-5 h-5 text-slate-600 mt-0.5 flex-shrink-0" />
                     <span className="text-gray-700">
                       Competitive salary and equity package
                     </span>
                   </li>
                   <li className="flex items-start space-x-2">
-                    <Award className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <Award className="w-5 h-5 text-slate-600 mt-0.5 flex-shrink-0" />
                     <span className="text-gray-700">
                       Comprehensive health and dental coverage
                     </span>
                   </li>
                   <li className="flex items-start space-x-2">
-                    <Award className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <Award className="w-5 h-5 text-slate-600 mt-0.5 flex-shrink-0" />
                     <span className="text-gray-700">
                       Flexible working arrangements
                     </span>
                   </li>
                   <li className="flex items-start space-x-2">
-                    <Award className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <Award className="w-5 h-5 text-slate-600 mt-0.5 flex-shrink-0" />
                     <span className="text-gray-700">
                       Professional development opportunities
                     </span>
@@ -2815,7 +2826,7 @@ const JobDetailsView = ({
             <div className="space-y-3">
               <button
                 onClick={() => alert("Opening job description editor...")}
-                className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors"
               >
                 Edit Job Description
               </button>
@@ -2823,13 +2834,13 @@ const JobDetailsView = ({
                 onClick={() =>
                   alert("Viewing all applications for this role...")
                 }
-                className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                className="w-full px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors"
               >
                 View Applications
               </button>
               <button
                 onClick={() => alert("Job posting link copied to clipboard!")}
-                className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors"
               >
                 Share Job Posting
               </button>
@@ -3315,7 +3326,7 @@ Company Highlights:
                     required
                     value={formData.title}
                     onChange={(e) => handleInputChange("title", e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
                     placeholder="e.g. Senior React Developer"
                   />
                 </div>
@@ -3330,7 +3341,7 @@ Company Highlights:
                     onChange={(e) =>
                       handleInputChange("department", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
                   >
                     <option value="">Select Department</option>
                     <option value="Engineering">Engineering</option>
@@ -3355,7 +3366,7 @@ Company Highlights:
                     onChange={(e) =>
                       handleInputChange("location", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
                     placeholder="e.g. London, UK or Remote"
                   />
                 </div>
@@ -3375,7 +3386,7 @@ Company Highlights:
                       const n = normalizeSalaryInput(e.target.value);
                       if (n) handleInputChange("salary", n);
                     }}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
                     placeholder="e.g. Â£60,000 - Â£85,000 or Â£50k - Â£65k"
                   />
                 </div>
@@ -3391,7 +3402,7 @@ Company Highlights:
                   required
                   value={formData.keySkills}
                   onChange={(e) => handleInputChange("keySkills", e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
                   placeholder="e.g. React, TypeScript, Node.js, SQL, AWS (comma-separated)"
                 />
                 <p className="text-xs text-gray-500 mt-1">
@@ -3411,7 +3422,7 @@ Company Highlights:
                     onChange={(e) =>
                       handleInputChange("experienceLevel", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
                   >
                     <option value="">Select level</option>
                     <option value="0-1 years">0-1 years</option>
@@ -3432,7 +3443,7 @@ Company Highlights:
                     onChange={(e) =>
                       handleInputChange("employmentType", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
                   >
                     <option value="">Select type</option>
                     <option value="Full-time">Full-time</option>
@@ -3452,7 +3463,7 @@ Company Highlights:
                     onChange={(e) =>
                       handleInputChange("workPattern", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
                   >
                     <option value="">Select pattern</option>
                     <option value="Remote">Remote</option>
@@ -3471,7 +3482,7 @@ Company Highlights:
                   onChange={(e) =>
                     handleInputChange("educationLevel", e.target.value)
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
                 >
                   <option value="">Not specified</option>
                   <option value="GCSE/A-Level">GCSE/A-Level</option>
@@ -3493,7 +3504,7 @@ Company Highlights:
                     onChange={(e) =>
                       handleInputChange("priority", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
                   >
                     <option value="Low">Low</option>
                     <option value="Medium">Medium</option>
@@ -3510,7 +3521,7 @@ Company Highlights:
                     onChange={(e) =>
                       handleInputChange("status", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
                   >
                     <option value="Draft">Draft</option>
                     <option value="Active">Active</option>
@@ -3534,7 +3545,7 @@ Company Highlights:
                       !formData.department ||
                       generatingDescription
                     }
-                    className="px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-1"
+                    className="px-3 py-1 bg-gradient-to-r from-slate-600 to-slate-800 text-white text-xs rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-1"
                   >
                     {generatingDescription ? (
                       <>
@@ -3551,18 +3562,18 @@ Company Highlights:
                 </div>
 
                 {showDescriptionGenerator && (
-                  <div className="mb-3 p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                  <div className="mb-3 p-3 bg-slate-50 border border-slate-200 rounded-lg">
                     <div className="flex items-center space-x-2 mb-2">
                       <img
                         src="https://cdn.builder.io/api/v1/assets/e3ae173b79f74e84b0580a7f82f9aa6c/uphire-iq-logo-no-background-a3ed8d?format=webp&width=800"
                         alt="UPhireIQ AI"
                         className="h-4 w-auto"
                       />
-                      <span className="text-xs font-medium text-purple-800">
+                      <span className="text-xs font-medium text-slate-800">
                         UPhireIQ AI Job Description Generator
                       </span>
                     </div>
-                    <p className="text-xs text-purple-700">
+                    <p className="text-xs text-slate-700">
                       Using company profile from {businessProfile.companyName} â€¢{" "}
                       {businessProfile.industry} â€¢ Founded{" "}
                       {businessProfile.founded}
@@ -3577,7 +3588,7 @@ Company Highlights:
                     handleInputChange("description", e.target.value)
                   }
                   rows={8}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
                   placeholder="Describe the role, responsibilities, and what you're looking for... or click 'AI Generate' to create from company profile"
                 />
                 <p className="text-xs text-gray-500 mt-1">
@@ -3601,7 +3612,7 @@ Company Highlights:
                       onChange={(e) =>
                         handleArrayChange("requirements", index, e.target.value)
                       }
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
                       placeholder="e.g. 5+ years of React development experience"
                     />
                     {formData.requirements.length > 1 && (
@@ -3618,7 +3629,7 @@ Company Highlights:
                 <button
                   type="button"
                   onClick={() => addArrayItem("requirements")}
-                  className="text-blue-600 hover:text-blue-800 flex items-center space-x-1 text-sm"
+                  className="text-slate-600 hover:text-slate-800 flex items-center space-x-1 text-sm"
                 >
                   <Plus size={16} />
                   <span>Add Requirement</span>
@@ -3643,7 +3654,7 @@ Company Highlights:
                         onClick={() => toggleBenefit(benefit)}
                         className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                           isSelected
-                            ? "bg-blue-600 text-white hover:bg-blue-700"
+                            ? "bg-slate-700 text-white hover:bg-slate-800"
                             : "bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200"
                         }`}
                       >
@@ -3656,7 +3667,7 @@ Company Highlights:
             </div>
 
             {/* AI Prediction Panel */}
-            <div className="mt-6 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+            <div className="mt-6 p-4 bg-slate-50 border border-slate-200 rounded-lg">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <img
@@ -3665,10 +3676,10 @@ Company Highlights:
                     className="h-6 w-auto flex-shrink-0"
                   />
                   <div className="flex-1">
-                    <h4 className="font-semibold text-purple-900 text-sm">
+                    <h4 className="font-semibold text-slate-900 text-sm">
                       UPhireIQ AI Success Prediction
                     </h4>
-                    <p className="text-purple-700 text-xs mt-1">
+                    <p className="text-slate-700 text-xs mt-1">
                       Get AI-powered insights on hiring success probability,
                       market competitiveness, and optimization recommendations
                     </p>
@@ -3679,7 +3690,7 @@ Company Highlights:
                     type="button"
                     onClick={runAIPrediction}
                     disabled={!formData.title || !formData.department}
-                    className="px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-1"
+                    className="px-3 py-1 bg-gradient-to-r from-slate-600 to-slate-800 text-white text-xs rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-1"
                   >
                     <Brain size={12} />
                     <span>Preview</span>
@@ -3693,11 +3704,11 @@ Company Highlights:
                   id="runPrediction"
                   checked={runPredictionOnCreate}
                   onChange={(e) => setRunPredictionOnCreate(e.target.checked)}
-                  className="rounded border-purple-300 text-purple-600 focus:ring-purple-500"
+                  className="rounded border-slate-300 text-slate-600 focus:ring-slate-500"
                 />
                 <label
                   htmlFor="runPrediction"
-                  className="text-xs text-purple-700"
+                  className="text-xs text-slate-700"
                 >
                   Run AI success prediction automatically after creating role
                 </label>
@@ -3705,20 +3716,20 @@ Company Highlights:
             </div>
 
             {/* Broadbean Integration Info */}
-            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="mt-4 p-4 bg-slate-50 border border-slate-200 rounded-lg">
               <div className="flex items-center space-x-3">
-                <Globe className="w-6 h-6 text-blue-600 flex-shrink-0" />
+                <Globe className="w-6 h-6 text-slate-600 flex-shrink-0" />
                 <div className="flex-1">
-                  <h4 className="font-semibold text-blue-900 text-sm">
+                  <h4 className="font-semibold text-slate-900 text-sm">
                     Automated Job Board Publishing
                   </h4>
-                  <p className="text-blue-700 text-xs mt-1">
+                  <p className="text-slate-700 text-xs mt-1">
                     Role will be automatically published via Broadbean.com to:
                     Indeed, LinkedIn, Adzuna, Totaljobs, Reed, CV-Library, and
                     your company website
                   </p>
                 </div>
-                <div className="text-blue-600 text-xs font-medium bg-blue-100 px-2 py-1 rounded">
+                <div className="text-slate-600 text-xs font-medium bg-slate-100 px-2 py-1 rounded">
                   Broadbean API
                 </div>
               </div>
@@ -3736,7 +3747,7 @@ Company Highlights:
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                className="flex-1 bg-gradient-to-r from-slate-600 to-slate-700 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
               >
                 {isSubmitting ? (
                   <>
@@ -3886,7 +3897,7 @@ const AIRecruitmentModal = ({
 
           {!isRunning && !completed && (
             <div className="space-y-4">
-              <div className="bg-blue-50 p-4 rounded-lg">
+              <div className="bg-slate-50 p-4 rounded-lg">
                 <div className="flex items-center space-x-3">
                   <img
                     src="https://cdn.builder.io/api/v1/assets/e3ae173b79f74e84b0580a7f82f9aa6c/uphire-iq-logo-no-background-a3ed8d?format=webp&width=800"
@@ -3894,10 +3905,10 @@ const AIRecruitmentModal = ({
                     className="h-8 w-auto"
                   />
                   <div>
-                    <h4 className="font-semibold text-blue-900">
+                    <h4 className="font-semibold text-slate-900">
                       AI-Powered Candidate Search
                     </h4>
-                    <p className="text-blue-700 text-sm">
+                    <p className="text-slate-700 text-sm">
                       Intelligent sourcing across multiple platforms
                     </p>
                   </div>
@@ -3935,7 +3946,7 @@ const AIRecruitmentModal = ({
                 <label className="block text-sm font-medium text-gray-700 mb-2">Campaign type</label>
                 <div className="space-y-2">
                   {(["Standard", "Aggressive", "Gentle", "Custom"] as CampaignType[]).map((t) => (
-                    <label key={t} className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50/50">
+                    <label key={t} className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:border-slate-500 has-[:checked]:bg-slate-50/50">
                       <input
                         type="radio"
                         name="campaign"
@@ -3955,7 +3966,7 @@ const AIRecruitmentModal = ({
 
               <button
                 onClick={startRecruitment}
-                className="w-full bg-gradient-to-r from-orange-500 to-pink-500 text-white py-3 rounded-lg hover:shadow-lg transition-all font-medium flex items-center justify-center space-x-2"
+                className="w-full bg-gradient-to-r from-slate-600 to-slate-700 text-white py-3 rounded-lg hover:shadow-lg transition-all font-medium flex items-center justify-center space-x-2"
               >
                 <Play size={20} />
                 <span>Start AI Recruitment</span>
@@ -3966,13 +3977,13 @@ const AIRecruitmentModal = ({
           {isRunning && (
             <div className="space-y-4">
               <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-500 mx-auto mb-4"></div>
                 <p className="text-gray-700 font-medium">{currentStep}</p>
               </div>
 
               <div className="w-full bg-gray-200 rounded-full h-3">
                 <div
-                  className="bg-gradient-to-r from-orange-500 to-pink-500 h-3 rounded-full transition-all duration-300"
+                  className="bg-gradient-to-r from-slate-600 to-slate-700 h-3 rounded-full transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 ></div>
               </div>
@@ -3993,15 +4004,15 @@ const AIRecruitmentModal = ({
               </div>
 
               <div className="grid grid-cols-2 gap-4 text-sm">
-                <div className="bg-blue-50 p-3 rounded">
-                  <p className="font-semibold text-blue-800">AI Matches</p>
-                  <p className="text-blue-600">8 candidates (85%+ match)</p>
+                <div className="bg-slate-50 p-3 rounded">
+                  <p className="font-semibold text-slate-800">AI Matches</p>
+                  <p className="text-slate-600">8 candidates (85%+ match)</p>
                 </div>
-                <div className="bg-purple-50 p-3 rounded">
-                  <p className="font-semibold text-purple-800">
+                <div className="bg-slate-50 p-3 rounded">
+                  <p className="font-semibold text-slate-800">
                     Auto-Shortlisted
                   </p>
-                  <p className="text-purple-600">5 top candidates</p>
+                  <p className="text-slate-600">5 top candidates</p>
                 </div>
               </div>
 
@@ -4016,7 +4027,7 @@ const AIRecruitmentModal = ({
                       onViewOutreach(role);
                       onClose();
                     }}
-                    className="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                    className="flex-1 bg-slate-700 text-white py-3 rounded-lg hover:bg-slate-800 transition-colors font-medium"
                   >
                     View Outreach
                   </button>
@@ -4028,7 +4039,7 @@ const AIRecruitmentModal = ({
                     }
                     onClose();
                   }}
-                  className="flex-1 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-medium"
+                  className="flex-1 bg-slate-600 text-white py-3 rounded-lg hover:bg-slate-700 transition-colors font-medium"
                 >
                   View Candidates
                 </button>
@@ -4160,7 +4171,7 @@ const AIPredictionModal = ({
 
           {!isAnalyzing && !prediction && (
             <div className="space-y-4">
-              <div className="bg-purple-50 p-4 rounded-lg">
+              <div className="bg-slate-50 p-4 rounded-lg">
                 <div className="flex items-center space-x-3">
                   <img
                     src="https://cdn.builder.io/api/v1/assets/e3ae173b79f74e84b0580a7f82f9aa6c/uphire-iq-logo-no-background-a3ed8d?format=webp&width=800"
@@ -4168,10 +4179,10 @@ const AIPredictionModal = ({
                     className="h-8 w-auto"
                   />
                   <div>
-                    <h4 className="font-semibold text-purple-900">
+                    <h4 className="font-semibold text-slate-900">
                       AI Success Prediction
                     </h4>
-                    <p className="text-purple-700 text-sm">
+                    <p className="text-slate-700 text-sm">
                       Advanced analytics for hiring success
                     </p>
                   </div>
@@ -4207,7 +4218,7 @@ const AIPredictionModal = ({
 
               <button
                 onClick={generatePrediction}
-                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-lg hover:shadow-lg transition-all font-medium flex items-center justify-center space-x-2"
+                className="w-full bg-gradient-to-r from-slate-600 to-slate-800 text-white py-3 rounded-lg hover:shadow-lg transition-all font-medium flex items-center justify-center space-x-2"
               >
                 <Brain size={20} />
                 <span>AI Success Prediction</span>
@@ -4217,7 +4228,7 @@ const AIPredictionModal = ({
 
           {isAnalyzing && (
             <div className="space-y-4 text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto mb-4"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-500 mx-auto mb-4"></div>
               <p className="text-gray-700 font-medium">
                 Analyzing role success factors...
               </p>
@@ -4236,11 +4247,11 @@ const AIPredictionModal = ({
                   </p>
                   <p className="text-green-800 font-medium">Success Rate</p>
                 </div>
-                <div className="bg-blue-50 p-4 rounded-lg text-center">
-                  <p className="text-2xl font-bold text-blue-600">
+                <div className="bg-slate-50 p-4 rounded-lg text-center">
+                  <p className="text-2xl font-bold text-slate-600">
                     {prediction.confidence}%
                   </p>
-                  <p className="text-blue-800 font-medium">AI Confidence</p>
+                  <p className="text-slate-800 font-medium">AI Confidence</p>
                 </div>
               </div>
 
@@ -4261,7 +4272,7 @@ const AIPredictionModal = ({
 
                 <div>
                   <h4 className="font-semibold text-gray-800 mb-2 flex items-center space-x-2">
-                    <AlertTriangle className="w-5 h-5 text-orange-600" />
+                    <AlertTriangle className="w-5 h-5 text-amber-600" />
                     <span>Risk Factors</span>
                   </h4>
                   <ul className="space-y-1">
@@ -4290,7 +4301,7 @@ const AIPredictionModal = ({
 
               <button
                 onClick={onClose}
-                className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors font-medium"
+                className="w-full bg-slate-700 text-white py-3 rounded-lg hover:bg-slate-800 transition-colors font-medium"
               >
                 Apply Recommendations
               </button>
@@ -4375,14 +4386,14 @@ const RolesTab = ({
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white">Roles</h1>
-          <p className="text-blue-100">
+          <p className="text-slate-200">
             Manage your open positions and recruitment pipeline
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setShowNewRoleModal(true)}
-            className="flex items-center space-x-2 px-6 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all font-medium shadow-lg"
+            className="flex items-center space-x-2 px-6 py-2.5 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-all font-medium shadow-lg"
           >
             <Plus size={18} />
             <span>Create New Role</span>
@@ -4392,9 +4403,9 @@ const RolesTab = ({
 
       {/* Bulk action bar */}
       {selectedRoleIds.size > 0 && (
-        <div className="flex justify-between items-center p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <div className="flex justify-between items-center p-4 bg-slate-50 border border-slate-200 rounded-lg">
           <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-blue-900">
+            <span className="text-sm font-medium text-slate-900">
               {selectedRoleIds.size} role{selectedRoleIds.size !== 1 ? "s" : ""} selected
             </span>
             <button
@@ -4405,7 +4416,7 @@ const RolesTab = ({
                     : new Set(mockRoles.map((r) => r.id))
                 )
               }
-              className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+              className="text-sm text-slate-600 hover:text-slate-800 font-medium"
             >
               {selectedRoleIds.size === mockRoles.length ? "Deselect all" : "Select all"}
             </button>
@@ -4413,7 +4424,7 @@ const RolesTab = ({
           <div className="flex gap-2">
             <button
               onClick={() => setShowBulkEditModal(true)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
+              className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 text-sm font-medium"
             >
               Bulk Edit
             </button>
@@ -4433,7 +4444,7 @@ const RolesTab = ({
           <div
             key={role.id}
             className={`bg-white rounded-lg shadow-md border p-6 hover:shadow-lg transition-shadow ${
-              selectedRoleIds.has(role.id) ? "border-blue-500 ring-2 ring-blue-200" : "border-gray-100"
+              selectedRoleIds.has(role.id) ? "border-slate-500 ring-2 ring-slate-200" : "border-gray-100"
             }`}
           >
             {/* Job title, department, created date */}
@@ -4450,7 +4461,7 @@ const RolesTab = ({
                       return next;
                     });
                   }}
-                  className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className="mt-1 h-4 w-4 rounded border-gray-300 text-slate-600 focus:ring-slate-500"
                 />
                 <div className="flex-1 min-w-0">
                 <h3 className="text-xl font-bold text-gray-900">
@@ -4464,7 +4475,7 @@ const RolesTab = ({
               <div className="flex items-center gap-2 flex-shrink-0">
                 <button
                   onClick={() => setEditingRole(role)}
-                  className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                  className="p-1.5 text-gray-500 hover:text-slate-600 hover:bg-slate-50 rounded transition-colors"
                   title="Edit role"
                 >
                   <Edit size={16} />
@@ -4492,7 +4503,7 @@ const RolesTab = ({
                     ? "bg-red-100 text-red-800"
                     : role.priority === "Medium"
                       ? "bg-yellow-100 text-yellow-800"
-                      : "bg-blue-100 text-blue-800"
+                      : "bg-slate-100 text-slate-800"
                 }`}
               >
                 {role.priority}
@@ -4502,22 +4513,22 @@ const RolesTab = ({
             {/* Salary */}
             <p className="text-lg font-bold text-gray-900 mb-4">{formatCurrency(role.salary)}</p>
 
-            {/* Candidate stats: Candidates (blue), Shortlisted (orange), Interviewed (purple) */}
+            {/* Candidate stats: Candidates, Shortlisted, Interviewed */}
             <div className="grid grid-cols-3 gap-4 mb-6">
               <div className="text-center">
-                <p className="text-2xl font-bold text-blue-600">
+                <p className="text-2xl font-bold text-slate-600">
                   {role.candidates}
                 </p>
                 <p className="text-xs text-gray-500">Candidates</p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-bold text-orange-600">
+                <p className="text-2xl font-bold text-amber-600">
                   {role.shortlisted}
                 </p>
                 <p className="text-xs text-gray-500">Shortlisted</p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-bold text-purple-600">
+                <p className="text-2xl font-bold text-slate-600">
                   {role.interviewed}
                 </p>
                 <p className="text-xs text-gray-500">Interviewed</p>
@@ -4529,7 +4540,7 @@ const RolesTab = ({
               <div className="grid grid-cols-3 gap-2">
                 <button
                   onClick={() => viewJobDetails(role)}
-                  className="px-2 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                  className="px-2 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors text-sm font-medium"
                 >
                   View
                 </button>
@@ -4541,7 +4552,7 @@ const RolesTab = ({
                 </button>
                 <button
                   onClick={() => generatePrediction(role)}
-                  className="px-2 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-xs font-medium"
+                  className="px-2 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors text-xs font-medium"
                 >
                   AI Prediction
                 </button>
@@ -4553,14 +4564,14 @@ const RolesTab = ({
                     !role.shortlistedCandidates ||
                     role.shortlistedCandidates.length === 0
                   }
-                  className="flex items-center justify-center space-x-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors text-sm font-medium"
+                  className="flex items-center justify-center space-x-1 px-3 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors text-sm font-medium"
                 >
                   <Users size={14} />
                   <span>Shortlist ({role.shortlistedCandidates?.length || 0})</span>
                 </button>
                 <button
                   onClick={() => startRecruitment(role.id)}
-                  className="px-3 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-sm font-medium"
+                  className="px-3 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors text-sm font-medium"
                 >
                   UPhireIQ AI Recruit
                 </button>
@@ -4656,7 +4667,7 @@ const RolesTab = ({
                   setSelectedRoleIds(new Set());
                   alert(`Updated ${count} role(s) successfully.`);
                 }}
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800"
               >
                 Apply
               </button>
@@ -4708,12 +4719,12 @@ const RolesTab = ({
                   Schedule an interview with{" "}
                   <strong>{schedulingCandidate.name}</strong>
                 </p>
-                <div className="bg-blue-50 p-4 rounded-lg">
-                  <p className="text-sm text-blue-800">
+                <div className="bg-slate-50 p-4 rounded-lg">
+                  <p className="text-sm text-slate-800">
                     UPhireIQ AI Match:{" "}
                     <strong>{schedulingCandidate.aiMatch}%</strong>
                   </p>
-                  <p className="text-sm text-blue-700 mt-1">
+                  <p className="text-sm text-slate-700 mt-1">
                     Skills: {schedulingCandidate.skills.join(", ")}
                   </p>
                 </div>
@@ -4730,7 +4741,7 @@ const RolesTab = ({
                       );
                       setShowCalendlyModal(false);
                     }}
-                    className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors"
+                    className="w-full bg-slate-600 text-white py-2 px-4 rounded-lg hover:bg-slate-700 transition-colors"
                   >
                     Open Calendly to Schedule
                   </button>
@@ -4779,7 +4790,7 @@ const DashboardTab = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-          <p className="text-blue-100">
+          <p className="text-slate-200">
             Welcome to your UPhireIQ AI-powered recruitment platform
           </p>
         </div>
@@ -4799,7 +4810,7 @@ const DashboardTab = () => {
                 +2 this week
               </p>
             </div>
-            <Briefcase className="w-8 h-8 text-blue-600" />
+            <Briefcase className="w-8 h-8 text-slate-600" />
           </div>
         </div>
 
@@ -4828,11 +4839,11 @@ const DashboardTab = () => {
                 Interviews This Week
               </p>
               <p className="text-3xl font-bold text-gray-900">18</p>
-              <p className="text-sm text-blue-600 flex items-center">
+              <p className="text-sm text-slate-600 flex items-center">
                 <Calendar className="w-4 h-4 mr-1" />6 scheduled today
               </p>
             </div>
-            <Calendar className="w-8 h-8 text-purple-600" />
+            <Calendar className="w-8 h-8 text-slate-600" />
           </div>
         </div>
 
@@ -4848,7 +4859,7 @@ const DashboardTab = () => {
                 -3 days vs last month
               </p>
             </div>
-            <Clock className="w-8 h-8 text-orange-600" />
+            <Clock className="w-8 h-8 text-amber-600" />
           </div>
         </div>
       </div>
@@ -4863,8 +4874,8 @@ const DashboardTab = () => {
             Recent Activity
           </h3>
           <div className="space-y-4">
-            <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
-              <Users className="w-5 h-5 text-blue-600" />
+            <div className="flex items-center space-x-3 p-3 bg-slate-50 rounded-lg">
+              <Users className="w-5 h-5 text-slate-600" />
               <div>
                 <p className="text-sm font-medium text-gray-900">
                   New candidate applied for Senior React Developer
@@ -4881,8 +4892,8 @@ const DashboardTab = () => {
                 <p className="text-xs text-gray-500">1 hour ago</p>
               </div>
             </div>
-            <div className="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
-              <Briefcase className="w-5 h-5 text-purple-600" />
+            <div className="flex items-center space-x-3 p-3 bg-slate-50 rounded-lg">
+              <Briefcase className="w-5 h-5 text-slate-600" />
               <div>
                 <p className="text-sm font-medium text-gray-900">
                   New role created: UX Designer
@@ -4890,7 +4901,7 @@ const DashboardTab = () => {
                 <p className="text-xs text-gray-500">3 hours ago</p>
               </div>
             </div>
-            <div className="flex items-center space-x-3 p-3 bg-orange-50 rounded-lg">
+            <div className="flex items-center space-x-3 p-3 bg-amber-50 rounded-lg">
               <img
                 src="https://cdn.builder.io/api/v1/assets/e3ae173b79f74e84b0580a7f82f9aa6c/uphire-iq-logo-no-background-a3ed8d?format=webp&width=800"
                 alt="UPhireIQ AI"
@@ -4930,11 +4941,11 @@ const DashboardTab = () => {
                 <span className="text-sm font-medium text-gray-700">
                   Interview to Offer Rate
                 </span>
-                <span className="text-sm font-bold text-blue-600">67%</span>
+                <span className="text-sm font-bold text-purple-600">67%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
-                  className="bg-blue-500 h-2 rounded-full"
+                  className="bg-gradient-to-r from-violet-500 to-purple-600 h-2 rounded-full"
                   style={{ width: "67%" }}
                 ></div>
               </div>
@@ -4948,7 +4959,7 @@ const DashboardTab = () => {
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
-                  className="bg-purple-500 h-2 rounded-full"
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full"
                   style={{ width: "89%" }}
                 ></div>
               </div>
@@ -4958,11 +4969,11 @@ const DashboardTab = () => {
                 <span className="text-sm font-medium text-gray-700">
                   Employee Retention (1 year)
                 </span>
-                <span className="text-sm font-bold text-orange-600">94%</span>
+                <span className="text-sm font-bold text-amber-600">94%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
-                  className="bg-orange-500 h-2 rounded-full"
+                  className="bg-amber-500 h-2 rounded-full"
                   style={{ width: "94%" }}
                 ></div>
               </div>
@@ -5135,7 +5146,7 @@ const CandidatesTab = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white">Candidates</h1>
-          <p className="text-blue-100">
+          <p className="text-slate-200">
             Manage your candidate pipeline and applications
           </p>
         </div>
@@ -5189,7 +5200,7 @@ const CandidatesTab = () => {
                 {allCandidates.length}
               </p>
             </div>
-            <Users className="w-6 h-6 text-blue-600" />
+            <Users className="w-6 h-6 text-slate-600" />
           </div>
         </div>
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-4">
@@ -5217,7 +5228,7 @@ const CandidatesTab = () => {
                 }
               </p>
             </div>
-            <Calendar className="w-6 h-6 text-purple-600" />
+            <Calendar className="w-6 h-6 text-slate-600" />
           </div>
         </div>
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-4">
@@ -5254,8 +5265,8 @@ const CandidatesTab = () => {
           >
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                  <span className="text-lg font-bold text-blue-600">
+                <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center">
+                  <span className="text-lg font-bold text-slate-600">
                     {candidate.avatar}
                   </span>
                 </div>
@@ -5271,9 +5282,9 @@ const CandidatesTab = () => {
                   candidate.status === "Shortlisted"
                     ? "bg-yellow-100 text-yellow-800"
                     : candidate.status === "Applied"
-                      ? "bg-blue-100 text-blue-800"
+                      ? "bg-slate-100 text-slate-800"
                       : candidate.status === "Interview Scheduled"
-                        ? "bg-purple-100 text-purple-800"
+                        ? "bg-slate-100 text-slate-800"
                         : candidate.status === "Interview Completed"
                           ? "bg-indigo-100 text-indigo-800"
                           : candidate.status === "Offer Made"
@@ -5340,13 +5351,13 @@ const CandidatesTab = () => {
               <div className="flex space-x-2">
                 <button
                   onClick={() => openCandidateDetails(candidate)}
-                  className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                  className="flex-1 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors text-sm"
                 >
                   View Profile
                 </button>
                 <button
                   onClick={() => scheduleInterview(candidate)}
-                  className="flex-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
+                  className="flex-1 px-3 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors text-sm"
                 >
                   Schedule Interview
                 </button>
@@ -5357,7 +5368,7 @@ const CandidatesTab = () => {
                     setMessageCandidate(candidate);
                     setShowSendMessage(true);
                   }}
-                  className="flex-1 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
+                  className="flex-1 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors text-sm"
                 >
                   Send Message
                 </button>
@@ -5366,7 +5377,7 @@ const CandidatesTab = () => {
                     setMakeOfferCandidate(candidate);
                     setShowMakeOffer(true);
                   }}
-                  className="flex-1 px-3 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm"
+                  className="flex-1 px-3 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors text-sm"
                 >
                   Make Offer
                 </button>
@@ -5452,12 +5463,12 @@ const CandidatesTab = () => {
                   Schedule an interview with{" "}
                   <strong>{schedulingCandidate.name}</strong>
                 </p>
-                <div className="bg-blue-50 p-4 rounded-lg">
-                  <p className="text-sm text-blue-800">
+                <div className="bg-slate-50 p-4 rounded-lg">
+                  <p className="text-sm text-slate-800">
                     UPhireIQ AI Match:{" "}
                     <strong>{schedulingCandidate.aiMatch}%</strong>
                   </p>
-                  <p className="text-sm text-blue-700 mt-1">
+                  <p className="text-sm text-slate-700 mt-1">
                     Skills: {schedulingCandidate.skills.join(", ")}
                   </p>
                 </div>
@@ -5475,7 +5486,7 @@ const CandidatesTab = () => {
                       setShowCalendlyModal(false);
                       setSchedulingCandidate(null);
                     }}
-                    className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors"
+                    className="w-full bg-slate-600 text-white py-2 px-4 rounded-lg hover:bg-slate-700 transition-colors"
                   >
                     Open Calendly to Schedule
                   </button>
@@ -5635,9 +5646,9 @@ ${companyName}`;
           </div>
         </div>
 
-        <div className="mt-6 p-4 bg-blue-50 rounded-lg text-sm text-blue-800">
+        <div className="mt-6 p-4 bg-slate-50 rounded-lg text-sm text-slate-800">
           <p className="font-medium mb-2">Upon acceptance, full onboarding will include:</p>
-          <ul className="list-disc list-inside space-y-1 text-blue-700">
+          <ul className="list-disc list-inside space-y-1 text-slate-700">
             <li>Contract sent and signed copy received</li>
             <li>ID documents (passport/visa/NI number)</li>
             <li>Bank details for payment</li>
@@ -5650,7 +5661,7 @@ ${companyName}`;
           <button
             onClick={handleConfirmOffer}
             disabled={sending}
-            className="flex-1 px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 disabled:opacity-50"
+            className="flex-1 px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 disabled:opacity-50"
           >
             {sending ? "Sending..." : "Confirm & Send Offer"}
           </button>
@@ -5797,7 +5808,7 @@ const OnboardingModal = ({
                 onChange={(e) => setRefereeEmail(e.target.value)}
                 className="flex-1 px-2 py-1 border rounded text-sm"
               />
-              <button onClick={handleAddReference} className="px-3 py-1 bg-blue-600 text-white rounded text-sm">
+              <button onClick={handleAddReference} className="px-3 py-1 bg-slate-700 text-white rounded text-sm">
                 Add
               </button>
             </div>
@@ -5828,7 +5839,7 @@ const OnboardingModal = ({
               onChange={(e) => setStartDates((s) => [s[0], s[1], e.target.value])}
               className="w-full px-2 py-1 border rounded text-sm mb-2"
             />
-            <button onClick={handleSaveStartDates} className="text-sm text-blue-600 hover:underline">
+            <button onClick={handleSaveStartDates} className="text-sm text-slate-600 hover:underline">
               Save start date options
             </button>
             <div className="mt-2">
@@ -5863,7 +5874,7 @@ const OnboardingModal = ({
               onChange={(e) => setHandbookUrl(e.target.value)}
               className="w-full px-2 py-1 border rounded text-sm mb-2"
             />
-            <button onClick={handleSaveFirstDayInfo} className="text-sm text-blue-600 hover:underline">
+            <button onClick={handleSaveFirstDayInfo} className="text-sm text-slate-600 hover:underline">
               Save & send to candidate
             </button>
             <div className="mt-2">
@@ -5890,7 +5901,7 @@ const AnalyticsTab = () => (
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
       <div>
         <h1 className="text-3xl font-bold text-white">Analytics</h1>
-        <p className="text-blue-100">
+        <p className="text-slate-200">
           Recruitment insights and performance metrics
         </p>
       </div>
@@ -5942,7 +5953,7 @@ const AnalyticsTab = () => (
               -8% vs last month
             </p>
           </div>
-          <PoundSterling className="w-8 h-8 text-blue-600" />
+          <PoundSterling className="w-8 h-8 text-slate-600" />
         </div>
       </div>
 
@@ -5967,12 +5978,12 @@ const AnalyticsTab = () => (
               Source Effectiveness
             </p>
             <p className="text-3xl font-bold text-gray-900">73%</p>
-            <p className="text-sm text-blue-600 flex items-center">
+            <p className="text-sm text-slate-600 flex items-center">
               <TrendingUp className="w-4 h-4 mr-1" />
               LinkedIn leading
             </p>
           </div>
-          <Target className="w-8 h-8 text-purple-600" />
+          <Target className="w-8 h-8 text-slate-600" />
         </div>
       </div>
     </div>
@@ -5992,7 +6003,7 @@ const AnalyticsTab = () => (
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3">
             <div
-              className="bg-blue-500 h-3 rounded-full"
+              className="bg-gradient-to-r from-violet-500 to-purple-600 h-3 rounded-full"
               style={{ width: "100%" }}
             ></div>
           </div>
@@ -6016,7 +6027,7 @@ const AnalyticsTab = () => (
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3">
             <div
-              className="bg-purple-500 h-3 rounded-full"
+              className="bg-slate-500 h-3 rounded-full"
               style={{ width: "67%" }}
             ></div>
           </div>
@@ -6027,7 +6038,7 @@ const AnalyticsTab = () => (
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3">
             <div
-              className="bg-orange-500 h-3 rounded-full"
+              className="bg-amber-500 h-3 rounded-full"
               style={{ width: "31%" }}
             ></div>
           </div>
@@ -6038,7 +6049,7 @@ const AnalyticsTab = () => (
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3">
             <div
-              className="bg-green-600 h-3 rounded-full"
+              className="bg-slate-600 h-3 rounded-full"
               style={{ width: "53%" }}
             ></div>
           </div>
@@ -6050,9 +6061,9 @@ const AnalyticsTab = () => (
           Source Performance
         </h3>
         <div className="space-y-4">
-          <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+          <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
             <div className="flex items-center space-x-3">
-              <Linkedin className="w-5 h-5 text-blue-600" />
+              <Linkedin className="w-5 h-5 text-slate-600" />
               <span className="text-sm font-medium text-gray-900">
                 LinkedIn
               </span>
@@ -6074,9 +6085,9 @@ const AnalyticsTab = () => (
             </div>
           </div>
 
-          <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+          <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
             <div className="flex items-center space-x-3">
-              <Github className="w-5 h-5 text-purple-600" />
+              <Github className="w-5 h-5 text-slate-600" />
               <span className="text-sm font-medium text-gray-900">GitHub</span>
             </div>
             <div className="text-right">
@@ -6085,9 +6096,9 @@ const AnalyticsTab = () => (
             </div>
           </div>
 
-          <div className="flex items-center justify-between p-3 bg-orange-50 rounded-lg">
+          <div className="flex items-center justify-between p-3 bg-amber-50 rounded-lg">
             <div className="flex items-center space-x-3">
-              <Globe className="w-5 h-5 text-orange-600" />
+              <Globe className="w-5 h-5 text-amber-600" />
               <span className="text-sm font-medium text-gray-900">
                 Referrals
               </span>
@@ -6113,7 +6124,7 @@ const AnalyticsTab = () => (
             <div key={month} className="text-center">
               <div className="h-24 flex items-end justify-center mb-2">
                 <div
-                  className="w-8 bg-gradient-to-t from-blue-500 to-purple-500 rounded-t"
+                  className="w-8 bg-gradient-to-t from-violet-600 via-purple-500 to-pink-500 rounded-t shadow-sm"
                   style={{ height: `${heights[index]}%` }}
                 ></div>
               </div>
@@ -6134,9 +6145,10 @@ const EmployeesTab = () => {
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
     null,
   );
+  const [employeesLoading, setEmployeesLoading] = useState(true);
+  const [, forceUpdate] = useState(0);
 
-  // Load employees from Supabase on mount. This replaces the
-  // mockEmployees array with persisted data from the `employee_details` table.
+  // Load employees from Supabase on mount.
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
@@ -6148,14 +6160,14 @@ const EmployeesTab = () => {
           return;
         }
         if (data && Array.isArray(data)) {
-          // Replace the mockEmployees array with data from Supabase. We
-          // cast the result to Employee to satisfy TypeScript. Any fields
-          // missing from the Supabase row will simply be undefined on the
-          // Employee type, which matches our optional properties.
-          mockEmployees = data as unknown as Employee[];
+          const employees = data as unknown as Employee[];
+          mockEmployees.splice(0, mockEmployees.length, ...employees);
         }
       } catch (err) {
         console.error('Unexpected error fetching employees', err);
+      } finally {
+        setEmployeesLoading(false);
+        forceUpdate((n) => n + 1);
       }
     };
     fetchEmployees();
@@ -6224,6 +6236,14 @@ const EmployeesTab = () => {
     setShowEmployeeModal(true);
   };
 
+  if (employeesLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[300px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-600" />
+      </div>
+    );
+  }
+
   const employeesOnProbation = mockEmployees.filter(
     (emp) => emp.probationPeriod,
   );
@@ -6236,13 +6256,13 @@ const EmployeesTab = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white">Employee Management</h1>
-          <p className="text-blue-100">
+          <p className="text-slate-200">
             Comprehensive team management and HR records
           </p>
         </div>
         <button
           onClick={handleAddEmployee}
-          className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all flex items-center space-x-2 font-medium"
+          className="bg-gradient-to-r from-slate-600 to-slate-700 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all flex items-center space-x-2 font-medium"
         >
           <Plus size={20} />
           <span>Add Employee</span>
@@ -6261,7 +6281,7 @@ const EmployeesTab = () => {
                 {mockEmployees.length}
               </p>
             </div>
-            <Users className="w-8 h-8 text-blue-600" />
+            <Users className="w-8 h-8 text-slate-600" />
           </div>
         </div>
 
@@ -6273,7 +6293,7 @@ const EmployeesTab = () => {
                 {employeesOnProbation.length}
               </p>
             </div>
-            <Clock className="w-8 h-8 text-orange-600" />
+            <Clock className="w-8 h-8 text-amber-600" />
           </div>
         </div>
 
@@ -6295,17 +6315,17 @@ const EmployeesTab = () => {
               <p className="text-sm font-medium text-gray-600">Departments</p>
               <p className="text-3xl font-bold text-gray-900">4</p>
             </div>
-            <Building className="w-8 h-8 text-purple-600" />
+            <Building className="w-8 h-8 text-slate-600" />
           </div>
         </div>
       </div>
 
       {/* Probation Alerts */}
       {employeesOnProbation.length > 0 && (
-        <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
           <div className="flex items-center space-x-3 mb-4">
-            <AlertTriangle className="w-6 h-6 text-orange-600" />
-            <h3 className="text-lg font-semibold text-orange-900">
+            <AlertTriangle className="w-6 h-6 text-amber-600" />
+            <h3 className="text-lg font-semibold text-amber-900">
               Probation Period Alerts
             </h3>
           </div>
@@ -6325,7 +6345,7 @@ const EmployeesTab = () => {
               return (
                 <div
                   key={employee.id}
-                  className="bg-white rounded-lg p-4 border border-orange-200"
+                  className="bg-white rounded-lg p-4 border border-amber-200"
                 >
                   <div className="flex items-center justify-between">
                     <div>
@@ -6337,7 +6357,7 @@ const EmployeesTab = () => {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm font-bold text-orange-700">
+                      <p className="text-sm font-bold text-amber-700">
                         {daysRemaining} days
                       </p>
                       <p className="text-xs text-gray-600">remaining</p>
@@ -6359,7 +6379,7 @@ const EmployeesTab = () => {
           <div className="flex space-x-3">
             <button
               onClick={() => alert("Opening employee search...")}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+              className="px-4 py-2 bg-gradient-to-r from-slate-600 to-teal-500 text-white rounded-lg hover:from-slate-600 hover:to-teal-600 transition-colors flex items-center space-x-2 shadow-md"
             >
               <Search size={16} />
               <span>Search</span>
@@ -6382,8 +6402,8 @@ const EmployeesTab = () => {
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                    <span className="text-lg font-bold text-blue-600">
+                  <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center">
+                    <span className="text-lg font-bold text-slate-600">
                       {employee.avatar ||
                         employee.name
                           .split(" ")
@@ -6397,7 +6417,7 @@ const EmployeesTab = () => {
                         {employee.name}
                       </h4>
                       {employee.probationPeriod && (
-                        <span className="px-2 py-1 bg-orange-100 text-orange-800 rounded-full text-xs font-medium">
+                        <span className="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-medium">
                           Probation
                         </span>
                       )}
@@ -6433,7 +6453,7 @@ const EmployeesTab = () => {
               <div className="flex space-x-2 mt-4">
                 <button
                   onClick={() => openEmployeeDetails(employee)}
-                  className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                  className="flex-1 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors text-sm"
                 >
                   View Profile
                 </button>
@@ -6441,7 +6461,7 @@ const EmployeesTab = () => {
                   onClick={() =>
                     alert(`Opening documents for ${employee.name}...`)
                   }
-                  className="flex-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
+                  className="flex-1 px-3 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors text-sm"
                 >
                   Documents
                 </button>
@@ -6449,7 +6469,7 @@ const EmployeesTab = () => {
                   onClick={() =>
                     alert(`Opening performance review for ${employee.name}...`)
                   }
-                  className="flex-1 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
+                  className="flex-1 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors text-sm"
                 >
                   Performance
                 </button>
@@ -6465,9 +6485,10 @@ const EmployeesTab = () => {
 const DocumentsTab = () => {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [documentsLoading, setDocumentsLoading] = useState(true);
+  const [, forceUpdate] = useState(0);
 
-  // Load documents from Supabase on mount. This replaces the
-  // mockDocuments array with persisted data from the `documents` table.
+  // Load documents from Supabase on mount.
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
@@ -6477,14 +6498,26 @@ const DocumentsTab = () => {
           return;
         }
         if (data && Array.isArray(data)) {
-          mockDocuments = data as unknown as Document[];
+          const docs = data as unknown as Document[];
+          mockDocuments.splice(0, mockDocuments.length, ...docs);
         }
       } catch (err) {
         console.error('Unexpected error fetching documents', err);
+      } finally {
+        setDocumentsLoading(false);
+        forceUpdate((n) => n + 1);
       }
     };
     fetchDocuments();
   }, []);
+
+  if (documentsLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[300px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-600" />
+      </div>
+    );
+  }
 
   const documentCategories = [
     "All",
@@ -6505,14 +6538,14 @@ const DocumentsTab = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white">Document Management</h1>
-          <p className="text-blue-100">
+          <p className="text-slate-200">
             Manage contracts, handbooks, and HR documents
           </p>
         </div>
         <div className="flex space-x-3">
           <button
             onClick={() => setShowUploadModal(true)}
-            className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all flex items-center space-x-2 font-medium"
+            className="bg-gradient-to-r from-slate-600 to-slate-700 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all flex items-center space-x-2 font-medium"
           >
             <Upload size={20} />
             <span>Upload Document</span>
@@ -6539,7 +6572,7 @@ const DocumentsTab = () => {
                 {mockDocuments.length}
               </p>
             </div>
-            <FileText className="w-8 h-8 text-blue-600" />
+            <FileText className="w-8 h-8 text-slate-600" />
           </div>
         </div>
 
@@ -6565,7 +6598,7 @@ const DocumentsTab = () => {
                 {mockDocuments.filter((doc) => doc.type === "Template").length}
               </p>
             </div>
-            <Edit className="w-8 h-8 text-purple-600" />
+            <Edit className="w-8 h-8 text-slate-600" />
           </div>
         </div>
 
@@ -6579,7 +6612,7 @@ const DocumentsTab = () => {
                 {mockDocuments.filter((doc) => doc.category === "Legal").length}
               </p>
             </div>
-            <AlertTriangle className="w-8 h-8 text-orange-600" />
+            <AlertTriangle className="w-8 h-8 text-amber-600" />
           </div>
         </div>
       </div>
@@ -6597,7 +6630,7 @@ const DocumentsTab = () => {
                 onClick={() => setSelectedCategory(category)}
                 className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                   selectedCategory === category
-                    ? "bg-blue-100 text-blue-800"
+                    ? "bg-slate-100 text-slate-800"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
@@ -6615,8 +6648,8 @@ const DocumentsTab = () => {
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-start space-x-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <FileText className="w-5 h-5 text-blue-600" />
+                  <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
+                    <FileText className="w-5 h-5 text-slate-600" />
                   </div>
                   <div className="flex-1">
                     <h4 className="text-lg font-semibold text-gray-900">
@@ -6628,7 +6661,7 @@ const DocumentsTab = () => {
                           document.category === "Legal"
                             ? "bg-red-100 text-red-800"
                             : document.category === "HR"
-                              ? "bg-blue-100 text-blue-800"
+                              ? "bg-slate-100 text-slate-800"
                               : "bg-gray-100 text-gray-800"
                         }`}
                       >
@@ -6656,21 +6689,21 @@ const DocumentsTab = () => {
               <div className="flex space-x-2 mt-4">
                 <button
                   onClick={() => alert(`Viewing document: ${document.name}`)}
-                  className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm flex items-center justify-center space-x-1"
+                  className="flex-1 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors text-sm flex items-center justify-center space-x-1"
                 >
                   <Eye size={14} />
                   <span>View</span>
                 </button>
                 <button
                   onClick={() => alert(`Downloading: ${document.name}`)}
-                  className="flex-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm flex items-center justify-center space-x-1"
+                  className="flex-1 px-3 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors text-sm flex items-center justify-center space-x-1"
                 >
                   <Download size={14} />
                   <span>Download</span>
                 </button>
                 <button
                   onClick={() => alert(`Opening editor for: ${document.name}`)}
-                  className="flex-1 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm flex items-center justify-center space-x-1"
+                  className="flex-1 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors text-sm flex items-center justify-center space-x-1"
                 >
                   <Edit size={14} />
                   <span>Edit</span>
@@ -6704,11 +6737,11 @@ const DocumentsTab = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <button
             onClick={() => alert("Opening contract templates library...")}
-            className="p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors text-left"
+            className="p-4 bg-slate-50 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors text-left"
           >
-            <FileText className="w-8 h-8 text-blue-600 mb-2" />
-            <h4 className="font-semibold text-blue-900">Contract Templates</h4>
-            <p className="text-sm text-blue-700">
+            <FileText className="w-8 h-8 text-slate-600 mb-2" />
+            <h4 className="font-semibold text-slate-900">Contract Templates</h4>
+            <p className="text-sm text-slate-700">
               Employment contracts, NDAs, offer letters
             </p>
           </button>
@@ -6728,11 +6761,11 @@ const DocumentsTab = () => {
 
           <button
             onClick={() => alert("Opening template editor...")}
-            className="p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors text-left"
+            className="p-4 bg-slate-50 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors text-left"
           >
-            <Edit className="w-8 h-8 text-purple-600 mb-2" />
-            <h4 className="font-semibold text-purple-900">Template Editor</h4>
-            <p className="text-sm text-purple-700">
+            <Edit className="w-8 h-8 text-slate-600 mb-2" />
+            <h4 className="font-semibold text-slate-900">Template Editor</h4>
+            <p className="text-sm text-slate-700">
               Create and customize document templates
             </p>
           </button>
@@ -6762,7 +6795,7 @@ const SavingsTab = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white">Cost Savings & ROI</h1>
-          <p className="text-blue-100">
+          <p className="text-slate-200">
             Track recruitment cost efficiency and return on investment
           </p>
         </div>
@@ -6816,7 +6849,7 @@ const SavingsTab = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">Cost per Hire</p>
-              <p className="text-3xl font-bold text-blue-600">
+              <p className="text-3xl font-bold text-slate-600">
                 Â£{savingsData.avgCostPerHire.toLocaleString()}
               </p>
               <p className="text-sm text-green-600 flex items-center">
@@ -6824,7 +6857,7 @@ const SavingsTab = () => {
                 -44% vs industry avg
               </p>
             </div>
-            <Target className="w-8 h-8 text-blue-600" />
+            <Target className="w-8 h-8 text-slate-600" />
           </div>
         </div>
 
@@ -6832,7 +6865,7 @@ const SavingsTab = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">Time Saved</p>
-              <p className="text-3xl font-bold text-purple-600">
+              <p className="text-3xl font-bold text-slate-600">
                 {savingsData.timeSaved}h
               </p>
               <p className="text-sm text-green-600 flex items-center">
@@ -6840,7 +6873,7 @@ const SavingsTab = () => {
                 per hire
               </p>
             </div>
-            <Timer className="w-8 h-8 text-purple-600" />
+            <Timer className="w-8 h-8 text-slate-600" />
           </div>
         </div>
 
@@ -6850,7 +6883,7 @@ const SavingsTab = () => {
               <p className="text-sm font-medium text-gray-600">
                 Efficiency Gain
               </p>
-              <p className="text-3xl font-bold text-orange-600">
+              <p className="text-3xl font-bold text-amber-600">
                 {savingsData.efficiencyGain}%
               </p>
               <p className="text-sm text-green-600 flex items-center">
@@ -6858,7 +6891,7 @@ const SavingsTab = () => {
                 improvement
               </p>
             </div>
-            <Zap className="w-8 h-8 text-orange-600" />
+            <Zap className="w-8 h-8 text-amber-600" />
           </div>
         </div>
       </div>
@@ -6870,10 +6903,10 @@ const SavingsTab = () => {
             Savings Breakdown
           </h3>
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-blue-600" />
+                <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center">
+                  <Zap className="w-5 h-5 text-slate-600" />
                 </div>
                 <div>
                   <p className="font-medium text-gray-900">
@@ -6885,7 +6918,7 @@ const SavingsTab = () => {
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-lg font-bold text-blue-600">
+                <p className="text-lg font-bold text-slate-600">
                   Â£{savingsData.automationSavings.toLocaleString()}
                 </p>
                 <p className="text-xs text-gray-600">36% of total</p>
@@ -6914,10 +6947,10 @@ const SavingsTab = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between p-4 bg-purple-50 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                  <BarChart3 className="w-5 h-5 text-purple-600" />
+                <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center">
+                  <BarChart3 className="w-5 h-5 text-slate-600" />
                 </div>
                 <div>
                   <p className="font-medium text-gray-900">
@@ -6927,7 +6960,7 @@ const SavingsTab = () => {
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-lg font-bold text-purple-600">
+                <p className="text-lg font-bold text-slate-600">
                   Â£{savingsData.processSavings.toLocaleString()}
                 </p>
                 <p className="text-xs text-gray-600">37% of total</p>
@@ -7013,7 +7046,7 @@ const SavingsTab = () => {
               <div key={month} className="text-center">
                 <div className="h-32 flex items-end justify-center mb-2">
                   <div
-                    className="w-12 bg-gradient-to-t from-green-500 to-emerald-500 rounded-t flex items-end justify-center pb-2"
+                    className="w-12 bg-gradient-to-t from-violet-600 via-purple-500 to-pink-500 rounded-t flex items-end justify-center pb-2 shadow-sm"
                     style={{ height: `${height}%` }}
                   >
                     <span className="text-xs text-white font-medium">
@@ -7046,9 +7079,9 @@ const SavingsTab = () => {
           Return on Investment
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="text-center p-6 bg-blue-50 rounded-lg">
-            <PoundSterling className="w-12 h-12 text-blue-600 mx-auto mb-3" />
-            <p className="text-2xl font-bold text-blue-600">347%</p>
+          <div className="text-center p-6 bg-slate-50 rounded-lg">
+            <PoundSterling className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+            <p className="text-2xl font-bold text-slate-600">347%</p>
             <p className="text-sm text-gray-600">ROI in Year 1</p>
           </div>
 
@@ -7058,9 +7091,9 @@ const SavingsTab = () => {
             <p className="text-sm text-gray-600">Payback Period</p>
           </div>
 
-          <div className="text-center p-6 bg-purple-50 rounded-lg">
-            <Target className="w-12 h-12 text-purple-600 mx-auto mb-3" />
-            <p className="text-2xl font-bold text-purple-600">Â£428k</p>
+          <div className="text-center p-6 bg-slate-50 rounded-lg">
+            <Target className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+            <p className="text-2xl font-bold text-slate-600">Â£428k</p>
             <p className="text-sm text-gray-600">Projected Annual Savings</p>
           </div>
         </div>
@@ -7298,11 +7331,11 @@ const CreateOutreachSequenceModal = ({
             {step > 0 ? "Back" : "Cancel"}
           </button>
           {step < steps.length - 1 ? (
-            <button onClick={() => setStep(step + 1)} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            <button onClick={() => setStep(step + 1)} className="px-4 py-2 bg-gradient-to-r from-slate-600 to-pink-500 text-white rounded-lg hover:from-slate-600 hover:to-pink-600 shadow-md">
               Next
             </button>
           ) : (
-            <button onClick={handleCreate} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            <button onClick={handleCreate} className="px-4 py-2 bg-gradient-to-r from-slate-600 to-pink-500 text-white rounded-lg hover:from-slate-600 hover:to-pink-600 shadow-md">
               Create
             </button>
           )}
@@ -7338,13 +7371,13 @@ const OutreachTab = ({ aiRecruitSequences = [] }: { aiRecruitSequences?: Outreac
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white">Outreach Dashboard</h1>
-          <p className="text-blue-100">
+          <p className="text-slate-200">
             Manage candidate outreach. Emails, LinkedIn (when connected), job boards, Indeed, SMS.
           </p>
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-slate-600 to-teal-500 text-white rounded-lg hover:from-slate-600 hover:to-teal-600 transition-colors shadow-md"
         >
           <Send className="w-5 h-5" />
           Start New Outreach
@@ -7359,7 +7392,7 @@ const OutreachTab = ({ aiRecruitSequences = [] }: { aiRecruitSequences?: Outreac
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               outreachTab === tab.id
                 ? "bg-white bg-opacity-20 text-white"
-                : "text-blue-100 hover:text-white hover:bg-white hover:bg-opacity-10"
+                : "text-slate-200 hover:text-white hover:bg-white hover:bg-opacity-10"
             }`}
           >
             {tab.label}
@@ -7377,7 +7410,7 @@ const OutreachTab = ({ aiRecruitSequences = [] }: { aiRecruitSequences?: Outreac
               <p className="text-sm font-medium text-gray-600">Total Outreach</p>
               <p className="text-3xl font-bold text-gray-900">{totalOutreach}</p>
             </div>
-            <Send className="w-8 h-8 text-blue-600" />
+            <Send className="w-8 h-8 text-slate-600" />
           </div>
         </div>
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
@@ -7395,7 +7428,7 @@ const OutreachTab = ({ aiRecruitSequences = [] }: { aiRecruitSequences?: Outreac
               <p className="text-sm font-medium text-gray-600">Active Sequences</p>
               <p className="text-3xl font-bold text-gray-900">{activeCount}</p>
             </div>
-            <MessageSquare className="w-8 h-8 text-purple-600" />
+            <MessageSquare className="w-8 h-8 text-slate-600" />
           </div>
         </div>
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
@@ -7404,7 +7437,7 @@ const OutreachTab = ({ aiRecruitSequences = [] }: { aiRecruitSequences?: Outreac
               <p className="text-sm font-medium text-gray-600">Positive Responses</p>
               <p className="text-3xl font-bold text-gray-900">{repliedCount}</p>
             </div>
-            <TrendingUp className="w-8 h-8 text-orange-600" />
+            <TrendingUp className="w-8 h-8 text-amber-600" />
           </div>
         </div>
       </div>
@@ -7412,7 +7445,7 @@ const OutreachTab = ({ aiRecruitSequences = [] }: { aiRecruitSequences?: Outreac
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
           <div className="flex items-center gap-3 mb-4">
-            <Linkedin className="w-8 h-8 text-blue-600" />
+            <Linkedin className="w-8 h-8 text-slate-600" />
             <h3 className="font-semibold text-gray-900">LinkedIn</h3>
             <span className="text-xs text-gray-500">(Connect in My Business)</span>
           </div>
@@ -7420,7 +7453,7 @@ const OutreachTab = ({ aiRecruitSequences = [] }: { aiRecruitSequences?: Outreac
             {outreachSequences.filter((s) => s.touchpoints.some((t) => t.channel === "linkedin")).length} sent, 0
             responses
           </p>
-          <p className="text-sm text-blue-600 font-medium">0% response rate</p>
+          <p className="text-sm text-slate-600 font-medium">0% response rate</p>
         </div>
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
           <div className="flex items-center gap-3 mb-4">
@@ -7435,7 +7468,7 @@ const OutreachTab = ({ aiRecruitSequences = [] }: { aiRecruitSequences?: Outreac
         </div>
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
           <div className="flex items-center gap-3 mb-4">
-            <Briefcase className="w-8 h-8 text-purple-600" />
+            <Briefcase className="w-8 h-8 text-slate-600" />
             <h3 className="font-semibold text-gray-900">Job Boards / Indeed / SMS</h3>
           </div>
           <p className="text-sm text-gray-600">
@@ -7444,7 +7477,7 @@ const OutreachTab = ({ aiRecruitSequences = [] }: { aiRecruitSequences?: Outreac
             ).length}{" "}
             contacts
           </p>
-          <p className="text-sm text-purple-600 font-medium">Via Brevo & feeds</p>
+          <p className="text-sm text-slate-600 font-medium">Via Brevo & feeds</p>
         </div>
       </div>
 
@@ -7501,7 +7534,7 @@ const OutreachTab = ({ aiRecruitSequences = [] }: { aiRecruitSequences?: Outreac
                     <div>
                       <p className="font-medium text-gray-900">{seq.candidateName}</p>
                       <p className="text-sm text-gray-500">{seq.candidateEmail}</p>
-                      <p className="text-sm text-blue-600 mt-1">Role: {seq.roleTitle}</p>
+                      <p className="text-sm text-slate-600 mt-1">Role: {seq.roleTitle}</p>
                     </div>
                     <span
                       className={`px-2 py-1 rounded text-xs font-medium ${
@@ -7521,8 +7554,8 @@ const OutreachTab = ({ aiRecruitSequences = [] }: { aiRecruitSequences?: Outreac
                               tp.channel === "email"
                                 ? "bg-green-100 text-green-800"
                                 : tp.channel === "linkedin"
-                                  ? "bg-blue-100 text-blue-800"
-                                  : "bg-purple-100 text-purple-800"
+                                  ? "bg-slate-100 text-slate-800"
+                                  : "bg-slate-100 text-slate-800"
                             }`}
                           >
                             {channelLabel(tp.channel)}
@@ -7586,7 +7619,7 @@ const OutreachTab = ({ aiRecruitSequences = [] }: { aiRecruitSequences?: Outreac
                     <div>
                       <p className="font-medium text-gray-900">{name}</p>
                       <p className="text-sm text-gray-500">{email}</p>
-                      <p className="text-xs text-blue-600 mt-1">Source: {source}</p>
+                      <p className="text-xs text-slate-600 mt-1">Source: {source}</p>
                     </div>
                     <div className="text-right">
                       {seq ? (
@@ -7597,7 +7630,7 @@ const OutreachTab = ({ aiRecruitSequences = [] }: { aiRecruitSequences?: Outreac
                       ) : (
                         <button
                           onClick={() => alert(`Add ${name} to outreach sequence â€“ select role`)}
-                          className="text-sm text-blue-600 hover:underline"
+                          className="text-sm text-slate-600 hover:underline"
                         >
                           Add to sequence
                         </button>
@@ -7638,7 +7671,7 @@ const OutreachTab = ({ aiRecruitSequences = [] }: { aiRecruitSequences?: Outreac
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
-                      className="bg-blue-500 h-2 rounded-full"
+                      className="bg-slate-500 h-2 rounded-full"
                       style={{
                         width: `${Math.min(100, outreachSequences.filter((s) => s.touchpoints.some((t) => t.channel === "linkedin")).length * 20)}%`,
                       }}
@@ -7652,7 +7685,7 @@ const OutreachTab = ({ aiRecruitSequences = [] }: { aiRecruitSequences?: Outreac
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
-                      className="bg-purple-500 h-2 rounded-full"
+                      className="bg-slate-500 h-2 rounded-full"
                       style={{
                         width: `${Math.min(100, outreachSequences.filter((s) => s.touchpoints.some((t) => ["job_board", "indeed"].includes(t.channel))).length * 20)}%`,
                       }}
@@ -7668,7 +7701,7 @@ const OutreachTab = ({ aiRecruitSequences = [] }: { aiRecruitSequences?: Outreac
             </div>
             <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
               <h3 className="font-semibold text-gray-900 mb-2">CRM Bank</h3>
-              <p className="text-4xl font-bold text-blue-600">
+              <p className="text-4xl font-bold text-slate-600">
                 {mockCandidates.length + mockRoles.reduce((acc, r) => acc + (r.shortlistedCandidates?.length || 0), 0)}
               </p>
               <p className="text-sm text-gray-500 mt-1">Candidates available for new roles</p>
@@ -8071,7 +8104,7 @@ const CVDatabaseTab = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-white">CV Database</h1>
-        <p className="text-blue-100">
+        <p className="text-slate-200">
           All historical and current CVs. Import from previous ATS, export when needed. Searched automatically when you create a new role.
         </p>
       </div>
@@ -8085,7 +8118,7 @@ const CVDatabaseTab = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by name, email, skills, location..."
-              className="w-full pl-10 pr-4 py-2 bg-white rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full pl-10 pr-4 py-2 bg-white rounded-lg border border-gray-300 focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
             />
           </div>
         </div>
@@ -8316,7 +8349,7 @@ const MarketIntelligenceTab = () => (
   <div className="space-y-6">
     <div>
       <h1 className="text-3xl font-bold text-white">Market Intelligence</h1>
-      <p className="text-blue-100">
+      <p className="text-slate-200">
         Real-time salary data and market insights for UK roles
       </p>
     </div>
@@ -8404,11 +8437,11 @@ const MyBusinessTab = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white">My Business</h1>
-          <p className="text-blue-100">Company profile and settings</p>
+          <p className="text-slate-200">Company profile and settings</p>
         </div>
         <button
           onClick={() => setShowEditCompany(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-slate-600 to-teal-500 text-white rounded-lg hover:from-slate-600 hover:to-teal-600 transition-colors shadow-md"
         >
           <Edit size={18} />
           Edit Company
@@ -8441,7 +8474,7 @@ const MyBusinessTab = () => {
                         onChange={handleLogoUpload}
                         className="hidden"
                       />
-                      <span className="inline-flex items-center gap-2 px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                      <span className="inline-flex items-center gap-2 px-3 py-1.5 text-sm bg-slate-700 text-white rounded-lg hover:bg-slate-800">
                         <Upload size={14} />
                         Change
                       </span>
@@ -8462,7 +8495,7 @@ const MyBusinessTab = () => {
                     onChange={handleLogoUpload}
                     className="hidden"
                   />
-                  <span className="inline-flex items-center gap-2 px-4 py-3 text-sm border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-400 hover:bg-blue-50/50 transition-colors text-gray-600">
+                  <span className="inline-flex items-center gap-2 px-4 py-3 text-sm border-2 border-dashed border-gray-300 rounded-lg hover:border-slate-400 hover:bg-slate-50/50 transition-colors text-gray-600">
                     <Upload size={20} />
                     Upload logo (PNG recommended)
                   </span>
@@ -8520,7 +8553,7 @@ const MyBusinessTab = () => {
               <span className="text-sm text-gray-600">{jobBoards.length} board(s) configured</span>
               <button
                 onClick={() => setShowAddJobBoard(true)}
-                className="flex items-center gap-2 px-3 py-1.5 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700"
+                className="flex items-center gap-2 px-3 py-1.5 text-sm bg-slate-600 text-white rounded-lg hover:bg-slate-700"
               >
                 <Plus size={16} />
                 Add Job Board
@@ -8539,7 +8572,7 @@ const MyBusinessTab = () => {
                   <div className="flex items-center gap-2 flex-shrink-0">
                     <button
                       onClick={() => handleConfigureJobBoard(board)}
-                      className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+                      className="px-3 py-1 text-sm bg-slate-700 text-white rounded hover:bg-slate-800"
                     >
                       Configure
                     </button>
@@ -8654,7 +8687,7 @@ const MyBusinessTab = () => {
             <div className="flex gap-2 mt-6">
               <button
                 onClick={handleSaveCompany}
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800"
               >
                 Save Changes
               </button>
@@ -8736,7 +8769,7 @@ const AddJobBoardModal = ({
             <button
               type="submit"
               disabled={!name.trim()}
-              className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
+              className="flex-1 px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 disabled:opacity-50"
             >
               Add Board
             </button>
@@ -8958,7 +8991,7 @@ const OnboardingWizard = ({ onComplete }: { onComplete: () => void }) => {
           <span className="text-sm text-gray-500">{step + 1} of {steps.length}</span>
           <div className="flex gap-2">
             <button onClick={handleSkip} className="px-4 py-2 text-gray-600 hover:text-gray-800">Skip</button>
-            <button onClick={handleNext} className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
+            <button onClick={handleNext} className="px-4 py-2 bg-gradient-to-r from-slate-600 to-pink-500 text-white rounded-lg hover:from-slate-600 hover:to-pink-600 shadow-md">
               {isLast ? "Get started" : "Next"}
             </button>
           </div>
@@ -9001,7 +9034,7 @@ const WelcomeTour = ({ onComplete }: { onComplete: () => void }) => {
             </button>
             <button
               onClick={handleNext}
-              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+              className="px-4 py-2 bg-gradient-to-r from-slate-600 to-pink-500 text-white rounded-lg hover:from-slate-600 hover:to-pink-600 shadow-md"
             >
               {isLast ? "Get started" : "Next"}
             </button>
@@ -9012,13 +9045,14 @@ const WelcomeTour = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
-const UPhirePlatform = () => {
+const UPhirePlatformComponent = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [aiRecruitSequences, setAiRecruitSequences] = useState<OutreachSequence[]>([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showWelcomeTour, setShowWelcomeTour] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [user, setUser] = useState({
     name: "",
@@ -9040,7 +9074,7 @@ const UPhirePlatform = () => {
           return;
         }
         if (data && Array.isArray(data)) {
-          mockCandidates = (data as any[]).map((c) => ({
+          let mapped = (data as any[]).map((c) => ({
             ...c,
             aiGenerated: c.ai_generated ?? c.aiGenerated,
           })) as unknown as Candidate[];
@@ -9050,12 +9084,11 @@ const UPhirePlatform = () => {
               .from('shortlisted_candidates')
               .select('candidate_id, notes');
             if (!shortlistError && Array.isArray(shortlistData)) {
-              // Map candidate IDs to notes
               const shortlistMap = new Map<number, string>();
               shortlistData.forEach((rec: any) => {
                 shortlistMap.set(rec.candidate_id, rec.notes || 'Shortlisted');
               });
-              mockCandidates = mockCandidates.map((c: any) => {
+              mapped = mapped.map((c: any) => {
                 if (shortlistMap.has(c.id)) {
                   const note = shortlistMap.get(c.id) || 'Shortlisted';
                   return {
@@ -9069,6 +9102,7 @@ const UPhirePlatform = () => {
           } catch (shortErr) {
             console.error('Error fetching shortlisted candidates:', shortErr);
           }
+          mockCandidates.splice(0, mockCandidates.length, ...mapped);
         }
       } catch (err) {
         console.error('Unexpected error fetching candidates', err);
@@ -9221,7 +9255,7 @@ const UPhirePlatform = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-pink-800">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       {isLoggedIn && showOnboarding && (
         <OnboardingWizard
           onComplete={() => {
@@ -9243,7 +9277,7 @@ const UPhirePlatform = () => {
             onClick={() => setMobileMenuOpen(false)}
             aria-hidden="true"
           />
-          <aside className="fixed left-0 top-0 h-full w-64 bg-slate-900/95 backdrop-blur-md border-r border-white border-opacity-20 z-50 shadow-xl">
+          <aside className="fixed left-0 top-0 h-full w-64 bg-gray-900/95 backdrop-blur-md border-r border-white/20 z-50 shadow-xl">
             <div className="flex items-center justify-between p-4 border-b border-white border-opacity-10">
               <span className="text-white font-semibold">Menu</span>
               <button
@@ -9266,7 +9300,7 @@ const UPhirePlatform = () => {
                     className={`flex items-center space-x-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                       activeTab === tab.id
                         ? "bg-white bg-opacity-20 text-white"
-                        : "text-blue-100 hover:text-white hover:bg-white hover:bg-opacity-10"
+                        : "text-slate-200 hover:text-white hover:bg-white hover:bg-opacity-10"
                     }`}
                   >
                     <Icon size={18} />
@@ -9296,11 +9330,11 @@ const UPhirePlatform = () => {
               )}
             </div>
 
-            {/* Center: UPhire logo */}
+            {/* Center: UPhireIQ logo */}
             <div className="absolute left-1/2 -translate-x-1/2 flex items-center">
               <img
-                src="https://cdn.builder.io/api/v1/assets/e3ae173b79f74e84b0580a7f82f9aa6c/uphire-logo-no-background-pink-text-72849d?format=webp&width=800"
-                alt="UPhire Logo"
+                src="https://cdn.builder.io/api/v1/assets/e3ae173b79f74e84b0580a7f82f9aa6c/uphire-iq-logo-no-background-a3ed8d?format=webp&width=800"
+                alt="UPhireIQ Logo"
                 className="h-9 w-auto"
               />
             </div>
@@ -9365,28 +9399,19 @@ const UPhirePlatform = () => {
                           <MessageSquare size={16} />
                           <span>Support Tickets</span>
                         </Link>
-                        <a
-                          href={contactConfig.pricingUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <Link
+                          to="/subscription"
                           className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           onClick={() => setShowUserDropdown(false)}
                         >
                           <PoundSterling size={16} />
                           <span>Upgrade / Manage Subscription</span>
-                        </a>
+                        </Link>
                         <div className="border-t my-1"></div>
                         <button
                           onClick={() => {
-                            sessionStorage.removeItem("uphire_demo");
-                            setIsLoggedIn(false);
-                            setUser({
-                              name: "",
-                              email: "",
-                              role: "",
-                              initials: "",
-                            });
                             setShowUserDropdown(false);
+                            setShowLogoutConfirm(true);
                           }}
                           className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                         >
@@ -9401,7 +9426,7 @@ const UPhirePlatform = () => {
               ) : (
                 <Link
                   to="/login"
-                  className="bg-white bg-opacity-20 text-white px-6 py-2 rounded-lg hover:bg-white hover:bg-opacity-30 transition-all flex items-center space-x-2 font-medium"
+                  className="bg-teal-500/90 hover:bg-teal-500 text-white px-6 py-2 rounded-lg transition-all flex items-center space-x-2 font-medium shadow-md"
                 >
                   <User size={16} />
                   <span>Sign in</span>
@@ -9415,7 +9440,7 @@ const UPhirePlatform = () => {
         {isLoggedIn && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 border-t border-white border-opacity-10">
             <nav className="text-sm">
-              <span className="text-blue-100">
+              <span className="text-slate-200">
                 {breadcrumbs.map((segment, index) => (
                   <span key={index}>
                     {index === 0
@@ -9439,14 +9464,14 @@ const UPhirePlatform = () => {
               <h2 className="text-4xl font-bold text-white">
                 Welcome to UPhire
               </h2>
-              <p className="text-xl text-blue-100 max-w-2xl mx-auto">
+              <p className="text-xl text-slate-200 max-w-2xl mx-auto">
                 AI-powered recruitment infrastructure for modern teams.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
               <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6 text-center">
-                <Zap className="w-12 h-12 text-orange-600 mx-auto mb-4" />
+                <Zap className="w-12 h-12 text-amber-600 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   AI-Powered Recruitment
                 </h3>
@@ -9457,7 +9482,7 @@ const UPhirePlatform = () => {
               </div>
 
               <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6 text-center">
-                <VideoIcon className="w-12 h-12 text-purple-600 mx-auto mb-4" />
+                <VideoIcon className="w-12 h-12 text-slate-600 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   VR Simulation Interviews
                 </h3>
@@ -9483,7 +9508,7 @@ const UPhirePlatform = () => {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div className="text-center">
-                  <Zap className="w-8 h-8 text-orange-600 mx-auto mb-2" />
+                  <Zap className="w-8 h-8 text-amber-600 mx-auto mb-2" />
                   <p className="font-medium text-gray-900">
                     UPhireIQ AI-Driven Prediction
                   </p>
@@ -9492,7 +9517,7 @@ const UPhirePlatform = () => {
                   </p>
                 </div>
                 <div className="text-center">
-                  <Calendar className="w-8 h-8 text-purple-600 mx-auto mb-2" />
+                  <Calendar className="w-8 h-8 text-slate-600 mx-auto mb-2" />
                   <p className="font-medium text-gray-900">
                     Calendly Integration
                   </p>
@@ -9501,7 +9526,7 @@ const UPhirePlatform = () => {
                   </p>
                 </div>
                 <div className="text-center">
-                  <Users className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                  <Users className="w-8 h-8 text-slate-600 mx-auto mb-2" />
                   <p className="font-medium text-gray-900">
                     3 Touch Point Hire System
                   </p>
@@ -9510,7 +9535,7 @@ const UPhirePlatform = () => {
                   </p>
                 </div>
                 <div className="text-center">
-                  <FileText className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                  <FileText className="w-8 h-8 text-slate-600 mx-auto mb-2" />
                   <p className="font-medium text-gray-900">
                     Document Management
                   </p>
@@ -9519,7 +9544,7 @@ const UPhirePlatform = () => {
                   </p>
                 </div>
                 <div className="text-center">
-                  <VideoIcon className="w-8 h-8 text-purple-600 mx-auto mb-2" />
+                  <VideoIcon className="w-8 h-8 text-slate-600 mx-auto mb-2" />
                   <p className="font-medium text-gray-900">
                     VR Simulation Interviews
                   </p>
@@ -9535,7 +9560,7 @@ const UPhirePlatform = () => {
                   </p>
                 </div>
                 <div className="text-center">
-                  <Send className="w-8 h-8 text-orange-600 mx-auto mb-2" />
+                  <Send className="w-8 h-8 text-amber-600 mx-auto mb-2" />
                   <p className="font-medium text-gray-900">
                     AI Recruitment Outreach
                   </p>
@@ -9555,17 +9580,46 @@ const UPhirePlatform = () => {
 
             <Link
               to="/login"
-              className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-lg transition-all text-lg font-medium"
+              className="inline-block bg-gradient-to-r from-slate-600 to-teal-500 hover:from-slate-600 hover:to-teal-600 text-white px-8 py-4 rounded-lg transition-all text-lg font-medium shadow-lg hover:shadow-xl"
             >
               Get Started Today
             </Link>
+
+            <footer className="mt-16 pt-8 border-t border-white border-opacity-20 text-center text-sm text-gray-600">
+              <a href={contactConfig.privacyUrl} target="_blank" rel="noopener noreferrer" className="hover:text-slate-600 mx-2">Privacy Policy</a>
+              <span className="mx-2">|</span>
+              <a href={contactConfig.termsUrl} target="_blank" rel="noopener noreferrer" className="hover:text-slate-600 mx-2">Terms of Service</a>
+            </footer>
           </div>
         )}
       </main>
 
+      <AlertDialog open={showLogoutConfirm} onOpenChange={setShowLogoutConfirm}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Sign out?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to sign out? You will need to sign in again to access the platform.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-red-600 hover:bg-red-700"
+              onClick={() => {
+                sessionStorage.removeItem("uphire_demo");
+                setIsLoggedIn(false);
+                setUser({ name: "", email: "", role: "", initials: "" });
+                setShowLogoutConfirm(false);
+              }}
+            >
+              Sign out
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
-}
 
-export default UPhirePlatform;
+export default UPhirePlatformComponent;

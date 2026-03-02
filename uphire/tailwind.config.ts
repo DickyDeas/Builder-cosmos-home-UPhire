@@ -62,19 +62,18 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // UPhire brand colors
+        // UPhire brand colors (logo pink + light aqua)
         uphire: {
-          50: "#eff6ff",
-          100: "#dbeafe",
-          200: "#bfdbfe",
-          300: "#93c5fd",
-          400: "#60a5fa",
-          500: "#3b82f6",
-          600: "#2563eb",
-          700: "#1d4ed8",
-          800: "#1e40af",
-          900: "#1e3a8a",
-          950: "#172554",
+          pink: {
+            400: "#f472b6",
+            500: "#ec4899",
+            600: "#db2777",
+          },
+          aqua: {
+            400: "#2dd4bf",
+            500: "#14b8a6",
+            600: "#0d9488",
+          },
         },
       },
       borderRadius: {
@@ -84,9 +83,13 @@ export default {
       },
       backgroundImage: {
         "uphire-gradient":
-          "linear-gradient(135deg, #1e40af 0%, #7c3aed 50%, #ec4899 100%)",
+          "linear-gradient(135deg, #334155 0%, #1e293b 45%, #0f172a 85%, #0d9488 100%)",
         "uphire-gradient-light":
-          "linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #f472b6 100%)",
+          "linear-gradient(135deg, #475569 0%, #334155 40%, #1e293b 80%, #14b8a6 100%)",
+        "uphire-cta":
+          "linear-gradient(135deg, #475569 0%, #334155 40%, #0d9488 100%)",
+        "uphire-cta-pink":
+          "linear-gradient(135deg, #475569 0%, #334155 50%, #db2777 100%)",
       },
       backdropBlur: {
         xs: "2px",

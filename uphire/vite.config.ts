@@ -7,6 +7,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
 
   return {
+    base: "/app/",
     server: {
       host: "::",
       port: 8080,
@@ -99,6 +100,10 @@ export default defineConfig(({ mode }) => {
       alias: {
         "@": path.resolve(__dirname, "./src"),
       },
+    },
+    build: {
+      outDir: "dist/app",
+      emptyOutDir: true,
     },
   };
 });

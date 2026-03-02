@@ -5,9 +5,15 @@
   # Base directory when repo root contains uphire subfolder (e.g. Builder-cosmos-home-UPhire-updated-final)
   base = "uphire"
 
+# SPA fallback for /app subpath - serve app at uphireiq.com/app
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/app"
+  to = "/app/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/app/*"
+  to = "/app/index.html"
   status = 200
 
 [build.environment]

@@ -12,4 +12,7 @@ export const contactConfig = {
   salesEmail: import.meta.env.VITE_SALES_EMAIL || "sales@uphire.com",
   billingEmail: import.meta.env.VITE_BILLING_EMAIL || "billing@uphire.com",
   noreplyEmail: import.meta.env.VITE_FROM_EMAIL || "noreply@uphire.com",
+  /** Privacy policy and terms - link to main site pages */
+  privacyUrl: import.meta.env.VITE_PRIVACY_URL || "https://uphireiq.com/privacy",
+  termsUrl: import.meta.env.VITE_TERMS_URL || "https://uphireiq.com/terms",
 };

@@ -5,7 +5,7 @@ Reference extracted from UPHIRE_SYSTEM_PROCESS_FLOW.docx for implementation alig
 ## Implemented Functionality
 
 ### 1. User Authentication & Onboarding
-- [x] **Login** – Supabase Auth + admin bypass (demo@google / 123)
+- [x] **Login** – Supabase Auth + admin login (demo@google / 123456)
 - [x] **Sign up** – Supabase Auth sign up
 - [x] **Forgot Password** – Link on login page, Supabase `resetPasswordForEmail`
 - [x] Password strength indicator (min 8 chars, upper, lower, number, special)

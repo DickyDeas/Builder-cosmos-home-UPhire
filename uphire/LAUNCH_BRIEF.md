@@ -86,7 +86,7 @@ VITE_FROM_EMAIL=noreply@uphireiq.com
 
 ### Step 7: Post-Launch
 
-1. Smoke test: sign up, log in, create role, add candidate
+1. Smoke test: sign up, log in (admin: demo@google / 123456), create role, add candidate
 2. Enable Supabase backups (Settings → Database)
 3. Optional: UptimeRobot for monitoring
 

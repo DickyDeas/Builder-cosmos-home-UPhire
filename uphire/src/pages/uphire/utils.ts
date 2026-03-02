@@ -7,9 +7,9 @@ export const getInterviewStageColor = (stage: string) => {
     [key: string]: { bg: string; text: string; border: string };
   } = {
     shortlisted: {
-      bg: "bg-blue-50",
-      text: "text-blue-700",
-      border: "border-blue-200",
+      bg: "bg-slate-50",
+      text: "text-slate-700",
+      border: "border-slate-200",
     },
     screening_scheduled: {
       bg: "bg-yellow-50",
@@ -17,14 +17,14 @@ export const getInterviewStageColor = (stage: string) => {
       border: "border-yellow-200",
     },
     screening_completed: {
-      bg: "bg-purple-50",
-      text: "text-purple-700",
-      border: "border-purple-200",
+      bg: "bg-slate-50",
+      text: "text-slate-700",
+      border: "border-slate-200",
     },
     technical_scheduled: {
-      bg: "bg-orange-50",
-      text: "text-orange-700",
-      border: "border-orange-200",
+      bg: "bg-amber-50",
+      text: "text-amber-700",
+      border: "border-amber-200",
     },
     technical_completed: {
       bg: "bg-indigo-50",
@@ -32,9 +32,9 @@ export const getInterviewStageColor = (stage: string) => {
       border: "border-indigo-200",
     },
     final_scheduled: {
-      bg: "bg-pink-50",
-      text: "text-pink-700",
-      border: "border-pink-200",
+      bg: "bg-slate-50",
+      text: "text-slate-700",
+      border: "border-slate-200",
     },
     final_completed: {
       bg: "bg-emerald-50",
