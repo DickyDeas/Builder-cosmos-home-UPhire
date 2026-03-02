@@ -1,7 +1,7 @@
 [build]
   command = "npm run build"
-  publish = "dist"
-  functions = "api"
+  publish = "uphire/dist"
+  functions = "uphire/api"
   # Base directory when repo root contains uphire subfolder (e.g. Builder-cosmos-home-UPhire-updated-final)
   base = "uphire"
 
