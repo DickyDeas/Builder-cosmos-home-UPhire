@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/lib/supabaseClient";
 import {
@@ -490,7 +490,7 @@ const EmployeeDetailsModal = ({
                   Employee Documents
                 </h3>
                 <button
-                  onClick={() => alert("Document upload â€“ connect to Supabase storage when ready")}
+                  onClick={() => alert("Document upload – connect to Supabase storage when ready")}
                   className="px-4 py-2 bg-gradient-to-r from-slate-600 to-teal-500 text-white rounded-lg hover:from-slate-600 hover:to-teal-600 transition-colors flex items-center space-x-2 shadow-md"
                 >
                   <Upload size={16} />
@@ -515,7 +515,7 @@ const EmployeeDetailsModal = ({
                               {document.name}
                             </h4>
                             <p className="text-xs text-gray-600">
-                              {document.type} â€¢ {document.category}
+                              {document.type} • {document.category}
                             </p>
                             <p className="text-xs text-gray-500">
                               Modified: {document.lastModified}
@@ -550,7 +550,7 @@ const EmployeeDetailsModal = ({
                   <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                   <p className="text-gray-600">No documents uploaded yet</p>
                   <button
-                    onClick={() => alert("Document upload â€“ connect to Supabase storage when ready")}
+                    onClick={() => alert("Document upload – connect to Supabase storage when ready")}
                     className="mt-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors"
                   >
                     Upload First Document
@@ -896,7 +896,7 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
                 Minimum Salary
               </p>
               <p className="text-2xl font-bold text-slate-800">
-                Â£{lastSearchResults.salary.min.toLocaleString()}
+                £{lastSearchResults.salary.min.toLocaleString()}
               </p>
             </div>
             <div className="bg-green-50 rounded-lg p-4 text-center">
@@ -904,7 +904,7 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
                 Median Salary
               </p>
               <p className="text-2xl font-bold text-green-800">
-                Â£{lastSearchResults.salary.median.toLocaleString()}
+                £{lastSearchResults.salary.median.toLocaleString()}
               </p>
             </div>
             <div className="bg-slate-50 rounded-lg p-4 text-center">
@@ -912,7 +912,7 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
                 Maximum Salary
               </p>
               <p className="text-2xl font-bold text-slate-800">
-                Â£{lastSearchResults.salary.max.toLocaleString()}
+                £{lastSearchResults.salary.max.toLocaleString()}
               </p>
             </div>
           </div>
@@ -971,13 +971,13 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
                   >
                     <div className="absolute inset-0 flex items-center justify-between px-2">
                       <span className="text-xs text-white font-medium">
-                        Â£{lastSearchResults.salary.min / 1000}k
+                        £{lastSearchResults.salary.min / 1000}k
                       </span>
                       <span className="text-xs text-white font-bold">
-                        Â£{lastSearchResults.salary.median / 1000}k
+                        £{lastSearchResults.salary.median / 1000}k
                       </span>
                       <span className="text-xs text-white font-medium">
-                        Â£{lastSearchResults.salary.max / 1000}k
+                        £{lastSearchResults.salary.max / 1000}k
                       </span>
                     </div>
                   </div>
@@ -1090,7 +1090,7 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-green-700">Â£77k</p>
+                    <p className="text-sm font-bold text-green-700">£77k</p>
                     <p className="text-xs text-gray-600">median</p>
                   </div>
                 </div>
@@ -1104,7 +1104,7 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-slate-700">Â£80k</p>
+                    <p className="text-sm font-bold text-slate-700">£80k</p>
                     <p className="text-xs text-gray-600">median</p>
                   </div>
                 </div>
@@ -1118,7 +1118,7 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-slate-700">Â£75k</p>
+                    <p className="text-sm font-bold text-slate-700">£75k</p>
                     <p className="text-xs text-gray-600">median</p>
                   </div>
                 </div>
@@ -1198,7 +1198,7 @@ const MarketIntelligence = ({ uploadedRoles = mockRoles }: { uploadedRoles?: Rol
                 </p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-bold text-slate-600">Â£68k</p>
+                <p className="text-2xl font-bold text-slate-600">£68k</p>
                 <p className="text-sm text-gray-600">Avg. Tech Salary</p>
                 <p className="text-xs text-green-600 mt-1">
                   â†‘ 3% vs last quarter
@@ -1644,14 +1644,14 @@ const ScreeningModal = ({
           </button>
         </div>
         <p className="text-sm text-gray-600 mb-4">
-          {role.title} â€¢ Assess suitability via screening questions
+          {role.title} • Assess suitability via screening questions
         </p>
         {conversation?.messages.length === 0 && !liveChatLink && (
           <div className="mb-4 space-y-3">
             <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
               <p className="text-sm font-medium text-indigo-900 mb-1">Live chat screening (recommended)</p>
               <p className="text-xs text-indigo-700 mb-2">
-                Timed, role-specific skill questions. Candidate types responses in real time â€“ prevents googling.
+                Timed, role-specific skill questions. Candidate types responses in real time – prevents googling.
               </p>
               <button
                 onClick={handleStartLiveChat}
@@ -1731,7 +1731,7 @@ const ScreeningModal = ({
                 }`}
               >
                 <p className="text-xs text-gray-500 mb-1">
-                  {m.direction === "outbound" ? "Sent" : "Response"} â€¢ {new Date(m.createdAt).toLocaleString()}
+                  {m.direction === "outbound" ? "Sent" : "Response"} • {new Date(m.createdAt).toLocaleString()}
                 </p>
                 <p className="text-sm">{m.content}</p>
               </div>
@@ -2030,7 +2030,7 @@ const RoleShortlistView = ({
               {role.title} - Shortlist
             </h1>
             <p className="text-slate-200">
-              {role.shortlistedCandidates?.length || 0} candidates shortlisted â€¢{" "}
+              {role.shortlistedCandidates?.length || 0} candidates shortlisted •{" "}
               {role.department}
             </p>
           </div>
@@ -2284,13 +2284,13 @@ const RoleShortlistView = ({
                                   <span className="capitalize">
                                     {interview.type}
                                   </span>
-                                  <span className="text-gray-500">â€¢</span>
+                                  <span className="text-gray-500">•</span>
                                   <span className="text-gray-600">
                                     {interview.date}
                                   </span>
                                   {interview.rating && (
                                     <>
-                                      <span className="text-gray-500">â€¢</span>
+                                      <span className="text-gray-500">•</span>
                                       <span className="text-green-600">
                                         {interview.rating}/10
                                       </span>
@@ -2540,7 +2540,7 @@ const JobDetailsView = ({
           <div>
             <h1 className="text-3xl font-bold text-white">{role.title}</h1>
             <p className="text-slate-200">
-              {role.department} â€¢ {role.location} â€¢ Posted: {role.created}
+              {role.department} • {role.location} • Posted: {role.created}
             </p>
           </div>
         </div>
@@ -2643,7 +2643,7 @@ const JobDetailsView = ({
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span>Days open</span>
-                <span className="font-medium">{role.created ? Math.max(1, Math.floor((Date.now() - new Date(role.created).getTime()) / 86400000)) : "â€”"}</span>
+                <span className="font-medium">{role.created ? Math.max(1, Math.floor((Date.now() - new Date(role.created).getTime()) / 86400000)) : "—"}</span>
               </div>
               <div className="flex justify-between">
                 <span>Avg. time to shortlist</span>
@@ -3022,19 +3022,19 @@ Role Overview:
 We are seeking a talented ${formData.title} to join our ${formData.department} team. In this role, you will contribute to our continued growth and innovation while working with cutting-edge technologies including ${businessProfile.technologies.slice(0, 5).join(", ")}, and more.
 
 What You'll Do:
-â€¢ Drive impactful projects for our diverse client base including ${businessProfile.clients.slice(0, 3).join(", ")}
-â€¢ Collaborate with our team of ${businessProfile.employees} professionals
-â€¢ Work on ${businessProfile.services.slice(0, 3).join(", ")}
-â€¢ Contribute to our award-winning culture (${businessProfile.awards.slice(0, 2).join(", ")})
+• Drive impactful projects for our diverse client base including ${businessProfile.clients.slice(0, 3).join(", ")}
+• Collaborate with our team of ${businessProfile.employees} professionals
+• Work on ${businessProfile.services.slice(0, 3).join(", ")}
+• Contribute to our award-winning culture (${businessProfile.awards.slice(0, 2).join(", ")})
 
 Why Join Us:
 At ${businessProfile.companyName}, we foster a culture built on our core values: ${businessProfile.values.join(", ")}. We're committed to providing an inclusive environment where innovation thrives and every team member can grow their career.
 
 Company Highlights:
-â€¢ Industry certifications: ${businessProfile.certifications.join(", ")}
-â€¢ Recognized as ${businessProfile.awards[0]}
-â€¢ Headquarters in ${businessProfile.headquarters}
-â€¢ Serving clients across multiple industries including healthcare, finance, and government sectors`;
+• Industry certifications: ${businessProfile.certifications.join(", ")}
+• Recognized as ${businessProfile.awards[0]}
+• Headquarters in ${businessProfile.headquarters}
+• Serving clients across multiple industries including healthcare, finance, and government sectors`;
 
     const suggestedRequirements = [
       `Bachelor's degree in ${formData.department === "Engineering" ? "Computer Science, Engineering, or related field" : formData.department === "Design" ? "Design, HCI, or related field" : formData.department === "Product" ? "Business, Product Management, or related field" : "relevant field"}`,
@@ -3149,7 +3149,7 @@ Company Highlights:
     const companyWebsite = businessProfile.website;
     toast({
       title: "Role published successfully",
-      description: `Live on ${publishedTo.slice(0, 3).join(", ")}, ${publishedTo.length > 3 ? `+${publishedTo.length - 3} more` : ""}${companyWebsite ? ` â€¢ Company career page` : ""} â€¢ Google Jobs`,
+      description: `Live on ${publishedTo.slice(0, 3).join(", ")}, ${publishedTo.length > 3 ? `+${publishedTo.length - 3} more` : ""}${companyWebsite ? ` • Company career page` : ""} • Google Jobs`,
     });
     return {
       success: true,
@@ -3387,7 +3387,7 @@ Company Highlights:
                       if (n) handleInputChange("salary", n);
                     }}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-slate-500"
-                    placeholder="e.g. Â£60,000 - Â£85,000 or Â£50k - Â£65k"
+                    placeholder="e.g. £60,000 - £85,000 or £50k - £65k"
                   />
                 </div>
               </div>
@@ -3574,8 +3574,8 @@ Company Highlights:
                       </span>
                     </div>
                     <p className="text-xs text-slate-700">
-                      Using company profile from {businessProfile.companyName} â€¢{" "}
-                      {businessProfile.industry} â€¢ Founded{" "}
+                      Using company profile from {businessProfile.companyName} •{" "}
+                      {businessProfile.industry} • Founded{" "}
                       {businessProfile.founded}
                     </p>
                   </div>
@@ -3804,7 +3804,7 @@ const AIRecruitmentModal = ({
 
   const campaignConfig: Record<CampaignType, { desc: string; steps: { label: string; duration: number }[] }> = {
     Standard: {
-      desc: "Balanced outreach: 3â€“5 touchpoints over 2 weeks",
+      desc: "Balanced outreach: 3–5 touchpoints over 2 weeks",
       steps: [
         { label: "Analyzing job requirements...", duration: 1000 },
         { label: "Scanning job board postings...", duration: 1000 },
@@ -3890,7 +3890,7 @@ const AIRecruitmentModal = ({
                 {role.title}
               </h3>
               <p className="text-gray-600">
-                {role.department} â€¢ {role.location}
+                {role.department} • {role.location}
               </p>
             </div>
           )}
@@ -4100,10 +4100,10 @@ const AIPredictionModal = ({
 
           if (roleMedian < marketMin * 0.9) {
             salaryInLine = false;
-            salaryRecommendation = `Salary (â‰ˆÂ£${roleMedian.toLocaleString()}) is below market (Â£${marketMin.toLocaleString()}â€“Â£${marketMax.toLocaleString()}). Consider increasing to Â£${marketMin.toLocaleString()}â€“Â£${marketMedian.toLocaleString()} to attract quality candidates.`;
+            salaryRecommendation = `Salary (≈£${roleMedian.toLocaleString()}) is below market (£${marketMin.toLocaleString()}–£${marketMax.toLocaleString()}). Consider increasing to £${marketMin.toLocaleString()}–£${marketMedian.toLocaleString()} to attract quality candidates.`;
             risks.push("Salary below market rate may reduce applicant quality");
           } else if (roleMedian > marketMax * 1.1) {
-            salaryRecommendation = `Salary (â‰ˆÂ£${roleMedian.toLocaleString()}) is above market (Â£${marketMin.toLocaleString()}â€“Â£${marketMax.toLocaleString()}). May attract strong candidates but budget impact to consider.`;
+            salaryRecommendation = `Salary (≈£${roleMedian.toLocaleString()}) is above market (£${marketMin.toLocaleString()}–£${marketMax.toLocaleString()}). May attract strong candidates but budget impact to consider.`;
           } else {
             positive.unshift("Competitive salary range aligned with market rates");
           }
@@ -4164,7 +4164,7 @@ const AIPredictionModal = ({
                 {role.title}
               </h3>
               <p className="text-gray-600">
-                {role.department} â€¢ {role.location}
+                {role.department} • {role.location}
               </p>
             </div>
           )}
@@ -4264,7 +4264,7 @@ const AIPredictionModal = ({
                   <ul className="space-y-1">
                     {prediction.factors.positive.map((factor, index) => (
                       <li key={index} className="text-sm text-gray-700 pl-4">
-                        â€¢ {factor}
+                        • {factor}
                       </li>
                     ))}
                   </ul>
@@ -4278,7 +4278,7 @@ const AIPredictionModal = ({
                   <ul className="space-y-1">
                     {prediction.factors.risks.map((risk, index) => (
                       <li key={index} className="text-sm text-gray-700 pl-4">
-                        â€¢ {risk}
+                        • {risk}
                       </li>
                     ))}
                   </ul>
@@ -4292,7 +4292,7 @@ const AIPredictionModal = ({
                   <ul className="space-y-1">
                     {prediction.recommendations.map((rec, index) => (
                       <li key={index} className="text-sm text-gray-700 pl-4">
-                        â€¢ {rec}
+                        • {rec}
                       </li>
                     ))}
                   </ul>
@@ -4468,7 +4468,7 @@ const RolesTab = ({
                   {role.title}
                 </h3>
                 <p className="text-sm text-gray-500 mt-0.5">
-                  {role.department} â€¢ {role.location}
+                  {role.department} • {role.location}
                 </p>
                 </div>
               </div>
@@ -4623,7 +4623,7 @@ const RolesTab = ({
                   id="bulk-status"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                 >
-                  <option value="">â€” No change â€”</option>
+                  <option value="">— No change —</option>
                   <option value="Draft">Draft</option>
                   <option value="Active">Active</option>
                   <option value="On Hold">On Hold</option>
@@ -4636,7 +4636,7 @@ const RolesTab = ({
                   id="bulk-priority"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                 >
-                  <option value="">â€” No change â€”</option>
+                  <option value="">— No change —</option>
                   <option value="Low">Low</option>
                   <option value="Medium">Medium</option>
                   <option value="High">High</option>
@@ -5547,8 +5547,8 @@ Position: ${candidate.role}
 ${teamLine ? `Team: ${teamLine}` : ""}
 
 Compensation:
-â€¢ Salary: ${salary ? formatCurrency(salary) : "[To be confirmed]"}
-${benefits ? `â€¢ Benefits: ${benefits}` : ""}
+• Salary: ${salary ? formatCurrency(salary) : "[To be confirmed]"}
+${benefits ? `• Benefits: ${benefits}` : ""}
 
 This offer is subject to the satisfactory completion of reference checks and any other pre-employment requirements. Upon acceptance, you will receive further details regarding your start date and onboarding.
 
@@ -5594,7 +5594,7 @@ ${companyName}`;
           </button>
         </div>
         <p className="text-sm text-gray-600 mb-4">
-          Offer for <strong>{candidate.name}</strong> â€“ {candidate.role}
+          Offer for <strong>{candidate.name}</strong> – {candidate.role}
         </p>
 
         <div className="space-y-4">
@@ -5608,7 +5608,7 @@ ${companyName}`;
                 const n = normalizeSalaryInput(e.target.value);
                 if (n) setSalary(n);
               }}
-              placeholder="e.g. Â£45,000 - Â£55,000 or Â£50k"
+              placeholder="e.g. £45,000 - £55,000 or £50k"
               className="w-full px-3 py-2 border border-gray-300 rounded-lg"
             />
             <p className="text-xs text-gray-500 mt-1">
@@ -5752,7 +5752,7 @@ const OnboardingModal = ({
           </button>
         </div>
         <p className="text-sm text-gray-600 mb-4">
-          {candidate.role} â€“ Full onboarding checklist. All data saved to Employees section.
+          {candidate.role} – Full onboarding checklist. All data saved to Employees section.
         </p>
 
         <div className="space-y-4">
@@ -5947,7 +5947,7 @@ const AnalyticsTab = () => (
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-medium text-gray-600">Cost per Hire</p>
-            <p className="text-3xl font-bold text-gray-900">Â£2,340</p>
+            <p className="text-3xl font-bold text-gray-900">£2,340</p>
             <p className="text-sm text-green-600 flex items-center">
               <ArrowDown className="w-4 h-4 mr-1" />
               -8% vs last month
@@ -6070,7 +6070,7 @@ const AnalyticsTab = () => (
             </div>
             <div className="text-right">
               <p className="text-sm font-bold text-gray-900">342 hires</p>
-              <p className="text-xs text-gray-600">Â£2,100 avg cost</p>
+              <p className="text-xs text-gray-600">£2,100 avg cost</p>
             </div>
           </div>
 
@@ -6081,7 +6081,7 @@ const AnalyticsTab = () => (
             </div>
             <div className="text-right">
               <p className="text-sm font-bold text-gray-900">156 hires</p>
-              <p className="text-xs text-gray-600">Â£1,800 avg cost</p>
+              <p className="text-xs text-gray-600">£1,800 avg cost</p>
             </div>
           </div>
 
@@ -6092,7 +6092,7 @@ const AnalyticsTab = () => (
             </div>
             <div className="text-right">
               <p className="text-sm font-bold text-gray-900">89 hires</p>
-              <p className="text-xs text-gray-600">Â£2,800 avg cost</p>
+              <p className="text-xs text-gray-600">£2,800 avg cost</p>
             </div>
           </div>
 
@@ -6105,7 +6105,7 @@ const AnalyticsTab = () => (
             </div>
             <div className="text-right">
               <p className="text-sm font-bold text-gray-900">67 hires</p>
-              <p className="text-xs text-gray-600">Â£900 avg cost</p>
+              <p className="text-xs text-gray-600">£900 avg cost</p>
             </div>
           </div>
         </div>
@@ -6184,7 +6184,7 @@ const EmployeesTab = () => {
     const position = prompt('Enter position') || '';
     const department = prompt('Enter department') || '';
     const startDate = prompt('Enter start date (YYYY-MM-DD)') || '';
-    const salaryRaw = prompt('Enter salary (e.g. Â£45,000 - Â£55,000 or Â£50k)') || '';
+    const salaryRaw = prompt('Enter salary (e.g. £45,000 - £55,000 or £50k)') || '';
     const salary = salaryRaw ? normalizeSalaryInput(salaryRaw) : '';
     const manager = prompt('Enter manager name') || '';
     const employmentType =
@@ -6834,7 +6834,7 @@ const SavingsTab = () => {
             <div>
               <p className="text-sm font-medium text-gray-600">Total Savings</p>
               <p className="text-3xl font-bold text-green-600">
-                Â£{savingsData.totalSavings.toLocaleString()}
+                £{savingsData.totalSavings.toLocaleString()}
               </p>
               <p className="text-sm text-green-600 flex items-center">
                 <ArrowUp className="w-4 h-4 mr-1" />
@@ -6850,7 +6850,7 @@ const SavingsTab = () => {
             <div>
               <p className="text-sm font-medium text-gray-600">Cost per Hire</p>
               <p className="text-3xl font-bold text-slate-600">
-                Â£{savingsData.avgCostPerHire.toLocaleString()}
+                £{savingsData.avgCostPerHire.toLocaleString()}
               </p>
               <p className="text-sm text-green-600 flex items-center">
                 <ArrowDown className="w-4 h-4 mr-1" />
@@ -6919,7 +6919,7 @@ const SavingsTab = () => {
               </div>
               <div className="text-right">
                 <p className="text-lg font-bold text-slate-600">
-                  Â£{savingsData.automationSavings.toLocaleString()}
+                  £{savingsData.automationSavings.toLocaleString()}
                 </p>
                 <p className="text-xs text-gray-600">36% of total</p>
               </div>
@@ -6941,7 +6941,7 @@ const SavingsTab = () => {
               </div>
               <div className="text-right">
                 <p className="text-lg font-bold text-green-600">
-                  Â£{savingsData.sourcingSavings.toLocaleString()}
+                  £{savingsData.sourcingSavings.toLocaleString()}
                 </p>
                 <p className="text-xs text-gray-600">27% of total</p>
               </div>
@@ -6961,7 +6961,7 @@ const SavingsTab = () => {
               </div>
               <div className="text-right">
                 <p className="text-lg font-bold text-slate-600">
-                  Â£{savingsData.processSavings.toLocaleString()}
+                  £{savingsData.processSavings.toLocaleString()}
                 </p>
                 <p className="text-xs text-gray-600">37% of total</p>
               </div>
@@ -6980,7 +6980,7 @@ const SavingsTab = () => {
                   Before UPhire
                 </span>
                 <span className="text-lg font-bold text-red-600">
-                  Â£{savingsData.previousAvgCost.toLocaleString()}
+                  £{savingsData.previousAvgCost.toLocaleString()}
                 </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3">
@@ -7000,7 +7000,7 @@ const SavingsTab = () => {
                   With UPhire
                 </span>
                 <span className="text-lg font-bold text-green-600">
-                  Â£{savingsData.avgCostPerHire.toLocaleString()}
+                  £{savingsData.avgCostPerHire.toLocaleString()}
                 </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3">
@@ -7022,7 +7022,7 @@ const SavingsTab = () => {
                 </span>
               </div>
               <p className="text-2xl font-bold text-green-600">
-                Â£
+                £
                 {(
                   savingsData.previousAvgCost - savingsData.avgCostPerHire
                 ).toLocaleString()}
@@ -7050,7 +7050,7 @@ const SavingsTab = () => {
                     style={{ height: `${height}%` }}
                   >
                     <span className="text-xs text-white font-medium">
-                      Â£{(savings[index] / 1000).toFixed(0)}k
+                      £{(savings[index] / 1000).toFixed(0)}k
                     </span>
                   </div>
                 </div>
@@ -7063,7 +7063,7 @@ const SavingsTab = () => {
           <p className="text-sm text-gray-600">
             Average monthly savings:{" "}
             <span className="font-bold text-green-600">
-              Â£
+              £
               {(
                 (15000 + 18500 + 22000 + 19500 + 24000 + 21500) /
                 6
@@ -7093,7 +7093,7 @@ const SavingsTab = () => {
 
           <div className="text-center p-6 bg-slate-50 rounded-lg">
             <Target className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-            <p className="text-2xl font-bold text-slate-600">Â£428k</p>
+            <p className="text-2xl font-bold text-slate-600">£428k</p>
             <p className="text-sm text-gray-600">Projected Annual Savings</p>
           </div>
         </div>
@@ -7171,7 +7171,7 @@ const getOutreachSequences = (): OutreachSequence[] => {
 const channelLabel = (ch: OutreachTouchpoint["channel"]) =>
   ({ email: "Email", linkedin: "LinkedIn", job_board: "Job Board", indeed: "Indeed", sms: "SMS", phone: "Phone" }[ch]);
 
-// Create Outreach Sequence Modal â€“ candidate selection, job role, sequence config
+// Create Outreach Sequence Modal – candidate selection, job role, sequence config
 const CreateOutreachSequenceModal = ({
   isOpen,
   onClose,
@@ -7270,7 +7270,7 @@ const CreateOutreachSequenceModal = ({
                 onChange={() => setSelectedRoleId(r.id)}
               />
               <span className="font-medium">{r.title}</span>
-              <span className="text-sm text-gray-500">{r.department} â€¢ {r.location}</span>
+              <span className="text-sm text-gray-500">{r.department} • {r.location}</span>
             </label>
           ))}
         </div>
@@ -7497,7 +7497,7 @@ const OutreachTab = ({ aiRecruitSequences = [] }: { aiRecruitSequences?: Outreac
                       Email sent to {seq.candidateName} re: {seq.roleTitle}
                     </p>
                     <p className="text-xs text-gray-500">
-                      {seq.touchpoints[0]?.sentAt} â€¢ {channelLabel(seq.touchpoints[0]?.channel || "email")}
+                      {seq.touchpoints[0]?.sentAt} • {channelLabel(seq.touchpoints[0]?.channel || "email")}
                     </p>
                   </div>
                 </div>
@@ -7629,7 +7629,7 @@ const OutreachTab = ({ aiRecruitSequences = [] }: { aiRecruitSequences?: Outreac
                         </div>
                       ) : (
                         <button
-                          onClick={() => alert(`Add ${name} to outreach sequence â€“ select role`)}
+                          onClick={() => alert(`Add ${name} to outreach sequence – select role`)}
                           className="text-sm text-slate-600 hover:underline"
                         >
                           Add to sequence
@@ -8237,9 +8237,9 @@ const CVDatabaseTab = () => {
                   </td>
                   <td className="py-2 font-medium">{r.name}</td>
                   <td className="py-2">{r.email}</td>
-                  <td className="py-2">{r.location || "â€”"}</td>
-                  <td className="py-2">{r.skills?.slice(0, 3).join(", ") || "â€”"}</td>
-                  <td className="py-2">{r.source || "â€”"}</td>
+                  <td className="py-2">{r.location || "—"}</td>
+                  <td className="py-2">{r.skills?.slice(0, 3).join(", ") || "—"}</td>
+                  <td className="py-2">{r.source || "—"}</td>
                   <td className="py-2">{r.addedAt}</td>
                   <td className="py-2">
                     <button
@@ -8252,7 +8252,7 @@ const CVDatabaseTab = () => {
                       }`}
                       title={r.aiGenerated ? "Flagged as AI-generated. Click to clear." : "Click to flag as AI-generated"}
                     >
-                      {r.aiGenerated ? "Flagged" : "â€”"}
+                      {r.aiGenerated ? "Flagged" : "—"}
                     </button>
                   </td>
                 </tr>
@@ -8927,9 +8927,9 @@ const OnboardingWizard = ({ onComplete }: { onComplete: () => void }) => {
               onChange={(e) => setForm((f) => ({ ...f, teamSize: e.target.value }))}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg"
             >
-              <option value="1-5">1â€“5</option>
-              <option value="6-20">6â€“20</option>
-              <option value="21-50">21â€“50</option>
+              <option value="1-5">1–5</option>
+              <option value="6-20">6–20</option>
+              <option value="21-50">21–50</option>
               <option value="51+">51+</option>
             </select>
           </div>
