@@ -4,6 +4,19 @@
   publish = "dist"
   functions = "api"
 
+# Market Intelligence API proxies (salary data)
+[[redirects]]
+  from = "/api/adzuna-proxy"
+  to = "/.netlify/functions/adzuna-proxy"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/itjobswatch-proxy"
+  to = "/.netlify/functions/itjobswatch-proxy"
+  status = 200
+  force = true
+
 # Redirect root to app (avoids 404 when visiting site root)
 [[redirects]]
   from = "/"
