@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { supabase } from "@/lib/supabaseClient";
+import { sanitizeEmail } from "@/lib/security";
 import { User, Mail, Lock, Loader2 } from "lucide-react";
 
 const getPasswordStrength = (pwd: string): { score: number; label: string; color: string } => {
@@ -39,7 +40,12 @@ const LoginPage = () => {
     setLoading(true);
     setMessage(null);
 
-    const emailNorm = email.trim().toLowerCase();
+    const emailNorm = sanitizeEmail(email) ?? email.trim().toLowerCase();
+    if (!emailNorm) {
+      setMessage({ type: "error", text: "Please enter a valid email address." });
+      setLoading(false);
+      return;
+    }
     const isDemo =
       !isSignUp &&
       (emailNorm === "demo@google" || emailNorm === "demo@google.com") &&
@@ -66,11 +72,11 @@ const LoginPage = () => {
 
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({ email, password });
+        const { error } = await supabase.auth.signUp({ email: emailNorm, password });
         if (error) throw error;
         setMessage({ type: "success", text: "Check your email for the confirmation link." });
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { error } = await supabase.auth.signInWithPassword({ email: emailNorm, password });
         if (error) throw error;
         navigate(from, { replace: true });
       }
@@ -84,14 +90,15 @@ const LoginPage = () => {
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim()) {
-      setMessage({ type: "error", text: "Enter your email address." });
+    const safeEmail = sanitizeEmail(email);
+    if (!safeEmail) {
+      setMessage({ type: "error", text: "Enter a valid email address." });
       return;
     }
     setLoading(true);
     setMessage(null);
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      const { error } = await supabase.auth.resetPasswordForEmail(safeEmail, {
         redirectTo: `${window.location.origin}/app/login`,
       });
       if (error) throw error;

@@ -254,14 +254,14 @@ export const mockRoles: Role[] = [
   },
 ];
 
-export let mockCandidates: Candidate[] = [
+export const mockCandidates: Candidate[] = [
   { id: 1, name: "Alice Johnson", role: "Senior React Developer", email: "alice.johnson@email.com", location: "London, UK", experience: "5+ years", skills: ["React", "TypeScript", "Node.js", "AWS", "GraphQL"], aiMatch: 94, status: "Shortlisted", source: "LinkedIn", applied: "2024-01-20", avatar: "AJ", phoneNumber: "+44 20 7946 0958", linkedinProfile: "https://linkedin.com/in/alicejohnson", notes: "Excellent React skills, previous startup experience" },
   { id: 2, name: "Bob Smith", role: "Frontend Developer", email: "bob.smith@email.com", location: "Manchester, UK", experience: "3+ years", skills: ["JavaScript", "React", "CSS", "HTML", "Git"], aiMatch: 78, status: "Applied", source: "Indeed", applied: "2024-01-19", avatar: "BS" },
   { id: 3, name: "Carol Davis", role: "Product Manager", email: "carol.davis@email.com", location: "Edinburgh, UK", experience: "4+ years", skills: ["Product Strategy", "Agile", "Analytics", "Figma"], aiMatch: 88, status: "Interview Scheduled", source: "LinkedIn", applied: "2024-01-18", avatar: "CD" },
   { id: 4, name: "David Wilson", role: "UX Designer", email: "david.wilson@email.com", location: "Bristol, UK", experience: "2+ years", skills: ["UX Design", "Figma", "User Research", "Prototyping"], aiMatch: 82, status: "Offer Made", source: "Dribbble", applied: "2024-01-17", avatar: "DW" },
 ];
 
-export let mockEmployees: Employee[] = [
+export const mockEmployees: Employee[] = [
   {
     id: 1,
     name: "Sarah Johnson",
@@ -297,7 +297,7 @@ export let mockEmployees: Employee[] = [
   },
 ];
 
-export let mockDocuments: Document[] = [
+export const mockDocuments: Document[] = [
   { id: 1, name: "Employee Handbook", type: "Handbook", category: "HR", lastModified: "2024-01-15", autoSend: true, template: "Standard Handbook" },
   { id: 2, name: "NDA Template", type: "Legal", category: "Legal", lastModified: "2024-01-10", autoSend: false, template: "NDA Standard" },
 ];

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Send, Loader2, CheckCircle } from "lucide-react";
+import { sanitizeName, sanitizeEmail, sanitizePhone, sanitizeCommaList, sanitizeString, sanitizeId } from "@/lib/security";
+import { fetchWithTimeout, getUserFriendlyErrorMessage } from "@/lib/apiClient";
 
 const applyBaseUrl = import.meta.env.VITE_APPLY_BASE_URL || "";
 
@@ -21,49 +23,55 @@ const ApplyPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!roleId) {
+    const safeRoleId = roleId ? sanitizeId(roleId) : null;
+    if (!safeRoleId) {
       setError("Invalid job link");
       return;
     }
-    if (!form.name?.trim()) {
+    const name = sanitizeName(form.name);
+    if (!name) {
       setError("Please enter your full name");
       return;
     }
-    if (!form.email?.trim()) {
-      setError("Please enter your email address");
-      return;
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(form.email.trim())) {
+    const email = sanitizeEmail(form.email);
+    if (!email) {
       setError("Please enter a valid email address");
       return;
     }
+    const phone = form.phone ? sanitizePhone(form.phone) : undefined;
+    const experience = form.experience ? sanitizeString(form.experience, 2000) : undefined;
+    const skills = form.skills ? sanitizeCommaList(form.skills) : undefined;
+
     setLoading(true);
     setError(null);
 
     try {
       const apiBase = applyBaseUrl || window.location.origin;
-      const res = await fetch(`${apiBase}/api/apply`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          role_id: roleId,
-          name: form.name,
-          email: form.email,
-          phone: form.phone || undefined,
-          experience: form.experience || undefined,
-          skills: form.skills ? form.skills.split(/[,\s]+/).filter(Boolean) : undefined,
-          source: "Job Board",
-        }),
-      });
+      const res = await fetchWithTimeout(
+        `${apiBase}/api/apply`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            role_id: safeRoleId,
+            name,
+            email,
+            phone: phone || undefined,
+            experience,
+            skills,
+            source: "Job Board",
+          }),
+        },
+        15000
+      );
 
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        throw new Error(data.error || `Application failed (${res.status})`);
+        throw new Error((data as { error?: string }).error || `Application failed (${res.status})`);
       }
       setSubmitted(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
+      setError(getUserFriendlyErrorMessage(err));
     } finally {
       setLoading(false);
     }

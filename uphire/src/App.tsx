@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { AuthGuard } from "@/components/AuthGuard";
 import Index from "./pages/Index";
 import LoginPage from "./pages/LoginPage";
 import ApplyPage from "./pages/ApplyPage";
@@ -29,8 +30,8 @@ const App = () => (
             <Route path="/apply/:tenantSlug/:jobId" element={<ApplyPage />} />
             <Route path="/screening/:sessionId" element={<ScreeningChatPage />} />
             <Route path="/help" element={<HelpCenter />} />
-            <Route path="/support" element={<SupportTickets />} />
-            <Route path="/subscription" element={<SubscriptionPage />} />
+            <Route path="/support" element={<AuthGuard><SupportTickets /></AuthGuard>} />
+            <Route path="/subscription" element={<AuthGuard><SubscriptionPage /></AuthGuard>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </ErrorBoundary>

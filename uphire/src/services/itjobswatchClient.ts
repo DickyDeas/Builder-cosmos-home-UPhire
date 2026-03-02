@@ -5,7 +5,10 @@
  * Data: https://www.itjobswatch.co.uk/jobs/uk/{skill}.do
  */
 
+import { fetchWithTimeout } from "@/lib/apiClient";
+
 const PROXY = "/api/itjobswatch-proxy";
+const TIMEOUT_MS = 12000;
 
 export interface ITJobsWatchSalary {
   min: number;
@@ -53,7 +56,11 @@ export async function fetchITJobsWatchSalary(
 ): Promise<ITJobsWatchSalary | null> {
   try {
     const skill = toSkillSlug(role);
-    const res = await fetch(`${PROXY}?skill=${encodeURIComponent(skill)}`);
+    const res = await fetchWithTimeout(
+      `${PROXY}?skill=${encodeURIComponent(skill)}`,
+      {},
+      TIMEOUT_MS
+    );
     if (!res.ok) return null;
     const data = await res.json();
     if (!data?.median) return null;

@@ -18,17 +18,21 @@ function run(cmd, args = []) {
 async function main() {
   console.log('🔍 Pre-deploy verification\n');
   try {
-    console.log('1/3 Running typecheck...');
+    console.log('1/4 Running typecheck...');
     await run('npm', ['run', 'typecheck']);
     console.log('   ✓ Typecheck passed\n');
 
-    console.log('2/3 Running build...');
-    await run('npm', ['run', 'build']);
-    console.log('   ✓ Build passed\n');
+    console.log('2/4 Running lint...');
+    await run('npm', ['run', 'lint']);
+    console.log('   ✓ Lint passed\n');
 
-    console.log('3/3 Running tests...');
+    console.log('3/4 Running tests...');
     await run('npm', ['run', 'test']);
     console.log('   ✓ Tests passed\n');
+
+    console.log('4/4 Running build...');
+    await run('npm', ['run', 'build']);
+    console.log('   ✓ Build passed\n');
 
     console.log('✅ All checks passed. Ready to deploy.');
   } catch (err) {

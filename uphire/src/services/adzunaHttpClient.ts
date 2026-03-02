@@ -4,7 +4,10 @@
  * Register at https://developer.adzuna.com/ for API keys.
  */
 
+import { fetchWithTimeout } from "@/lib/apiClient";
+
 const PROXY = "/api/adzuna-proxy";
+const TIMEOUT_MS = 12000;
 
 export interface AdzunaJob {
   id: string;
@@ -36,7 +39,7 @@ export async function searchAdzunaJobs(
       results_per_page: String(resultsPerPage),
     });
     const url = `${PROXY}?${params.toString()}`;
-    const res = await fetch(url);
+    const res = await fetchWithTimeout(url, {}, TIMEOUT_MS);
     if (!res.ok) {
       console.warn("Adzuna API error:", res.status, res.statusText);
       return null;

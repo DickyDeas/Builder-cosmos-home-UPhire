@@ -304,7 +304,7 @@ export async function submitResponse(
   startedAt: Date,
   timedOut: boolean
 ): Promise<{ success: boolean; nextQuestion?: ScreeningQuestion; completed?: boolean }> {
-  let session: ScreeningSession | null = null;
+  let session: ScreeningSession | null;
   try {
     session = await getSession(sessionId);
   } catch {
