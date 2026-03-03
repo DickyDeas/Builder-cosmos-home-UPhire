@@ -1,0 +1,14 @@
+-- 011_extended_roles.sql - Add columns for full role/job data (per-user via profile_id)
+
+ALTER TABLE roles ADD COLUMN IF NOT EXISTS department TEXT;
+ALTER TABLE roles ADD COLUMN IF NOT EXISTS location TEXT;
+ALTER TABLE roles ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'Draft';
+ALTER TABLE roles ADD COLUMN IF NOT EXISTS salary TEXT;
+ALTER TABLE roles ADD COLUMN IF NOT EXISTS priority TEXT DEFAULT 'Medium';
+ALTER TABLE roles ADD COLUMN IF NOT EXISTS key_skills TEXT[] DEFAULT '{}';
+ALTER TABLE roles ADD COLUMN IF NOT EXISTS requirements TEXT[] DEFAULT '{}';
+ALTER TABLE roles ADD COLUMN IF NOT EXISTS benefits TEXT[] DEFAULT '{}';
+ALTER TABLE roles ADD COLUMN IF NOT EXISTS experience_level TEXT;
+ALTER TABLE roles ADD COLUMN IF NOT EXISTS employment_type TEXT;
+ALTER TABLE roles ADD COLUMN IF NOT EXISTS work_pattern TEXT;
+ALTER TABLE roles ADD COLUMN IF NOT EXISTS education_level TEXT;

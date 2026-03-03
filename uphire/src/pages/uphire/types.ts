@@ -43,7 +43,7 @@ export interface ShortlistedCandidate {
 }
 
 export interface Role {
-  id: number;
+  id: number | string;
   title: string;
   department: string;
   location: string;
@@ -88,7 +88,7 @@ export interface Candidate {
 }
 
 export interface Document {
-  id: number;
+  id: number | string;
   name: string;
   type: string;
   category: string;
@@ -100,7 +100,7 @@ export interface Document {
 }
 
 export interface Employee {
-  id: number;
+  id: number | string;
   name: string;
   position: string;
   department: string;

@@ -17,6 +17,41 @@
   status = 200
   force = true
 
+# Grok AI proxy (keeps API key server-side)
+[[redirects]]
+  from = "/api/grok-proxy"
+  to = "/.netlify/functions/grok-proxy"
+  status = 200
+  force = true
+
+# Email send proxy (keeps Brevo key server-side)
+[[redirects]]
+  from = "/api/email-send"
+  to = "/.netlify/functions/email-send"
+  status = 200
+  force = true
+
+# Audit log (server-side write, bypasses RLS)
+[[redirects]]
+  from = "/api/audit-log"
+  to = "/.netlify/functions/audit-log"
+  status = 200
+  force = true
+
+# GDPR data export
+[[redirects]]
+  from = "/api/export-candidate-data"
+  to = "/.netlify/functions/export-candidate-data"
+  status = 200
+  force = true
+
+# GDPR data erasure (purge)
+[[redirects]]
+  from = "/api/purge-candidate-data"
+  to = "/.netlify/functions/purge-candidate-data"
+  status = 200
+  force = true
+
 # Redirect root to app (avoids 404 when visiting site root)
 [[redirects]]
   from = "/"
@@ -36,3 +71,12 @@
 
 [build.environment]
   NODE_VERSION = "18"
+
+# Security headers (HSTS, X-Content-Type-Options, etc.)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    Referrer-Policy = "strict-origin-when-cross-origin"

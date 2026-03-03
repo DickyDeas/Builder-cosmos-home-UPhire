@@ -106,15 +106,12 @@ export function parseSalaryString(salaryStr: string): { min: number; median: num
   return null;
 }
 
+import { callGrokViaProxy } from "@/lib/grokProxyClient";
+
 /**
- * Call Grok API to infer market data for a role.
+ * Call Grok API via server proxy to infer market data for a role.
  */
 async function fetchGrokMarketData(role: string): Promise<MarketDataResult | null> {
-  const grokKey = (import.meta as any).env?.VITE_GROK_API_KEY;
-  const grokUrl =
-    (import.meta as any).env?.VITE_GROK_API_URL ?? "https://api.grok.ai/v1/chat/completions";
-  if (!grokKey) return null;
-
   const prompt = `For the UK IT job market role "${role}", provide salary and market data as JSON only. Use this exact format, no other text:
 {
   "salary_min": number (UK GBP annual),
@@ -129,22 +126,12 @@ async function fetchGrokMarketData(role: string): Promise<MarketDataResult | nul
 }`;
 
   try {
-    const res = await fetch(grokUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${grokKey}`,
-      },
-      body: JSON.stringify({
-        model: "grok-3",
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.3,
-        max_tokens: 500,
-      }),
+    const content = await callGrokViaProxy({
+      userPrompt: prompt,
+      maxTokens: 500,
+      temperature: 0.3,
+      model: "grok-3",
     });
-    if (!res.ok) return null;
-    const data = await res.json();
-    const content = data?.choices?.[0]?.message?.content?.trim() ?? "";
     const jsonMatch = content.match(/\{[\s\S]*\}/);
     if (!jsonMatch) return null;
     const parsed = JSON.parse(jsonMatch[0]);

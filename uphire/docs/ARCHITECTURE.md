@@ -45,6 +45,15 @@ React Component (pages/components)
 - **AuthGuard** – Wraps `/support` and `/subscription`; redirects to `/login` with `from` state
 - **Public routes** – `/`, `/login`, `/apply/*`, `/screening/*`, `/help`
 
+## Per-user persistence
+
+- **Profile sync** – Trigger creates `profiles` row on signup (migration 010) so `auth.uid() = profiles.id`
+- **Roles** – Stored in `roles` with `profile_id`; RLS restricts to own data
+- **Employees** – `employee_details` table with `profile_id` (migration 012)
+- **Documents** – `documents` with `profile_id` for user templates (migration 013)
+- **Demo login** – Uses mock data (no Supabase session); no persistence
+- **Services** – `rolesService`, `employeesService`, `documentTemplatesService` for CRUD
+
 ## Security
 
 - **Form sanitization** – `src/lib/security.ts` (sanitizeString, sanitizeEmail, etc.)

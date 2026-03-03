@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/lib/supabaseClient";
 import {
@@ -111,6 +111,13 @@ import {
   loadBusinessProfileFromStorage,
   loadJobBoardsFromStorage,
 } from "./uphire/data";
+import { fetchRoles, insertRole, updateRole } from "@/services/rolesService";
+import { insertCandidate } from "@/services/candidatesService";
+import { logAudit } from "@/services/auditService";
+import { fetchEmployees, insertEmployee } from "@/services/employeesService";
+import { fetchDocumentTemplates } from "@/services/documentTemplatesService";
+import { TenantTeamSection } from "@/components/TenantTeamSection";
+import { useCanWrite } from "@/hooks/useCanWrite";
 import { MarketIntelligence } from "./uphire/components/MarketIntelligence";
 import { MarketIntelligenceTab } from "./uphire/components/MarketIntelligenceTab";
 import { DashboardTab } from "./uphire/views/DashboardTab";
@@ -2325,10 +2332,12 @@ const CreateNewRoleModal = ({
   isOpen,
   onClose,
   roleToEdit,
+  onRoleSaved,
 }: {
   isOpen: boolean;
   onClose: () => void;
   roleToEdit?: Role | null;
+  onRoleSaved?: () => void;
 }) => {
   const [formData, setFormData] = useState({
     title: "",
@@ -2670,26 +2679,47 @@ Company Highlights:
         educationLevel: formData.educationLevel || undefined,
       };
 
+      const isDemo = sessionStorage.getItem("uphire_demo") === "true";
+      const { data: { session } } = await supabase.auth.getSession();
+      const useSupabase = session?.user && !isDemo;
+
       if (roleToEdit) {
-        // Edit mode: update existing role in mockRoles
-        const idx = mockRoles.findIndex((r) => r.id === roleToEdit.id);
-        if (idx >= 0) {
-          Object.assign(mockRoles[idx], baseRole);
+        if (useSupabase && typeof roleToEdit.id === "string") {
+          const ok = await updateRole(roleToEdit.id, baseRole);
+          if (ok) onRoleSaved?.();
+        } else {
+          const idx = mockRoles.findIndex((r) => r.id === roleToEdit.id);
+          if (idx >= 0) Object.assign(mockRoles[idx], baseRole);
         }
       } else {
-        // Create mode: add new role
-        const newRole: Role = {
-          ...baseRole,
-          id: mockRoles.length + 1,
-          candidates: 0,
-          shortlisted: 0,
-          interviewed: 0,
-          created: new Date().toISOString().split("T")[0],
-          deiScore: Math.floor(Math.random() * 20) + 80,
-          shortlistedCandidates: [],
-        };
-        mockRoles.push(newRole);
-        await publishToBroadbean(newRole);
+        if (useSupabase) {
+          const saved = await insertRole({
+            ...baseRole,
+            candidates: 0,
+            shortlisted: 0,
+            interviewed: 0,
+            created: new Date().toISOString().split("T")[0],
+            deiScore: 85,
+            shortlistedCandidates: [],
+          });
+          if (saved) {
+            mockRoles.push(saved);
+            onRoleSaved?.();
+          }
+        } else {
+          const newRole: Role = {
+            ...baseRole,
+            id: mockRoles.length + 1,
+            candidates: 0,
+            shortlisted: 0,
+            interviewed: 0,
+            created: new Date().toISOString().split("T")[0],
+            deiScore: Math.floor(Math.random() * 20) + 80,
+            shortlistedCandidates: [],
+          };
+          mockRoles.push(newRole);
+        }
+        await publishToBroadbean(roleToEdit || mockRoles[mockRoles.length - 1]);
       }
 
       // Reset form state
@@ -3776,18 +3806,22 @@ const AIPredictionModal = ({
 const RolesTab = ({
   onAddCandidate,
   onAIRecruitComplete,
+  onRoleSaved,
+  canWrite = true,
 }: {
-  onAddCandidate?: () => void;
+  onAddCandidate?: (role?: Role) => void;
   onAIRecruitComplete?: (role: Role) => void;
+  onRoleSaved?: () => void;
+  canWrite?: boolean;
 }) => {
   const [showNewRoleModal, setShowNewRoleModal] = useState(false);
   const [editingRole, setEditingRole] = useState<Role | null>(null);
-  const [selectedRoleIds, setSelectedRoleIds] = useState<Set<number>>(new Set());
+  const [selectedRoleIds, setSelectedRoleIds] = useState<Set<number | string>>(new Set());
   const [showBulkEditModal, setShowBulkEditModal] = useState(false);
   const [showRecruitModal, setShowRecruitModal] = useState(false);
   const [showPredictionModal, setShowPredictionModal] = useState(false);
   const [showCalendlyModal, setShowCalendlyModal] = useState(false);
-  const [recruitingRoleId, setRecruitingRoleId] = useState<number | null>(null);
+  const [recruitingRoleId, setRecruitingRoleId] = useState<number | string | null>(null);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
   const [viewingShortlist, setViewingShortlist] = useState<Role | null>(null);
   const [schedulingCandidate, setSchedulingCandidate] =
@@ -3852,7 +3886,8 @@ const RolesTab = ({
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setShowNewRoleModal(true)}
-            className="flex items-center space-x-2 px-6 py-2.5 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-all font-medium shadow-lg"
+            disabled={!canWrite}
+            className="flex items-center space-x-2 px-6 py-2.5 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-all font-medium shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Plus size={18} />
             <span>Create New Role</span>
@@ -3883,7 +3918,8 @@ const RolesTab = ({
           <div className="flex gap-2">
             <button
               onClick={() => setShowBulkEditModal(true)}
-              className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 text-sm font-medium"
+              disabled={!canWrite}
+              className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Bulk Edit
             </button>
@@ -3934,7 +3970,8 @@ const RolesTab = ({
               <div className="flex items-center gap-2 flex-shrink-0">
                 <button
                   onClick={() => setEditingRole(role)}
-                  className="p-1.5 text-gray-500 hover:text-slate-600 hover:bg-slate-50 rounded transition-colors"
+                  disabled={!canWrite}
+                  className="p-1.5 text-gray-500 hover:text-slate-600 hover:bg-slate-50 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   title="Edit role"
                 >
                   <Edit size={16} />
@@ -4018,6 +4055,14 @@ const RolesTab = ({
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <button
+                  onClick={() => onAddCandidate?.(role)}
+                  disabled={!canWrite}
+                  className="flex items-center justify-center space-x-1 px-3 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Plus size={14} />
+                  <span>Add Candidate</span>
+                </button>
+                <button
                   onClick={() => viewShortlist(role)}
                   disabled={
                     !role.shortlistedCandidates ||
@@ -4030,7 +4075,7 @@ const RolesTab = ({
                 </button>
                 <button
                   onClick={() => startRecruitment(role.id)}
-                  className="px-3 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors text-sm font-medium"
+                  className="col-span-2 px-3 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors text-sm font-medium"
                 >
                   UPhireIQ AI Recruit
                 </button>
@@ -4066,6 +4111,7 @@ const RolesTab = ({
           setEditingRole(null);
         }}
         roleToEdit={editingRole}
+        onRoleSaved={onRoleSaved}
       />
 
       {showBulkEditModal && (
@@ -4295,15 +4341,8 @@ const CandidatesTab = () => {
    */
   const hireCandidate = async (candidate: Candidate) => {
     try {
-      const { error } = await supabase
-        .from('candidates')
-        .update({ status: 'Hired' })
-        .eq('id', candidate.id);
-      if (error) {
-        console.error('Error hiring candidate:', error);
-        window.alert('Failed to mark candidate as hired. See console for details.');
-        return;
-      }
+      const { updateCandidate } = await import('@/services/candidatesService');
+      await updateCandidate(candidate.id, { status: 'Hired' });
       candidate.status = 'Hired';
       window.alert(`${candidate.name} has been marked as hired.`);
     } catch (err) {
@@ -5130,7 +5169,7 @@ const OnboardingModal = ({
   );
 };
 
-const EmployeesTab = () => {
+const EmployeesTab = ({ canWrite = true }: { canWrite?: boolean }) => {
   const [showEmployeeModal, setShowEmployeeModal] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
     null,
@@ -5138,19 +5177,12 @@ const EmployeesTab = () => {
   const [employeesLoading, setEmployeesLoading] = useState(true);
   const [, forceUpdate] = useState(0);
 
-  // Load employees from Supabase on mount.
+  // Load employees from Supabase on mount (or from refreshPersistedData).
   useEffect(() => {
-    const fetchEmployees = async () => {
+    const load = async () => {
       try {
-        const { data, error } = await supabase
-          .from('employee_details')
-          .select('*');
-        if (error) {
-          console.error('Error fetching employees from Supabase', error);
-          return;
-        }
-        if (data && Array.isArray(data)) {
-          const employees = data as unknown as Employee[];
+        const employees = await fetchEmployees();
+        if (employees.length > 0) {
           mockEmployees.splice(0, mockEmployees.length, ...employees);
         }
       } catch (err) {
@@ -5160,7 +5192,7 @@ const EmployeesTab = () => {
         forceUpdate((n) => n + 1);
       }
     };
-    fetchEmployees();
+    load();
   }, []);
 
   // Handler to add a new employee. This prompts the user for
@@ -5204,17 +5236,12 @@ const EmployeesTab = () => {
       documents: [],
     };
     try {
-      const { data, error } = await supabase
-        .from('employee_details')
-        .insert([newEmployee])
-        .select()
-        .single();
-      if (error) {
-        console.error('Error inserting new employee', error);
-      } else if (data) {
-        const insertedEmployee = data as unknown as Employee;
-        mockEmployees.push(insertedEmployee);
+      const inserted = await insertEmployee(newEmployee);
+      if (inserted) {
+        mockEmployees.push(inserted);
         alert(`Employee ${name} added successfully`);
+      } else {
+        alert('Failed to add employee. Please ensure you are logged in.');
       }
     } catch (err) {
       console.error('Unexpected error inserting employee', err);
@@ -5252,7 +5279,8 @@ const EmployeesTab = () => {
         </div>
         <button
           onClick={handleAddEmployee}
-          className="bg-gradient-to-r from-slate-600 to-slate-700 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all flex items-center space-x-2 font-medium"
+          disabled={!canWrite}
+          className="bg-gradient-to-r from-slate-600 to-slate-700 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all flex items-center space-x-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Plus size={20} />
           <span>Add Employee</span>
@@ -5472,7 +5500,7 @@ const EmployeesTab = () => {
   );
 };
 
-const DocumentsTab = () => {
+const DocumentsTab = ({ canWrite = true }: { canWrite?: boolean }) => {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [documentsLoading, setDocumentsLoading] = useState(true);
@@ -5535,14 +5563,16 @@ const DocumentsTab = () => {
         <div className="flex space-x-3">
           <button
             onClick={() => setShowUploadModal(true)}
-            className="bg-gradient-to-r from-slate-600 to-slate-700 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all flex items-center space-x-2 font-medium"
+            disabled={!canWrite}
+            className="bg-gradient-to-r from-slate-600 to-slate-700 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all flex items-center space-x-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Upload size={20} />
             <span>Upload Document</span>
           </button>
           <button
             onClick={() => alert("Opening template creator...")}
-            className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all flex items-center space-x-2"
+            disabled={!canWrite}
+            className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Plus size={16} />
             <span>New Template</span>
@@ -7334,7 +7364,7 @@ const CVDatabaseTab = () => {
   );
 };
 
-const MyBusinessTab = () => {
+const MyBusinessTab = ({ canWrite = true }: { canWrite?: boolean }) => {
   const [showEditCompany, setShowEditCompany] = useState(false);
   const [showAddJobBoard, setShowAddJobBoard] = useState(false);
   const [jobBoards, setJobBoards] = useState<JobBoardConfig[]>(() => loadJobBoardsFromStorage());
@@ -7418,7 +7448,8 @@ const MyBusinessTab = () => {
         </div>
         <button
           onClick={() => setShowEditCompany(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-slate-600 to-teal-500 text-white rounded-lg hover:from-slate-600 hover:to-teal-600 transition-colors shadow-md"
+          disabled={!canWrite}
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-slate-600 to-teal-500 text-white rounded-lg hover:from-slate-600 hover:to-teal-600 transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Edit size={18} />
           Edit Company
@@ -7518,6 +7549,9 @@ const MyBusinessTab = () => {
           <div>
             <p className="text-sm font-medium text-gray-600 mb-2">Mission</p>
             <p className="text-gray-700">{businessProfile.mission}</p>
+          </div>
+          <div className="pt-4 border-t border-gray-200">
+            <TenantTeamSection />
           </div>
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
@@ -7960,8 +7994,16 @@ const OnboardingWizard = ({ onComplete }: { onComplete: () => void }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-60 z-[100] flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <div
+        className="absolute inset-0 bg-black bg-opacity-60 cursor-pointer"
+        onClick={handleSkip}
+        aria-label="Click to skip"
+      />
+      <div
+        className="relative bg-white rounded-xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 pointer-events-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
         <h3 className="text-xl font-bold text-gray-900 mb-2">{steps[step].title}</h3>
         <div className="mb-6">{steps[step].body}</div>
         <div className="flex justify-between items-center">
@@ -7999,8 +8041,16 @@ const WelcomeTour = ({ onComplete }: { onComplete: () => void }) => {
     onComplete();
   };
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-60 z-[100] flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <div
+        className="absolute inset-0 bg-black bg-opacity-60 cursor-pointer"
+        onClick={handleSkip}
+        aria-label="Click to skip"
+      />
+      <div
+        className="relative bg-white rounded-xl shadow-2xl max-w-md w-full p-6 pointer-events-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
         <h3 className="text-xl font-bold text-gray-900 mb-2">{steps[step].title}</h3>
         <p className="text-gray-600 mb-6">{steps[step].body}</p>
         <div className="flex justify-between items-center">
@@ -8038,6 +8088,8 @@ const UPhirePlatformComponent = () => {
     initials: "",
   });
 
+  const { canWrite } = useCanWrite();
+
   // Fetch candidates from Supabase on initial mount. This replaces the
   // mockCandidates array with real data from the `candidates` table. If
   // Supabase is not configured or the table is empty, the default
@@ -8045,7 +8097,7 @@ const UPhirePlatformComponent = () => {
   useEffect(() => {
     const fetchCandidatesFromSupabase = async () => {
       try {
-        const { data, error } = await supabase.from('candidates').select('*');
+        const { data, error } = await supabase.from('candidates').select('*').is('deleted_at', null);
         if (error) {
           console.error('Error fetching candidates from Supabase', error);
           return;
@@ -8098,28 +8150,24 @@ const UPhirePlatformComponent = () => {
     setActiveTab("outreach");
   };
 
-  const handleAddCandidate = async () => {
+  const handleAddCandidate = async (role?: Role) => {
     const name = window.prompt("Enter candidate name:");
     if (!name) return;
     const email = window.prompt("Enter candidate email:");
     if (!email) return;
-    // Insert only columns that exist in candidates schema: role_id, name, email, phone, status
-    const newCandidate = {
-      name,
-      email,
-      phone: null,
-      status: "new",
-    };
+    const roleId = role?.id ?? mockRoles[0]?.id;
+    if (!roleId) {
+      toast({ title: "No role", description: "Create a role first.", variant: "destructive" });
+      return;
+    }
     try {
-      const { data, error } = await supabase
-        .from("candidates")
-        .insert(newCandidate)
-        .select("id, name, email, phone, status, created_at")
-        .single();
-      if (error) {
-        console.error("Error inserting candidate:", error);
-        return;
-      }
+      const data = await insertCandidate({
+        role_id: roleId,
+        name,
+        email,
+        phone: null,
+        status: "new",
+      });
       if (data) {
         const c = data as { id: number | string; name: string; email: string; phone?: string; status?: string };
         const avatar = name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2) || "?";
@@ -8138,9 +8186,11 @@ const UPhirePlatformComponent = () => {
           avatar,
           phoneNumber: c.phone || undefined,
         } as Candidate);
+        toast({ title: "Candidate added", description: `${name} has been added.` });
       }
     } catch (err) {
-      console.error("Unexpected error adding candidate:", err);
+      console.error("Error adding candidate:", err);
+      toast({ title: "Error", description: err instanceof Error ? err.message : "Failed to add candidate", variant: "destructive" });
     }
   };
 
@@ -8166,6 +8216,28 @@ const UPhirePlatformComponent = () => {
       .split(" ") || []),
   ];
 
+  const [dataRefreshKey, setDataRefreshKey] = useState(0);
+
+  const refreshPersistedData = useCallback(async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    const isDemo = sessionStorage.getItem("uphire_demo") === "true";
+    if (!session?.user || isDemo) return;
+
+    try {
+      const [roles, employees, docs] = await Promise.all([
+        fetchRoles(),
+        fetchEmployees(),
+        fetchDocumentTemplates(),
+      ]);
+      if (roles.length > 0) mockRoles.splice(0, mockRoles.length, ...roles);
+      if (employees.length > 0) mockEmployees.splice(0, mockEmployees.length, ...employees);
+      if (docs.length > 0) mockDocuments.splice(0, mockDocuments.length, ...docs);
+      setDataRefreshKey((k) => k + 1);
+    } catch (err) {
+      console.error("Error refreshing persisted data:", err);
+    }
+  }, []);
+
   // Sync auth state with Supabase session or demo login
   useEffect(() => {
     const updateFromSession = (session: { user: { email?: string; user_metadata?: { full_name?: string } } } | null) => {
@@ -8188,6 +8260,15 @@ const UPhirePlatformComponent = () => {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Fetch persisted roles, employees, documents when logged in (Supabase session, not demo)
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    const isDemo = sessionStorage.getItem("uphire_demo") === "true";
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user && !isDemo) refreshPersistedData();
+    });
+  }, [isLoggedIn, refreshPersistedData]);
+
   useEffect(() => {
     if (!isLoggedIn || typeof window === "undefined") {
       setShowOnboarding(false);
@@ -8207,7 +8288,7 @@ const UPhirePlatformComponent = () => {
       case "dashboard":
         return <DashboardTab />;
       case "roles":
-        return <RolesTab onAddCandidate={handleAddCandidate} onAIRecruitComplete={handleAIRecruitComplete} />;
+        return <RolesTab onAddCandidate={handleAddCandidate} onAIRecruitComplete={handleAIRecruitComplete} onRoleSaved={refreshPersistedData} canWrite={canWrite} />;
       case "candidates":
         return <CandidatesTab />;
       case "cv-database":
@@ -8219,13 +8300,13 @@ const UPhirePlatformComponent = () => {
       case "market-intelligence":
         return <MarketIntelligenceTab />;
       case "employees":
-        return <EmployeesTab />;
+        return <EmployeesTab canWrite={canWrite} />;
       case "documents":
-        return <DocumentsTab />;
+        return <DocumentsTab canWrite={canWrite} />;
       case "savings":
         return <SavingsTab />;
       case "business":
-        return <MyBusinessTab />;
+        return <MyBusinessTab canWrite={canWrite} />;
       default:
         return <DashboardTab />;
     }
@@ -8583,7 +8664,12 @@ const UPhirePlatformComponent = () => {
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               className="bg-red-600 hover:bg-red-700"
-              onClick={() => {
+              onClick={async () => {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) {
+                  logAudit({ userId: user.id, action: "logout" });
+                  await supabase.auth.signOut();
+                }
                 sessionStorage.removeItem("uphire_demo");
                 setIsLoggedIn(false);
                 setUser({ name: "", email: "", role: "", initials: "" });

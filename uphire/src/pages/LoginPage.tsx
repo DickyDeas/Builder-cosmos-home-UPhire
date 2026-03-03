@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { supabase } from "@/lib/supabaseClient";
 import { sanitizeEmail } from "@/lib/security";
+import { logAudit } from "@/services/auditService";
 import { User, Mail, Lock, Loader2 } from "lucide-react";
 
 const getPasswordStrength = (pwd: string): { score: number; label: string; color: string } => {
@@ -72,12 +73,18 @@ const LoginPage = () => {
 
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({ email: emailNorm, password });
+        const { data, error } = await supabase.auth.signUp({ email: emailNorm, password });
         if (error) throw error;
+        if (data?.user) {
+          logAudit({ userId: data.user.id, action: "login", metadata: { event: "signup", email: emailNorm } });
+        }
         setMessage({ type: "success", text: "Check your email for the confirmation link." });
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email: emailNorm, password });
+        const { data, error } = await supabase.auth.signInWithPassword({ email: emailNorm, password });
         if (error) throw error;
+        if (data?.user) {
+          logAudit({ userId: data.user.id, action: "login", metadata: { email: emailNorm } });
+        }
         navigate(from, { replace: true });
       }
     } catch (err: unknown) {

@@ -6,9 +6,7 @@
  */
 
 import { supabase } from "@/lib/supabaseClient";
-
-const GROK_API_KEY = (import.meta as any).env?.VITE_GROK_API_KEY;
-const GROK_URL = (import.meta as any).env?.VITE_GROK_API_URL || "https://api.x.ai/v1";
+import { callGrokViaProxy } from "@/lib/grokProxyClient";
 
 export interface RoleContext {
   title: string;
@@ -88,29 +86,12 @@ function generateQuestionId(): string {
 }
 
 async function callGrok(systemPrompt: string, userPrompt: string, maxTokens = 1500): Promise<string> {
-  if (!GROK_API_KEY || GROK_API_KEY === "demo-key" || GROK_API_KEY === "") {
-    throw new Error("Grok API key not configured");
-  }
-  const url = GROK_URL.includes("/chat/completions") ? GROK_URL : `${GROK_URL}/chat/completions`;
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${GROK_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: "grok-beta",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
-      ],
-      max_tokens: maxTokens,
-      temperature: 0.4,
-    }),
+  return callGrokViaProxy({
+    systemPrompt,
+    userPrompt,
+    maxTokens,
+    temperature: 0.4,
   });
-  if (!res.ok) throw new Error(`Grok API error: ${res.status}`);
-  const data = await res.json();
-  return data.choices?.[0]?.message?.content?.trim() || "";
 }
 
 /**

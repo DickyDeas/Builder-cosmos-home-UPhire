@@ -57,7 +57,9 @@ See `env.example` for the full list.
      ```bash
      npm run migrate
      ```
-   - **Option B:** Run each file in `supabase/migrations/` (001–006) in the Supabase SQL Editor
+   - **Option B:** Run each file in `supabase/migrations/` (001–013) in the Supabase SQL Editor
+
+   Migrations 010–013 add per-user persistence: profile sync on signup, extended roles, employees, and document templates.
 
 ### Step 3: Run
 

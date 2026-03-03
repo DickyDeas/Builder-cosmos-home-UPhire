@@ -1,13 +1,32 @@
 /**
  * Netlify serverless function: Handle job applications from job boards
  * POST /api/apply - creates candidate in Supabase
+ * Rate limited: 10 req/min per IP (when Upstash configured)
  */
 
 import { createClient } from '@supabase/supabase-js';
+import { checkRateLimit } from './_lib/rateLimit.js';
+
+function getClientIp(event) {
+  return event.headers?.['x-forwarded-for']?.split(',')[0]?.trim()
+    || event.headers?.['x-nf-client-connection']?.split(',')[0]?.trim()
+    || event.headers?.['x-real-ip']
+    || 'unknown';
+}
 
 export async function handler(event, context) {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: JSON.stringify({ error: 'Method not allowed' }) };
+  }
+
+  const ip = getClientIp(event);
+  const { limited } = await checkRateLimit(`apply:${ip}`);
+  if (limited) {
+    return {
+      statusCode: 429,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: 'Too many requests. Please try again later.' }),
+    };
   }
 
   const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
@@ -31,13 +50,18 @@ export async function handler(event, context) {
 
   const supabase = createClient(supabaseUrl, serviceKey);
 
-  const { data: role } = await supabase.from('roles').select('profile_id').eq('id', role_id).single();
+  const { data: role } = await supabase
+    .from('roles')
+    .select('profile_id, tenant_id')
+    .eq('id', role_id)
+    .single();
   if (!role) {
     return { statusCode: 404, body: JSON.stringify({ error: 'Role not found' }) };
   }
 
   const insertPayload = {
     role_id,
+    tenant_id: role.tenant_id || null,
     name,
     email,
     phone: phone || null,

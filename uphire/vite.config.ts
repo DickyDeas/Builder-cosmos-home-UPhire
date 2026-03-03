@@ -45,6 +45,165 @@ export default defineConfig(({ mode }) => {
           });
         },
       },
+      // Grok AI proxy (keeps API key server-side; use GROK_API_KEY in .env)
+      {
+        name: "grok-proxy",
+        configureServer(server) {
+          server.middlewares.use("/api/grok-proxy", async (req, res, next) => {
+            if (req.method !== "POST") {
+              res.statusCode = 405;
+              res.setHeader("Content-Type", "application/json");
+              res.end(JSON.stringify({ error: "Method not allowed" }));
+              return;
+            }
+            const apiKey = env.GROK_API_KEY || env.VITE_GROK_API_KEY || "";
+            const apiUrl = env.GROK_API_URL || env.VITE_GROK_API_URL || "https://api.x.ai/v1";
+            if (!apiKey || apiKey === "demo-key") {
+              res.statusCode = 502;
+              res.setHeader("Content-Type", "application/json");
+              res.end(JSON.stringify({ error: "Grok API key not configured" }));
+              return;
+            }
+            let body = "";
+            req.on("data", (chunk) => (body += chunk));
+            req.on("end", async () => {
+              try {
+                const parsed = JSON.parse(body || "{}");
+                const { systemPrompt, userPrompt, maxTokens = 2000, temperature = 0.3, model = "grok-beta" } = parsed;
+                if (!userPrompt) {
+                  res.statusCode = 400;
+                  res.setHeader("Content-Type", "application/json");
+                  res.end(JSON.stringify({ error: "Missing userPrompt" }));
+                  return;
+                }
+                const url = apiUrl.includes("/chat/completions") ? apiUrl : `${apiUrl}/chat/completions`;
+                const messages = systemPrompt
+                  ? [{ role: "system", content: systemPrompt }, { role: "user", content: userPrompt }]
+                  : [{ role: "user", content: userPrompt }];
+                const r = await fetch(url, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+                  body: JSON.stringify({ model, messages, max_tokens: maxTokens, temperature }),
+                });
+                const data = await r.json();
+                const content = data?.choices?.[0]?.message?.content?.trim() ?? "";
+                res.setHeader("Content-Type", "application/json");
+                res.end(JSON.stringify(r.ok ? { content } : { error: data?.error?.message || "Grok API error" }));
+              } catch (e) {
+                res.statusCode = 502;
+                res.setHeader("Content-Type", "application/json");
+                res.end(JSON.stringify({ error: "Grok proxy failed" }));
+              }
+            });
+          });
+        },
+      },
+      // Email send proxy (keeps Brevo key server-side; use EMAIL_SERVICE_API_KEY in .env)
+      {
+        name: "email-send-proxy",
+        configureServer(server) {
+          server.middlewares.use("/api/email-send", async (req, res, next) => {
+            if (req.method !== "POST") {
+              res.statusCode = 405;
+              res.setHeader("Content-Type", "application/json");
+              res.end(JSON.stringify({ error: "Method not allowed" }));
+              return;
+            }
+            const apiKey = env.EMAIL_SERVICE_API_KEY || env.VITE_EMAIL_SERVICE_API_KEY || "";
+            const apiUrl = env.EMAIL_SERVICE_URL || env.VITE_EMAIL_SERVICE_URL || "https://api.brevo.com/v3";
+            const fromEmail = env.FROM_EMAIL || env.VITE_FROM_EMAIL || "noreply@uphireiq.com";
+            if (!apiKey) {
+              res.statusCode = 502;
+              res.setHeader("Content-Type", "application/json");
+              res.end(JSON.stringify({ error: "Email service not configured" }));
+              return;
+            }
+            let body = "";
+            req.on("data", (chunk) => (body += chunk));
+            req.on("end", async () => {
+              try {
+                const { to, subject, htmlContent, textContent, replyTo } = JSON.parse(body || "{}");
+                if (!to || !subject) {
+                  res.statusCode = 400;
+                  res.setHeader("Content-Type", "application/json");
+                  res.end(JSON.stringify({ error: "Missing to or subject" }));
+                  return;
+                }
+                const toList = Array.isArray(to) ? to : [to];
+                const r = await fetch(`${apiUrl}/smtp/email`, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json", "api-key": apiKey },
+                  body: JSON.stringify({
+                    sender: { email: fromEmail, name: "UPhire" },
+                    to: toList.map((e) => ({ email: e })),
+                    subject,
+                    htmlContent: htmlContent || textContent || "",
+                    textContent,
+                    replyTo: replyTo ? { email: replyTo } : undefined,
+                  }),
+                });
+                res.setHeader("Content-Type", "application/json");
+                res.end(JSON.stringify(r.ok ? { success: true } : { error: "Email send failed" }));
+              } catch (e) {
+                res.statusCode = 502;
+                res.setHeader("Content-Type", "application/json");
+                res.end(JSON.stringify({ error: "Email proxy failed" }));
+              }
+            });
+          });
+        },
+      },
+      // Audit log proxy (dev: forwards to Supabase via service role)
+      {
+        name: "audit-log-proxy",
+        configureServer(server) {
+          server.middlewares.use("/api/audit-log", async (req, res, next) => {
+            if (req.method !== "POST") {
+              res.statusCode = 405;
+              res.setHeader("Content-Type", "application/json");
+              res.end(JSON.stringify({ error: "Method not allowed" }));
+              return;
+            }
+            const supabaseUrl = env.VITE_SUPABASE_URL || env.SUPABASE_URL;
+            const serviceKey = env.SUPABASE_SERVICE_ROLE_KEY;
+            if (!supabaseUrl || !serviceKey) {
+              res.statusCode = 502;
+              res.setHeader("Content-Type", "application/json");
+              res.end(JSON.stringify({ error: "Supabase not configured for audit log" }));
+              return;
+            }
+            let body = "";
+            req.on("data", (chunk) => (body += chunk));
+            req.on("end", async () => {
+              try {
+                const { tenantId, userId, action, resourceType, resourceId, metadata } = JSON.parse(body || "{}");
+                if (!action) {
+                  res.statusCode = 400;
+                  res.setHeader("Content-Type", "application/json");
+                  res.end(JSON.stringify({ error: "Missing action" }));
+                  return;
+                }
+                const { createClient } = await import("@supabase/supabase-js");
+                const supabase = createClient(supabaseUrl, serviceKey);
+                const { error } = await supabase.from("audit_logs").insert({
+                  tenant_id: tenantId || null,
+                  user_id: userId || null,
+                  action,
+                  resource_type: resourceType || null,
+                  resource_id: resourceId || null,
+                  metadata: metadata || null,
+                });
+                res.setHeader("Content-Type", "application/json");
+                res.end(JSON.stringify(error ? { error: error.message } : { success: true }));
+              } catch (e) {
+                res.statusCode = 502;
+                res.setHeader("Content-Type", "application/json");
+                res.end(JSON.stringify({ error: "Audit log proxy failed" }));
+              }
+            });
+          });
+        },
+      },
       // ITJobsWatch proxy (fetches and parses HTML)
       {
         name: "itjobswatch-proxy",

@@ -27,6 +27,18 @@ const order = [
   '007_add_shortlist_notes.sql',
   '008_ai_generated_cv_flag.sql',
   '009_storage_buckets.sql',
+  '010_profile_sync.sql',
+  '011_extended_roles.sql',
+  '012_employee_details.sql',
+  '013_user_document_templates.sql',
+  '014_tenant_roles_and_job_board_schema.sql',
+  '015_audit_logs.sql',
+  '016_tenant_scoped_entities.sql',
+  '017_storage_tenant_isolation.sql',
+  '018_tenant_users_admin_policies.sql',
+  '019_tenant_creation_policies.sql',
+  '020_candidate_soft_delete.sql',
+  '021_candidates_exclude_deleted_rls.sql',
 ];
 
 async function main() {

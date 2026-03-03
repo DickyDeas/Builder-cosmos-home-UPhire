@@ -1,12 +1,7 @@
 /**
  * Email service - Brevo (Sendinblue) integration.
- * Uses VITE_EMAIL_SERVICE_API_KEY and VITE_EMAIL_SERVICE_URL from env.
- * Same Brevo account as your main website.
+ * Uses /api/email-send proxy so API key stays server-side.
  */
-
-const API_KEY = (import.meta as any).env?.VITE_EMAIL_SERVICE_API_KEY;
-const API_URL = (import.meta as any).env?.VITE_EMAIL_SERVICE_URL || "https://api.brevo.com/v3";
-const FROM_EMAIL = (import.meta as any).env?.VITE_FROM_EMAIL || "noreply@uphireiq.com";
 
 export interface SendEmailOptions {
   to: string | string[];
@@ -17,33 +12,24 @@ export interface SendEmailOptions {
 }
 
 /**
- * Send transactional email via Brevo.
+ * Send transactional email via server-side Brevo proxy.
  */
 export async function sendEmail(options: SendEmailOptions): Promise<boolean> {
-  if (!API_KEY) {
-    console.warn("Email service: No API key configured");
-    return false;
-  }
-  const toList = Array.isArray(options.to) ? options.to : [options.to];
-  const recipients = toList.map((email) => ({ email }));
   try {
-    const res = await fetch(`${API_URL}/smtp/email`, {
+    const res = await fetch("/api/email-send", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "api-key": API_KEY,
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        sender: { email: FROM_EMAIL, name: "UPhire" },
-        to: recipients,
+        to: options.to,
         subject: options.subject,
-        htmlContent: options.htmlContent || options.textContent || "",
+        htmlContent: options.htmlContent,
         textContent: options.textContent,
-        replyTo: options.replyTo ? { email: options.replyTo } : undefined,
+        replyTo: options.replyTo,
       }),
     });
+    const data = await res.json();
     if (!res.ok) {
-      console.error("Brevo API error:", res.status, await res.text());
+      console.error("Email API error:", res.status, data);
       return false;
     }
     return true;

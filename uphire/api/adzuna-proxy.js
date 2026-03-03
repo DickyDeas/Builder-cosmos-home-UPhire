@@ -14,9 +14,9 @@ export async function handler(event) {
   }
 
   const appId =
-    process.env.VITE_ADZUNA_APP_ID || process.env.ADZUNA_APP_ID || "";
+    process.env.ADZUNA_APP_ID || process.env.VITE_ADZUNA_APP_ID || "";
   const appKey =
-    process.env.VITE_ADZUNA_APP_KEY || process.env.ADZUNA_APP_KEY || "";
+    process.env.ADZUNA_APP_KEY || process.env.VITE_ADZUNA_APP_KEY || "";
 
   if (!appId || !appKey) {
     return {
