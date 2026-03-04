@@ -1,6 +1,7 @@
 /**
  * Netlify serverless function: Grok API proxy for AI screening and market data.
  * Keeps GROK_API_KEY server-side only (never exposed to client).
+ * Rate limited: 10 req/min per IP (when Upstash configured).
  *
  * POST /api/grok-proxy
  * Body: { systemPrompt?, userPrompt, maxTokens?, temperature?, model? }
@@ -9,12 +10,33 @@
  * Do NOT use VITE_ prefix - these must be server-only.
  */
 
+import { checkRateLimit } from "./_lib/rateLimit.js";
+
+function getClientIp(event) {
+  return (
+    event.headers?.["x-forwarded-for"]?.split(",")[0]?.trim() ||
+    event.headers?.["x-nf-client-connection"]?.split(",")[0]?.trim() ||
+    event.headers?.["x-real-ip"] ||
+    "unknown"
+  );
+}
+
 export async function handler(event) {
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ error: "Method not allowed" }),
+    };
+  }
+
+  const ip = getClientIp(event);
+  const { limited } = await checkRateLimit(`grok:${ip}`);
+  if (limited) {
+    return {
+      statusCode: 429,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ error: "Too many requests. Please try again later." }),
     };
   }
 

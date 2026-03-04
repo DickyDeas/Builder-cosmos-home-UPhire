@@ -10,7 +10,6 @@ import {
   Calendar,
   Check,
   CheckCircle,
-  XCircle,
   BarChart3,
   UserCheck,
   Building,
@@ -40,12 +39,10 @@ import {
   User,
   Timer,
   Briefcase,
-  PieChart,
   Factory,
   Settings,
   HelpCircle,
   LogOut,
-  LogIn,
   Menu,
   Bell,
   ArrowUp,
@@ -54,10 +51,7 @@ import {
   Linkedin,
   Github,
   ExternalLink,
-  RefreshCw,
   Play,
-  Pause,
-  SkipForward,
   MoreVertical,
 } from "lucide-react";
 import {
@@ -108,10 +102,13 @@ import {
   mockDocuments,
   businessProfile,
   DEFAULT_JOB_BOARDS,
-  loadBusinessProfileFromStorage,
   loadJobBoardsFromStorage,
+  STORAGE_KEY_PROFILE,
+  STORAGE_KEY_JOB_BOARDS,
 } from "./uphire/data";
 import { fetchRoles, insertRole, updateRole } from "@/services/rolesService";
+import { postJobToBoard } from "@/services/jobBoardService";
+import { fetchUserTenants } from "@/services/tenantsService";
 import { insertCandidate } from "@/services/candidatesService";
 import { logAudit } from "@/services/auditService";
 import { fetchEmployees, insertEmployee } from "@/services/employeesService";
@@ -119,18 +116,14 @@ import { fetchDocumentTemplates } from "@/services/documentTemplatesService";
 import { TenantTeamSection } from "@/components/TenantTeamSection";
 import { exportCandidateData, purgeCandidateData } from "@/services/dataExportService";
 import { useCanWrite } from "@/hooks/useCanWrite";
-import { MarketIntelligence } from "./uphire/components/MarketIntelligence";
 import { MarketIntelligenceTab } from "./uphire/components/MarketIntelligenceTab";
 import { DashboardTab } from "./uphire/views/DashboardTab";
 import { AnalyticsTab } from "./uphire/views/AnalyticsTab";
 
-// Re-export for components that reference JobBoardConfig
-type JobBoardConfigType = JobBoardConfig;
-
 // Component Definitions
 
-// Employee Details Modal Component
-const EmployeeDetailsModal = ({
+// Employee Details Modal Component (retained for future use)
+const _EmployeeDetailsModal = ({
   employee,
   isOpen,
   onClose,
@@ -1992,6 +1985,7 @@ const JobDetailsView = ({
   role: Role;
   onBack: () => void;
 }) => {
+  const [showCloseConfirm, setShowCloseConfirm] = useState(false);
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -2312,10 +2306,7 @@ const JobDetailsView = ({
                 Share Job Posting
               </button>
               <button
-                onClick={() =>
-                  confirm("Are you sure you want to close this position?") &&
-                  toast({ title: "Closed", description: "Position closed successfully." })
-                }
+                onClick={() => setShowCloseConfirm(true)}
                 className="w-full px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
               >
                 Close Position
@@ -2324,6 +2315,26 @@ const JobDetailsView = ({
           </div>
         </div>
       </div>
+      <AlertDialog open={showCloseConfirm} onOpenChange={setShowCloseConfirm}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Close position?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to close this position?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                toast({ title: "Closed", description: "Position closed successfully." });
+              }}
+            >
+              Close position
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
@@ -2582,49 +2593,66 @@ Company Highlights:
       title: "Publishing role",
       description: "Pushing to licensed job boards, company career page, Google Jobs & other channels...",
     });
-    // Simulate Broadbean API integration
-    const broadbeanPayload = {
-      apiKey: "UPHIRE_BROADBEAN_KEY_2024",
-      clientId: businessProfile.companyName.replace(/\s+/g, "_").toUpperCase(),
-      role: {
-        title: role.title,
-        description: role.description,
-        requirements: role.requirements,
-        keySkills: role.keySkills,
-        experienceLevel: role.experienceLevel,
-        employmentType: role.employmentType,
-        workPattern: role.workPattern,
-        benefits: role.benefits,
-        salary: role.salary,
-        location: role.location,
-        department: role.department,
-        companyName: businessProfile.companyName,
-        companyDescription: businessProfile.description,
-        companyWebsite: businessProfile.website,
-        companyLogo: businessProfile.companyLogo ?? undefined, // PNG data URL for job boards that support logos
-        industry: businessProfile.industry,
-        companySize: businessProfile.employees,
-        postToJobBoards: loadJobBoardsFromStorage().map((b) => b.name),
-        postToCompanyWebsite: true,
-        autoRepost: true,
-        targetAudience: "professional",
-      },
+
+    const job: Parameters<typeof postJobToBoard>[2] = {
+      title: role.title,
+      description: role.description,
+      location: role.location,
+      salary: role.salary,
+      employmentType: role.employmentType,
+      requirements: role.requirements,
+      keySkills: role.keySkills,
+      experienceLevel: role.experienceLevel,
+      workPattern: role.workPattern,
+      benefits: role.benefits,
+      department: role.department,
     };
 
-    // Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const tenants = await fetchUserTenants();
+    const tenantId = tenants[0]?.id;
+    if (!tenantId) {
+      toast({
+        title: "Job boards skipped",
+        description: "No tenant found. Configure your organization to publish to job boards.",
+        variant: "destructive",
+      });
+      return { success: false, publishedTo: [], companyWebsiteUrl: null };
+    }
 
-    const publishedTo = broadbeanPayload.role.postToJobBoards;
+    const boards = loadJobBoardsFromStorage();
+    const results = await Promise.all(
+      boards.map((board) => postJobToBoard(tenantId, board.id, job).then((r) => ({ board: board.name, ...r })))
+    );
+    const successes = results.filter((r) => r.success);
+    const failures = results.filter((r) => !r.success);
+
     const companyWebsite = businessProfile.website;
-    toast({
-      title: "Role published successfully",
-      description: `Live on ${publishedTo.slice(0, 3).join(", ")}, ${publishedTo.length > 3 ? `+${publishedTo.length - 3} more` : ""}${companyWebsite ? ` • Company career page` : ""} • Google Jobs`,
-    });
+    const companyWebsiteUrl = companyWebsite ? `${companyWebsite}/careers/${role.title.toLowerCase().replace(/\s+/g, "-")}` : null;
+
+    if (successes.length > 0) {
+      toast({
+        title: "Role published successfully",
+        description: `Live on ${successes.map((r) => r.board).slice(0, 3).join(", ")}${successes.length > 3 ? `, +${successes.length - 3} more` : ""}${companyWebsite ? " • Company career page" : ""} • Google Jobs`,
+      });
+    }
+    if (failures.length > 0 && successes.length === 0) {
+      toast({
+        title: "Job board posting failed",
+        description: failures[0]?.error || "No active licenses. Configure job board credentials in Settings.",
+        variant: "destructive",
+      });
+    } else if (failures.length > 0) {
+      toast({
+        title: "Partial publish",
+        description: `${failures.length} board(s) need configuration. ${successes.length} published successfully.`,
+      });
+    }
+
     return {
-      success: true,
-      jobPostId: `BB_${Date.now()}`,
-      publishedTo,
-      companyWebsiteUrl: companyWebsite ? `${companyWebsite}/careers/${role.title.toLowerCase().replace(/\s+/g, "-")}` : null,
+      success: successes.length > 0,
+      jobPostId: successes.length > 0 ? `BB_${Date.now()}` : undefined,
+      publishedTo: successes.map((r) => r.board),
+      companyWebsiteUrl,
     };
   };
 
@@ -5503,6 +5531,7 @@ const DocumentsTab = ({ canWrite = true }: { canWrite?: boolean }) => {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [documentsLoading, setDocumentsLoading] = useState(true);
+  const [docToDelete, setDocToDelete] = useState<Document | null>(null);
   const [, forceUpdate] = useState(0);
 
   // Load documents from Supabase on mount.
@@ -5728,9 +5757,7 @@ const DocumentsTab = ({ canWrite = true }: { canWrite?: boolean }) => {
                   <span>Edit</span>
                 </button>
                 <button
-                  onClick={() =>
-                    confirm(`Delete ${document.name}?`) && toast({ title: "Deleted", description: "Document deleted." })
-                  }
+                  onClick={() => setDocToDelete(document)}
                   className="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm"
                 >
                   <Trash2 size={14} />
@@ -5747,6 +5774,30 @@ const DocumentsTab = ({ canWrite = true }: { canWrite?: boolean }) => {
           </div>
         )}
       </div>
+
+      <AlertDialog open={!!docToDelete} onOpenChange={(open) => !open && setDocToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete document?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {docToDelete ? `Delete ${docToDelete.name}?` : ""}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (docToDelete) {
+                  toast({ title: "Deleted", description: "Document deleted." });
+                  setDocToDelete(null);
+                }
+              }}
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Quick Actions */}
       <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
@@ -7370,6 +7421,8 @@ const MyBusinessTab = ({ canWrite = true }: { canWrite?: boolean }) => {
   const [jobBoards, setJobBoards] = useState<JobBoardConfig[]>(() => loadJobBoardsFromStorage());
   const [editForm, setEditForm] = useState({ ...businessProfile });
   const [logoKey, setLogoKey] = useState(0); // force re-render when logo changes
+  const [showPurgeConfirm, setShowPurgeConfirm] = useState(false);
+  const [purgeEmail, setPurgeEmail] = useState<string>("");
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -7596,19 +7649,14 @@ const MyBusinessTab = ({ canWrite = true }: { canWrite?: boolean }) => {
               </div>
               <div className="flex items-center gap-2">
                 <button
-                  onClick={async () => {
+                  onClick={() => {
                     const email = (document.getElementById("gdpr-email") as HTMLInputElement)?.value?.trim();
                     if (!email) {
                       toast({ title: "Email required", description: "Enter candidate email.", variant: "destructive" });
                       return;
                     }
-                    if (!confirm(`Permanently delete all data for ${email}? This cannot be undone.`)) return;
-                    try {
-                      await purgeCandidateData(undefined, email);
-                      toast({ title: "Data purged", description: `Data for ${email} has been deleted.` });
-                    } catch (err) {
-                      toast({ title: "Purge failed", description: err instanceof Error ? err.message : "Failed", variant: "destructive" });
-                    }
+                    setPurgeEmail(email);
+                    setShowPurgeConfirm(true);
                   }}
                   disabled={!canWrite}
                   className="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm disabled:opacity-50"
@@ -7618,6 +7666,36 @@ const MyBusinessTab = ({ canWrite = true }: { canWrite?: boolean }) => {
               </div>
             </div>
           </div>
+
+          <AlertDialog open={showPurgeConfirm} onOpenChange={(open) => { setShowPurgeConfirm(open); if (!open) setPurgeEmail(""); }}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Permanently delete data?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Permanently delete all data for {purgeEmail}? This cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={async () => {
+                    if (!purgeEmail) return;
+                    try {
+                      await purgeCandidateData(undefined, purgeEmail);
+                      toast({ title: "Data purged", description: `Data for ${purgeEmail} has been deleted.` });
+                    } catch (err) {
+                      toast({ title: "Purge failed", description: err instanceof Error ? err.message : "Failed", variant: "destructive" });
+                    }
+                    setShowPurgeConfirm(false);
+                    setPurgeEmail("");
+                  }}
+                >
+                  Purge
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
               Job Board Licenses & Careers Page

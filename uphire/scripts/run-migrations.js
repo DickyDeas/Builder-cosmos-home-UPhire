@@ -39,6 +39,11 @@ const order = [
   '019_tenant_creation_policies.sql',
   '020_candidate_soft_delete.sql',
   '021_candidates_exclude_deleted_rls.sql',
+  '022_fix_security_linter.sql',
+  '023_fix_auth_rls_initplan.sql',
+  '024_fix_all_supabase_lints.sql',
+  '025_fix_remaining_16_lints.sql',
+  '026_add_missing_fk_indexes.sql',
 ];
 
 async function main() {

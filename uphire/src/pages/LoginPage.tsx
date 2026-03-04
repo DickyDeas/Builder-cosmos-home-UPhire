@@ -47,17 +47,6 @@ const LoginPage = () => {
       setLoading(false);
       return;
     }
-    const isDemo =
-      !isSignUp &&
-      (emailNorm === "demo@google" || emailNorm === "demo@google.com") &&
-      password === "123456";
-
-    if (isDemo) {
-      sessionStorage.setItem("uphire_demo", "true");
-      navigate(from, { replace: true });
-      setLoading(false);
-      return;
-    }
 
     if (isSignUp) {
       const { score } = getPasswordStrength(password);
@@ -190,7 +179,7 @@ const LoginPage = () => {
               </button>
             </form>
           ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
               <div className="relative">

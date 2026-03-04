@@ -66,6 +66,13 @@
   status = 200
   force = true
 
+# Health check (monitoring, load balancers)
+[[redirects]]
+  from = "/api/health"
+  to = "/.netlify/functions/health"
+  status = 200
+  force = true
+
 # Redirect root to app (avoids 404 when visiting site root)
 [[redirects]]
   from = "/"
@@ -94,3 +101,4 @@
     X-Content-Type-Options = "nosniff"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"

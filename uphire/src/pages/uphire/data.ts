@@ -340,8 +340,8 @@ export const DEFAULT_JOB_BOARDS: JobBoardConfig[] = [
   { id: "govuk", name: "Find a job (gov.uk)", details: "Free UK government job board – post once you've created an account", configured: false },
 ];
 
-const STORAGE_KEY_PROFILE = "uphire_business_profile";
-const STORAGE_KEY_JOB_BOARDS = "uphire_job_boards";
+export const STORAGE_KEY_PROFILE = "uphire_business_profile";
+export const STORAGE_KEY_JOB_BOARDS = "uphire_job_boards";
 
 export function loadBusinessProfileFromStorage() {
   try {
@@ -350,7 +350,9 @@ export function loadBusinessProfileFromStorage() {
       const parsed = JSON.parse(s);
       Object.assign(businessProfile, parsed);
     }
-  } catch (_) {}
+  } catch (err) {
+    console.warn("Business profile load failed:", err);
+  }
 }
 
 export function loadJobBoardsFromStorage(): JobBoardConfig[] {
@@ -360,7 +362,9 @@ export function loadJobBoardsFromStorage(): JobBoardConfig[] {
       const parsed = JSON.parse(s);
       if (Array.isArray(parsed) && parsed.length > 0) return parsed;
     }
-  } catch (_) {}
+  } catch (err) {
+    console.warn("Job boards load failed:", err);
+  }
   return DEFAULT_JOB_BOARDS.map((b) => ({ ...b }));
 }
 
