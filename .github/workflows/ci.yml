@@ -26,6 +26,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Verify ESLint version
+        run: npx eslint --version
+
       - name: Typecheck
         run: npm run typecheck
 
