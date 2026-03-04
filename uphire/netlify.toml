@@ -73,6 +73,27 @@
   status = 200
   force = true
 
+# Roles needing attention (0 applicants after 5+ days)
+[[redirects]]
+  from = "/api/roles-needing-attention"
+  to = "/.netlify/functions/roles-needing-attention"
+  status = 200
+  force = true
+
+# Admin: all tenants (staff only)
+[[redirects]]
+  from = "/api/admin-tenants"
+  to = "/.netlify/functions/admin-tenants"
+  status = 200
+  force = true
+
+# Admin: check if user is staff
+[[redirects]]
+  from = "/api/is-staff"
+  to = "/.netlify/functions/is-staff"
+  status = 200
+  force = true
+
 # Redirect root to app (avoids 404 when visiting site root)
 [[redirects]]
   from = "/"

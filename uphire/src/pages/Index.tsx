@@ -44,6 +44,7 @@ import {
   HelpCircle,
   LogOut,
   Menu,
+  Shield,
   Bell,
   ArrowUp,
   ArrowDown,
@@ -116,9 +117,11 @@ import { fetchDocumentTemplates } from "@/services/documentTemplatesService";
 import { TenantTeamSection } from "@/components/TenantTeamSection";
 import { exportCandidateData, purgeCandidateData } from "@/services/dataExportService";
 import { useCanWrite } from "@/hooks/useCanWrite";
+import { useIsStaff } from "@/hooks/useIsStaff";
 import { MarketIntelligenceTab } from "./uphire/components/MarketIntelligenceTab";
 import { DashboardTab } from "./uphire/views/DashboardTab";
 import { AnalyticsTab } from "./uphire/views/AnalyticsTab";
+import { AdminTab } from "./uphire/views/AdminTab";
 
 // Component Definitions
 
@@ -8232,6 +8235,7 @@ const UPhirePlatformComponent = () => {
   });
 
   const { canWrite } = useCanWrite();
+  const isStaff = useIsStaff();
 
   // Fetch candidates from Supabase on initial mount. This replaces the
   // mockCandidates array with real data from the `candidates` table. If
@@ -8349,6 +8353,7 @@ const UPhirePlatformComponent = () => {
     { id: "documents", label: "Documents", icon: FileText },
     { id: "savings", label: "Savings", icon: PoundSterling },
     { id: "business", label: "My Business", icon: Building },
+    ...(isStaff ? [{ id: "admin", label: "All Clients", icon: Shield }] : []),
   ];
 
   const breadcrumbs = [
@@ -8429,7 +8434,7 @@ const UPhirePlatformComponent = () => {
   const renderTabContent = () => {
     switch (activeTab) {
       case "dashboard":
-        return <DashboardTab />;
+        return <DashboardTab isStaff={isStaff} />;
       case "roles":
         return <RolesTab onAddCandidate={handleAddCandidate} onAIRecruitComplete={handleAIRecruitComplete} onRoleSaved={refreshPersistedData} canWrite={canWrite} />;
       case "candidates":
@@ -8450,6 +8455,8 @@ const UPhirePlatformComponent = () => {
         return <SavingsTab />;
       case "business":
         return <MyBusinessTab canWrite={canWrite} />;
+      case "admin":
+        return <AdminTab />;
       default:
         return <DashboardTab />;
     }
@@ -8570,7 +8577,13 @@ const UPhirePlatformComponent = () => {
                         <p className="text-xs text-gray-500">{user.role}</p>
                       </div>
                       <div className="py-1">
-                        <button className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <button
+                          onClick={() => {
+                            setShowUserDropdown(false);
+                            setActiveTab("business");
+                          }}
+                          className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
                           <Settings size={16} />
                           <span>Settings</span>
                         </button>

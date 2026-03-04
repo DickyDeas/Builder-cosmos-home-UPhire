@@ -13,7 +13,8 @@
     "pre-deploy": "node scripts/pre-deploy.js",
     "migrate": "node scripts/run-migrations.js",
     "stress-test:applicants": "node scripts/stress-test-applicants.js",
-    "generate:qlikview-csv": "node scripts/generate-qlikview-csv.js"
+    "generate:qlikview-csv": "node scripts/generate-qlikview-csv.js",
+    "create-admin-user": "node scripts/create-admin-user.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

@@ -12,17 +12,34 @@ import {
   Calendar,
   Clock,
   CheckCircle,
+  AlertTriangle,
 } from "lucide-react";
+import { supabase } from "@/lib/supabaseClient";
 import { MarketIntelligence } from "../components/MarketIntelligence";
 import { mockRoles, mockCandidates } from "../data";
-import { fetchStrugglingRoles } from "@/services/roleFlagsService";
+import { fetchStrugglingRoles, fetchRolesNeedingAttention, type RoleNeedingAttention } from "@/services/roleFlagsService";
 
-export const DashboardTab = () => {
+export const DashboardTab = ({ isStaff = false }: { isStaff?: boolean }) => {
   const [strugglingCount, setStrugglingCount] = useState(0);
+  const [rolesNeedingAttention, setRolesNeedingAttention] = useState<RoleNeedingAttention[]>([]);
 
   useEffect(() => {
-    fetchStrugglingRoles().then((roles) => setStrugglingCount(roles.length));
-  }, []);
+    if (!isStaff) return;
+    const load = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      const [struggling, attention] = await Promise.all([
+        fetchStrugglingRoles(),
+        fetchRolesNeedingAttention(5, token),
+      ]);
+      setStrugglingCount(struggling.length);
+      setRolesNeedingAttention(attention);
+    };
+    load();
+  }, [isStaff]);
+
+  const attentionCount = rolesNeedingAttention.length;
+  const totalAlertCount = isStaff ? strugglingCount + attentionCount : 0;
   const getAllCandidatesCount = () => {
     const baseCount = mockCandidates.length;
     let shortlistedCount = 0;
@@ -131,12 +148,32 @@ export const DashboardTab = () => {
             <h3 className="text-lg font-semibold text-gray-900">
               Recent Activity
             </h3>
-            {strugglingCount > 0 && (
-              <span className="text-xs px-2 py-1 bg-amber-100 text-amber-800 rounded">
-                {strugglingCount} role(s) need attention
+            {totalAlertCount > 0 && (
+              <span className="text-xs px-2 py-1 bg-amber-100 text-amber-800 rounded flex items-center gap-1">
+                <AlertTriangle className="w-3.5 h-3.5" />
+                {totalAlertCount} role(s) need attention
               </span>
             )}
           </div>
+          {isStaff && rolesNeedingAttention.length > 0 && (
+            <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+              <p className="text-sm font-medium text-amber-900 mb-2">
+                Roles with no applicants (5+ days) – assign outside resource to build shortlist:
+              </p>
+              <ul className="text-sm text-amber-800 space-y-1">
+                {rolesNeedingAttention.slice(0, 5).map((r) => (
+                  <li key={r.role_id}>
+                    {r.role_title}
+                    {r.tenant_name && ` (${r.tenant_name})`}
+                    {r.days_open > 0 && ` – ${r.days_open}d open`}
+                  </li>
+                ))}
+                {rolesNeedingAttention.length > 5 && (
+                  <li className="text-amber-700">+{rolesNeedingAttention.length - 5} more</li>
+                )}
+              </ul>
+            </div>
+          )}
           <div className="space-y-4">
             <div className="flex items-center space-x-3 p-3 bg-slate-50 rounded-lg">
               <Users className="w-5 h-5 text-slate-600" />

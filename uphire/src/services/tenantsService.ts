@@ -32,6 +32,46 @@ export async function fetchUserTenants(): Promise<Tenant[]> {
   return (tenants || []) as Tenant[];
 }
 
+export interface AdminTenant extends Tenant {
+  role_count?: number;
+  user_count?: number;
+  /** Billing plan – populated when tenant_billing schema exists */
+  billing_plan?: string;
+  /** Missed payments count – populated when tenant_billing schema exists */
+  missed_payments?: number;
+  /** Usage (e.g. roles used / limit) – populated when tenant_usage schema exists */
+  usage?: string;
+  /** Overspend flag – populated when tenant_billing schema exists */
+  overspend?: boolean;
+  /** Analytics summary – populated when tenant analytics exist */
+  analytics_summary?: string;
+}
+
+/**
+ * Fetch all tenants (UPhire staff only).
+ * Requires staff privileges (is_uphire_staff or UPHIRE_STAFF_EMAILS).
+ */
+export async function fetchAllTenantsForStaff(): Promise<AdminTenant[]> {
+  const { data: { session } } = await supabase.auth.getSession();
+  const token = session?.access_token;
+  if (!token) return [];
+
+  try {
+    const res = await fetch("/api/admin-tenants", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      if (res.status === 401 || res.status === 403) return [];
+      throw new Error((data as { error?: string }).error || "Failed to fetch tenants");
+    }
+    return (data as { tenants?: AdminTenant[] }).tenants ?? [];
+  } catch (err) {
+    console.error("Admin tenants fetch error:", err);
+    return [];
+  }
+}
+
 export async function createTenant(name: string): Promise<Tenant | null> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return null;

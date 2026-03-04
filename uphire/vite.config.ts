@@ -204,6 +204,39 @@ export default defineConfig(({ mode }) => {
           });
         },
       },
+      // Roles needing attention (dev: use Netlify dev for real data)
+      {
+        name: "roles-needing-attention-proxy",
+        configureServer(server) {
+          server.middlewares.use("/api/roles-needing-attention", async (_req, res) => {
+            res.statusCode = 200;
+            res.setHeader("Content-Type", "application/json");
+            res.end(JSON.stringify({ roles: [], minDays: 5 }));
+          });
+        },
+      },
+      // Admin tenants (dev: use Netlify dev for real data)
+      {
+        name: "admin-tenants-proxy",
+        configureServer(server) {
+          server.middlewares.use("/api/admin-tenants", async (_req, res) => {
+            res.statusCode = 200;
+            res.setHeader("Content-Type", "application/json");
+            res.end(JSON.stringify({ tenants: [] }));
+          });
+        },
+      },
+      // Is staff check (dev: returns false unless Netlify dev)
+      {
+        name: "is-staff-proxy",
+        configureServer(server) {
+          server.middlewares.use("/api/is-staff", async (_req, res) => {
+            res.statusCode = 200;
+            res.setHeader("Content-Type", "application/json");
+            res.end(JSON.stringify({ isStaff: false }));
+          });
+        },
+      },
       // Job board post proxy (dev: returns not configured; production uses Netlify function)
       {
         name: "job-board-post-proxy",

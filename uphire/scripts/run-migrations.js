@@ -44,6 +44,10 @@ const order = [
   '024_fix_all_supabase_lints.sql',
   '025_fix_remaining_16_lints.sql',
   '026_add_missing_fk_indexes.sql',
+  '027_roles_needing_attention_and_admin_tenants.sql',
+  '028_fix_handle_new_user_profile_sync.sql',
+  '029_add_profiles_full_name.sql',
+  '030_ensure_profiles_columns.sql',
 ];
 
 async function main() {
