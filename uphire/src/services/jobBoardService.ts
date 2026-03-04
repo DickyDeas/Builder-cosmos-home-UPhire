@@ -3,6 +3,8 @@
  * Uses boardType (linkedin, indeed, broadbean, etc.) and tenant credentials.
  */
 
+import { encryptMetadata } from "@/lib/encryptMetadata";
+
 export interface JobPostPayload {
   title: string;
   description?: string;
@@ -53,4 +55,15 @@ export async function postJobToBoard(
       error: err instanceof Error ? err.message : "Network error",
     };
   }
+}
+
+/**
+ * Encrypt credentials before storing in tenant_job_board_licenses.metadata.
+ * Requires ENCRYPTION_KEY (hex) server-side. Use when saving OAuth tokens or API keys.
+ */
+export async function encryptCredentialsForStorage(
+  credentials: Record<string, unknown>,
+  encryptionKeyHex: string
+): Promise<string> {
+  return encryptMetadata(credentials, encryptionKeyHex);
 }

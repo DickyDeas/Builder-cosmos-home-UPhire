@@ -52,6 +52,20 @@
   status = 200
   force = true
 
+# Job board posting
+[[redirects]]
+  from = "/api/job-board-post"
+  to = "/.netlify/functions/job-board-post"
+  status = 200
+  force = true
+
+# Role flags check
+[[redirects]]
+  from = "/api/role-flags-check"
+  to = "/.netlify/functions/role-flags-check"
+  status = 200
+  force = true
+
 # Redirect root to app (avoids 404 when visiting site root)
 [[redirects]]
   from = "/"

@@ -204,6 +204,23 @@ export default defineConfig(({ mode }) => {
           });
         },
       },
+      // Job board post proxy (dev: returns not configured; production uses Netlify function)
+      {
+        name: "job-board-post-proxy",
+        configureServer(server) {
+          server.middlewares.use("/api/job-board-post", async (req, res) => {
+            if (req.method !== "POST") {
+              res.statusCode = 405;
+              res.setHeader("Content-Type", "application/json");
+              res.end(JSON.stringify({ error: "Method not allowed" }));
+              return;
+            }
+            res.statusCode = 502;
+            res.setHeader("Content-Type", "application/json");
+            res.end(JSON.stringify({ error: "Job board posting not configured for dev. Use Netlify dev for full API." }));
+          });
+        },
+      },
       // ITJobsWatch proxy (fetches and parses HTML)
       {
         name: "itjobswatch-proxy",

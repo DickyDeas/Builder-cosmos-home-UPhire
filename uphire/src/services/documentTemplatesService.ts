@@ -3,6 +3,7 @@
  */
 
 import { supabase } from "@/lib/supabaseClient";
+import { documentPath } from "@/lib/storageUtils";
 import { logAudit } from "@/services/auditService";
 import type { Document } from "@/pages/uphire/types";
 
@@ -79,4 +80,12 @@ export async function insertDocumentTemplate(doc: Partial<Document>): Promise<Do
     metadata: { name: created.name },
   });
   return created;
+}
+
+/**
+ * Build storage path for a document when uploading to Supabase Storage.
+ * Use with tenant-scoped buckets for RLS compliance.
+ */
+export function getDocumentStoragePath(tenantId: string, filename: string, subfolder?: string): string {
+  return documentPath(tenantId, filename, subfolder);
 }

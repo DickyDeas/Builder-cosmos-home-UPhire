@@ -117,6 +117,7 @@ import { logAudit } from "@/services/auditService";
 import { fetchEmployees, insertEmployee } from "@/services/employeesService";
 import { fetchDocumentTemplates } from "@/services/documentTemplatesService";
 import { TenantTeamSection } from "@/components/TenantTeamSection";
+import { exportCandidateData, purgeCandidateData } from "@/services/dataExportService";
 import { useCanWrite } from "@/hooks/useCanWrite";
 import { MarketIntelligence } from "./uphire/components/MarketIntelligence";
 import { MarketIntelligenceTab } from "./uphire/components/MarketIntelligenceTab";
@@ -501,7 +502,7 @@ const EmployeeDetailsModal = ({
                   Employee Documents
                 </h3>
                 <button
-                  onClick={() => alert("Document upload – connect to Supabase storage when ready")}
+                  onClick={() => toast({ title: "Coming soon", description: "Document upload – connect to Supabase storage when ready." })}
                   className="px-4 py-2 bg-gradient-to-r from-slate-600 to-teal-500 text-white rounded-lg hover:from-slate-600 hover:to-teal-600 transition-colors flex items-center space-x-2 shadow-md"
                 >
                   <Upload size={16} />
@@ -541,13 +542,13 @@ const EmployeeDetailsModal = ({
                       </div>
                       <div className="flex space-x-2 mt-3">
                         <button
-                          onClick={() => alert(`View: ${document.name}`)}
+                          onClick={() => toast({ title: "View document", description: document.name })}
                           className="flex-1 px-3 py-1 bg-slate-700 text-white rounded text-xs hover:bg-slate-800"
                         >
                           View
                         </button>
                         <button
-                          onClick={() => alert(`Download: ${document.name}`)}
+                          onClick={() => toast({ title: "Download", description: document.name })}
                           className="flex-1 px-3 py-1 bg-slate-600 text-white rounded text-xs hover:bg-slate-700"
                         >
                           Download
@@ -561,7 +562,7 @@ const EmployeeDetailsModal = ({
                   <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                   <p className="text-gray-600">No documents uploaded yet</p>
                   <button
-                    onClick={() => alert("Document upload – connect to Supabase storage when ready")}
+                    onClick={() => toast({ title: "Coming soon", description: "Document upload – connect to Supabase storage when ready." })}
                     className="mt-2 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors"
                   >
                     Upload First Document
@@ -1010,13 +1011,13 @@ const ScreeningModal = ({
         role.title
       );
       if (emailSent) {
-        alert("Live chat link created and sent to candidate. Link copied to clipboard.");
+        toast({ title: "Link sent", description: "Live chat link created and sent to candidate. Link copied to clipboard." });
       } else {
-        alert("Link created and copied to clipboard. Send it to the candidate manually.");
+        toast({ title: "Link created", description: "Link copied to clipboard. Send it to the candidate manually." });
       }
     } catch (err) {
       console.error("Failed to create live chat:", err);
-      alert("Failed to create live chat. Check Grok API key.");
+      toast({ title: "Failed", description: "Failed to create live chat. Check Grok API key.", variant: "destructive" });
     } finally {
       setCreatingLiveChat(false);
     }
@@ -1444,8 +1445,8 @@ const RoleShortlistView = ({
         businessProfile.companyName,
         role.salary
       );
-      if (ok) alert(`Offer email sent to ${candidate.name}`);
-      else alert("Failed to send offer email. Check Brevo configuration.");
+      if (ok) toast({ title: "Offer sent", description: `Offer email sent to ${candidate.name}.` });
+      else toast({ title: "Failed", description: "Failed to send offer email. Check Brevo configuration.", variant: "destructive" });
     }
   };
 
@@ -2291,21 +2292,21 @@ const JobDetailsView = ({
             </h3>
             <div className="space-y-3">
               <button
-                onClick={() => alert("Opening job description editor...")}
+                onClick={() => toast({ title: "Job editor", description: "Opening job description editor..." })}
                 className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors"
               >
                 Edit Job Description
               </button>
               <button
                 onClick={() =>
-                  alert("Viewing all applications for this role...")
+                  toast({ title: "Applications", description: "Viewing all applications for this role..." })
                 }
                 className="w-full px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors"
               >
                 View Applications
               </button>
               <button
-                onClick={() => alert("Job posting link copied to clipboard!")}
+                onClick={() => toast({ title: "Copied", description: "Job posting link copied to clipboard." })}
                 className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors"
               >
                 Share Job Posting
@@ -2313,7 +2314,7 @@ const JobDetailsView = ({
               <button
                 onClick={() =>
                   confirm("Are you sure you want to close this position?") &&
-                  alert("Position closed successfully")
+                  toast({ title: "Closed", description: "Position closed successfully." })
                 }
                 className="w-full px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
               >
@@ -2468,7 +2469,7 @@ const CreateNewRoleModal = ({
 
   const generateJobDescription = async () => {
     if (!formData.title || !formData.department) {
-      alert("Please enter job title and department first");
+      toast({ title: "Required fields", description: "Please enter job title and department first.", variant: "destructive" });
       return;
     }
 
@@ -2540,7 +2541,7 @@ Company Highlights:
 
   const runAIPrediction = () => {
     if (!formData.title || !formData.department) {
-      alert("Please enter job title and department first to run AI success prediction");
+      toast({ title: "Required fields", description: "Please enter job title and department first to run AI success prediction.", variant: "destructive" });
       return;
     }
     setShowPredictionModal(true);
@@ -2644,14 +2645,12 @@ Company Highlights:
     ] as const;
     const missing = required.filter(([key]) => !formData[key]?.toString().trim());
     if (missing.length > 0) {
-      alert(
-        `Please fill in all required fields: ${missing.map(([, label]) => label).join(", ")}`,
-      );
+      toast({ title: "Required fields", description: `Please fill in: ${missing.map(([, label]) => label).join(", ")}`, variant: "destructive" });
       return;
     }
     const validRequirements = formData.requirements.filter((req) => req.trim() !== "");
     if (validRequirements.length === 0) {
-      alert("Please add at least one requirement for better candidate matching.");
+      toast({ title: "Requirements", description: "Please add at least one requirement for better candidate matching.", variant: "destructive" });
       return;
     }
 
@@ -2745,7 +2744,7 @@ Company Highlights:
       onClose();
 
       if (roleToEdit) {
-        alert(`âœ… Role "${formData.title}" updated successfully.`);
+        toast({ title: "Role updated", description: `Role "${formData.title}" updated successfully.` });
       } else {
         // Auto-search CV Database for matching candidates
         const roleKeywords = [
@@ -2774,11 +2773,11 @@ Company Highlights:
           setTimeout(() => setShowPredictionModal(true), 500);
           successMessage += "\n\nðŸ§  UPhireIQ AI prediction will open automatically...";
         }
-        alert(successMessage);
+        toast({ title: "Role created", description: successMessage.replace(/\n\n/g, " • ").replace(/\n/g, " ") });
       }
     } catch (error) {
       setIsSubmitting(false);
-      alert("Error creating role. Please try again.");
+      toast({ title: "Error", description: "Error creating role. Please try again.", variant: "destructive" });
       console.error("Role creation error:", error);
     }
   };
@@ -4157,7 +4156,7 @@ const RolesTab = ({
                   const newStatus = statusEl?.value;
                   const newPriority = priorityEl?.value;
                   if (!newStatus && !newPriority) {
-                    alert("Please select at least one field to update.");
+                    toast({ title: "Select fields", description: "Please select at least one field to update.", variant: "destructive" });
                     return;
                   }
                   const count = selectedRoleIds.size;
@@ -4170,7 +4169,7 @@ const RolesTab = ({
                   });
                   setShowBulkEditModal(false);
                   setSelectedRoleIds(new Set());
-                  alert(`Updated ${count} role(s) successfully.`);
+                  toast({ title: "Updated", description: `Updated ${count} role(s) successfully.` });
                 }}
                 className="flex-1 px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800"
               >
@@ -4316,7 +4315,7 @@ const CandidatesTab = () => {
         });
       if (error) {
         console.error('Error shortlisting candidate:', error);
-        window.alert('Failed to shortlist candidate. See console for details.');
+        toast({ title: "Shortlist failed", description: "See console for details.", variant: "destructive" });
         return;
       }
       // Update the candidate's status and notes locally
@@ -4326,10 +4325,10 @@ const CandidatesTab = () => {
         ? `${candidate.notes} | ${newNote}`
         : newNote;
       // Provide feedback to the user
-      window.alert(`${candidate.name} has been shortlisted.`);
+      toast({ title: "Shortlisted", description: `${candidate.name} has been shortlisted.` });
     } catch (err) {
       console.error('Unexpected error while shortlisting candidate:', err);
-      window.alert('An unexpected error occurred while shortlisting.');
+      toast({ title: "Error", description: "An unexpected error occurred while shortlisting.", variant: "destructive" });
     }
   };
 
@@ -4344,10 +4343,10 @@ const CandidatesTab = () => {
       const { updateCandidate } = await import('@/services/candidatesService');
       await updateCandidate(candidate.id, { status: 'Hired' });
       candidate.status = 'Hired';
-      window.alert(`${candidate.name} has been marked as hired.`);
+      toast({ title: "Hired", description: `${candidate.name} has been marked as hired.` });
     } catch (err) {
       console.error('Unexpected error while hiring candidate:', err);
-      window.alert('An unexpected error occurred while hiring.');
+      toast({ title: "Error", description: "An unexpected error occurred while hiring.", variant: "destructive" });
     }
   };
 
@@ -4453,7 +4452,7 @@ const CandidatesTab = () => {
             </option>
           </select>
           <button
-            onClick={() => alert("Opening advanced candidate search...")}
+            onClick={() => toast({ title: "Search", description: "Opening advanced candidate search..." })}
             className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all flex items-center space-x-2"
           >
             <Search size={16} />
@@ -4849,9 +4848,9 @@ ${companyName}`;
           role: candidate.role,
         });
         onOfferSent();
-        alert(`Offer email sent to ${candidate.name}. Onboarding will begin upon acceptance.`);
+        toast({ title: "Offer sent", description: `Offer email sent to ${candidate.name}. Onboarding will begin upon acceptance.` });
       } else {
-        alert("Failed to send offer email. Check Brevo configuration.");
+        toast({ title: "Failed", description: "Failed to send offer email. Check Brevo configuration.", variant: "destructive" });
       }
     } finally {
       setSending(false);
@@ -5239,9 +5238,9 @@ const EmployeesTab = ({ canWrite = true }: { canWrite?: boolean }) => {
       const inserted = await insertEmployee(newEmployee);
       if (inserted) {
         mockEmployees.push(inserted);
-        alert(`Employee ${name} added successfully`);
+        toast({ title: "Employee added", description: `${name} added successfully.` });
       } else {
-        alert('Failed to add employee. Please ensure you are logged in.');
+        toast({ title: "Failed", description: "Failed to add employee. Please ensure you are logged in.", variant: "destructive" });
       }
     } catch (err) {
       console.error('Unexpected error inserting employee', err);
@@ -5396,14 +5395,14 @@ const EmployeesTab = ({ canWrite = true }: { canWrite?: boolean }) => {
           </h3>
           <div className="flex space-x-3">
             <button
-              onClick={() => alert("Opening employee search...")}
+              onClick={() => toast({ title: "Search", description: "Opening employee search..." })}
               className="px-4 py-2 bg-gradient-to-r from-slate-600 to-teal-500 text-white rounded-lg hover:from-slate-600 hover:to-teal-600 transition-colors flex items-center space-x-2 shadow-md"
             >
               <Search size={16} />
               <span>Search</span>
             </button>
             <button
-              onClick={() => alert("Opening employee filters...")}
+              onClick={() => toast({ title: "Filters", description: "Opening employee filters..." })}
               className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors flex items-center space-x-2"
             >
               <Filter size={16} />
@@ -5477,7 +5476,7 @@ const EmployeesTab = ({ canWrite = true }: { canWrite?: boolean }) => {
                 </button>
                 <button
                   onClick={() =>
-                    alert(`Opening documents for ${employee.name}...`)
+                    toast({ title: "Documents", description: `Opening documents for ${employee.name}...` })
                   }
                   className="flex-1 px-3 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors text-sm"
                 >
@@ -5485,7 +5484,7 @@ const EmployeesTab = ({ canWrite = true }: { canWrite?: boolean }) => {
                 </button>
                 <button
                   onClick={() =>
-                    alert(`Opening performance review for ${employee.name}...`)
+                    toast({ title: "Performance review", description: `Opening performance review for ${employee.name}...` })
                   }
                   className="flex-1 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors text-sm"
                 >
@@ -5570,7 +5569,7 @@ const DocumentsTab = ({ canWrite = true }: { canWrite?: boolean }) => {
             <span>Upload Document</span>
           </button>
           <button
-            onClick={() => alert("Opening template creator...")}
+            onClick={() => toast({ title: "Template creator", description: "Opening template creator..." })}
             disabled={!canWrite}
             className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
@@ -5708,21 +5707,21 @@ const DocumentsTab = ({ canWrite = true }: { canWrite?: boolean }) => {
 
               <div className="flex space-x-2 mt-4">
                 <button
-                  onClick={() => alert(`Viewing document: ${document.name}`)}
+                  onClick={() => toast({ title: "View document", description: document.name })}
                   className="flex-1 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors text-sm flex items-center justify-center space-x-1"
                 >
                   <Eye size={14} />
                   <span>View</span>
                 </button>
                 <button
-                  onClick={() => alert(`Downloading: ${document.name}`)}
+                  onClick={() => toast({ title: "Download", description: document.name })}
                   className="flex-1 px-3 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors text-sm flex items-center justify-center space-x-1"
                 >
                   <Download size={14} />
                   <span>Download</span>
                 </button>
                 <button
-                  onClick={() => alert(`Opening editor for: ${document.name}`)}
+                  onClick={() => toast({ title: "Editor", description: `Opening editor for ${document.name}` })}
                   className="flex-1 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors text-sm flex items-center justify-center space-x-1"
                 >
                   <Edit size={14} />
@@ -5730,7 +5729,7 @@ const DocumentsTab = ({ canWrite = true }: { canWrite?: boolean }) => {
                 </button>
                 <button
                   onClick={() =>
-                    confirm(`Delete ${document.name}?`) && alert("Document deleted")
+                    confirm(`Delete ${document.name}?`) && toast({ title: "Deleted", description: "Document deleted." })
                   }
                   className="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm"
                 >
@@ -5756,7 +5755,7 @@ const DocumentsTab = ({ canWrite = true }: { canWrite?: boolean }) => {
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <button
-            onClick={() => alert("Opening contract templates library...")}
+            onClick={() => toast({ title: "Templates", description: "Opening contract templates library..." })}
             className="p-4 bg-slate-50 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors text-left"
           >
             <FileText className="w-8 h-8 text-slate-600 mb-2" />
@@ -5767,7 +5766,7 @@ const DocumentsTab = ({ canWrite = true }: { canWrite?: boolean }) => {
           </button>
 
           <button
-            onClick={() => alert("Configuring auto-send document settings...")}
+            onClick={() => toast({ title: "Auto-send", description: "Configuring auto-send document settings..." })}
             className="p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors text-left"
           >
             <Send className="w-8 h-8 text-green-600 mb-2" />
@@ -5780,7 +5779,7 @@ const DocumentsTab = ({ canWrite = true }: { canWrite?: boolean }) => {
           </button>
 
           <button
-            onClick={() => alert("Opening template editor...")}
+            onClick={() => toast({ title: "Template editor", description: "Opening template editor..." })}
             className="p-4 bg-slate-50 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors text-left"
           >
             <Edit className="w-8 h-8 text-slate-600 mb-2" />
@@ -5837,7 +5836,7 @@ const SavingsTab = () => {
           </select>
           <button
             onClick={() =>
-              alert("ROI and savings report exported successfully!")
+              toast({ title: "Export complete", description: "ROI and savings report exported successfully." })
             }
             className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all flex items-center space-x-2"
           >
@@ -6226,7 +6225,7 @@ const CreateOutreachSequenceModal = ({
   const handleCreate = () => {
     const role = mockRoles.find((r) => r.id === selectedRoleId);
     if (!role || selectedCandidates.size === 0) {
-      alert("Please select at least one candidate and a job role.");
+      toast({ title: "Select items", description: "Please select at least one candidate and a job role.", variant: "destructive" });
       return;
     }
     const today = new Date().toISOString().split("T")[0];
@@ -6649,7 +6648,7 @@ const OutreachTab = ({ aiRecruitSequences = [] }: { aiRecruitSequences?: Outreac
                         </div>
                       ) : (
                         <button
-                          onClick={() => alert(`Add ${name} to outreach sequence – select role`)}
+                          onClick={() => toast({ title: "Add to outreach", description: `Add ${name} to outreach sequence – select role` })}
                           className="text-sm text-slate-600 hover:underline"
                         >
                           Add to sequence
@@ -6899,11 +6898,12 @@ const CVDatabaseTab = () => {
           return { ...r, aiGenerated: detected || r.aiGenerated };
         })
       );
-      alert(
-        flaggedCount > 0
-          ? `Scan complete. ${flaggedCount} CV(s) flagged as potentially AI-generated. No AI-written CVs should go unflagged.`
-          : "Scan complete. No CVs flagged. (Heuristic + AI check ran.)"
-      );
+      toast({
+        title: "Scan complete",
+        description: flaggedCount > 0
+          ? `${flaggedCount} CV(s) flagged as potentially AI-generated.`
+          : "No CVs flagged. (Heuristic + AI check ran.)",
+      });
     } catch (err) {
       console.error("AI scan failed, using heuristics:", err);
       let flaggedCount = 0;
@@ -6914,7 +6914,7 @@ const CVDatabaseTab = () => {
           return { ...r, aiGenerated: detected || r.aiGenerated };
         })
       );
-      if (flaggedCount > 0) alert(`Heuristic scan: ${flaggedCount} CV(s) flagged. (AI API unavailable.)`);
+      if (flaggedCount > 0) toast({ title: "Heuristic scan", description: `${flaggedCount} CV(s) flagged. (AI API unavailable.)` });
     } finally {
       setIsScanning(false);
     }
@@ -6935,7 +6935,7 @@ const CVDatabaseTab = () => {
         const text = reader.result as string;
         const lines = text.split(/\r?\n/).filter((l) => l.trim());
         if (lines.length < 2) {
-          alert("CSV must have header row and at least one data row.");
+          toast({ title: "Invalid CSV", description: "CSV must have header row and at least one data row.", variant: "destructive" });
           return;
         }
         const rawHeaders = lines[0].split(",").map((h) => h.trim());
@@ -6965,7 +6965,7 @@ const CVDatabaseTab = () => {
         const nameIdx = findCol("name");
         const emailIdx = findCol("email");
         if (nameIdx === -1 || emailIdx === -1) {
-          alert(`CSV must include "name" and "email" columns. Found: ${rawHeaders.join(", ")}`);
+          toast({ title: "Invalid CSV", description: `CSV must include "name" and "email" columns. Found: ${rawHeaders.join(", ")}`, variant: "destructive" });
           return;
         }
         const newRecords: CVRecord[] = [];
@@ -6998,10 +6998,10 @@ const CVDatabaseTab = () => {
           });
         }
         setCvRecords((prev) => [...prev, ...newRecords]);
-        alert(`Imported ${newRecords.length} CV(s) from CSV.`);
+        toast({ title: "Import complete", description: `Imported ${newRecords.length} CV(s) from CSV.` });
       } catch (err) {
         console.error(err);
-        alert("Failed to parse CSV. Check format matches template.");
+        toast({ title: "Import failed", description: "Failed to parse CSV. Check format matches template.", variant: "destructive" });
       }
     };
     reader.readAsText(file);
@@ -7026,7 +7026,7 @@ const CVDatabaseTab = () => {
       ? cvRecords.filter((r) => selectedIds.has(r.id))
       : cvRecords;
     if (toExport.length === 0) {
-      alert(selectedOnly ? "No CVs selected. Select some or export all." : "No CVs to export.");
+      toast({ title: "Export", description: selectedOnly ? "No CVs selected. Select some or export all." : "No CVs to export.", variant: "destructive" });
       return;
     }
     const headerRow = CSV_HEADERS.join(",");
@@ -7077,7 +7077,7 @@ const CVDatabaseTab = () => {
       ? filteredRecords.filter((r) => selectedIds.has(r.id))
       : filteredRecords;
     if (toScreen.length === 0) {
-      alert("Select CVs to screen or screen all visible.");
+      toast({ title: "Screening", description: "Select CVs to screen or screen all visible.", variant: "destructive" });
       return;
     }
     setIsScreening(true);
@@ -7114,7 +7114,7 @@ const CVDatabaseTab = () => {
       );
     } catch (err) {
       console.error("Screening failed:", err);
-      alert("Screening failed. Check Grok API key in .env");
+      toast({ title: "Screening failed", description: "Check Grok API key in .env", variant: "destructive" });
     } finally {
       setIsScreening(false);
     }
@@ -7375,7 +7375,7 @@ const MyBusinessTab = ({ canWrite = true }: { canWrite?: boolean }) => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith("image/")) {
-      alert("Please upload an image file (PNG, JPEG, or WebP).");
+      toast({ title: "Invalid file", description: "Please upload an image file (PNG, JPEG, or WebP).", variant: "destructive" });
       return;
     }
     const reader = new FileReader();
@@ -7431,7 +7431,7 @@ const MyBusinessTab = ({ canWrite = true }: { canWrite?: boolean }) => {
   };
 
   const handleConfigureJobBoard = (board: JobBoardConfig) => {
-    alert(`Configure ${board.name} credentials (username, API token, feed URL). Details: ${board.details}`);
+    toast({ title: "Configure job board", description: `${board.name}: ${board.details}. Enter credentials in the modal (coming soon).` });
     const updated = jobBoards.map((b) => (b.id === board.id ? { ...b, configured: true } : b));
     setJobBoards(updated);
     try {
@@ -7552,6 +7552,71 @@ const MyBusinessTab = ({ canWrite = true }: { canWrite?: boolean }) => {
           </div>
           <div className="pt-4 border-t border-gray-200">
             <TenantTeamSection />
+          </div>
+          <div className="pt-4 border-t border-gray-200">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Data & Privacy (GDPR)
+            </h3>
+            <p className="text-sm text-gray-600 mb-3">
+              Export or delete candidate data per GDPR rights. Requires candidate email.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <div className="flex items-center gap-2">
+                <input
+                  type="email"
+                  id="gdpr-email"
+                  placeholder="Candidate email"
+                  className="px-3 py-2 border border-gray-300 rounded-lg text-sm w-48"
+                />
+                <button
+                  onClick={async () => {
+                    const email = (document.getElementById("gdpr-email") as HTMLInputElement)?.value?.trim();
+                    if (!email) {
+                      toast({ title: "Email required", description: "Enter candidate email.", variant: "destructive" });
+                      return;
+                    }
+                    try {
+                      const data = await exportCandidateData(undefined, email);
+                      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+                      const a = document.createElement("a");
+                      a.href = URL.createObjectURL(blob);
+                      a.download = `candidate-data-${email.replace("@", "-at-")}.json`;
+                      a.click();
+                      URL.revokeObjectURL(a.href);
+                      toast({ title: "Export complete", description: "Candidate data downloaded." });
+                    } catch (err) {
+                      toast({ title: "Export failed", description: err instanceof Error ? err.message : "Failed", variant: "destructive" });
+                    }
+                  }}
+                  disabled={!canWrite}
+                  className="px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 text-sm disabled:opacity-50"
+                >
+                  Export data
+                </button>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={async () => {
+                    const email = (document.getElementById("gdpr-email") as HTMLInputElement)?.value?.trim();
+                    if (!email) {
+                      toast({ title: "Email required", description: "Enter candidate email.", variant: "destructive" });
+                      return;
+                    }
+                    if (!confirm(`Permanently delete all data for ${email}? This cannot be undone.`)) return;
+                    try {
+                      await purgeCandidateData(undefined, email);
+                      toast({ title: "Data purged", description: `Data for ${email} has been deleted.` });
+                    } catch (err) {
+                      toast({ title: "Purge failed", description: err instanceof Error ? err.message : "Failed", variant: "destructive" });
+                    }
+                  }}
+                  disabled={!canWrite}
+                  className="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm disabled:opacity-50"
+                >
+                  Purge data
+                </button>
+              </div>
+            </div>
           </div>
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">

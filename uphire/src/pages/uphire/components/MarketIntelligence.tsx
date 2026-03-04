@@ -333,21 +333,21 @@ export const MarketIntelligence = ({
           <div className="flex justify-between items-center pt-4 border-t border-gray-200">
             <div className="flex space-x-2">
               <button
-                onClick={() => alert("Market report exported successfully!")}
+                onClick={() => toast({ title: "Export complete", description: "Market report exported successfully." })}
                 className="text-sm bg-gray-100 text-gray-700 px-3 py-1 rounded hover:bg-gray-200 transition-colors"
               >
                 Export Report
               </button>
               <button
                 onClick={() =>
-                  alert("Redirecting to create role with market data...")
+                  toast({ title: "Create role", description: "Redirecting to create role with market data..." })
                 }
                 className="text-sm bg-gray-100 text-gray-700 px-3 py-1 rounded hover:bg-gray-200 transition-colors"
               >
                 Create Role
               </button>
               <button
-                onClick={() => alert("Market data exported to CSV!")}
+                onClick={() => toast({ title: "Export complete", description: "Market data exported to CSV." })}
                 className="text-sm bg-gray-100 text-gray-700 px-3 py-1 rounded hover:bg-gray-200 transition-colors ml-2"
               >
                 Export

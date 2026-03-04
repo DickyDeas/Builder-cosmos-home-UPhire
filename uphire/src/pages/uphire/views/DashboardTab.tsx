@@ -3,7 +3,7 @@
  * Extracted from Index.tsx for maintainability
  */
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   ArrowUp,
   ArrowDown,
@@ -15,8 +15,14 @@ import {
 } from "lucide-react";
 import { MarketIntelligence } from "../components/MarketIntelligence";
 import { mockRoles, mockCandidates } from "../data";
+import { fetchStrugglingRoles } from "@/services/roleFlagsService";
 
 export const DashboardTab = () => {
+  const [strugglingCount, setStrugglingCount] = useState(0);
+
+  useEffect(() => {
+    fetchStrugglingRoles().then((roles) => setStrugglingCount(roles.length));
+  }, []);
   const getAllCandidatesCount = () => {
     const baseCount = mockCandidates.length;
     let shortlistedCount = 0;
@@ -121,9 +127,16 @@ export const DashboardTab = () => {
       {/* Recent Activity & Performance */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            Recent Activity
-          </h3>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-gray-900">
+              Recent Activity
+            </h3>
+            {strugglingCount > 0 && (
+              <span className="text-xs px-2 py-1 bg-amber-100 text-amber-800 rounded">
+                {strugglingCount} role(s) need attention
+              </span>
+            )}
+          </div>
           <div className="space-y-4">
             <div className="flex items-center space-x-3 p-3 bg-slate-50 rounded-lg">
               <Users className="w-5 h-5 text-slate-600" />

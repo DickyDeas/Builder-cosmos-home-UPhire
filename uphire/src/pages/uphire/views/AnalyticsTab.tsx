@@ -4,6 +4,7 @@
  */
 
 import React from "react";
+import { toast } from "@/hooks/use-toast";
 import {
   ArrowUp,
   ArrowDown,
@@ -41,7 +42,7 @@ export const AnalyticsTab = () => (
           </option>
         </select>
         <button
-          onClick={() => alert("Analytics report exported successfully!")}
+          onClick={() => toast({ title: "Export complete", description: "Analytics report exported successfully." })}
           className="bg-white bg-opacity-20 text-white px-4 py-2 rounded-lg hover:bg-opacity-30 transition-all flex items-center space-x-2"
         >
           <Download size={16} />

@@ -30,7 +30,7 @@ const App = () => (
             <Route path="/apply/:tenantSlug/:jobId" element={<ApplyPage />} />
             <Route path="/screening/:sessionId" element={<ScreeningChatPage />} />
             <Route path="/help" element={<HelpCenter />} />
-            <Route path="/support" element={<AuthGuard><SupportTickets /></AuthGuard>} />
+            <Route path="/support" element={<SupportTickets />} />
             <Route path="/subscription" element={<AuthGuard><SubscriptionPage /></AuthGuard>} />
             <Route path="*" element={<NotFound />} />
           </Routes>

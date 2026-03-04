@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Search, Plus, Mail, Phone, FileText, X } from "lucide-react";
 import { contactConfig } from "@/config/contact";
 import { supabase } from "@/lib/supabaseClient";
+import { sendEmail } from "@/services/emailService";
 
 interface Ticket {
   id: number | string;
@@ -85,16 +86,36 @@ const SupportTickets = () => {
     e.preventDefault();
     if (!newTicket.title.trim()) return;
     const now = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" });
+    const ticketNumber = String(tickets.length + 1).padStart(6, "0");
+    const subject = `Support Ticket #${ticketNumber}`;
+    const title = newTicket.title.trim();
+    const description = newTicket.description.trim() || "No description provided.";
+    const bodyText = [
+      `Title: ${title}`,
+      `Description: ${description}`,
+      `Priority: ${newTicket.priority}`,
+      `Category: ${newTicket.category}`,
+    ].join("\n\n");
+
     try {
       const { data: session } = await supabase.auth.getSession();
       const userId = session?.session?.user?.id;
+      const userEmail = session?.session?.user?.email;
+
+      await sendEmail({
+        to: contactConfig.supportEmail,
+        subject,
+        textContent: bodyText + (userEmail ? `\n\n---\nSubmitted by: ${userEmail}` : ""),
+        replyTo: userEmail || undefined,
+      });
+
       if (userId) {
         const { data, error } = await supabase
           .from("support_tickets")
           .insert({
             user_id: userId,
-            subject: newTicket.title.trim(),
-            message: newTicket.description.trim() || "No description provided.",
+            subject: title,
+            message: description,
             status: "open",
           })
           .select("id, subject, message, status, created_at, updated_at")
@@ -121,8 +142,8 @@ const SupportTickets = () => {
     }
     const ticket: Ticket = {
       id: tickets.length + 1,
-      title: newTicket.title.trim(),
-      description: newTicket.description.trim() || "No description provided.",
+      title,
+      description,
       status: "Open",
       priority: newTicket.priority,
       category: newTicket.category,
@@ -341,12 +362,16 @@ const SupportTickets = () => {
               <Phone className="w-8 h-8 text-blue-600 flex-shrink-0" />
               <div>
                 <p className="font-medium text-gray-900">Phone</p>
-                <a
-                  href={contactConfig.supportPhone ? `tel:${contactConfig.supportPhone}` : "#"}
-                  className="text-slate-600 hover:underline"
-                >
-                  {contactConfig.supportPhone || "—"}
-                </a>
+                {contactConfig.supportPhone ? (
+                  <a
+                    href={`tel:${contactConfig.supportPhone}`}
+                    className="text-slate-600 hover:underline"
+                  >
+                    {contactConfig.supportPhone}
+                  </a>
+                ) : (
+                  <span className="text-slate-600">—</span>
+                )}
               </div>
             </div>
             <div className="flex items-start gap-4">

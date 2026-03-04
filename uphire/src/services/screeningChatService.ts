@@ -237,7 +237,9 @@ export async function createScreeningSession(
   }
 
   const baseUrl = (import.meta as any).env?.VITE_APP_URL || window.location.origin;
-  const link = `${baseUrl}/screening/${sessionId}`;
+  const base = baseUrl.replace(/\/$/, "");
+  const pathPrefix = base.endsWith("/app") ? base : `${base}/app`;
+  const link = `${pathPrefix}/screening/${sessionId}`;
 
   return { sessionId, link };
 }

@@ -2,8 +2,13 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Send, Loader2, CheckCircle } from "lucide-react";
 import { sanitizeName, sanitizeEmail, sanitizePhone, sanitizeCommaList, sanitizeString, sanitizeId } from "@/lib/security";
-import { fetchWithTimeout, getUserFriendlyErrorMessage } from "@/lib/apiClient";
+import { fetchJsonWithTimeout, getUserFriendlyErrorMessage } from "@/lib/apiClient";
 
+/**
+ * Apply API base URL. Default "" uses window.location.origin (same domain).
+ * Set VITE_APPLY_BASE_URL only if the apply API runs on a different origin
+ * (e.g. separate backend, different subdomain). For Netlify/same-domain deploy, leave unset.
+ */
 const applyBaseUrl = import.meta.env.VITE_APPLY_BASE_URL || "";
 
 const ApplyPage = () => {
@@ -47,7 +52,7 @@ const ApplyPage = () => {
 
     try {
       const apiBase = applyBaseUrl || window.location.origin;
-      const res = await fetchWithTimeout(
+      await fetchJsonWithTimeout<{ success?: boolean }>(
         `${apiBase}/api/apply`,
         {
           method: "POST",
@@ -64,11 +69,6 @@ const ApplyPage = () => {
         },
         15000
       );
-
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        throw new Error((data as { error?: string }).error || `Application failed (${res.status})`);
-      }
       setSubmitted(true);
     } catch (err) {
       setError(getUserFriendlyErrorMessage(err));

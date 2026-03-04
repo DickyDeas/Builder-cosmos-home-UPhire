@@ -5,7 +5,7 @@
 export const contactConfig = {
   /** External pricing/checkout page (payments managed via Builder.ai) */
   pricingUrl: import.meta.env.VITE_PRICING_URL || "https://uphireiq.com/products#pricing",
-  supportEmail: import.meta.env.VITE_SUPPORT_EMAIL || "support@uphire.com",
+  supportEmail: import.meta.env.VITE_SUPPORT_EMAIL || "info@uphireiq.com",
   supportPhone: import.meta.env.VITE_SUPPORT_PHONE || "",
   legalEmail: import.meta.env.VITE_LEGAL_EMAIL || "legal@uphire.com",
   privacyEmail: import.meta.env.VITE_PRIVACY_EMAIL || "privacy@uphire.com",
