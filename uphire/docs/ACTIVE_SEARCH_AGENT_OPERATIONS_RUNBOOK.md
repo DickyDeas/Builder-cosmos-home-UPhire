@@ -6,11 +6,11 @@ Run Active Search continuously so no active role goes cold.
 
 ## Runtime entrypoint
 
-- Scheduled function: `netlify/functions/active-search-tick.ts`
-- Status endpoint function: `netlify/functions/active-search-status.ts`
-- Role control endpoint function: `netlify/functions/active-search-role-control.ts`
-- Manual single-role run function: `netlify/functions/active-search-run-role.ts`
-- Portfolio health summary function: `netlify/functions/active-search-health-summary.ts`
+- Scheduled function: `api/active-search-tick.js`
+- Status endpoint function: `api/active-search-status.js`
+- Role control endpoint function: `api/active-search-role-control.js`
+- Manual single-role run function: `api/active-search-run-role.js`
+- Portfolio health summary function: `api/active-search-health-summary.js`
 - Core runner: `api/_lib/active-search/runner.ts`
 - Orchestration loop: `api/_lib/active-search/orchestrator.ts`
 - Supabase repository (live mode): `api/_lib/active-search/supabase-repository.ts`

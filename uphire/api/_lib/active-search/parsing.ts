@@ -32,9 +32,9 @@ export function classifyReplyText(text: string): {
   optOut: boolean;
 } {
   const lower = text.toLowerCase();
-  const positive = /(yes|interested|available|sounds good|keen)/i.test(lower);
-  const negative = /(no|not interested|stop|unsubscribe|remove me|opt out|leave me alone)/i.test(lower);
-  const optOut = /(stop|unsubscribe|remove me|opt out|leave me alone)/i.test(lower);
+  const positive = /\b(yes|interested|available|sounds good|keen)\b/i.test(lower);
+  const negative = /\b(no|not interested|stop|unsubscribe|remove me|opt out|leave me alone)\b/i.test(lower);
+  const optOut = /\b(stop|unsubscribe|remove me|opt out|leave me alone)\b/i.test(lower);
 
   if (negative) {
     return { stage: "rejected", knockoutStatus: "fail", fitScore: 10, optOut };

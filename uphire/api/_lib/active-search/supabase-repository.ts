@@ -78,6 +78,9 @@ export class SupabaseActiveSearchRepository implements ActiveSearchRepository {
   }
 
   async getRoleMetrics(roleId: string): Promise<RoleMetrics> {
+    const role = await this.request<Array<{ created_at: string }>>(
+      `roles?select=created_at&id=eq.${roleId}&limit=1`
+    );
     const roleCandidates = await this.request<
       Array<{ id: string; stage: string; knockout_status: string; created_at: string; last_activity_at?: string; updated_at: string }>
     >(`role_candidates?select=id,stage,knockout_status,created_at,last_activity_at,updated_at&role_id=eq.${roleId}`);
@@ -109,10 +112,7 @@ export class SupabaseActiveSearchRepository implements ActiveSearchRepository {
       .map((row) => new Date(row.updated_at).getTime())
       .filter((value) => Number.isFinite(value))
       .sort((a, b) => b - a)[0];
-    const roleCreatedAt = roleCandidates
-      .map((row) => new Date(row.created_at).getTime())
-      .filter((value) => Number.isFinite(value))
-      .sort((a, b) => a - b)[0];
+    const roleCreatedAt = role[0]?.created_at ? new Date(role[0].created_at).getTime() : undefined;
 
     return {
       totalApplications,
@@ -269,7 +269,9 @@ export class SupabaseActiveSearchRepository implements ActiveSearchRepository {
   async scoreCandidates(roleId: string): Promise<void> {
     const candidates = await this.request<
       Array<{ id: string; stage: string; knockout_status: string; fit_score: number }>
-    >(`role_candidates?select=id,stage,knockout_status,fit_score&role_id=eq.${roleId}&limit=200`);
+    >(
+      `role_candidates?select=id,stage,knockout_status,fit_score&role_id=eq.${roleId}&stage=in.(new,screening,qualified,borderline,rejected)&limit=200`
+    );
 
     for (const row of candidates) {
       const nextStage =
@@ -304,7 +306,12 @@ export class SupabaseActiveSearchRepository implements ActiveSearchRepository {
       `role_candidates?select=id,fit_score,stage,knockout_status&role_id=eq.${roleId}&order=fit_score.desc&limit=300`
     );
 
-    const target = DEFAULT_ROLE_RULES.shortlistTarget;
+    const config = await this.request<Array<{ rules_json?: Json }>>(
+      `role_orchestrator_configs?select=rules_json&role_id=eq.${roleId}&limit=1`
+    ).catch(() => []);
+    const rules = (config[0]?.rules_json ?? {}) as Record<string, unknown>;
+    const target =
+      typeof rules.shortlistTarget === "number" ? rules.shortlistTarget : DEFAULT_ROLE_RULES.shortlistTarget;
     const qualified = ranked.filter((row) => row.knockout_status === "pass" && row.fit_score >= 70);
     const shortlist = qualified.slice(0, target);
 
@@ -552,14 +559,33 @@ export class SupabaseActiveSearchRepository implements ActiveSearchRepository {
     }
 
     const inbound = await this.request<
-      Array<{ role_candidate_id: string; message_text: string; created_at: string }>
+      Array<{ id: string; role_candidate_id: string; message_text: string; created_at: string }>
     >(
-      `conversations?select=role_candidate_id,message_text,created_at,direction&direction=eq.inbound&role_candidate_id=in.(${roleCandidateIds.join(
+      `conversations?select=id,role_candidate_id,message_text,created_at,direction&direction=eq.inbound&role_candidate_id=in.(${roleCandidateIds.join(
         ","
-      )})&limit=100`
+      )})&order=created_at.desc&limit=100`
     ).catch(() => []);
 
+    let classifiedCount = 0;
     for (const reply of inbound) {
+      const current = await this.request<Array<{ last_activity_at?: string; stage: string }>>(
+        `role_candidates?select=last_activity_at,stage&id=eq.${reply.role_candidate_id}&limit=1`
+      ).catch(() => []);
+      const lastActivity = current[0]?.last_activity_at ? new Date(current[0].last_activity_at).getTime() : 0;
+      const replyTime = new Date(reply.created_at).getTime();
+      if (replyTime <= lastActivity) {
+        continue;
+      }
+
+      const existingScreeningForMessage = await this.request<Array<{ id: string }>>(
+        `screening_results?select=id&role_candidate_id=eq.${reply.role_candidate_id}&created_at=eq.${encodeURIComponent(
+          reply.created_at
+        )}&limit=1`
+      ).catch(() => []);
+      if (existingScreeningForMessage.length > 0) {
+        continue;
+      }
+
       const classified = classifyReplyText(reply.message_text);
       const stage = classified.stage;
       const knockout = classified.knockoutStatus;
@@ -583,17 +609,22 @@ export class SupabaseActiveSearchRepository implements ActiveSearchRepository {
         headers: { Prefer: "return=minimal" },
         body: JSON.stringify({
           role_candidate_id: reply.role_candidate_id,
-          answers_json: { reply: reply.message_text },
+          answers_json: { reply: reply.message_text, conversation_id: reply.id },
           screening_summary: `Reply classified as ${stage}`,
           confidence_score: 0.7,
           fit_score: score,
           knockout_status: knockout,
           rationale: `Inbound response classification from message text.`,
+          created_at: reply.created_at,
         }),
       }).catch(() => undefined);
+      classifiedCount += 1;
     }
 
-    await this.emitAudit(roleId, "sync_replies_completed", { classifiedCount: inbound.length });
+    await this.emitAudit(roleId, "sync_replies_completed", {
+      inboundFetched: inbound.length,
+      classifiedCount,
+    });
   }
   async alertIfRequired(roleId: string, health: RoleHealthState): Promise<void> {
     if (health === "at_risk" || health === "stale" || health === "escalated") {
