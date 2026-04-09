@@ -1,0 +1,19 @@
+# For: UPHire-20IQ-20Website (marketing Netlify site only)
+
+Place as **`public/_redirects`** (or Netlify **Redirects** UI) on the **marketing** site so visitors who still use `/app` on the apex domain reach the real app.
+
+Replace nothing — paths are literal. Order matters: specific rules first.
+
+```
+# Send all /app traffic to the Netlify site that has UPhire functions
+/app   https://uphiresystem.netlify.app/app   302!
+/app/* https://uphiresystem.netlify.app/app/:splat 302!
+```
+
+**Notes**
+
+- Use **302** during testing; **301** when final.
+- If you later use **`https://app.uphireiq.com`**, change the target URL.
+- `302!` forces redirect even if a SPA would otherwise serve `/app`.
+
+After deploy, open `https://uphireiq.com/app` — it should land on **uphiresystem** (or your chosen target).
