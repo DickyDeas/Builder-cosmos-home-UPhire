@@ -1,6 +1,6 @@
 [build]
-  command = "npm --prefix uphire run build"
-  publish = "uphire/dist"
+  command = "npm run build"
+  publish = "dist"
   functions = "uphire/netlify/functions"
 
 [build.environment]
