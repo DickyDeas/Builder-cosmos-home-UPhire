@@ -1,6 +1,7 @@
 [build]
-  command = "npm run build"
-  publish = "dist"
+  command = "npm --prefix uphire run build"
+  publish = "uphire/dist"
+  functions = "uphire/netlify/functions"
 
 [build.environment]
   NODE_VERSION = "18"

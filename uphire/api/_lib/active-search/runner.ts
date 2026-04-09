@@ -54,12 +54,12 @@ async function runRoles(
 ): Promise<{ processed: number }> {
   for (const role of roles) {
     const deps: OrchestratorDeps = {
-      ingestInbound: repository.ingestInbound,
-      screenUnscreened: repository.screenUnscreened,
-      scoreCandidates: repository.scoreCandidates,
-      refreshShortlist: repository.refreshShortlist,
-      getRoleMetrics: repository.getRoleMetrics,
-      getAuthorizedConnectorNames: repository.getAuthorizedConnectorNames,
+      ingestInbound: async (roleId: string) => repository.ingestInbound(roleId),
+      screenUnscreened: async (roleId: string) => repository.screenUnscreened(roleId),
+      scoreCandidates: async (roleId: string) => repository.scoreCandidates(roleId),
+      refreshShortlist: async (roleId: string) => repository.refreshShortlist(roleId),
+      getRoleMetrics: async (roleId: string) => repository.getRoleMetrics(roleId),
+      getAuthorizedConnectorNames: async (clientId: string) => repository.getAuthorizedConnectorNames(clientId),
       runSourcing: async (roleId: string, connectorName: string) => {
         const connector = connectors.get(connectorName);
         if (!connector) {
@@ -86,7 +86,7 @@ async function runRoles(
           importedCount,
         });
       },
-      runOutreach: repository.runOutreach,
+      runOutreach: async (roleId: string) => repository.runOutreach(roleId),
       syncReplies: async (roleId: string) => {
         const connectorNames = await repository.getAuthorizedConnectorNames(role.clientId);
         for (const connectorName of connectorNames) {
@@ -105,9 +105,10 @@ async function runRoles(
         }
         await repository.syncReplies(roleId);
       },
-      updateHealth: repository.setRoleHealth,
-      alertIfRequired: repository.alertIfRequired,
-      emitAudit: repository.emitAudit,
+      updateHealth: async (roleId, state, reason, metrics) =>
+        repository.setRoleHealth(roleId, state, reason, metrics),
+      alertIfRequired: async (roleId, health) => repository.alertIfRequired(roleId, health),
+      emitAudit: async (roleId, action, payload) => repository.emitAudit(roleId, action, payload),
     };
 
     await runRoleOrchestratorTick(role, deps, connectors, {

@@ -12,7 +12,7 @@ export const DEFAULT_ROLE_RULES: RoleRulesConfig = {
 };
 
 export function evaluateRoleHealth(metrics: RoleMetrics, rules: RoleRulesConfig): RoleHealthState {
-  if (metrics.hoursSinceShortlistUpdate >= rules.staleNoShortlistUpdateHours) {
+  if (metrics.shortlistSize > 0 && metrics.hoursSinceShortlistUpdate >= rules.staleNoShortlistUpdateHours) {
     return "stale";
   }
 
