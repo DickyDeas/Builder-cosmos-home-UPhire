@@ -19,7 +19,8 @@ export async function handler(event) {
   const apiUrl =
     process.env.GROK_API_URL || process.env.VITE_GROK_API_URL ||
     "https://api.groq.com/openai/v1/chat/completions";
-oconst model = process.env.GROK_MODEL || process.env.VITE_GROK_MODEL || "llama3-8b-8192";
+
+  const model = process.env.GROK_MODEL || process.env.VITE_GROK_MODEL || "llama3-8b-8192";
 
   if (!apiKey) {
     return {
