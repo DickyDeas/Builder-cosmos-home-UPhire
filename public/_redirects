@@ -1,0 +1,4 @@
+/api/*    /.netlify/functions/:splat  200
+/app    /    301
+/app/*  /:splat  301
+/*      /index.html   200
