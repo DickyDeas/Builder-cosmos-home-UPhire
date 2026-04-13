@@ -1,7 +1,7 @@
 [build]
   command = "npm run build"
   publish = "dist/app"
-  functions = "netlify/functions"
+  functions = "api"
 
 # Market Intelligence API proxies (salary data)
 [[redirects]]
