@@ -1,0 +1,13 @@
+[build]
+  command = "npm --prefix uphire ci && npm --prefix uphire run build"
+  publish = "uphire/dist"
+  functions = "uphire/api"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
