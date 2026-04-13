@@ -1,8 +1,7 @@
 [build]
-  base = "uphire"
   command = "npm run build"
-  publish = "dist"
-  functions = "api"
+  publish = "dist/app"
+  functions = "netlify/functions"
 
 # Market Intelligence API proxies (salary data)
 [[redirects]]
