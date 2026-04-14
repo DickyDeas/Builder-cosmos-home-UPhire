@@ -8,6 +8,8 @@ import { fetchWithTimeout } from "@/lib/apiClient";
 
 const PROXY = "/api/adzuna-proxy";
 const TIMEOUT_MS = 12000;
+const MIN_REASONABLE_UK_ANNUAL_SALARY = 15000;
+const MAX_REASONABLE_UK_ANNUAL_SALARY = 250000;
 
 export interface AdzunaJob {
   id: string;
@@ -21,6 +23,17 @@ export interface AdzunaJob {
 export interface AdzunaSearchResult {
   results?: AdzunaJob[];
   count?: number;
+}
+
+function percentile(sorted: number[], p: number): number {
+  if (sorted.length === 0) return 0;
+  if (sorted.length === 1) return sorted[0];
+  const idx = (sorted.length - 1) * p;
+  const lower = Math.floor(idx);
+  const upper = Math.ceil(idx);
+  if (lower === upper) return sorted[lower];
+  const weight = idx - lower;
+  return Math.round(sorted[lower] * (1 - weight) + sorted[upper] * weight);
 }
 
 /**
@@ -53,18 +66,20 @@ export async function searchAdzunaJobs(
         const max = j.salary_max ?? min;
         return Math.round((min + max) / 2);
       })
-      .filter((s) => s > 0);
+      .filter(
+        (s) =>
+          s >= MIN_REASONABLE_UK_ANNUAL_SALARY &&
+          s <= MAX_REASONABLE_UK_ANNUAL_SALARY
+      );
 
     if (salaries.length === 0) return null;
 
     salaries.sort((a, b) => a - b);
-    const min = Math.min(...salaries);
-    const max = Math.max(...salaries);
-    const mid = Math.floor(salaries.length / 2);
-    const median =
-      salaries.length % 2 === 0
-        ? Math.round((salaries[mid - 1] + salaries[mid]) / 2)
-        : salaries[mid];
+    // Use robust percentile bands instead of raw extremes
+    // to avoid placeholder/outlier postings distorting min/max cards.
+    const min = percentile(salaries, 0.1);
+    const median = percentile(salaries, 0.5);
+    const max = percentile(salaries, 0.9);
 
     return { min, max, median, count: salaries.length };
   } catch (err) {
