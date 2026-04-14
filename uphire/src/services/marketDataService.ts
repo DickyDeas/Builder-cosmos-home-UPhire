@@ -169,13 +169,30 @@ async function fetchGrokMarketData(role: string): Promise<MarketDataResult | nul
 function buildDemandAndSkills(
   salary: { min: number; max: number; median: number },
   role: string,
-  grokResult: MarketDataResult | null
+  grokResult: MarketDataResult | null,
+  adzunaSkills?: string[]
 ): {
   demand: MarketDataResult["demand"];
   skills: MarketDataResult["skills"];
 } {
   if (grokResult) {
     return { demand: grokResult.demand, skills: grokResult.skills };
+  }
+  if (adzunaSkills && adzunaSkills.length > 0) {
+    const required = adzunaSkills.slice(0, 5);
+    const trending = adzunaSkills.slice(5, 10);
+    return {
+      demand: {
+        level: salary.median > 70000 ? "High" : salary.median > 55000 ? "Medium" : "Low",
+        trend: "Stable",
+        timeToFill: 15 + Math.floor(Math.random() * 15),
+        competition: salary.median > 70000 ? "High" : "Medium",
+      },
+      skills: {
+        required,
+        trending: trending.length > 0 ? trending : required.slice(0, 3),
+      },
+    };
   }
   const normalized = role.toLowerCase();
   const demandLevel =
@@ -225,6 +242,14 @@ function buildDemandAndSkills(
     recruiter: {
       required: ["Sourcing", "Screening", "Interview Coordination", "Stakeholder Management", "ATS"],
       trending: ["AI Sourcing", "Talent Intelligence", "Pipeline Analytics", "Automation"],
+    },
+    recruitment: {
+      required: ["Business Development", "Candidate Sourcing", "KPI Management", "Client Management", "Sales"],
+      trending: ["Talent Market Mapping", "AI Sourcing", "Pipeline Analytics", "Automation"],
+    },
+    consultant: {
+      required: ["Client Management", "Business Development", "Communication", "Negotiation", "KPI Tracking"],
+      trending: ["Data-led Consulting", "Automation", "AI Assistance", "Market Intelligence"],
     },
     operations: {
       required: ["Process Improvement", "Project Coordination", "Reporting", "Cross-functional Collaboration"],
@@ -302,6 +327,8 @@ function buildDemandAndSkills(
     copywriter: ["content writer", "seo writer", "content marketer"],
     hr: ["human resources", "people partner", "talent partner"],
     recruiter: ["talent acquisition", "resourcer", "headhunter"],
+    recruitment: ["recruitment consultant", "recruiter", "agency recruiter", "360 recruiter", "perm consultant"],
+    consultant: ["recruitment consultant", "talent consultant", "staffing consultant"],
     qa: ["quality assurance", "test engineer", "tester"],
     security: ["cyber", "infosec", "security engineer"],
     customer: ["customer support", "customer success", "service desk"],
@@ -439,7 +466,12 @@ export async function fetchMarketData(
     }
   }
 
-  const { demand, skills } = buildDemandAndSkills(salary, role, grokResult ?? null);
+  const { demand, skills } = buildDemandAndSkills(
+    salary,
+    role,
+    grokResult ?? null,
+    adzunaResult?.topSkills
+  );
 
   return {
     salary,
