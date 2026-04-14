@@ -182,6 +182,78 @@ function buildDemandAndSkills(
     salary.median > 70000 ? "High" : salary.median > 55000 ? "Medium" : "Low";
   const competition = salary.median > 70000 ? "High" : "Medium";
   const skillSets: Record<string, { required: string[]; trending: string[] }> = {
+    "head of finance": {
+      required: ["Financial Planning", "Budgeting", "Forecasting", "Financial Reporting", "Leadership"],
+      trending: ["FP&A", "Power BI", "Data-driven Planning", "Automation"],
+    },
+    "finance manager": {
+      required: ["Financial Management", "Forecasting", "Budget Control", "Stakeholder Management", "Reporting"],
+      trending: ["FP&A", "Power BI", "Financial Automation", "Data Visualization"],
+    },
+    accountant: {
+      required: ["Accounting", "Financial Reporting", "Reconciliation", "Excel", "Compliance"],
+      trending: ["Automation", "ERP Systems", "Data Analytics", "Power BI"],
+    },
+    finance: {
+      required: ["Financial Analysis", "Budgeting", "Forecasting", "Excel", "Reporting"],
+      trending: ["FP&A", "Power BI", "ERP Systems", "Automation"],
+    },
+    copywriter: {
+      required: ["Copywriting", "Content Strategy", "SEO Writing", "Brand Voice", "Editing"],
+      trending: ["AI-assisted Content", "Conversion Copy", "Content Personalization", "UX Writing"],
+    },
+    "content writer": {
+      required: ["Content Writing", "Research", "SEO", "Editing", "Storytelling"],
+      trending: ["AI-assisted Content", "Topic Clustering", "Content Ops", "UX Writing"],
+    },
+    writer: {
+      required: ["Writing", "Editing", "Research", "Communication", "Attention to Detail"],
+      trending: ["SEO", "AI-assisted Drafting", "Content Strategy", "UX Writing"],
+    },
+    marketing: {
+      required: ["Campaign Management", "Content Strategy", "Analytics", "Communication", "CRM"],
+      trending: ["Performance Marketing", "Marketing Automation", "AI Content", "Attribution"],
+    },
+    sales: {
+      required: ["Prospecting", "Pipeline Management", "Negotiation", "CRM", "Communication"],
+      trending: ["Sales Automation", "Account-based Selling", "Revenue Intelligence", "AI Outreach"],
+    },
+    hr: {
+      required: ["Talent Acquisition", "Interviewing", "Stakeholder Management", "Compliance", "Communication"],
+      trending: ["People Analytics", "Employer Branding", "HR Automation", "Skills-based Hiring"],
+    },
+    recruiter: {
+      required: ["Sourcing", "Screening", "Interview Coordination", "Stakeholder Management", "ATS"],
+      trending: ["AI Sourcing", "Talent Intelligence", "Pipeline Analytics", "Automation"],
+    },
+    operations: {
+      required: ["Process Improvement", "Project Coordination", "Reporting", "Cross-functional Collaboration"],
+      trending: ["Automation", "Data-led Operations", "Workflow Optimization", "AI Copilots"],
+    },
+    customer: {
+      required: ["Customer Support", "Communication", "Problem Solving", "Ticketing Systems", "Empathy"],
+      trending: ["AI Support Tools", "Customer Analytics", "Self-serve Knowledge", "Automation"],
+    },
+    support: {
+      required: ["Issue Resolution", "Communication", "Troubleshooting", "CRM/Ticketing", "Documentation"],
+      trending: ["AI Assistants", "Automation", "Knowledge Base Optimization", "CS Ops"],
+    },
+    qa: {
+      required: ["Test Planning", "Manual Testing", "Bug Tracking", "Communication", "Quality Standards"],
+      trending: ["Test Automation", "Shift-left Testing", "CI/CD Testing", "Performance Testing"],
+    },
+    security: {
+      required: ["Risk Assessment", "Security Controls", "Incident Response", "Compliance", "Monitoring"],
+      trending: ["Cloud Security", "Zero Trust", "DevSecOps", "Threat Intelligence"],
+    },
+    analyst: {
+      required: ["Data Analysis", "Reporting", "SQL", "Stakeholder Communication", "Problem Solving"],
+      trending: ["BI Tools", "Data Visualization", "AI Analytics", "Automation"],
+    },
+    manager: {
+      required: ["Team Leadership", "Planning", "Stakeholder Management", "Performance Management", "Communication"],
+      trending: ["Data-driven Leadership", "AI-assisted Planning", "Change Management", "Process Automation"],
+    },
     qlik: {
       required: ["Qlik Sense", "QlikView", "SQL", "Data Modeling", "ETL"],
       trending: ["Power BI", "Tableau", "Snowflake", "dbt", "Python"],
@@ -219,15 +291,39 @@ function buildDemandAndSkills(
       trending: ["AI-assisted Development", "Cloud-native Apps", "CI/CD", "Observability"],
     },
   };
+
+  const keywordAliases: Record<string, string[]> = {
+    react: ["frontend", "front-end", "ui developer", "web developer"],
+    qlik: ["qlikview", "qlik sense", "bi developer", "business intelligence"],
+    bi: ["business intelligence", "data visualization", "dashboard"],
+    devops: ["platform engineer", "site reliability", "sre", "infrastructure engineer"],
+    data: ["data engineer", "data scientist", "ml engineer", "analytics engineer"],
+    finance: ["fp&a", "financial analyst", "head of finance", "finance manager", "accountant"],
+    copywriter: ["content writer", "seo writer", "content marketer"],
+    hr: ["human resources", "people partner", "talent partner"],
+    recruiter: ["talent acquisition", "resourcer", "headhunter"],
+    qa: ["quality assurance", "test engineer", "tester"],
+    security: ["cyber", "infosec", "security engineer"],
+    customer: ["customer support", "customer success", "service desk"],
+  };
   let skills: { required: string[]; trending: string[] } = {
     required: ["JavaScript", "Problem Solving", "Git", "Testing"],
     trending: ["TypeScript", "Cloud Platforms", "Docker", "Microservices"],
   };
-  for (const [key, val] of Object.entries(skillSets)) {
-    if (normalized.includes(key)) {
-      skills = val;
-      break;
+  let bestMatch: { key: string; score: number } | null = null;
+  for (const key of Object.keys(skillSets)) {
+    let score = 0;
+    if (normalized.includes(key)) score += key.length + 5;
+    const aliases = keywordAliases[key] ?? [];
+    for (const alias of aliases) {
+      if (normalized.includes(alias)) score += alias.length;
     }
+    if (score > 0 && (!bestMatch || score > bestMatch.score)) {
+      bestMatch = { key, score };
+    }
+  }
+  if (bestMatch) {
+    skills = skillSets[bestMatch.key];
   }
   return {
     demand: {
