@@ -182,6 +182,14 @@ function buildDemandAndSkills(
     salary.median > 70000 ? "High" : salary.median > 55000 ? "Medium" : "Low";
   const competition = salary.median > 70000 ? "High" : "Medium";
   const skillSets: Record<string, { required: string[]; trending: string[] }> = {
+    qlik: {
+      required: ["Qlik Sense", "QlikView", "SQL", "Data Modeling", "ETL"],
+      trending: ["Power BI", "Tableau", "Snowflake", "dbt", "Python"],
+    },
+    bi: {
+      required: ["Business Intelligence", "SQL", "Dashboarding", "Data Warehousing"],
+      trending: ["Power BI", "Looker", "dbt", "Snowflake"],
+    },
     react: {
       required: ["React", "JavaScript", "HTML", "CSS", "Git"],
       trending: ["TypeScript", "Next.js", "GraphQL", "React Native", "Testing Library"],
@@ -205,6 +213,10 @@ function buildDemandAndSkills(
     devops: {
       required: ["CI/CD", "Docker", "Kubernetes", "Cloud"],
       trending: ["Terraform", "GitOps", "Observability", "Security"],
+    },
+    developer: {
+      required: ["JavaScript", "TypeScript", "Git", "API Integration", "Testing"],
+      trending: ["AI-assisted Development", "Cloud-native Apps", "CI/CD", "Observability"],
     },
   };
   let skills: { required: string[]; trending: string[] } = {
