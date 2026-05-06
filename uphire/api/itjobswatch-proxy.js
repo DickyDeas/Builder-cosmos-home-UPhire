@@ -14,8 +14,15 @@ export async function handler(event) {
   }
 
   const params = event.queryStringParameters || {};
-  const skill = params.skill || "software engineering";
-  const slug = encodeURIComponent(skill.replace(/\s+/g, "%20"));
+  const rawSkill = params.skill || "software engineering";
+  let normalizedSkill = rawSkill;
+  try {
+    // Avoid double-encoding when callers already pass encoded values.
+    normalizedSkill = decodeURIComponent(rawSkill);
+  } catch {
+    normalizedSkill = rawSkill;
+  }
+  const slug = encodeURIComponent(normalizedSkill.trim());
   const fetchUrl = `https://www.itjobswatch.co.uk/jobs/uk/${slug}.do`;
 
   try {

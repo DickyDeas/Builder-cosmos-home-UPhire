@@ -22,10 +22,26 @@ function getClientIp(event) {
 }
 
 export async function handler(event) {
+  if (event.httpMethod === "OPTIONS") {
+    return {
+      statusCode: 204,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST,OPTIONS",
+        "Access-Control-Allow-Headers": "content-type,authorization",
+      },
+      body: "",
+    };
+  }
+
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
       body: JSON.stringify({ error: "Method not allowed" }),
     };
   }
@@ -35,7 +51,10 @@ export async function handler(event) {
   if (limited) {
     return {
       statusCode: 429,
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
       body: JSON.stringify({ error: "Too many requests. Please try again later." }),
     };
   }
@@ -52,7 +71,10 @@ export async function handler(event) {
   if (!apiKey || apiKey === "demo-key") {
     return {
       statusCode: 502,
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
       body: JSON.stringify({ error: "Grok API key not configured" }),
     };
   }
@@ -63,27 +85,46 @@ export async function handler(event) {
   } catch {
     return {
       statusCode: 400,
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
       body: JSON.stringify({ error: "Invalid JSON body" }),
     };
   }
 
-  const { systemPrompt, userPrompt, maxTokens = 2000, temperature = 0.3, model = "grok-beta" } = body;
-  if (!userPrompt) {
+  const {
+    systemPrompt,
+    userPrompt,
+    prompt,
+    messages: providedMessages,
+    maxTokens = 2000,
+    temperature = 0.3,
+    model = "grok-3-mini",
+  } = body;
+
+  const resolvedUserPrompt = userPrompt || prompt;
+  const messages = Array.isArray(providedMessages)
+    ? providedMessages
+    : systemPrompt
+      ? [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: resolvedUserPrompt },
+        ]
+      : [{ role: "user", content: resolvedUserPrompt }];
+
+  if (!Array.isArray(messages) || messages.length === 0) {
     return {
       statusCode: 400,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ error: "Missing userPrompt" }),
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({ error: "Missing prompt/messages payload" }),
     };
   }
 
   const url = apiUrl.includes("/chat/completions") ? apiUrl : `${apiUrl}/chat/completions`;
-  const messages = systemPrompt
-    ? [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
-      ]
-    : [{ role: "user", content: userPrompt }];
 
   try {
     const res = await fetch(url, {
@@ -103,8 +144,11 @@ export async function handler(event) {
     const data = await res.json();
     if (!res.ok) {
       return {
-        statusCode: res.status,
-        headers: { "Content-Type": "application/json" },
+        statusCode: 502,
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
         body: JSON.stringify({ error: data?.error?.message || "Grok API error" }),
       };
     }
@@ -122,7 +166,10 @@ export async function handler(event) {
     console.error("Grok proxy error:", err);
     return {
       statusCode: 502,
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
       body: JSON.stringify({ error: "Grok API request failed" }),
     };
   }
