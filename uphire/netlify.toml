@@ -110,6 +110,14 @@
   from = "/app/assets/*"
   to = "/assets/:splat"
   status = 200
+  force = true
+
+# Preserve direct asset paths too
+[[redirects]]
+  from = "/assets/*"
+  to = "/assets/:splat"
+  status = 200
+  force = true
 
 [[redirects]]
   from = "/app/*"
