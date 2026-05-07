@@ -110,6 +110,22 @@
   to = "/app/index.html"
   status = 200
 
+# Convenience redirects for direct deep-links without /app prefix
+[[redirects]]
+  from = "/subscription"
+  to = "/app/subscription"
+  status = 302
+
+[[redirects]]
+  from = "/support"
+  to = "/app/support"
+  status = 302
+
+[[redirects]]
+  from = "/help"
+  to = "/app/help"
+  status = 302
+
 [build.environment]
   NODE_VERSION = "18"
 
