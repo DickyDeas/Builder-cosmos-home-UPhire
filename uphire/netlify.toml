@@ -1,6 +1,6 @@
 [build]
   command = "npm run build"
-  publish = "dist/app"
+  publish = "dist"
   functions = "api"
 
 # Market Intelligence API proxies (salary data)
@@ -102,26 +102,12 @@
 # SPA fallback for /app subpath - serve app at uphireiq.com/app
 [[redirects]]
   from = "/app"
-  to = "/index.html"
+  to = "/app/index.html"
   status = 200
-
-# Preserve built static assets under /app/assets
-[[redirects]]
-  from = "/app/assets/*"
-  to = "/assets/:splat"
-  status = 200
-  force = true
-
-# Preserve direct asset paths too
-[[redirects]]
-  from = "/assets/*"
-  to = "/assets/:splat"
-  status = 200
-  force = true
 
 [[redirects]]
   from = "/app/*"
-  to = "/index.html"
+  to = "/app/index.html"
   status = 200
 
 # Convenience redirects for direct deep-links without /app prefix
