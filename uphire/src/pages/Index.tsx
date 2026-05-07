@@ -3973,12 +3973,72 @@ const RolesTab = ({
   // If viewing shortlist, show the shortlist view
   if (viewingShortlist) {
     return (
-      <RoleShortlistView
-        role={viewingShortlist}
-        onBack={() => setViewingShortlist(null)}
-        onScheduleInterview={scheduleInterviewFromShortlist}
-        onAddCandidate={onAddCandidate}
-      />
+      <>
+        <RoleShortlistView
+          role={viewingShortlist}
+          onBack={() => setViewingShortlist(null)}
+          onScheduleInterview={scheduleInterviewFromShortlist}
+          onAddCandidate={onAddCandidate}
+        />
+        {showCalendlyModal && schedulingCandidate && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center justify-center p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-bold text-gray-900">
+                    Schedule Interview
+                  </h2>
+                  <button
+                    onClick={() => setShowCalendlyModal(false)}
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <X size={24} />
+                  </button>
+                </div>
+                <div className="space-y-4">
+                  <p className="text-gray-700">
+                    Schedule an interview with{" "}
+                    <strong>{schedulingCandidate.name}</strong>
+                  </p>
+                  <div className="bg-slate-50 p-4 rounded-lg">
+                    <p className="text-sm text-slate-800">
+                      UPhireIQ AI Match:{" "}
+                      <strong>{schedulingCandidate.aiMatch}%</strong>
+                    </p>
+                    <p className="text-sm text-slate-700 mt-1">
+                      Skills: {schedulingCandidate.skills.join(", ")}
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    <button
+                      onClick={() => {
+                        openCalendlyScheduling(
+                          {
+                            name: schedulingCandidate.name,
+                            email: schedulingCandidate.email,
+                            skills: schedulingCandidate.skills.join(", "),
+                          },
+                          viewingShortlist?.title
+                        );
+                        setShowCalendlyModal(false);
+                      }}
+                      className="w-full bg-slate-600 text-white py-2 px-4 rounded-lg hover:bg-slate-700 transition-colors"
+                    >
+                      Open Calendly to Schedule
+                    </button>
+                    <button
+                      onClick={() => setShowCalendlyModal(false)}
+                      className="w-full bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </>
     );
   }
 
@@ -4311,7 +4371,7 @@ const RolesTab = ({
       />
 
       {showCalendlyModal && schedulingCandidate && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center justify-center p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
