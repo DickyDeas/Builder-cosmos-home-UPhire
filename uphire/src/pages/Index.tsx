@@ -1698,7 +1698,7 @@ const RoleShortlistView = ({
                       </div>
 
                       <div className="flex flex-wrap gap-2 mb-4">
-                        {candidate.skills.slice(0, 4).map((skill, index) => (
+                        {(candidate.skills || []).slice(0, 4).map((skill, index) => (
                           <span
                             key={index}
                             className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-sm"
@@ -1706,9 +1706,9 @@ const RoleShortlistView = ({
                             {skill}
                           </span>
                         ))}
-                        {candidate.skills.length > 4 && (
+                        {(candidate.skills || []).length > 4 && (
                           <span className="px-2 py-1 bg-gray-100 text-gray-500 rounded text-sm">
-                            +{candidate.skills.length - 4} more
+                            +{(candidate.skills || []).length - 4} more
                           </span>
                         )}
                       </div>
@@ -1722,13 +1722,13 @@ const RoleShortlistView = ({
                       )}
 
                       {/* Interview History */}
-                      {candidate.interviewHistory.length > 0 && (
+                      {(candidate.interviewHistory || []).length > 0 && (
                         <div className="mb-4">
                           <h5 className="text-sm font-medium text-gray-900 mb-2">
                             Interview History
                           </h5>
                           <div className="space-y-2">
-                            {candidate.interviewHistory.map((interview) => (
+                            {(candidate.interviewHistory || []).map((interview) => (
                               <div
                                 key={interview.id}
                                 className="flex items-center justify-between text-sm"
@@ -4694,7 +4694,7 @@ const CandidatesTab = () => {
             <div className="mb-4">
               <p className="text-sm text-gray-600 mb-2">Skills</p>
               <div className="flex flex-wrap gap-1">
-                {candidate.skills.slice(0, 3).map((skill, index) => (
+                {(candidate.skills || []).slice(0, 3).map((skill, index) => (
                   <span
                     key={index}
                     className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs"
@@ -4702,9 +4702,9 @@ const CandidatesTab = () => {
                     {skill}
                   </span>
                 ))}
-                {candidate.skills.length > 3 && (
+                {(candidate.skills || []).length > 3 && (
                   <span className="px-2 py-1 bg-gray-100 text-gray-500 rounded text-xs">
-                    +{candidate.skills.length - 3}
+                    +{(candidate.skills || []).length - 3}
                   </span>
                 )}
               </div>
@@ -5624,7 +5624,10 @@ const DocumentsTab = ({ canWrite = true }: { canWrite?: boolean }) => {
         }
         if (data && Array.isArray(data)) {
           const docs = data as unknown as Document[];
-          mockDocuments.splice(0, mockDocuments.length, ...docs);
+          // Keep seeded demo library when the table is empty.
+          if (docs.length > 0) {
+            mockDocuments.splice(0, mockDocuments.length, ...docs);
+          }
         }
       } catch (err) {
         console.error('Unexpected error fetching documents', err);
