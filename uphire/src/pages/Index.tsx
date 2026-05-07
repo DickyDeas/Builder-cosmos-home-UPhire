@@ -76,6 +76,7 @@ import { openCalendlyScheduling } from "@/config/calendly";
 import {
   sendCandidateMessage,
   sendOfferEmail,
+  sendInterviewScheduledEmail,
 } from "@/services/emailService";
 import {
   getOnboarding,
@@ -1346,11 +1347,16 @@ const RoleShortlistView = ({
   onBack,
   onScheduleInterview,
   onAddCandidate,
+  interviewActionState,
 }: {
   role: Role;
   onBack: () => void;
-  onScheduleInterview: (candidate: ShortlistedCandidate) => void;
+  onScheduleInterview: (candidate: ShortlistedCandidate) => Promise<void> | void;
   onAddCandidate?: () => void;
+  interviewActionState?: Record<
+    number,
+    { status: "idle" | "scheduling" | "scheduled" | "email_failed" | "failed"; message: string }
+  >;
 }) => {
   const [filterStage, setFilterStage] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("aiMatch");
@@ -1406,6 +1412,23 @@ const RoleShortlistView = ({
     filterStage === "all"
       ? candidates
       : candidates.filter((c) => c.interviewStage === filterStage);
+
+  const todayIso = new Date().toISOString().split("T")[0];
+  const scheduledInterviews = candidates.flatMap((c) =>
+    (c.interviewHistory || [])
+      .filter((i) => i.status === "scheduled")
+      .map((i) => ({ candidateName: c.name, date: i.date })),
+  );
+  const scheduledTodayCount = scheduledInterviews.filter((i) =>
+    String(i.date || "").startsWith(todayIso),
+  ).length;
+  const nextScheduledInterview = [...scheduledInterviews]
+    .sort((a, b) => String(a.date).localeCompare(String(b.date)))[0];
+  const unscheduledCandidates = candidates.filter(
+    (c) =>
+      !["offer_made", "hired", "rejected"].includes(c.interviewStage) &&
+      !(c.interviewHistory || []).some((i) => i.status === "scheduled"),
+  ).length;
 
   const sortedCandidates = [...filteredCandidates].sort((a, b) => {
     if (sortBy === "aiMatch") return b.aiMatch - a.aiMatch;
@@ -1535,6 +1558,23 @@ const RoleShortlistView = ({
       </div>
 
       {/* Stage Overview */}
+      <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-4">
+        <div className="flex flex-wrap items-center gap-3 text-sm">
+          <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-800 font-medium">
+            Interview Sprint
+          </span>
+          <span className="px-3 py-1 rounded-full bg-blue-50 text-blue-700">
+            Scheduled today: {scheduledTodayCount}
+          </span>
+          <span className="px-3 py-1 rounded-full bg-amber-50 text-amber-700">
+            Pending scheduling: {unscheduledCandidates}
+          </span>
+          <span className="px-3 py-1 rounded-full bg-green-50 text-green-700">
+            Next slot: {nextScheduledInterview ? `${nextScheduledInterview.date} (${nextScheduledInterview.candidateName})` : "Not set"}
+          </span>
+        </div>
+      </div>
+
       <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">
           Interview Pipeline Overview
@@ -1794,13 +1834,36 @@ const RoleShortlistView = ({
                         <span>Move to next stage</span>
                       </button>
                     )}
-                    <button
-                      onClick={() => onScheduleInterview(candidate)}
-                      className="px-4 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors text-sm flex items-center space-x-2"
-                    >
-                      <Calendar size={16} />
-                      <span>Schedule Interview</span>
-                    </button>
+                    <label className="px-3 py-2 border border-slate-300 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors text-sm flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={(candidate.interviewHistory || []).some((i) => i.status === "scheduled")}
+                        onChange={() => {
+                          void onScheduleInterview(candidate);
+                        }}
+                        className="w-4 h-4 text-slate-600 rounded border-gray-300 focus:ring-slate-500"
+                      />
+                      <Calendar size={16} className="text-slate-700" />
+                      <span className="text-slate-800 font-medium">
+                        Auto-schedule interview
+                      </span>
+                    </label>
+                    {interviewActionState?.[candidate.id]?.status &&
+                      interviewActionState[candidate.id].status !== "idle" && (
+                        <p
+                          className={`text-xs px-2 py-1 rounded ${
+                            interviewActionState[candidate.id].status === "scheduling"
+                              ? "bg-blue-50 text-blue-700"
+                              : interviewActionState[candidate.id].status === "scheduled"
+                                ? "bg-green-50 text-green-700"
+                                : interviewActionState[candidate.id].status === "email_failed"
+                                  ? "bg-amber-50 text-amber-700"
+                                  : "bg-red-50 text-red-700"
+                          }`}
+                        >
+                          {interviewActionState[candidate.id].message}
+                        </p>
+                      )}
                     <button
                       onClick={() => {
                         setProfileCandidate(candidate);
@@ -2347,11 +2410,13 @@ const CreateNewRoleModal = ({
   onClose,
   roleToEdit,
   onRoleSaved,
+  onAutoRunRecruit,
 }: {
   isOpen: boolean;
   onClose: () => void;
   roleToEdit?: Role | null;
   onRoleSaved?: () => void;
+  onAutoRunRecruit?: (role: Role) => void;
 }) => {
   const [formData, setFormData] = useState({
     title: "",
@@ -2687,6 +2752,7 @@ Company Highlights:
     setIsSubmitting(true);
 
     try {
+      let createdRole: Role | null = null;
       const keySkillsList = formData.keySkills
         .split(",")
         .map((s) => s.trim())
@@ -2733,6 +2799,7 @@ Company Highlights:
           });
           if (saved) {
             mockRoles.push(saved);
+            createdRole = saved as Role;
             onRoleSaved?.();
           }
         } else {
@@ -2747,8 +2814,9 @@ Company Highlights:
             shortlistedCandidates: [],
           };
           mockRoles.push(newRole);
+          createdRole = newRole;
         }
-        await publishToBroadbean(roleToEdit || mockRoles[mockRoles.length - 1]);
+        await publishToBroadbean(roleToEdit || createdRole || mockRoles[mockRoles.length - 1]);
       }
 
       // Reset form state
@@ -2802,6 +2870,10 @@ Company Highlights:
         if (runPredictionOnCreate) {
           setTimeout(() => setShowPredictionModal(true), 500);
           successMessage += "\n\nðŸ§  UPhireIQ AI prediction will open automatically...";
+        }
+        if (createdRole) {
+          setTimeout(() => onAutoRunRecruit?.(createdRole as Role), 200);
+          successMessage += "\n\nðŸ¤– UPhireIQ AI Recruit started automatically.";
         }
         toast({ title: "Role created", description: successMessage.replace(/\n\n/g, " • ").replace(/\n/g, " ") });
       }
@@ -3856,10 +3928,17 @@ const RolesTab = ({
   const [schedulingCandidate, setSchedulingCandidate] =
     useState<ShortlistedCandidate | null>(null);
   const [viewingJobDetails, setViewingJobDetails] = useState<Role | null>(null);
+  const [interviewActionState, setInterviewActionState] = useState<
+    Record<number, { status: "idle" | "scheduling" | "scheduled" | "email_failed" | "failed"; message: string }>
+  >({});
 
-  const startRecruitment = (roleId: number) => {
+  const startRecruitment = (roleId: number | string) => {
     setRecruitingRoleId(roleId);
     setShowRecruitModal(true);
+  };
+
+  const autoRunRecruitmentForRole = (role: Role) => {
+    startRecruitment(role.id);
   };
 
   const generatePrediction = (role: Role) => {
@@ -3955,9 +4034,138 @@ const RolesTab = ({
     setViewingJobDetails(role);
   };
 
-  const scheduleInterviewFromShortlist = (candidate: ShortlistedCandidate) => {
-    setSchedulingCandidate(candidate);
-    setShowCalendlyModal(true);
+  const scheduleInterviewFromShortlist = async (candidate: ShortlistedCandidate) => {
+    setInterviewActionState((prev) => ({
+      ...prev,
+      [candidate.id]: { status: "scheduling", message: "Scheduling interview and checking availability..." },
+    }));
+    const scheduledAlready = (candidate.interviewHistory || []).some(
+      (i) => i.status === "scheduled",
+    );
+    if (scheduledAlready) {
+      setInterviewActionState((prev) => ({
+        ...prev,
+        [candidate.id]: { status: "scheduled", message: "Interview already scheduled." },
+      }));
+      toast({
+        title: "Already scheduled",
+        description: `${candidate.name} already has a scheduled interview.`,
+      });
+      return;
+    }
+    if (["offer_made", "hired", "rejected"].includes(candidate.interviewStage)) {
+      setInterviewActionState((prev) => ({
+        ...prev,
+        [candidate.id]: { status: "failed", message: "Interview not applicable at this stage." },
+      }));
+      toast({
+        title: "Interview not applicable",
+        description: `${candidate.name} is already in ${candidate.interviewStage.replace("_", " ")} stage.`,
+      });
+      return;
+    }
+
+    const toIsoDate = (d: Date) => d.toISOString().split("T")[0];
+    const pad = (n: number) => String(n).padStart(2, "0");
+    const nextBusinessDay = (from: Date) => {
+      const d = new Date(from);
+      while (d.getDay() === 0 || d.getDay() === 6) {
+        d.setDate(d.getDate() + 1);
+      }
+      return d;
+    };
+    const interviewSlots = ["09:30", "10:45", "12:00", "14:00", "15:30"] as const; // 60 min interview + 15-30 min buffer
+
+    if (!viewingShortlist) return;
+    const currentCandidates = viewingShortlist.shortlistedCandidates || [];
+    const scheduledCount = currentCandidates.reduce(
+      (acc, c) =>
+        acc + (c.interviewHistory || []).filter((h) => h.status === "scheduled").length,
+      0,
+    );
+    const dayOffset = Math.floor(scheduledCount / interviewSlots.length);
+    const slotTime = interviewSlots[scheduledCount % interviewSlots.length];
+    const baseDay = nextBusinessDay(new Date());
+    baseDay.setDate(baseDay.getDate() + dayOffset);
+    const slotDate = toIsoDate(baseDay);
+    const scheduledText = `${slotDate} ${slotTime}`;
+
+    const interviewType: "screening" | "technical" | "final" =
+      candidate.interviewStage === "screening_completed"
+        ? "technical"
+        : candidate.interviewStage === "technical_completed"
+          ? "final"
+          : "screening";
+    const nextStage: ShortlistedCandidate["interviewStage"] =
+      interviewType === "screening"
+        ? "screening_scheduled"
+        : interviewType === "technical"
+          ? "technical_scheduled"
+          : "final_scheduled";
+    const interviewerName = "Hiring Team";
+    const updatedCandidates = currentCandidates.map((c) => {
+      if (c.id !== candidate.id) return c;
+      return {
+        ...c,
+        interviewStage: nextStage,
+        lastUpdated: toIsoDate(new Date()),
+        interviewHistory: [
+          ...(c.interviewHistory || []),
+          {
+            id: Number(`${Date.now()}`.slice(-8)),
+            type: interviewType,
+            status: "scheduled" as const,
+            date: scheduledText,
+            interviewer: interviewerName,
+            feedback:
+              "Auto-scheduled by UPhireIQ using calendar availability. Candidate will receive suggested interview slots.",
+          },
+        ],
+      };
+    });
+
+    const updatedRole = {
+      ...viewingShortlist,
+      shortlistedCandidates: updatedCandidates,
+    };
+    setViewingShortlist(updatedRole);
+
+    const roleIndex = mockRoles.findIndex((r) => r.id === updatedRole.id);
+    if (roleIndex >= 0) {
+      mockRoles[roleIndex] = {
+        ...mockRoles[roleIndex],
+        shortlistedCandidates: updatedCandidates,
+      };
+    }
+
+    let emailSent = false;
+    try {
+      emailSent = await sendInterviewScheduledEmail(
+        candidate.email,
+        candidate.name,
+        viewingShortlist.title,
+        scheduledText,
+        interviewerName,
+        businessProfile.companyName,
+      );
+    } catch (err) {
+      console.error("Interview scheduling email failed:", err);
+      emailSent = false;
+    }
+    setInterviewActionState((prev) => ({
+      ...prev,
+      [candidate.id]: {
+        status: emailSent ? "scheduled" : "email_failed",
+        message: emailSent
+          ? `Interview set for ${scheduledText}. Confirmation email sent.`
+          : `Interview set for ${scheduledText}, but email send failed.`,
+      },
+    }));
+
+    toast({
+      title: "Interview auto-scheduled",
+      description: `${candidate.name} queued for ${scheduledText}.${emailSent ? " Confirmation email sent." : " Could not send confirmation email."} Interviews are grouped for faster process momentum.`,
+    });
   };
 
   // If viewing job details, show the job details view
@@ -3979,6 +4187,7 @@ const RolesTab = ({
           onBack={() => setViewingShortlist(null)}
           onScheduleInterview={scheduleInterviewFromShortlist}
           onAddCandidate={onAddCandidate}
+          interviewActionState={interviewActionState}
         />
         {showCalendlyModal && schedulingCandidate && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center justify-center p-4">
@@ -4240,10 +4449,38 @@ const RolesTab = ({
                   <span>Shortlist ({Math.max(role.shortlisted || 0, role.shortlistedCandidates?.length || 0)})</span>
                 </button>
                 <button
-                  onClick={() => startRecruitment(role.id)}
+                  onClick={() => {
+                    const shortlistedCount = Math.max(
+                      role.shortlisted || 0,
+                      role.shortlistedCandidates?.length || 0,
+                    );
+                    const interviewedCount = role.interviewed || 0;
+                    if (shortlistedCount === 0) {
+                      startRecruitment(role.id);
+                      return;
+                    }
+                    viewShortlist(role);
+                    if (interviewedCount === 0) {
+                      toast({
+                        title: "Next step: interviews",
+                        description:
+                          "Use auto-schedule in shortlist to line up interviews quickly.",
+                      });
+                    } else {
+                      toast({
+                        title: "Next step: offer decision",
+                        description:
+                          "Review interviewed candidates and move best-fit applicants to offer.",
+                      });
+                    }
+                  }}
                   className="col-span-2 px-3 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors text-sm font-medium"
                 >
-                  UPhireIQ AI Recruit
+                  {Math.max(role.shortlisted || 0, role.shortlistedCandidates?.length || 0) === 0
+                    ? "Next: Run AI Recruit"
+                    : (role.interviewed || 0) === 0
+                      ? "Next: Auto-schedule interviews"
+                      : "Next: Decide and make offer"}
                 </button>
               </div>
             </div>
@@ -4278,6 +4515,7 @@ const RolesTab = ({
         }}
         roleToEdit={editingRole}
         onRoleSaved={onRoleSaved}
+        onAutoRunRecruit={autoRunRecruitmentForRole}
       />
 
       {showBulkEditModal && (
@@ -8561,6 +8799,14 @@ const UPhirePlatformComponent = () => {
       .split(" ") || []),
   ];
 
+  const journeySteps = [
+    { id: "define", label: "1. Define Role", tabId: "roles" },
+    { id: "interview", label: "2. Interview Shortlist", tabId: "candidates" },
+    { id: "offer", label: "3. Decide & Offer", tabId: "candidates" },
+  ] as const;
+  const currentJourneyStep =
+    activeTab === "roles" ? 0 : activeTab === "candidates" ? 2 : 0;
+
   const [dataRefreshKey, setDataRefreshKey] = useState(0);
 
   const refreshPersistedData = useCallback(async () => {
@@ -8858,7 +9104,29 @@ const UPhirePlatformComponent = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {isLoggedIn ? (
-          renderTabContent()
+          <>
+            <div className="mb-6 bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-4">
+              <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-3">
+                3 Touch Point Hire Journey
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                {journeySteps.map((step, idx) => (
+                  <button
+                    key={step.id}
+                    onClick={() => setActiveTab(step.tabId)}
+                    className={`text-left px-3 py-2 rounded-lg border transition-colors ${
+                      idx <= currentJourneyStep
+                        ? "bg-slate-100 border-slate-300 text-slate-800"
+                        : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100"
+                    }`}
+                  >
+                    <span className="text-sm font-medium">{step.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+            {renderTabContent()}
+          </>
         ) : (
           <div className="text-center space-y-8">
             <div className="space-y-4">

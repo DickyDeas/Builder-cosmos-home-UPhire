@@ -100,3 +100,47 @@ export async function sendOfferEmail(
     `,
   });
 }
+
+/**
+ * Send interview confirmation email to candidate.
+ */
+export async function sendInterviewScheduledEmail(
+  to: string,
+  candidateName: string,
+  roleTitle: string,
+  interviewDateTime: string,
+  interviewerName: string,
+  companyName?: string
+): Promise<boolean> {
+  const company = companyName || "our team";
+  return sendEmail({
+    to,
+    subject: `Interview confirmed – ${roleTitle}`,
+    htmlContent: `
+      <p>Hi ${candidateName},</p>
+      <p>Your interview has now been arranged. Please find the details below:</p>
+      <ul>
+        <li><strong>Role:</strong> ${roleTitle}</li>
+        <li><strong>Date & time:</strong> ${interviewDateTime}</li>
+        <li><strong>Interviewer:</strong> ${interviewerName}</li>
+        <li><strong>Duration:</strong> 60 minutes</li>
+      </ul>
+      <p>We schedule interviews to keep momentum in the hiring process and may group interviews on the same day for faster decisions.</p>
+      <p>If you need to reschedule, please reply to this email and we will provide alternatives.</p>
+      <p>Best regards,<br/>${company} via UPhire</p>
+    `,
+    textContent: `Hi ${candidateName},
+
+Your interview has now been arranged.
+
+Role: ${roleTitle}
+Date & time: ${interviewDateTime}
+Interviewer: ${interviewerName}
+Duration: 60 minutes
+
+If you need to reschedule, please reply to this email and we will provide alternatives.
+
+Best regards,
+${company} via UPhire`,
+  });
+}
