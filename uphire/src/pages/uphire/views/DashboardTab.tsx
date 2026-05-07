@@ -19,7 +19,12 @@ import { MarketIntelligence } from "../components/MarketIntelligence";
 import { mockRoles, mockCandidates } from "../data";
 import { fetchStrugglingRoles, fetchRolesNeedingAttention, type RoleNeedingAttention } from "@/services/roleFlagsService";
 
-export const DashboardTab = ({ isStaff = false }: { isStaff?: boolean }) => {
+type DashboardTabProps = {
+  isStaff?: boolean;
+  onNavigateTab?: (tabId: string) => void;
+};
+
+export const DashboardTab = ({ isStaff = false, onNavigateTab }: DashboardTabProps) => {
   const [strugglingCount, setStrugglingCount] = useState(0);
   const [rolesNeedingAttention, setRolesNeedingAttention] = useState<RoleNeedingAttention[]>([]);
 
@@ -72,7 +77,11 @@ export const DashboardTab = ({ isStaff = false }: { isStaff?: boolean }) => {
 
       {/* Dashboard Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+        <button
+          type="button"
+          onClick={() => onNavigateTab?.("roles")}
+          className="text-left bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6 hover:bg-white focus:outline-none focus:ring-2 focus:ring-slate-500"
+        >
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">Active Roles</p>
@@ -86,9 +95,13 @@ export const DashboardTab = ({ isStaff = false }: { isStaff?: boolean }) => {
             </div>
             <Briefcase className="w-8 h-8 text-slate-600" />
           </div>
-        </div>
+        </button>
 
-        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+        <button
+          type="button"
+          onClick={() => onNavigateTab?.("candidates")}
+          className="text-left bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6 hover:bg-white focus:outline-none focus:ring-2 focus:ring-green-500"
+        >
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">
@@ -104,9 +117,13 @@ export const DashboardTab = ({ isStaff = false }: { isStaff?: boolean }) => {
             </div>
             <Users className="w-8 h-8 text-green-600" />
           </div>
-        </div>
+        </button>
 
-        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+        <button
+          type="button"
+          onClick={() => onNavigateTab?.("candidates")}
+          className="text-left bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6 hover:bg-white focus:outline-none focus:ring-2 focus:ring-slate-500"
+        >
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">
@@ -119,9 +136,13 @@ export const DashboardTab = ({ isStaff = false }: { isStaff?: boolean }) => {
             </div>
             <Calendar className="w-8 h-8 text-slate-600" />
           </div>
-        </div>
+        </button>
 
-        <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6">
+        <button
+          type="button"
+          onClick={() => onNavigateTab?.("analytics")}
+          className="text-left bg-white bg-opacity-95 backdrop-blur-sm rounded-lg shadow-lg border border-white border-opacity-20 p-6 hover:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+        >
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">
@@ -135,7 +156,7 @@ export const DashboardTab = ({ isStaff = false }: { isStaff?: boolean }) => {
             </div>
             <Clock className="w-8 h-8 text-amber-600" />
           </div>
-        </div>
+        </button>
       </div>
 
       {/* Market Intelligence Section */}
