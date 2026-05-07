@@ -102,18 +102,18 @@
 # SPA fallback for /app subpath - serve app at uphireiq.com/app
 [[redirects]]
   from = "/app"
-  to = "/app/index.html"
+  to = "/index.html"
   status = 200
 
 # Preserve built static assets under /app/assets
 [[redirects]]
   from = "/app/assets/*"
-  to = "/app/assets/:splat"
+  to = "/assets/:splat"
   status = 200
 
 [[redirects]]
   from = "/app/*"
-  to = "/app/index.html"
+  to = "/index.html"
   status = 200
 
 # Convenience redirects for direct deep-links without /app prefix
