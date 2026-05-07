@@ -130,7 +130,7 @@ async function fetchGrokMarketData(role: string): Promise<MarketDataResult | nul
       userPrompt: prompt,
       maxTokens: 500,
       temperature: 0.3,
-      model: "grok-3",
+      model: "grok-3-mini",
     });
     const jsonMatch = content.match(/\{[\s\S]*\}/);
     if (!jsonMatch) return null;
@@ -175,24 +175,21 @@ function buildDemandAndSkills(
   demand: MarketDataResult["demand"];
   skills: MarketDataResult["skills"];
 } {
-  if (grokResult) {
+  const hasUsableGrokDemand =
+    !!grokResult?.demand &&
+    typeof grokResult.demand.level === "string" &&
+    typeof grokResult.demand.trend === "string" &&
+    typeof grokResult.demand.competition === "string" &&
+    Number.isFinite(grokResult.demand.timeToFill);
+  const hasUsableGrokSkills =
+    !!grokResult?.skills &&
+    Array.isArray(grokResult.skills.required) &&
+    grokResult.skills.required.length > 0 &&
+    Array.isArray(grokResult.skills.trending) &&
+    grokResult.skills.trending.length > 0;
+
+  if (hasUsableGrokDemand && hasUsableGrokSkills) {
     return { demand: grokResult.demand, skills: grokResult.skills };
-  }
-  if (adzunaSkills && adzunaSkills.length > 0) {
-    const required = adzunaSkills.slice(0, 5);
-    const trending = adzunaSkills.slice(5, 10);
-    return {
-      demand: {
-        level: salary.median > 70000 ? "High" : salary.median > 55000 ? "Medium" : "Low",
-        trend: "Stable",
-        timeToFill: 15 + Math.floor(Math.random() * 15),
-        competition: salary.median > 70000 ? "High" : "Medium",
-      },
-      skills: {
-        required,
-        trending: trending.length > 0 ? trending : required.slice(0, 3),
-      },
-    };
   }
   const normalized = role.toLowerCase();
   const demandLevel =
@@ -351,6 +348,28 @@ function buildDemandAndSkills(
   }
   if (bestMatch) {
     skills = skillSets[bestMatch.key];
+  }
+
+  if (adzunaSkills && adzunaSkills.length > 0) {
+    if (bestMatch) {
+      // Keep role-specific required skills, and enrich trending with live market signals.
+      const existing = new Set(skills.required.map((s) => s.toLowerCase()));
+      const enrichedTrending = adzunaSkills
+        .filter((s) => !existing.has(s.toLowerCase()))
+        .slice(0, 5);
+      skills = {
+        required: skills.required,
+        trending: enrichedTrending.length > 0 ? enrichedTrending : skills.trending,
+      };
+    } else {
+      // If we cannot classify the role, use live extracted skills as primary.
+      const required = adzunaSkills.slice(0, 5);
+      const trending = adzunaSkills.slice(5, 10);
+      skills = {
+        required,
+        trending: trending.length > 0 ? trending : required.slice(0, 3),
+      };
+    }
   }
   return {
     demand: {
