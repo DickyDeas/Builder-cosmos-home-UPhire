@@ -105,6 +105,12 @@
   to = "/app/index.html"
   status = 200
 
+# Preserve built static assets under /app/assets
+[[redirects]]
+  from = "/app/assets/*"
+  to = "/app/assets/:splat"
+  status = 200
+
 [[redirects]]
   from = "/app/*"
   to = "/app/index.html"
