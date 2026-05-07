@@ -5611,7 +5611,22 @@ const DocumentsTab = ({ canWrite = true }: { canWrite?: boolean }) => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [documentsLoading, setDocumentsLoading] = useState(true);
   const [docToDelete, setDocToDelete] = useState<Document | null>(null);
+  const [viewingDocument, setViewingDocument] = useState<Document | null>(null);
   const [, forceUpdate] = useState(0);
+
+  const buildDocumentPreview = (document: Document) => {
+    return [
+      `${document.name}`,
+      "",
+      `Category: ${document.category}`,
+      `Type: ${document.type}`,
+      `Template: ${document.template}`,
+      `Last updated: ${document.lastModified}`,
+      "",
+      "This is a demo preview for walkthrough purposes.",
+      "In production, this panel can show the real stored file (PDF/DOCX).",
+    ].join("\n");
+  };
 
   // Load documents from Supabase on mount.
   useEffect(() => {
@@ -5818,7 +5833,7 @@ const DocumentsTab = ({ canWrite = true }: { canWrite?: boolean }) => {
 
               <div className="flex space-x-2 mt-4">
                 <button
-                  onClick={() => toast({ title: "View document", description: document.name })}
+                  onClick={() => setViewingDocument(document)}
                   className="flex-1 px-3 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors text-sm flex items-center justify-center space-x-1"
                 >
                   <Eye size={14} />
@@ -5856,6 +5871,49 @@ const DocumentsTab = ({ canWrite = true }: { canWrite?: boolean }) => {
           </div>
         )}
       </div>
+
+      {viewingDocument && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[85vh] overflow-hidden">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {viewingDocument.name}
+                </h3>
+                <p className="text-sm text-gray-600">
+                  {viewingDocument.category} • {viewingDocument.type}
+                </p>
+              </div>
+              <button
+                onClick={() => setViewingDocument(null)}
+                className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg"
+                aria-label="Close document preview"
+              >
+                <X size={18} />
+              </button>
+            </div>
+            <div className="p-4 overflow-y-auto max-h-[60vh]">
+              <pre className="text-sm text-gray-800 whitespace-pre-wrap font-mono bg-gray-50 border border-gray-200 rounded-lg p-4">
+                {buildDocumentPreview(viewingDocument)}
+              </pre>
+            </div>
+            <div className="p-4 border-t border-gray-200 flex justify-end gap-2">
+              <button
+                onClick={() => setViewingDocument(null)}
+                className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => toast({ title: "Download", description: viewingDocument.name })}
+                className="px-4 py-2 rounded-lg bg-slate-700 text-white hover:bg-slate-800"
+              >
+                Download
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <AlertDialog open={!!docToDelete} onOpenChange={(open) => !open && setDocToDelete(null)}>
         <AlertDialogContent>
