@@ -3867,8 +3867,88 @@ const RolesTab = ({
     setShowPredictionModal(true);
   };
 
-  const viewShortlist = (role: Role) => {
-    setViewingShortlist(role);
+  const viewShortlist = async (role: Role) => {
+    try {
+      const { data: shortlistRows, error: shortlistError } = await supabase
+        .from("shortlisted_candidates")
+        .select("candidate_id, notes")
+        .eq("role_id", role.id);
+      if (shortlistError) {
+        console.error("Error loading shortlist rows:", shortlistError);
+        setViewingShortlist(role);
+        return;
+      }
+
+      const candidateIds = (shortlistRows || [])
+        .map((r: any) => r.candidate_id)
+        .filter((id: any) => id != null);
+
+      if (!candidateIds.length) {
+        setViewingShortlist({ ...role, shortlistedCandidates: [] });
+        return;
+      }
+
+      const { data: candidateRows, error: candidateError } = await supabase
+        .from("candidates")
+        .select("id,name,email,phone,experience,skills,status,notes,created_at")
+        .in("id", candidateIds);
+      if (candidateError) {
+        console.error("Error loading shortlist candidates:", candidateError);
+        setViewingShortlist(role);
+        return;
+      }
+
+      const noteMap = new Map<number, string>();
+      (shortlistRows || []).forEach((r: any) => {
+        noteMap.set(Number(r.candidate_id), r.notes || "");
+      });
+
+      const shortlistedCandidates: ShortlistedCandidate[] = (candidateRows || []).map((c: any) => {
+        const status = String(c.status || "").toLowerCase();
+        const interviewStage =
+          status === "offer made"
+            ? "offer_made"
+            : status === "interview completed"
+              ? "interview_completed"
+              : status === "interview scheduled"
+                ? "interview_scheduled"
+                : status === "hired"
+                  ? "hired"
+                  : "shortlisted";
+
+        return {
+          id: Number(c.id),
+          name: c.name || "Candidate",
+          email: c.email || "",
+          phoneNumber: c.phone || undefined,
+          location: "",
+          experience: c.experience || "",
+          skills: Array.isArray(c.skills) ? c.skills : [],
+          aiMatch: 85,
+          source: "Supabase",
+          applied: c.created_at ? String(c.created_at).split("T")[0] : new Date().toISOString().split("T")[0],
+          avatar: (c.name || "CA")
+            .split(" ")
+            .map((w: string) => w[0] || "")
+            .join("")
+            .toUpperCase()
+            .slice(0, 2),
+          notes: [c.notes, noteMap.get(Number(c.id))].filter(Boolean).join(" | "),
+          interviewStage: interviewStage as ShortlistedCandidate["interviewStage"],
+          lastUpdated: new Date().toISOString().split("T")[0],
+          interviewHistory: [],
+        };
+      });
+
+      setViewingShortlist({
+        ...role,
+        shortlistedCandidates,
+        shortlisted: shortlistedCandidates.length,
+      });
+    } catch (err) {
+      console.error("Error loading shortlist:", err);
+      setViewingShortlist(role);
+    }
   };
 
   const viewJobDetails = (role: Role) => {
@@ -4093,14 +4173,11 @@ const RolesTab = ({
                 </button>
                 <button
                   onClick={() => viewShortlist(role)}
-                  disabled={
-                    !role.shortlistedCandidates ||
-                    role.shortlistedCandidates.length === 0
-                  }
+                  disabled={!((role.shortlisted || 0) > 0 || (role.shortlistedCandidates?.length || 0) > 0)}
                   className="flex items-center justify-center space-x-1 px-3 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors text-sm font-medium"
                 >
                   <Users size={14} />
-                  <span>Shortlist ({role.shortlistedCandidates?.length || 0})</span>
+                  <span>Shortlist ({Math.max(role.shortlisted || 0, role.shortlistedCandidates?.length || 0)})</span>
                 </button>
                 <button
                   onClick={() => startRecruitment(role.id)}
@@ -8433,7 +8510,7 @@ const UPhirePlatformComponent = () => {
   const renderTabContent = () => {
     switch (activeTab) {
       case "dashboard":
-        return <DashboardTab isStaff={isStaff} />;
+        return <DashboardTab isStaff={isStaff} onNavigateTab={setActiveTab} />;
       case "roles":
         return <RolesTab onAddCandidate={handleAddCandidate} onAIRecruitComplete={handleAIRecruitComplete} onRoleSaved={refreshPersistedData} canWrite={canWrite} />;
       case "candidates":
@@ -8457,7 +8534,7 @@ const UPhirePlatformComponent = () => {
       case "admin":
         return <AdminTab />;
       default:
-        return <DashboardTab />;
+        return <DashboardTab onNavigateTab={setActiveTab} />;
     }
   };
 
