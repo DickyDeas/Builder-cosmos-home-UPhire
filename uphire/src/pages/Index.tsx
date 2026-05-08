@@ -1429,6 +1429,20 @@ const RoleShortlistView = ({
       !["offer_made", "hired", "rejected"].includes(c.interviewStage) &&
       !(c.interviewHistory || []).some((i) => i.status === "scheduled"),
   ).length;
+  const scheduleAllPending = async () => {
+    const pending = candidates.filter(
+      (c) =>
+        !["offer_made", "hired", "rejected"].includes(c.interviewStage) &&
+        !(c.interviewHistory || []).some((i) => i.status === "scheduled"),
+    );
+    if (pending.length === 0) {
+      toast({ title: "Nothing pending", description: "All eligible candidates are already scheduled." });
+      return;
+    }
+    for (const c of pending) {
+      await onScheduleInterview(c);
+    }
+  };
 
   const sortedCandidates = [...filteredCandidates].sort((a, b) => {
     if (sortBy === "aiMatch") return b.aiMatch - a.aiMatch;
@@ -1658,13 +1672,21 @@ const RoleShortlistView = ({
           <h3 className="text-lg font-semibold text-gray-900">
             Shortlisted Candidates ({sortedCandidates.length})
           </h3>
-          <button
-            onClick={() => setShowAddToShortlistModal(true)}
-            className="px-4 py-2 bg-gradient-to-r from-slate-600 to-teal-500 text-white rounded-lg hover:from-slate-600 hover:to-teal-600 transition-colors flex items-center space-x-2 shadow-md"
-          >
-            <Plus size={16} />
-            <span>Add Candidate</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={scheduleAllPending}
+              className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors text-sm font-medium"
+            >
+              Schedule all pending ({unscheduledCandidates})
+            </button>
+            <button
+              onClick={() => setShowAddToShortlistModal(true)}
+              className="px-4 py-2 bg-gradient-to-r from-slate-600 to-teal-500 text-white rounded-lg hover:from-slate-600 hover:to-teal-600 transition-colors flex items-center space-x-2 shadow-md"
+            >
+              <Plus size={16} />
+              <span>Add Candidate</span>
+            </button>
+          </div>
         </div>
 
         <div className="space-y-4">
@@ -3938,7 +3960,14 @@ const RolesTab = ({
   };
 
   const autoRunRecruitmentForRole = (role: Role) => {
-    startRecruitment(role.id);
+    // Streamlined flow: after create & publish, take user straight into shortlist.
+    setViewingShortlist({ ...role, shortlistedCandidates: role.shortlistedCandidates || [] });
+    setTimeout(() => {
+      toast({
+        title: "Continue hiring",
+        description: "Role created. You are now in shortlist to schedule interviews.",
+      });
+    }, 100);
   };
 
   const generatePrediction = (role: Role) => {
@@ -4477,10 +4506,10 @@ const RolesTab = ({
                   className="col-span-2 px-3 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors text-sm font-medium"
                 >
                   {Math.max(role.shortlisted || 0, role.shortlistedCandidates?.length || 0) === 0
-                    ? "Next: Run AI Recruit"
+                    ? "Continue Hiring: Run AI Recruit"
                     : (role.interviewed || 0) === 0
-                      ? "Next: Auto-schedule interviews"
-                      : "Next: Decide and make offer"}
+                      ? "Continue Hiring: Auto-schedule interviews"
+                      : "Continue Hiring: Decide and make offer"}
                 </button>
               </div>
             </div>
