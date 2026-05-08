@@ -9,13 +9,35 @@ type PricingTier = {
   discount?: string;
 };
 
-const plans = [
+type PricingPlan = {
+  id: string;
+  name: string;
+  stripeUrl: string | null;
+  label: string | null;
+  labelColor?: string;
+  description: string;
+  volumeRange: string;
+  spendGuide?: string;
+  keyPoints: string;
+  keyPointsSub?: string;
+  pricingType: "tiered" | "custom";
+  tiers?: PricingTier[];
+  customLabel?: string;
+  customSub?: string;
+  featuresPrefix: string;
+  features: string[];
+  popular: boolean;
+};
+
+const plans: PricingPlan[] = [
   {
     id: "starter",
     name: "Starter",
     stripeUrl: "https://buy.stripe.com/cNiaEZ7IN6PK4rr0p07Re02",
     label: null,
-    description: "For teams replacing occasional agency use",
+    description: "For small teams with occasional hiring needs",
+    volumeRange: "Up to 10 hires per year",
+    spendGuide: "~£50k annual recruitment spend",
     keyPoints: "3 concurrent hires",
     keyPointsSub: "Hiring capacity for ongoing single and dual-role staffing",
     pricingType: "tiered" as const,
@@ -43,10 +65,12 @@ const plans = [
     label: "MOST POPULAR",
     labelColor: "text-pink-400",
     description:
-      "Designed for teams replacing significant agency spend or scaling internal hiring without adding headcount",
+      "Designed for growing companies replacing agency spend or scaling internal hiring without adding headcount",
+    volumeRange: "10–50 hires per year",
+    spendGuide: "~£50k–£250k annual recruitment spend",
     keyPoints: "5 concurrent hires",
     keyPointsSub:
-      "Designed to support continuous hiring across multiple positions",
+      "Continuous multi-position hiring",
     pricingType: "tiered" as const,
     tiers: [
       { months: 12, price: 2500, perMonth: true },
@@ -73,6 +97,8 @@ const plans = [
     label: null,
     description:
       "For high-volume hiring with predictable outcomes and minimal manual overhead",
+    volumeRange: "50+ hires per year",
+    spendGuide: "£250k+ annual recruitment spend",
     keyPoints: "10+ concurrent hires",
     keyPointsSub:
       "Hiring infrastructure for scaled, predictable talent acquisition",
@@ -102,6 +128,7 @@ const plans = [
     label: null,
     description:
       "Custom hiring infrastructure for complex or regulated environments. Priced to replace agency frameworks and fragmented hiring systems.",
+    volumeRange: "Custom scope",
     keyPoints: "Custom scope",
     keyPointsSub: "Unlimited hiring capacity with dedicated infrastructure",
     pricingType: "custom" as const,
@@ -134,11 +161,11 @@ const SubscriptionPage = () => (
 
       <div className="text-center mb-12">
         <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
-          Choose your plan
+          Hiring Infrastructure Pricing
         </h1>
         <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-          Scale your hiring with AI-powered recruitment. Manage your subscription
-          or upgrade anytime.
+          Subscription pricing based on hiring volume and complexity.
+          Most customers pay less per year than a single agency placement.
         </p>
       </div>
 
@@ -168,9 +195,15 @@ const SubscriptionPage = () => (
 
             <h2 className="text-xl font-bold text-white mb-1">{plan.name}</h2>
             <p className="text-sm text-slate-400 mb-3">{plan.description}</p>
+            <div className="mb-3">
+              <p className="text-sm font-medium text-cyan-300">{plan.volumeRange}</p>
+              {plan.spendGuide && (
+                <p className="text-xs text-slate-500">{plan.spendGuide}</p>
+              )}
+            </div>
             <div className="mb-4">
               <p className="text-sm text-slate-300">{plan.keyPoints}</p>
-              {"keyPointsSub" in plan && plan.keyPointsSub && (
+              {plan.keyPointsSub && (
                 <p className="text-xs text-slate-500 mt-1">{plan.keyPointsSub}</p>
               )}
             </div>
@@ -255,6 +288,10 @@ const SubscriptionPage = () => (
         >
           View full pricing
         </a>
+      </p>
+      <p className="text-center text-slate-600 text-xs mt-3">
+        All prices in GBP. Annual commitments required. Overage rates available
+        for Professional and Premium tiers.
       </p>
     </div>
   </div>
